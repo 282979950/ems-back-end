@@ -1,0 +1,42 @@
+# Eclipse #
+.settings/
+bin/
+.classpath
+.project
+
+# MyEclipse #
+.myeclipse/
+
+# IntelliJ IDEA #
+.idea/
+out/
+*.iml
+*.ipr
+*.iws
+*.ids
+
+# SVN #
+.svn/
+
+# Maven #
+target/
+
+# Gradle #
+.gradle/
+gradle/
+build/
+classes/
+
+# Java #
+*.class
+
+# CheckStyle #
+.checkstyle/
+
+# PMD #
+.pmd/
+
+# System Noise #
+.DS_Store
+profile
+thumb.db
