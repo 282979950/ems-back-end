@@ -458,12 +458,6 @@
             <version>2.6</version>
         </dependency>
         <dependency>
-		    <groupId>com.github.freegeese</groupId>
-		    <artifactId>easy-excel</artifactId>
-		    <version>1.0.3</version>
-		</dependency>
-
-        <dependency>
             <groupId>javax.servlet.jsp.jstl</groupId>
             <artifactId>javax.servlet.jsp.jstl-api</artifactId>
             <version>1.2.1</version>
