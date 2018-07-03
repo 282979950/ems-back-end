@@ -4,33 +4,33 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class UserOrders {
-    private String id;
+    private String id;//机构ID
 
-    private Long orderId;
+    private Long orderId;//订单ID
 
-    private Long userId;
+    private Long userId;//用户ID
 
-    private Long employeeId;
+    private Long employeeId;//员工ID
 
-    private BigDecimal orderPayment;
+    private BigDecimal orderPayment;//充值金额
 
-    private Integer orderStatus;
+    private Integer orderStatus;//订单状态
 
-    private Date orderCreateTime;
+    private Date orderCreateTime;//订单创建时间
 
-    private Date orderCloseTime;
+    private Date orderCloseTime;//订单关闭时间
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//备注
 
     public UserOrders(String id, Long orderId, Long userId, Long employeeId, BigDecimal orderPayment, Integer orderStatus, Date orderCreateTime, Date orderCloseTime, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

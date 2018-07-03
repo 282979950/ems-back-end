@@ -1,27 +1,29 @@
 package com.ems.entity;
 
 import java.util.Date;
-
+/*
+ * 权限表实体
+ */
 public class SysAuthority {
-    private String id;
+    private String id;//id
 
-    private Short authId;
+    private Short authId;//权限ID
 
-    private String authName;
+    private String authName;//权限名称
 
-    private Integer menuId;
+    private Integer menuId;//菜单ID
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//注释
 
     public SysAuthority(String id, Short authId, String authName, Integer menuId, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

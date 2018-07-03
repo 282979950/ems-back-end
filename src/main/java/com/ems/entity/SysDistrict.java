@@ -1,37 +1,39 @@
 package com.ems.entity;
 
 import java.util.Date;
-
+/*
+ * 区域表实体
+ */
 public class SysDistrict {
-    private String id;
+    private String id;//id
 
-    private Long distId;
+    private Long distId;//区域ID
 
-    private String distName;
+    private String distName;//区域名称
 
-    private String distCode;
+    private String distCode;//区域代码
 
-    private String distCategory;
+    private String distCategory;//区域类别
 
-    private Boolean distLevel;
+    private Boolean distLevel;//区域等级
 
-    private Long distParentId;
+    private Long distParentId;//父级区域
 
-    private Boolean distIsroot;
+    private Boolean distIsroot;//根节点
 
-    private Boolean distIsleaf;
+    private Boolean distIsleaf;//分支节点
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//注释
 
     public SysDistrict(String id, Long distId, String distName, String distCode, String distCategory, Boolean distLevel, Long distParentId, Boolean distIsroot, Boolean distIsleaf, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

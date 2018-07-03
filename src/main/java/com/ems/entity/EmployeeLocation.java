@@ -2,25 +2,27 @@ package com.ems.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
+/*
+ * 位置,经纬度
+ */
 public class EmployeeLocation {
-    private String id;
+    private String id;//普通id
 
-    private Long empId;
+    private Long empId;//机构ID
 
-    private BigDecimal longtitude;
+    private BigDecimal longtitude;//经度
 
-    private BigDecimal latitude;
+    private BigDecimal latitude;//纬度
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//注释
 
     public EmployeeLocation(String id, Long empId, BigDecimal longtitude, BigDecimal latitude, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

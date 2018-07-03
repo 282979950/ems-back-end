@@ -2,54 +2,57 @@ package com.ems.entity;
 
 import java.util.Date;
 
+/*
+ * 员工表实体
+ */
 public class Employee {
-    private String id;
+    private String id;// id
 
-    private Long empId;
+    private Long empId; //员工ID
 
-    private String empNumber;
+    private String empNumber;//员工编号
 
-    private String empName;
+    private String empName;//员工名称
 
-    private Long empOrgId;
+    private Long empOrgId;//员工所属机构
 
-    private Long empDistrictId;
+    private Long empDistrictId;//员工所属区域
 
-    private String empLoginName;
+    private String empLoginName;//登录名
 
-    private String empPassword;
+    private String empPassword;//密码
 
-    private String empEmail;
+    private String empEmail;//员工邮箱
 
-    private String empPhone;
+    private String empPhone;//员工电话
 
-    private String empMobile;
+    private String empMobile;//员工手机号码
 
-    private String empAddress;
+    private String empAddress;//员工住址
 
-    private String empType;
+    private String empType;//员工类型
 
-    private String empManagementDistId;
+    private String empManagementDistId;//员工负责片区
 
-    private String empRoleId;
+    private String empRoleId;//员工角色
 
-    private String empLoginIp;
+    private String empLoginIp;//员工登录IP地址
 
-    private Date empLoginDate;
+    private Date empLoginDate;//用户登录日期
 
-    private Boolean empLoginFlag;
+    private Boolean empLoginFlag;//员工登录标记
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//备注
 
     public Employee(String id, Long empId, String empNumber, String empName, Long empOrgId, Long empDistrictId, String empLoginName, String empPassword, String empEmail, String empPhone, String empMobile, String empAddress, String empType, String empManagementDistId, String empRoleId, String empLoginIp, Date empLoginDate, Boolean empLoginFlag, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

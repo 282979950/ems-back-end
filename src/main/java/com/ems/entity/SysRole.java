@@ -1,27 +1,29 @@
 package com.ems.entity;
 
 import java.util.Date;
-
+/*
+ * 角色表实体
+ */
 public class SysRole {
-    private String id;
+    private String id;//id
 
-    private Integer roleId;
+    private Integer roleId;//角色ID
 
-    private String roleName;
+    private String roleName;//角色名称
 
-    private String roleAuthorities;
+    private String roleAuthorities;//角色权限
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//备注
 
     public SysRole(String id, Integer roleId, String roleName, String roleAuthorities, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

@@ -1,31 +1,33 @@
 package com.ems.entity;
 
 import java.util.Date;
-
+/*
+ * 字典表实体
+ */
 public class SysDictionary {
-    private String id;
+    private String id;//id
 
-    private Integer dictId;
+    private Integer dictId;//字典ID
 
-    private String dictKey;
+    private String dictKey;//字典表key
 
-    private String dictValue;
+    private String dictValue;//字典表key对应值
 
-    private String dictCategory;
+    private String dictCategory;//类别
 
-    private Integer dictSort;
+    private Integer dictSort;//序号
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//注释
 
     public SysDictionary(String id, Integer dictId, String dictKey, String dictValue, String dictCategory, Integer dictSort, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

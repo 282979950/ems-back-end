@@ -1,25 +1,27 @@
 package com.ems.entity;
 
 import java.util.Date;
-
+/*
+ * 用户，表具中间表实体
+ */
 public class UserMeters {
-    private String id;
+    private String id;//id
 
-    private Long userId;
+    private Long userId;//用户ID
 
-    private Long meterId;
+    private Long meterId;//表具ID
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//注释
 
     public UserMeters(String id, Long userId, Long meterId, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

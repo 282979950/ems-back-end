@@ -1,37 +1,39 @@
 package com.ems.entity;
 
 import java.util.Date;
-
+/*
+ * 机构表实体
+ */
 public class SysOrganization {
-    private String id;
+    private String id;//id
 
-    private Long orgId;
+    private Long orgId;//机构ID
 
-    private String orgName;
+    private String orgName;//机构名称
 
-    private String orgCode;
+    private String orgCode;//机构代码
 
-    private String orgCategory;
+    private String orgCategory;//机构类别
 
-    private Boolean orgLevel;
+    private Boolean orgLevel;//机构等级
 
-    private Long orgParentId;
+    private Long orgParentId;//父级机构
 
-    private Boolean orgIsroot;
+    private Boolean orgIsroot;//根节点
 
-    private Boolean orgIsleaf;
+    private Boolean orgIsleaf;//分支
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//注释
 
     public SysOrganization(String id, Long orgId, String orgName, String orgCode, String orgCategory, Boolean orgLevel, Long orgParentId, Boolean orgIsroot, Boolean orgIsleaf, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

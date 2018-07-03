@@ -1,27 +1,29 @@
 package com.ems.entity;
 
 import java.util.Date;
-
+/*
+ * 表类型实体
+ */
 public class MeterType {
-    private String id;
+    private String id;//普通id
 
-    private Integer meterTypeId;
+    private Integer meterTypeId;//表具型号id
 
-    private String meterCategory;
+    private String meterCategory;//表具类别
 
-    private String meterType;
+    private String meterType;//表具型号
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//注释
 
     public MeterType(String id, Integer meterTypeId, String meterCategory, String meterType, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

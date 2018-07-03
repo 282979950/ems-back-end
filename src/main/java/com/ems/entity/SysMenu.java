@@ -1,37 +1,39 @@
 package com.ems.entity;
 
 import java.util.Date;
-
+/*
+ *菜单表实体 
+ */
 public class SysMenu {
-    private String id;
+    private String id;//id
 
-    private Long menuId;
+    private Long menuId;//菜单ID
 
-    private String menuName;
+    private String menuName;//菜单名称
 
-    private String menuHref;
+    private String menuHref;//菜单路径
 
-    private Boolean menuLevel;
+    private Boolean menuLevel;//菜单等级
 
-    private Long menuParentId;
+    private Long menuParentId;//父级id
 
-    private Boolean menuIsroot;
+    private Boolean menuIsroot;//根节点
 
-    private Boolean menuIsleaf;
+    private Boolean menuIsleaf;//分支
 
-    private Boolean menuShowable;
+    private Boolean menuShowable;//是否显示
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//备注
 
     public SysMenu(String id, Long menuId, String menuName, String menuHref, Boolean menuLevel, Long menuParentId, Boolean menuIsroot, Boolean menuIsleaf, Boolean menuShowable, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

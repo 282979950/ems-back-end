@@ -1,29 +1,31 @@
 package com.ems.entity;
 
 import java.util.Date;
-
+/*
+ * 日志实体
+ */
 public class SysLog {
-    private String id;
+    private String id;//普通id
 
-    private String logId;
+    private String logId;//日志ID
 
-    private String logTitle;
+    private String logTitle;//日志标题
 
-    private String logType;
+    private String logType;//日志类型
 
-    private String logOperator;
+    private String logOperator;//操作人员
 
-    private String logOperatorIp;
+    private String logOperatorIp;//操作人员IP地址
 
-    private String logExceptionInfo;
+    private String logExceptionInfo;//异常信息
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//注释
 
     public SysLog(String id, String logId, String logTitle, String logType, String logOperator, String logOperatorIp, String logExceptionInfo, Date createTime, Long createBy, Boolean useable, String remarks) {
         this.id = id;

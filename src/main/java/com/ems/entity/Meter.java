@@ -2,47 +2,49 @@ package com.ems.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
+/*
+ * 表具
+ */
 public class Meter {
-    private String id;
+    private String id;//id
 
-    private Long meterId;
+    private Long meterId;//表具ID
 
-    private String meterCode;
+    private String meterCode;//表编号
 
-    private BigDecimal meterStopcode;
+    private BigDecimal meterStopcode;//表止码
 
-    private Integer meterTypeId;
+    private Integer meterTypeId;//表具型号ID
 
-    private Boolean meterDirection;
+    private Boolean meterDirection;//表向
 
-    private Date meterProdDate;
+    private Date meterProdDate;//表具生产日期
 
-    private Date meterEntryDate;
+    private Date meterEntryDate;//表具录入时间
 
-    private Date meterInstallTime;
+    private Date meterInstallTime;//表具安装时间
 
-    private Date meterScrapTime;
+    private Date meterScrapTime;//表具报废时间
 
-    private Integer meterValidityperiod;
+    private Integer meterValidityperiod;//表具有效期(单位：年)
 
-    private Integer meterStatus;
+    private Integer meterStatus;//表具状态
 
-    private String meterCommKey;
+    private String meterCommKey;//通讯密钥
 
-    private String meterCommNum;
+    private String meterCommNum;//通讯号码
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//注释
 
     public Meter(String id, Long meterId, String meterCode, BigDecimal meterStopcode, Integer meterTypeId, Boolean meterDirection, Date meterProdDate, Date meterEntryDate, Date meterInstallTime, Date meterScrapTime, Integer meterValidityperiod, Integer meterStatus, String meterCommKey, String meterCommNum, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;

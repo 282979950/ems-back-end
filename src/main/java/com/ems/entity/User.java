@@ -1,49 +1,51 @@
 package com.ems.entity;
 
 import java.util.Date;
-
+/*
+ * 用户表实体
+ */
 public class User {
-    private String id;
+    private String id;//普通id
 
-    private Long userId;
+    private Long userId;//用户ID
 
-    private String userName;
+    private String userName;//机构名称
 
-    private String userPhone;
+    private String userPhone;//用户电话
 
-    private String userIdcard;
+    private String userIdcard;//用户身份证号码
 
-    private String userDeed;
+    private String userDeed;//用户房产证号码
 
-    private Long userDistId;
+    private Long userDistId;//用户所在区域ID
 
-    private String userAddress;
+    private String userAddress;//用户住址
 
-    private Byte userType;
+    private Byte userType;//用户类型
 
-    private Byte userGasType;
+    private Byte userGasType;//用气类型
 
-    private Byte userMeterType;
+    private Byte userMeterType;//用户表类型
 
-    private Long iccardId;
+    private Long iccardId;//IC卡编号
 
-    private String iccardIdentifier;
+    private String iccardIdentifier;//IC卡识别号
 
-    private String iccardPassword;
+    private String iccardPassword;//IC卡密码
 
-    private Boolean userLocked;
+    private Boolean userLocked;//是否被锁定
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Long createBy;
+    private Long createBy;//创建者
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Long updateBy;
+    private Long updateBy;//更新者
 
-    private Boolean useable;
+    private Boolean useable;//是否可用
 
-    private String remarks;
+    private String remarks;//备注
 
     public User(String id, Long userId, String userName, String userPhone, String userIdcard, String userDeed, Long userDistId, String userAddress, Byte userType, Byte userGasType, Byte userMeterType, Long iccardId, String iccardIdentifier, String iccardPassword, Boolean userLocked, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;
