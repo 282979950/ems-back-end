@@ -51,7 +51,7 @@
     <!--c:sqlSessionFactory-ref="sqlSessionFactory"/>-->
 
     <bean name="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.ems.dao"/>
+        <property name="basePackage" value="com.ems.entity.mapper"/>
     </bean>
 
     <!-- 使用@Transactional进行声明式事务管理需要声明下面这行 -->
