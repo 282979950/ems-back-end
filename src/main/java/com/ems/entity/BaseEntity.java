@@ -1,6 +1,7 @@
 package com.ems.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
  * Created by litairan litairan@whtdmh.com on 2018/7/3.
  * 基础实体类
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -54,6 +56,10 @@ public class BaseEntity implements Serializable {
         this.updateBy = updateBy;
         this.useable = useable;
         this.remarks = remarks;
+    }
+
+    public BaseEntity() {
+        super();
     }
 
     public String getId() {

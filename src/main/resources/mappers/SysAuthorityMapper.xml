@@ -1,155 +1,155 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ems.entity.mapper.SysAuthorityMapper" >
-  <resultMap id="BaseResultMap" type="com.ems.entity.SysAuthority" >
-    <constructor >
-      <idArg column="id" jdbcType="CHAR" javaType="java.lang.String" />
-      <arg column="auth_id" jdbcType="SMALLINT" javaType="java.lang.Short" />
-      <arg column="auth_name" jdbcType="CHAR" javaType="java.lang.String" />
-      <arg column="menu_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
-    </constructor>
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, auth_id, auth_name, menu_id, create_time, create_by, update_time, update_by, 
-    useable, remarks
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from sys_authority
-    where id = #{id,jdbcType=CHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from sys_authority
-    where id = #{id,jdbcType=CHAR}
-  </delete>
-  <insert id="insert" parameterType="com.ems.entity.SysAuthority" >
-    insert into sys_authority (id, auth_id, auth_name, 
-      menu_id, create_time, create_by, 
-      update_time, update_by, useable, 
-      remarks)
-    values (#{id,jdbcType=CHAR}, #{authId,jdbcType=SMALLINT}, #{authName,jdbcType=CHAR}, 
-      #{menuId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT}, 
-      #{remarks,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.ems.entity.SysAuthority" >
-    insert into sys_authority
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="authId != null" >
-        auth_id,
-      </if>
-      <if test="authName != null" >
-        auth_name,
-      </if>
-      <if test="menuId != null" >
-        menu_id,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="createBy != null" >
-        create_by,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-      <if test="updateBy != null" >
-        update_by,
-      </if>
-      <if test="useable != null" >
-        useable,
-      </if>
-      <if test="remarks != null" >
-        remarks,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=CHAR},
-      </if>
-      <if test="authId != null" >
-        #{authId,jdbcType=SMALLINT},
-      </if>
-      <if test="authName != null" >
-        #{authName,jdbcType=CHAR},
-      </if>
-      <if test="menuId != null" >
-        #{menuId,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null" >
-        #{createBy,jdbcType=BIGINT},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        #{updateBy,jdbcType=BIGINT},
-      </if>
-      <if test="useable != null" >
-        #{useable,jdbcType=BIT},
-      </if>
-      <if test="remarks != null" >
-        #{remarks,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.SysAuthority" >
-    update sys_authority
-    <set >
-      <if test="authId != null" >
-        auth_id = #{authId,jdbcType=SMALLINT},
-      </if>
-      <if test="authName != null" >
+<mapper namespace="com.ems.entity.mapper.SysAuthorityMapper">
+    <resultMap id="BaseResultMap" type="com.ems.entity.SysAuthority">
+        <constructor>
+            <idArg column="id" jdbcType="CHAR" javaType="java.lang.String"/>
+            <arg column="auth_id" jdbcType="SMALLINT" javaType="java.lang.Short"/>
+            <arg column="auth_name" jdbcType="CHAR" javaType="java.lang.String"/>
+            <arg column="menu_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, auth_id, auth_name, menu_id, create_time, create_by, update_time, update_by,
+        useable, remarks
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_authority
+        where id = #{id,jdbcType=CHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_authority
+        where id = #{id,jdbcType=CHAR}
+    </delete>
+    <insert id="insert" parameterType="com.ems.entity.SysAuthority">
+        insert into sys_authority (id, auth_id, auth_name,
+        menu_id, create_time, create_by,
+        update_time, update_by, useable,
+        remarks)
+        values (#{id,jdbcType=CHAR}, #{authId,jdbcType=SMALLINT}, #{authName,jdbcType=CHAR},
+        #{menuId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT},
+        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT},
+        #{remarks,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ems.entity.SysAuthority">
+        insert into sys_authority
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="authId != null">
+                auth_id,
+            </if>
+            <if test="authName != null">
+                auth_name,
+            </if>
+            <if test="menuId != null">
+                menu_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="useable != null">
+                useable,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=CHAR},
+            </if>
+            <if test="authId != null">
+                #{authId,jdbcType=SMALLINT},
+            </if>
+            <if test="authName != null">
+                #{authName,jdbcType=CHAR},
+            </if>
+            <if test="menuId != null">
+                #{menuId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="useable != null">
+                #{useable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.SysAuthority">
+        update sys_authority
+        <set>
+            <if test="authId != null">
+                auth_id = #{authId,jdbcType=SMALLINT},
+            </if>
+            <if test="authName != null">
+                auth_name = #{authName,jdbcType=CHAR},
+            </if>
+            <if test="menuId != null">
+                menu_id = #{menuId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="useable != null">
+                useable = #{useable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=CHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ems.entity.SysAuthority">
+        update sys_authority
+        set auth_id = #{authId,jdbcType=SMALLINT},
         auth_name = #{authName,jdbcType=CHAR},
-      </if>
-      <if test="menuId != null" >
         menu_id = #{menuId,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null" >
         create_by = #{createBy,jdbcType=BIGINT},
-      </if>
-      <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
         update_by = #{updateBy,jdbcType=BIGINT},
-      </if>
-      <if test="useable != null" >
         useable = #{useable,jdbcType=BIT},
-      </if>
-      <if test="remarks != null" >
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=CHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.ems.entity.SysAuthority" >
-    update sys_authority
-    set auth_id = #{authId,jdbcType=SMALLINT},
-      auth_name = #{authName,jdbcType=CHAR},
-      menu_id = #{menuId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=BIGINT},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=BIGINT},
-      useable = #{useable,jdbcType=BIT},
-      remarks = #{remarks,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=CHAR}
-  </update>
+        remarks = #{remarks,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=CHAR}
+    </update>
 </mapper>

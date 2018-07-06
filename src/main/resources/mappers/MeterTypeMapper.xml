@@ -1,155 +1,155 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ems.entity.mapper.MeterTypeMapper" >
-  <resultMap id="BaseResultMap" type="com.ems.entity.MeterType" >
-    <constructor >
-      <idArg column="id" jdbcType="CHAR" javaType="java.lang.String" />
-      <arg column="meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="meter_category" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="meter_type" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
-    </constructor>
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, meter_type_id, meter_category, meter_type, create_time, create_by, update_time, 
-    update_by, useable, remarks
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from meter_type
-    where id = #{id,jdbcType=CHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from meter_type
-    where id = #{id,jdbcType=CHAR}
-  </delete>
-  <insert id="insert" parameterType="com.ems.entity.MeterType" >
-    insert into meter_type (id, meter_type_id, meter_category, 
-      meter_type, create_time, create_by, 
-      update_time, update_by, useable, 
-      remarks)
-    values (#{id,jdbcType=CHAR}, #{meterTypeId,jdbcType=INTEGER}, #{meterCategory,jdbcType=VARCHAR}, 
-      #{meterType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT}, 
-      #{remarks,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.ems.entity.MeterType" >
-    insert into meter_type
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="meterTypeId != null" >
-        meter_type_id,
-      </if>
-      <if test="meterCategory != null" >
-        meter_category,
-      </if>
-      <if test="meterType != null" >
-        meter_type,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="createBy != null" >
-        create_by,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-      <if test="updateBy != null" >
-        update_by,
-      </if>
-      <if test="useable != null" >
-        useable,
-      </if>
-      <if test="remarks != null" >
-        remarks,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=CHAR},
-      </if>
-      <if test="meterTypeId != null" >
-        #{meterTypeId,jdbcType=INTEGER},
-      </if>
-      <if test="meterCategory != null" >
-        #{meterCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="meterType != null" >
-        #{meterType,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null" >
-        #{createBy,jdbcType=BIGINT},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        #{updateBy,jdbcType=BIGINT},
-      </if>
-      <if test="useable != null" >
-        #{useable,jdbcType=BIT},
-      </if>
-      <if test="remarks != null" >
-        #{remarks,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.MeterType" >
-    update meter_type
-    <set >
-      <if test="meterTypeId != null" >
-        meter_type_id = #{meterTypeId,jdbcType=INTEGER},
-      </if>
-      <if test="meterCategory != null" >
+<mapper namespace="com.ems.entity.mapper.MeterTypeMapper">
+    <resultMap id="BaseResultMap" type="com.ems.entity.MeterType">
+        <constructor>
+            <idArg column="id" jdbcType="CHAR" javaType="java.lang.String"/>
+            <arg column="meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="meter_category" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="meter_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, meter_type_id, meter_category, meter_type, create_time, create_by, update_time,
+        update_by, useable, remarks
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from meter_type
+        where id = #{id,jdbcType=CHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from meter_type
+        where id = #{id,jdbcType=CHAR}
+    </delete>
+    <insert id="insert" parameterType="com.ems.entity.MeterType">
+        insert into meter_type (id, meter_type_id, meter_category,
+        meter_type, create_time, create_by,
+        update_time, update_by, useable,
+        remarks)
+        values (#{id,jdbcType=CHAR}, #{meterTypeId,jdbcType=INTEGER}, #{meterCategory,jdbcType=VARCHAR},
+        #{meterType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT},
+        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT},
+        #{remarks,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ems.entity.MeterType">
+        insert into meter_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="meterTypeId != null">
+                meter_type_id,
+            </if>
+            <if test="meterCategory != null">
+                meter_category,
+            </if>
+            <if test="meterType != null">
+                meter_type,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="useable != null">
+                useable,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=CHAR},
+            </if>
+            <if test="meterTypeId != null">
+                #{meterTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="meterCategory != null">
+                #{meterCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="meterType != null">
+                #{meterType,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="useable != null">
+                #{useable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.MeterType">
+        update meter_type
+        <set>
+            <if test="meterTypeId != null">
+                meter_type_id = #{meterTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="meterCategory != null">
+                meter_category = #{meterCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="meterType != null">
+                meter_type = #{meterType,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="useable != null">
+                useable = #{useable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=CHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ems.entity.MeterType">
+        update meter_type
+        set meter_type_id = #{meterTypeId,jdbcType=INTEGER},
         meter_category = #{meterCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="meterType != null" >
         meter_type = #{meterType,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null" >
         create_by = #{createBy,jdbcType=BIGINT},
-      </if>
-      <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
         update_by = #{updateBy,jdbcType=BIGINT},
-      </if>
-      <if test="useable != null" >
         useable = #{useable,jdbcType=BIT},
-      </if>
-      <if test="remarks != null" >
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=CHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.ems.entity.MeterType" >
-    update meter_type
-    set meter_type_id = #{meterTypeId,jdbcType=INTEGER},
-      meter_category = #{meterCategory,jdbcType=VARCHAR},
-      meter_type = #{meterType,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=BIGINT},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=BIGINT},
-      useable = #{useable,jdbcType=BIT},
-      remarks = #{remarks,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=CHAR}
-  </update>
+        remarks = #{remarks,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=CHAR}
+    </update>
 </mapper>
