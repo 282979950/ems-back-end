@@ -18,11 +18,11 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, org_id, org_name, org_code, org_category, org_parent_id, 
+    id, org_id, org_name, org_code, org_category, org_parent_id,
      create_time, create_by, update_time, update_by, useable, remarks
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from sys_organization
     where id = #{id,jdbcType=CHAR}
@@ -32,16 +32,16 @@
     where id = #{id,jdbcType=CHAR} and useable ="1"
   </delete>
   <insert id="insert" parameterType="com.ems.entity.SysOrganization" >
-    insert into sys_organization (id, org_id, org_name, 
-      org_code, org_category,  
-      org_parent_id, 
-      create_time, create_by, update_time, 
+    insert into sys_organization (id, org_id, org_name,
+      org_code, org_category,
+      org_parent_id,
+      create_time, create_by, update_time,
       update_by, useable, remarks
       )
-    values (#{id,jdbcType=CHAR}, #{orgId,jdbcType=BIGINT}, #{orgName,jdbcType=VARCHAR}, 
-      #{orgCode,jdbcType=VARCHAR}, #{orgCategory,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=CHAR}, #{orgId,jdbcType=BIGINT}, #{orgName,jdbcType=VARCHAR},
+      #{orgCode,jdbcType=VARCHAR}, #{orgCategory,jdbcType=VARCHAR},
       #{orgParentId,jdbcType=BIGINT},
-      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP},
       #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
       )
   </insert>
@@ -180,28 +180,28 @@
   </update>
   <!-- 查询所有数据List -->
   <select id="findList" resultMap="BaseResultMap" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from sys_organization
-    where useable ="1" 
+    where useable ="1"
   </select>
   <!-- 查看表中是否存在一条数据 -->
   <select id="findListByCount" resultType="java.lang.Integer">
-     SELECT COUNT(0) FROM sys_organization  WHERE useable =1 
+     SELECT COUNT(0) FROM sys_organization  WHERE useable =1
   </select>
   <!-- 根据机构名称获取对应机构等级 -->
   <select id="findByOrgName" resultMap="BaseResultMap" parameterType="java.lang.String">
-  
+
     SELECT org_category,org_parent_id FROM sys_organization WHERE org_name = #{orgName}
   </select>
   <!-- 获取机构最大id -->
   <select id="maxOrganization" resultType="java.lang.Long">
-  
+
     SELECT MAX(org_id) FROM sys_organization
   </select>
   <!-- 根据id查看是否存在一条记录 -->
   <select id="findIdByCount" resultType="java.lang.Integer" parameterType="java.lang.String">
-    
+
     SELECT COUNT(0) FROM sys_organization  WHERE useable =1 AND id=#{id}
   </select>
   <!-- 根据id修改机构名称 -->
@@ -211,12 +211,12 @@
   </update>
   <!-- 删除时查看是否存在子集 -->
   <select id="selectOrganizationByid" resultType="java.lang.Integer" parameterType="java.lang.Long">
-  
+
      SELECT COUNT(0) FROM sys_organization  WHERE useable =1 AND org_parent_id=#{orgId}
   </select>
   <!-- 删除数据此处只需要修改删除标记即可 -->
   <update id="deleteOrganization" parameterType="java.lang.String">
-  
+
     UPDATE sys_organization SET useable=0
     WHERE   id=#{id}
   </update>

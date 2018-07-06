@@ -1,214 +1,210 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ems.entity.mapper.SysDistrictMapper" >
-  <resultMap id="BaseResultMap" type="com.ems.entity.SysDistrict" >
-    <constructor >
-      <idArg column="id" jdbcType="CHAR" javaType="java.lang.String" />
-      <arg column="dist_id" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="dist_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="dist_code" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="dist_category" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="dist_level" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="dist_parent_id" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="dist_isroot" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="dist_isleaf" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
-    </constructor>
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, dist_id, dist_name, dist_code, dist_category, dist_level, dist_parent_id, dist_isroot, 
-    dist_isleaf, create_time, create_by, update_time, update_by, useable, remarks
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from sys_district
-    where id = #{id,jdbcType=CHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from sys_district
-    where id = #{id,jdbcType=CHAR}
-  </delete>
-  <insert id="insert" parameterType="com.ems.entity.SysDistrict" >
-    insert into sys_district (id, dist_id, dist_name, 
-      dist_code, dist_category, dist_level, 
-      dist_parent_id, dist_isroot, dist_isleaf, 
-      create_time, create_by, update_time, 
-      update_by, useable, remarks
-      )
-    values (#{id,jdbcType=CHAR}, #{distId,jdbcType=BIGINT}, #{distName,jdbcType=VARCHAR}, 
-      #{distCode,jdbcType=VARCHAR}, #{distCategory,jdbcType=VARCHAR}, #{distLevel,jdbcType=BIT}, 
-      #{distParentId,jdbcType=BIGINT}, #{distIsroot,jdbcType=BIT}, #{distIsleaf,jdbcType=BIT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.ems.entity.SysDistrict" >
-    insert into sys_district
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="distId != null" >
-        dist_id,
-      </if>
-      <if test="distName != null" >
-        dist_name,
-      </if>
-      <if test="distCode != null" >
-        dist_code,
-      </if>
-      <if test="distCategory != null" >
-        dist_category,
-      </if>
-      <if test="distLevel != null" >
-        dist_level,
-      </if>
-      <if test="distParentId != null" >
-        dist_parent_id,
-      </if>
-      <if test="distIsroot != null" >
-        dist_isroot,
-      </if>
-      <if test="distIsleaf != null" >
-        dist_isleaf,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="createBy != null" >
-        create_by,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-      <if test="updateBy != null" >
-        update_by,
-      </if>
-      <if test="useable != null" >
-        useable,
-      </if>
-      <if test="remarks != null" >
-        remarks,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=CHAR},
-      </if>
-      <if test="distId != null" >
-        #{distId,jdbcType=BIGINT},
-      </if>
-      <if test="distName != null" >
-        #{distName,jdbcType=VARCHAR},
-      </if>
-      <if test="distCode != null" >
-        #{distCode,jdbcType=VARCHAR},
-      </if>
-      <if test="distCategory != null" >
-        #{distCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="distLevel != null" >
-        #{distLevel,jdbcType=BIT},
-      </if>
-      <if test="distParentId != null" >
-        #{distParentId,jdbcType=BIGINT},
-      </if>
-      <if test="distIsroot != null" >
-        #{distIsroot,jdbcType=BIT},
-      </if>
-      <if test="distIsleaf != null" >
-        #{distIsleaf,jdbcType=BIT},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null" >
-        #{createBy,jdbcType=BIGINT},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        #{updateBy,jdbcType=BIGINT},
-      </if>
-      <if test="useable != null" >
-        #{useable,jdbcType=BIT},
-      </if>
-      <if test="remarks != null" >
-        #{remarks,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.SysDistrict" >
-    update sys_district
-    <set >
-      <if test="distId != null" >
-        dist_id = #{distId,jdbcType=BIGINT},
-      </if>
-      <if test="distName != null" >
+<mapper namespace="com.ems.entity.mapper.SysDistrictMapper">
+    <resultMap id="BaseResultMap" type="com.ems.entity.SysDistrict">
+        <constructor>
+            <idArg column="id" jdbcType="CHAR" javaType="java.lang.String"/>
+            <arg column="dist_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="dist_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="dist_category" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="dist_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="dist_parent_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, dist_id, dist_name, dist_code, dist_category, dist_address, dist_parent_id,
+        create_time, create_by, update_time, update_by, useable, remarks
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_district
+        where id = #{id,jdbcType=CHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_district
+        where id = #{id,jdbcType=CHAR}
+    </delete>
+    <insert id="insert" parameterType="com.ems.entity.SysDistrict">
+        insert into sys_district (id, dist_id, dist_name, dist_code, dist_category, dist_address, dist_parent_id,
+        create_time, create_by, update_time, update_by, useable, remarks)
+        values (#{id,jdbcType=CHAR}, #{distId,jdbcType=BIGINT},
+        #{distName,jdbcType=VARCHAR}, #{distCode,jdbcType=VARCHAR}, #{distCategory,jdbcType=VARCHAR},
+        #{distAddress,jdbcType=VARCHAR}, #{distParentId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
+        #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT},
+        #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ems.entity.SysDistrict">
+        insert into sys_district
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="distId != null">
+                dist_id,
+            </if>
+            <if test="distName != null">
+                dist_name,
+            </if>
+            <if test="distCode != null">
+                dist_code,
+            </if>
+            <if test="distCategory != null">
+                dist_category,
+            </if>
+            <if test="distAddress != null">
+                dist_address,
+            </if>
+            <if test="distParentId != null">
+                dist_parent_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="useable != null">
+                useable,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=CHAR},
+            </if>
+            <if test="distId != null">
+                #{distId,jdbcType=BIGINT},
+            </if>
+            <if test="distName != null">
+                #{distName,jdbcType=VARCHAR},
+            </if>
+            <if test="distCode != null">
+                #{distCode,jdbcType=VARCHAR},
+            </if>
+            <if test="distCategory != null">
+                #{distCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="distAddress != null">
+                #{distAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="distParentId != null">
+                #{distParentId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="useable != null">
+                #{useable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.SysDistrict">
+        update sys_district
+        <set>
+            <if test="distId != null">
+                dist_id = #{distId,jdbcType=BIGINT},
+            </if>
+            <if test="distName != null">
+                dist_name = #{distName,jdbcType=VARCHAR},
+            </if>
+            <if test="distCode != null">
+                dist_code = #{distCode,jdbcType=VARCHAR},
+            </if>
+            <if test="distCategory != null">
+                dist_category = #{distCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="distAddress != null">
+                dist_address = #{distAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="distParentId != null">
+                dist_parent_id = #{distParentId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="useable != null">
+                useable = #{useable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=CHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ems.entity.SysDistrict">
+        update sys_district
+        set dist_id = #{distId,jdbcType=BIGINT},
         dist_name = #{distName,jdbcType=VARCHAR},
-      </if>
-      <if test="distCode != null" >
         dist_code = #{distCode,jdbcType=VARCHAR},
-      </if>
-      <if test="distCategory != null" >
         dist_category = #{distCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="distLevel != null" >
-        dist_level = #{distLevel,jdbcType=BIT},
-      </if>
-      <if test="distParentId != null" >
+        dist_address = #{distAddress,jdbcType=VARCHAR},
         dist_parent_id = #{distParentId,jdbcType=BIGINT},
-      </if>
-      <if test="distIsroot != null" >
-        dist_isroot = #{distIsroot,jdbcType=BIT},
-      </if>
-      <if test="distIsleaf != null" >
-        dist_isleaf = #{distIsleaf,jdbcType=BIT},
-      </if>
-      <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null" >
         create_by = #{createBy,jdbcType=BIGINT},
-      </if>
-      <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
         update_by = #{updateBy,jdbcType=BIGINT},
-      </if>
-      <if test="useable != null" >
         useable = #{useable,jdbcType=BIT},
-      </if>
-      <if test="remarks != null" >
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=CHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.ems.entity.SysDistrict" >
-    update sys_district
-    set dist_id = #{distId,jdbcType=BIGINT},
-      dist_name = #{distName,jdbcType=VARCHAR},
-      dist_code = #{distCode,jdbcType=VARCHAR},
-      dist_category = #{distCategory,jdbcType=VARCHAR},
-      dist_level = #{distLevel,jdbcType=BIT},
-      dist_parent_id = #{distParentId,jdbcType=BIGINT},
-      dist_isroot = #{distIsroot,jdbcType=BIT},
-      dist_isleaf = #{distIsleaf,jdbcType=BIT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=BIGINT},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=BIGINT},
-      useable = #{useable,jdbcType=BIT},
-      remarks = #{remarks,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=CHAR}
-  </update>
+        remarks = #{remarks,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=CHAR}
+    </update>
+    <select id="checkDistName" resultType="int" parameterType="java.lang.String">
+        select
+        COUNT (1)
+        from sys_district
+        where dist_name = #{distName}
+    </select>
+    <select id="checkUseable" resultType="int" parameterType="java.lang.String">
+        select
+        COUNT (1)
+        from sys_district
+        where dist_name = #{distName} and useable = 1
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_district
+        where useable = 1
+    </select>
+    <select id="getCountWithUnusable" resultType="int" parameterType="com.ems.entity.SysDistrict">
+        select
+        count(1)
+        from sys_district
+    </select>
 </mapper>

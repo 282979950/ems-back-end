@@ -32,14 +32,14 @@
     where id = #{id,jdbcType=CHAR} and useable ="1"
   </delete>
   <insert id="insert" parameterType="com.ems.entity.SysDictionary" >
-    insert into sys_dictionary (id, dict_id, dict_key, 
-      dict_value, dict_category, dict_sort, 
-      create_time, create_by, update_time, 
+    insert into sys_dictionary (id, dict_id, dict_key,
+      dict_value, dict_category, dict_sort,
+      create_time, create_by, update_time,
       update_by, useable, remarks
       )
-    values (#{id,jdbcType=CHAR}, #{dictId,jdbcType=INTEGER}, #{dictKey,jdbcType=VARCHAR}, 
-      #{dictValue,jdbcType=VARCHAR}, #{dictCategory,jdbcType=VARCHAR}, #{dictSort,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=CHAR}, #{dictId,jdbcType=INTEGER}, #{dictKey,jdbcType=VARCHAR},
+      #{dictValue,jdbcType=VARCHAR}, #{dictCategory,jdbcType=VARCHAR}, #{dictSort,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP},
       #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
       )
   </insert>
@@ -178,27 +178,27 @@
   </update>
   <!-- 查询所有数据List -->
   <select id="findList" resultMap="BaseResultMap" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from sys_dictionary
-    where useable ="1" 
+    where useable ="1"
   </select>
   <!-- 修改时查看是否有该条记录 -->
    <select id="selectCountById" parameterType="java.lang.String" >
-    select 
+    select
      COUNT(0)
     from sys_dictionary
-    where useable ="1" 
+    where useable ="1"
     and
     id = #{id,jdbcType=CHAR}
   </select>
    <!-- 根据字典类型查看对应字典数据List -->
   <select id="findListByType" resultMap="BaseResultMap" parameterType="java.lang.String"  >
-    select 
+    select
       <include refid="Base_Column_List" />
     from sys_dictionary
-    where useable ="1" 
-    and 
+    where useable ="1"
+    and
     dict_category = #{dictCategory,jdbcType=VARCHAR}
   </select>
 </mapper>
