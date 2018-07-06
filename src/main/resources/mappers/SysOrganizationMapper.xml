@@ -220,4 +220,215 @@
     UPDATE sys_organization SET useable=0
     WHERE   id=#{id}
   </update>
+<mapper namespace="com.ems.entity.mapper.SysOrganizationMapper">
+    <resultMap id="BaseResultMap" type="com.ems.entity.SysOrganization">
+        <constructor>
+            <idArg column="id" jdbcType="CHAR" javaType="java.lang.String"/>
+            <arg column="org_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="org_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="org_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="org_category" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="org_level" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="org_parent_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="org_isroot" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="org_isleaf" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, org_id, org_name, org_code, org_category, org_level, org_parent_id, org_isroot,
+        org_isleaf, create_time, create_by, update_time, update_by, useable, remarks
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_organization
+        where id = #{id,jdbcType=CHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_organization
+        where id = #{id,jdbcType=CHAR}
+    </delete>
+    <insert id="insert" parameterType="com.ems.entity.SysOrganization">
+        insert into sys_organization (id, org_id, org_name,
+        org_code, org_category, org_level,
+        org_parent_id, org_isroot, org_isleaf,
+        create_time, create_by, update_time,
+        update_by, useable, remarks
+        )
+        values (#{id,jdbcType=CHAR}, #{orgId,jdbcType=BIGINT}, #{orgName,jdbcType=VARCHAR},
+        #{orgCode,jdbcType=VARCHAR}, #{orgCategory,jdbcType=VARCHAR}, #{orgLevel,jdbcType=BIT},
+        #{orgParentId,jdbcType=BIGINT}, #{orgIsroot,jdbcType=BIT}, #{orgIsleaf,jdbcType=BIT},
+        #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP},
+        #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.ems.entity.SysOrganization">
+        insert into sys_organization
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="orgName != null">
+                org_name,
+            </if>
+            <if test="orgCode != null">
+                org_code,
+            </if>
+            <if test="orgCategory != null">
+                org_category,
+            </if>
+            <if test="orgLevel != null">
+                org_level,
+            </if>
+            <if test="orgParentId != null">
+                org_parent_id,
+            </if>
+            <if test="orgIsroot != null">
+                org_isroot,
+            </if>
+            <if test="orgIsleaf != null">
+                org_isleaf,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="useable != null">
+                useable,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=CHAR},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="orgName != null">
+                #{orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgCode != null">
+                #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="orgCategory != null">
+                #{orgCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="orgLevel != null">
+                #{orgLevel,jdbcType=BIT},
+            </if>
+            <if test="orgParentId != null">
+                #{orgParentId,jdbcType=BIGINT},
+            </if>
+            <if test="orgIsroot != null">
+                #{orgIsroot,jdbcType=BIT},
+            </if>
+            <if test="orgIsleaf != null">
+                #{orgIsleaf,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="useable != null">
+                #{useable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.SysOrganization">
+        update sys_organization
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="orgName != null">
+                org_name = #{orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgCode != null">
+                org_code = #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="orgCategory != null">
+                org_category = #{orgCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="orgLevel != null">
+                org_level = #{orgLevel,jdbcType=BIT},
+            </if>
+            <if test="orgParentId != null">
+                org_parent_id = #{orgParentId,jdbcType=BIGINT},
+            </if>
+            <if test="orgIsroot != null">
+                org_isroot = #{orgIsroot,jdbcType=BIT},
+            </if>
+            <if test="orgIsleaf != null">
+                org_isleaf = #{orgIsleaf,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="useable != null">
+                useable = #{useable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=CHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ems.entity.SysOrganization">
+        update sys_organization
+        set org_id = #{orgId,jdbcType=BIGINT},
+        org_name = #{orgName,jdbcType=VARCHAR},
+        org_code = #{orgCode,jdbcType=VARCHAR},
+        org_category = #{orgCategory,jdbcType=VARCHAR},
+        org_level = #{orgLevel,jdbcType=BIT},
+        org_parent_id = #{orgParentId,jdbcType=BIGINT},
+        org_isroot = #{orgIsroot,jdbcType=BIT},
+        org_isleaf = #{orgIsleaf,jdbcType=BIT},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=BIGINT},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_by = #{updateBy,jdbcType=BIGINT},
+        useable = #{useable,jdbcType=BIT},
+        remarks = #{remarks,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=CHAR}
+    </update>
 </mapper>
