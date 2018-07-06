@@ -1,321 +1,353 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ems.entity.mapper.EmployeeMapper" >
-  <resultMap id="BaseResultMap" type="com.ems.entity.Employee" >
-    <constructor >
-      <idArg column="id" jdbcType="CHAR" javaType="java.lang.String" />
-      <arg column="emp_id" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="emp_number" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_org_id" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="emp_district_id" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="emp_login_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_password" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_email" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_phone" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_address" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_type" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_management_dist_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_role_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_login_ip" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="emp_login_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="emp_login_flag" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
-    </constructor>
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, emp_id, emp_number, emp_name, emp_org_id, emp_district_id, emp_login_name, emp_password, 
-    emp_email, emp_phone, emp_mobile, emp_address, emp_type, emp_management_dist_id, 
-    emp_role_id, emp_login_ip, emp_login_date, emp_login_flag, create_time, create_by, 
-    update_time, update_by, useable, remarks
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from employee
-    where id = #{id,jdbcType=CHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from employee
-    where id = #{id,jdbcType=CHAR}
-  </delete>
-  <insert id="insert" parameterType="com.ems.entity.Employee" >
-    insert into employee (id, emp_id, emp_number, 
-      emp_name, emp_org_id, emp_district_id, 
-      emp_login_name, emp_password, emp_email, 
-      emp_phone, emp_mobile, emp_address, 
-      emp_type, emp_management_dist_id, emp_role_id, 
-      emp_login_ip, emp_login_date, emp_login_flag, 
-      create_time, create_by, update_time, 
-      update_by, useable, remarks
-      )
-    values (#{id,jdbcType=CHAR}, #{empId,jdbcType=BIGINT}, #{empNumber,jdbcType=VARCHAR}, 
-      #{empName,jdbcType=VARCHAR}, #{empOrgId,jdbcType=BIGINT}, #{empDistrictId,jdbcType=BIGINT}, 
-      #{empLoginName,jdbcType=VARCHAR}, #{empPassword,jdbcType=VARCHAR}, #{empEmail,jdbcType=VARCHAR}, 
-      #{empPhone,jdbcType=VARCHAR}, #{empMobile,jdbcType=VARCHAR}, #{empAddress,jdbcType=VARCHAR}, 
-      #{empType,jdbcType=VARCHAR}, #{empManagementDistId,jdbcType=VARCHAR}, #{empRoleId,jdbcType=VARCHAR}, 
-      #{empLoginIp,jdbcType=VARCHAR}, #{empLoginDate,jdbcType=TIMESTAMP}, #{empLoginFlag,jdbcType=BIT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.ems.entity.Employee" >
-    insert into employee
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="empId != null" >
-        emp_id,
-      </if>
-      <if test="empNumber != null" >
-        emp_number,
-      </if>
-      <if test="empName != null" >
-        emp_name,
-      </if>
-      <if test="empOrgId != null" >
-        emp_org_id,
-      </if>
-      <if test="empDistrictId != null" >
-        emp_district_id,
-      </if>
-      <if test="empLoginName != null" >
-        emp_login_name,
-      </if>
-      <if test="empPassword != null" >
-        emp_password,
-      </if>
-      <if test="empEmail != null" >
-        emp_email,
-      </if>
-      <if test="empPhone != null" >
-        emp_phone,
-      </if>
-      <if test="empMobile != null" >
-        emp_mobile,
-      </if>
-      <if test="empAddress != null" >
-        emp_address,
-      </if>
-      <if test="empType != null" >
-        emp_type,
-      </if>
-      <if test="empManagementDistId != null" >
-        emp_management_dist_id,
-      </if>
-      <if test="empRoleId != null" >
-        emp_role_id,
-      </if>
-      <if test="empLoginIp != null" >
-        emp_login_ip,
-      </if>
-      <if test="empLoginDate != null" >
-        emp_login_date,
-      </if>
-      <if test="empLoginFlag != null" >
-        emp_login_flag,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="createBy != null" >
-        create_by,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-      <if test="updateBy != null" >
-        update_by,
-      </if>
-      <if test="useable != null" >
-        useable,
-      </if>
-      <if test="remarks != null" >
-        remarks,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=CHAR},
-      </if>
-      <if test="empId != null" >
-        #{empId,jdbcType=BIGINT},
-      </if>
-      <if test="empNumber != null" >
-        #{empNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="empName != null" >
-        #{empName,jdbcType=VARCHAR},
-      </if>
-      <if test="empOrgId != null" >
-        #{empOrgId,jdbcType=BIGINT},
-      </if>
-      <if test="empDistrictId != null" >
-        #{empDistrictId,jdbcType=BIGINT},
-      </if>
-      <if test="empLoginName != null" >
-        #{empLoginName,jdbcType=VARCHAR},
-      </if>
-      <if test="empPassword != null" >
-        #{empPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="empEmail != null" >
-        #{empEmail,jdbcType=VARCHAR},
-      </if>
-      <if test="empPhone != null" >
-        #{empPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="empMobile != null" >
-        #{empMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="empAddress != null" >
-        #{empAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="empType != null" >
-        #{empType,jdbcType=VARCHAR},
-      </if>
-      <if test="empManagementDistId != null" >
-        #{empManagementDistId,jdbcType=VARCHAR},
-      </if>
-      <if test="empRoleId != null" >
-        #{empRoleId,jdbcType=VARCHAR},
-      </if>
-      <if test="empLoginIp != null" >
-        #{empLoginIp,jdbcType=VARCHAR},
-      </if>
-      <if test="empLoginDate != null" >
-        #{empLoginDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="empLoginFlag != null" >
-        #{empLoginFlag,jdbcType=BIT},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null" >
-        #{createBy,jdbcType=BIGINT},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        #{updateBy,jdbcType=BIGINT},
-      </if>
-      <if test="useable != null" >
-        #{useable,jdbcType=BIT},
-      </if>
-      <if test="remarks != null" >
-        #{remarks,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.Employee" >
-    update employee
-    <set >
-      <if test="empId != null" >
-        emp_id = #{empId,jdbcType=BIGINT},
-      </if>
-      <if test="empNumber != null" >
+<mapper namespace="com.ems.entity.mapper.EmployeeMapper">
+    <resultMap id="BaseResultMap" type="com.ems.entity.Employee">
+        <constructor>
+            <idArg column="id" jdbcType="CHAR" javaType="java.lang.String"/>
+            <arg column="emp_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="emp_number" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_org_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="emp_district_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="emp_login_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_password" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_email" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_management_dist_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_role_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_login_ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_login_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="emp_login_flag" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, emp_id, emp_number, emp_name, emp_org_id, emp_district_id, emp_login_name, emp_password,
+        emp_email, emp_phone, emp_mobile, emp_address, emp_type, emp_management_dist_id,
+        emp_role_id, emp_login_ip, emp_login_date, emp_login_flag, create_time, create_by,
+        update_time, update_by, useable, remarks
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from employee
+        where id = #{id,jdbcType=CHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from employee
+        where id = #{id,jdbcType=CHAR}
+    </delete>
+    <insert id="insert" parameterType="com.ems.entity.Employee">
+        insert into employee (id, emp_id, emp_number,
+        emp_name, emp_org_id, emp_district_id,
+        emp_login_name, emp_password, emp_email,
+        emp_phone, emp_mobile, emp_address,
+        emp_type, emp_management_dist_id, emp_role_id,
+        emp_login_ip, emp_login_date, emp_login_flag,
+        create_time, create_by, update_time,
+        update_by, useable, remarks
+        )
+        values (#{id,jdbcType=CHAR}, #{empId,jdbcType=BIGINT}, #{empNumber,jdbcType=VARCHAR},
+        #{empName,jdbcType=VARCHAR}, #{empOrgId,jdbcType=BIGINT}, #{empDistrictId,jdbcType=BIGINT},
+        #{empLoginName,jdbcType=VARCHAR}, #{empPassword,jdbcType=VARCHAR}, #{empEmail,jdbcType=VARCHAR},
+        #{empPhone,jdbcType=VARCHAR}, #{empMobile,jdbcType=VARCHAR}, #{empAddress,jdbcType=VARCHAR},
+        #{empType,jdbcType=VARCHAR}, #{empManagementDistId,jdbcType=VARCHAR}, #{empRoleId,jdbcType=VARCHAR},
+        #{empLoginIp,jdbcType=VARCHAR}, #{empLoginDate,jdbcType=TIMESTAMP}, #{empLoginFlag,jdbcType=BIT},
+        #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP},
+        #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.ems.entity.Employee">
+        insert into employee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="empId != null">
+                emp_id,
+            </if>
+            <if test="empNumber != null">
+                emp_number,
+            </if>
+            <if test="empName != null">
+                emp_name,
+            </if>
+            <if test="empOrgId != null">
+                emp_org_id,
+            </if>
+            <if test="empDistrictId != null">
+                emp_district_id,
+            </if>
+            <if test="empLoginName != null">
+                emp_login_name,
+            </if>
+            <if test="empPassword != null">
+                emp_password,
+            </if>
+            <if test="empEmail != null">
+                emp_email,
+            </if>
+            <if test="empPhone != null">
+                emp_phone,
+            </if>
+            <if test="empMobile != null">
+                emp_mobile,
+            </if>
+            <if test="empAddress != null">
+                emp_address,
+            </if>
+            <if test="empType != null">
+                emp_type,
+            </if>
+            <if test="empManagementDistId != null">
+                emp_management_dist_id,
+            </if>
+            <if test="empRoleId != null">
+                emp_role_id,
+            </if>
+            <if test="empLoginIp != null">
+                emp_login_ip,
+            </if>
+            <if test="empLoginDate != null">
+                emp_login_date,
+            </if>
+            <if test="empLoginFlag != null">
+                emp_login_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="useable != null">
+                useable,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=CHAR},
+            </if>
+            <if test="empId != null">
+                #{empId,jdbcType=BIGINT},
+            </if>
+            <if test="empNumber != null">
+                #{empNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="empName != null">
+                #{empName,jdbcType=VARCHAR},
+            </if>
+            <if test="empOrgId != null">
+                #{empOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="empDistrictId != null">
+                #{empDistrictId,jdbcType=BIGINT},
+            </if>
+            <if test="empLoginName != null">
+                #{empLoginName,jdbcType=VARCHAR},
+            </if>
+            <if test="empPassword != null">
+                #{empPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="empEmail != null">
+                #{empEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="empPhone != null">
+                #{empPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="empMobile != null">
+                #{empMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="empAddress != null">
+                #{empAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="empType != null">
+                #{empType,jdbcType=VARCHAR},
+            </if>
+            <if test="empManagementDistId != null">
+                #{empManagementDistId,jdbcType=VARCHAR},
+            </if>
+            <if test="empRoleId != null">
+                #{empRoleId,jdbcType=VARCHAR},
+            </if>
+            <if test="empLoginIp != null">
+                #{empLoginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="empLoginDate != null">
+                #{empLoginDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="empLoginFlag != null">
+                #{empLoginFlag,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="useable != null">
+                #{useable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.Employee">
+        update employee
+        <set>
+            <if test="empId != null">
+                emp_id = #{empId,jdbcType=BIGINT},
+            </if>
+            <if test="empNumber != null">
+                emp_number = #{empNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="empName != null">
+                emp_name = #{empName,jdbcType=VARCHAR},
+            </if>
+            <if test="empOrgId != null">
+                emp_org_id = #{empOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="empDistrictId != null">
+                emp_district_id = #{empDistrictId,jdbcType=BIGINT},
+            </if>
+            <if test="empLoginName != null">
+                emp_login_name = #{empLoginName,jdbcType=VARCHAR},
+            </if>
+            <if test="empPassword != null">
+                emp_password = #{empPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="empEmail != null">
+                emp_email = #{empEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="empPhone != null">
+                emp_phone = #{empPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="empMobile != null">
+                emp_mobile = #{empMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="empAddress != null">
+                emp_address = #{empAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="empType != null">
+                emp_type = #{empType,jdbcType=VARCHAR},
+            </if>
+            <if test="empManagementDistId != null">
+                emp_management_dist_id = #{empManagementDistId,jdbcType=VARCHAR},
+            </if>
+            <if test="empRoleId != null">
+                emp_role_id = #{empRoleId,jdbcType=VARCHAR},
+            </if>
+            <if test="empLoginIp != null">
+                emp_login_ip = #{empLoginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="empLoginDate != null">
+                emp_login_date = #{empLoginDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="empLoginFlag != null">
+                emp_login_flag = #{empLoginFlag,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="useable != null">
+                useable = #{useable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=CHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ems.entity.Employee">
+        update employee
+        set
         emp_number = #{empNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="empName != null" >
         emp_name = #{empName,jdbcType=VARCHAR},
-      </if>
-      <if test="empOrgId != null" >
         emp_org_id = #{empOrgId,jdbcType=BIGINT},
-      </if>
-      <if test="empDistrictId != null" >
         emp_district_id = #{empDistrictId,jdbcType=BIGINT},
-      </if>
-      <if test="empLoginName != null" >
         emp_login_name = #{empLoginName,jdbcType=VARCHAR},
-      </if>
-      <if test="empPassword != null" >
         emp_password = #{empPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="empEmail != null" >
         emp_email = #{empEmail,jdbcType=VARCHAR},
-      </if>
-      <if test="empPhone != null" >
         emp_phone = #{empPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="empMobile != null" >
         emp_mobile = #{empMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="empAddress != null" >
         emp_address = #{empAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="empType != null" >
         emp_type = #{empType,jdbcType=VARCHAR},
-      </if>
-      <if test="empManagementDistId != null" >
         emp_management_dist_id = #{empManagementDistId,jdbcType=VARCHAR},
-      </if>
-      <if test="empRoleId != null" >
         emp_role_id = #{empRoleId,jdbcType=VARCHAR},
-      </if>
-      <if test="empLoginIp != null" >
         emp_login_ip = #{empLoginIp,jdbcType=VARCHAR},
-      </if>
-      <if test="empLoginDate != null" >
         emp_login_date = #{empLoginDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="empLoginFlag != null" >
         emp_login_flag = #{empLoginFlag,jdbcType=BIT},
-      </if>
-      <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null" >
         create_by = #{createBy,jdbcType=BIGINT},
-      </if>
-      <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
         update_by = #{updateBy,jdbcType=BIGINT},
-      </if>
-      <if test="useable != null" >
         useable = #{useable,jdbcType=BIT},
-      </if>
-      <if test="remarks != null" >
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=CHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.ems.entity.Employee" >
-    update employee
-    set emp_id = #{empId,jdbcType=BIGINT},
-      emp_number = #{empNumber,jdbcType=VARCHAR},
-      emp_name = #{empName,jdbcType=VARCHAR},
-      emp_org_id = #{empOrgId,jdbcType=BIGINT},
-      emp_district_id = #{empDistrictId,jdbcType=BIGINT},
-      emp_login_name = #{empLoginName,jdbcType=VARCHAR},
-      emp_password = #{empPassword,jdbcType=VARCHAR},
-      emp_email = #{empEmail,jdbcType=VARCHAR},
-      emp_phone = #{empPhone,jdbcType=VARCHAR},
-      emp_mobile = #{empMobile,jdbcType=VARCHAR},
-      emp_address = #{empAddress,jdbcType=VARCHAR},
-      emp_type = #{empType,jdbcType=VARCHAR},
-      emp_management_dist_id = #{empManagementDistId,jdbcType=VARCHAR},
-      emp_role_id = #{empRoleId,jdbcType=VARCHAR},
-      emp_login_ip = #{empLoginIp,jdbcType=VARCHAR},
-      emp_login_date = #{empLoginDate,jdbcType=TIMESTAMP},
-      emp_login_flag = #{empLoginFlag,jdbcType=BIT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=BIGINT},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=BIGINT},
-      useable = #{useable,jdbcType=BIT},
-      remarks = #{remarks,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=CHAR}
-  </update>
+        remarks = #{remarks,jdbcType=VARCHAR}
+        where emp_id = #{empId,jdbcType=BIGINT}
+    </update>
+    <select id="checkEmpLoginName" resultType="int" parameterType="java.lang.String">
+        select
+        count(1)
+        from employee
+        where emp_login_name = #{empLoginName} and useable = 1
+    </select>
+    <select id="selectEmpLogin" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from employee
+        where emp_login_name = #{empLoginName} and emp_password=#{password}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM employee
+        WHERE useable = 1
+    </select>
+    <select id="getCountWithUnuseable" resultType="int">
+        select
+        COUNT (1)
+        from employee
+    </select>
+    <select id="deleteByEmpId" resultType="int" parameterType="map">
+        UPDATE
+        SET
+        useable = 0,
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_by = #{updateBy,jdbcType=BIGINT},
+        from employee
+        WHERE emp_id = #{empId,jdbcType=BIGINT}
+    </select>
 </mapper>
