@@ -2,60 +2,98 @@ package com.ems.entity;
 
 import java.util.Date;
 
-/*
+/**
  * 员工表实体
  */
-public class Employee {
-    private String id;// id
+public class Employee extends BaseEntity {
 
-    private Long empId; //员工ID
+    /**
+     * 员工ID
+     */
+    private Long empId;
 
-    private String empNumber;//员工编号
+    /**
+     * 员工编号
+     */
+    private String empNumber;
 
-    private String empName;//员工名称
+    /**
+     * 员工名称
+     */
+    private String empName;
 
-    private Long empOrgId;//员工所属机构
+    /**
+     * 员工所属机构
+     */
+    private Long empOrgId;
 
-    private Long empDistrictId;//员工所属区域
+    /**
+     * 员工所属区域
+     */
+    private Long empDistrictId;
 
-    private String empLoginName;//登录名
+    /**
+     * 登录名
+     */
+    private String empLoginName;
 
-    private String empPassword;//密码
+    /**
+     * 密码
+     */
+    private String empPassword;
 
-    private String empEmail;//员工邮箱
+    /**
+     * 员工邮箱
+     */
+    private String empEmail;
 
-    private String empPhone;//员工电话
+    /**
+     * 员工电话
+     */
+    private String empPhone;
 
-    private String empMobile;//员工手机号码
+    /**
+     * 员工手机号
+     */
+    private String empMobile;
 
-    private String empAddress;//员工住址
+    /**
+     * 员工住址
+     */
+    private String empAddress;
 
-    private String empType;//员工类型
+    /**
+     * 员工类型
+     */
+    private String empType;
 
-    private String empManagementDistId;//员工负责片区
+    /**
+     * 员工负责片区
+     */
+    private String empManagementDistId;
 
-    private String empRoleId;//员工角色
+    /**
+     * 员工角色
+     */
+    private String empRoleId;
 
-    private String empLoginIp;//员工登录IP地址
+    /**
+     * 员工登录IP地址
+     */
+    private String empLoginIp;
 
-    private Date empLoginDate;//用户登录日期
+    /**
+     * 员工登录日期
+     */
+    private Date empLoginDate;
 
-    private Boolean empLoginFlag;//员工登录标记
-
-    private Date createTime;//创建时间
-
-    private Long createBy;//创建者
-
-    private Date updateTime;//更新时间
-
-    private Long updateBy;//更新者
-
-    private Boolean useable;//是否可用
-
-    private String remarks;//备注
+    /**
+     * 员工登录标记
+     */
+    private Boolean empLoginFlag;
 
     public Employee(String id, Long empId, String empNumber, String empName, Long empOrgId, Long empDistrictId, String empLoginName, String empPassword, String empEmail, String empPhone, String empMobile, String empAddress, String empType, String empManagementDistId, String empRoleId, String empLoginIp, Date empLoginDate, Boolean empLoginFlag, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
-        this.id = id;
+        super(id, createTime, createBy, updateTime, updateBy, useable, remarks);
         this.empId = empId;
         this.empNumber = empNumber;
         this.empName = empName;
@@ -73,24 +111,6 @@ public class Employee {
         this.empLoginIp = empLoginIp;
         this.empLoginDate = empLoginDate;
         this.empLoginFlag = empLoginFlag;
-        this.createTime = createTime;
-        this.createBy = createBy;
-        this.updateTime = updateTime;
-        this.updateBy = updateBy;
-        this.useable = useable;
-        this.remarks = remarks;
-    }
-
-    public Employee() {
-        super();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
     }
 
     public Long getEmpId() {
@@ -227,53 +247,5 @@ public class Employee {
 
     public void setEmpLoginFlag(Boolean empLoginFlag) {
         this.empLoginFlag = empLoginFlag;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Long createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Long getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Long updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Boolean getUseable() {
-        return useable;
-    }
-
-    public void setUseable(Boolean useable) {
-        this.useable = useable;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks == null ? null : remarks.trim();
     }
 }
