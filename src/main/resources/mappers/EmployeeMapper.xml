@@ -318,17 +318,17 @@
         remarks = #{remarks,jdbcType=VARCHAR}
         where emp_id = #{empId,jdbcType=BIGINT}
     </update>
-    <select id="checkEmpLoginName" resultType="int" parameterType="java.lang.String">
-        select
-        count(1)
-        from employee
-        where emp_login_name = #{empLoginName} and useable = 1
+    <select id="checkEmpLoginName" resultType="boolean" parameterType="java.lang.String">
+        SELECT
+        COUNT(1)
+        FROM employee
+        WHERE emp_login_name = #{empLoginName} AND useable = 1
     </select>
     <select id="selectEmpLogin" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from employee
-        where emp_login_name = #{empLoginName} and emp_password=#{password}
+        where emp_login_name = #{empLoginName} and emp_password = #{empPassword} and useable = 1
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT
@@ -336,18 +336,52 @@
         FROM employee
         WHERE useable = 1
     </select>
+    <select id="select" resultMap="BaseResultMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM employee
+        WHERE useable = 1
+        <if test="empNumber != null and empNumber != ''">
+            AND emp_number LIKE CONCAT('%', #{empNumber,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="empName != null and empName != ''">
+            AND emp_name LIKE CONCAT('%', #{empName,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="empOrgId != null and empOrgId != ''">
+            AND emp_org_id LIKE CONCAT('%', #{empOrgId,jdbcType=BIGINT}, '%')
+        </if>
+        <if test="empDistrictId != null and empDistrictId != ''">
+            AND emp_district_id LIKE CONCAT('%', #{empDistrictId,jdbcType=BIGINT}, '%')
+        </if>
+        <if test="empLoginName != null and empLoginName != ''">
+            AND emp_login_name LIKE CONCAT('%', #{empLoginName,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="empPhone != null and empPhone != ''">
+            AND emp_phone LIKE CONCAT('%', #{empPhone,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="empMobile != null and empMobile != ''">
+            AND emp_mobile LIKE CONCAT('%', #{empMobile,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="empType != null and empType != ''">
+            AND emp_type LIKE CONCAT('%', #{empType,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="empRoleId != null and empRoleId != ''">
+            AND emp_role_id LIKE CONCAT('%', #{empRoleId,jdbcType=VARCHAR}, '%')
+        </if>
+    </select>
     <select id="getCountWithUnuseable" resultType="int">
         select
-        COUNT (1)
+        COUNT(1)
         from employee
     </select>
-    <select id="deleteByEmpId" resultType="int" parameterType="map">
-        UPDATE
+    <update id="deleteByEmpId" parameterType="map">
+        UPDATE employee
         SET
-        useable = 0,
         update_time = #{updateTime,jdbcType=TIMESTAMP},
-        update_by = #{updateBy,jdbcType=BIGINT},
-        from employee
+        <if test="updateBy != null and updateBy != ''">
+            update_by = #{updateBy,jdbcType=BIGINT},
+        </if>
+        useable = 0
         WHERE emp_id = #{empId,jdbcType=BIGINT}
-    </select>
+    </update>
 </mapper>

@@ -1,6 +1,7 @@
 package com.ems.common;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 
@@ -8,7 +9,7 @@ import java.io.Serializable;
  * Created by litairan litairan@whtdmh.com on 2018/6/29.
  * 序列化后如果value为null，key会消失
  */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServerResponse<T> implements Serializable {
     private int status;
     private String msg;
@@ -79,12 +80,16 @@ public class ServerResponse<T> implements Serializable {
         return new ServerResponse<T>(ResponseStatus.ERROR.getCode(), ResponseStatus.ERROR.getDesc());
     }
 
-
     public static <T> ServerResponse<T> createByErrorMessage(String errorMessage) {
         return new ServerResponse<T>(ResponseStatus.ERROR.getCode(), errorMessage);
     }
 
     public static <T> ServerResponse<T> createByErrorCodeMessage(int errorCode, String errorMessage) {
         return new ServerResponse<T>(errorCode, errorMessage);
+    }
+
+    @JsonIgnore
+    public boolean isSuccess() {
+        return this.status == ResponseStatus.SUCCESS.getCode();
     }
 }
