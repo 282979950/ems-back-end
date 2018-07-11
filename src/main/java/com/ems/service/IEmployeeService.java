@@ -3,13 +3,27 @@ package com.ems.service;
 import com.ems.entity.Employee;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by litairan litairan@whtdmh.com on 2018/7/2.
  */
 public interface IEmployeeService {
-    int login(String empLoginName, String password);
+    /**
+     * 员工登录
+     *
+     * @param empLoginName
+     * @param empPassword
+     * @return
+     */
+    Employee login(String empLoginName, String empPassword);
+
+    /**
+     * 检查登录名是否存在(0不存在,1存在)
+     *
+     * @return
+     */
+    public boolean checkEmpLoginName(String empLoginName);
+
 
     /**
      * 新建员工
@@ -18,7 +32,7 @@ public interface IEmployeeService {
      * @param employee
      * @return
      */
-    int create(Employee employee);
+    int create(Employee employee, Employee currentEmp);
 
     /**
      * 删除员工
@@ -26,26 +40,38 @@ public interface IEmployeeService {
      * @param employeeId
      * @return
      */
-    int delete(Long employeeId);
+    int delete(Long employeeId, Employee currentEmp);
 
     /**
      * 更新员工
      * employee中必须含有empNumber,empName,empOrgId,empLoginName,empPassword,empType,empManagementDistId,empRoleId
+     *
      * @param employee
      * @return
      */
-    int update(Employee employee);
+    int update(Employee employee, Employee currentEmp);
 
     /**
      * 获取所有的员工信息
+     *
      * @return
      */
     List<Employee> selcetAll();
 
     /**
      * 依据参数查询员工信息
-     * @param args
+     *
+     * @param empNumber
+     * @param empName
+     * @param empOrgId
+     * @param empDistrictId
+     * @param empLoginName
+     * @param empPhone
+     * @param empMobile
+     * @param empType
+     * @param empRoleId
      * @return
      */
-    List<Employee> select(Map<String, Object> args);
+    List<Employee> select(String empNumber, String empName, Long empOrgId, Long empDistrictId, String empLoginName, String empPhone, String empMobile, String
+            empType, String empRoleId);
 }

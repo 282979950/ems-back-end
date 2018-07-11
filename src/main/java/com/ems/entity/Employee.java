@@ -13,7 +13,7 @@ public class Employee extends BaseEntity {
     private Long empId;
 
     /**
-     * 员工编号
+     * 员工工号
      */
     private String empNumber;
 
@@ -92,7 +92,10 @@ public class Employee extends BaseEntity {
      */
     private Boolean empLoginFlag;
 
-    public Employee(String id, Long empId, String empNumber, String empName, Long empOrgId, Long empDistrictId, String empLoginName, String empPassword, String empEmail, String empPhone, String empMobile, String empAddress, String empType, String empManagementDistId, String empRoleId, String empLoginIp, Date empLoginDate, Boolean empLoginFlag, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
+    public Employee(String id, Long empId, String empNumber, String empName, Long empOrgId, Long empDistrictId, String empLoginName, String empPassword,
+                    String empEmail, String empPhone, String empMobile, String empAddress, String empType, String empManagementDistId, String empRoleId,
+                    String empLoginIp, Date empLoginDate, Boolean empLoginFlag, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean
+                            useable, String remarks) {
         super(id, createTime, createBy, updateTime, updateBy, useable, remarks);
         this.empId = empId;
         this.empNumber = empNumber;
@@ -111,6 +114,10 @@ public class Employee extends BaseEntity {
         this.empLoginIp = empLoginIp;
         this.empLoginDate = empLoginDate;
         this.empLoginFlag = empLoginFlag;
+    }
+
+    public Employee() {
+        super();
     }
 
     public Long getEmpId() {
