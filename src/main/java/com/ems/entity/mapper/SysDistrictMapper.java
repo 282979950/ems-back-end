@@ -5,13 +5,13 @@ import com.ems.entity.SysDistrict;
 import java.util.List;
 
 public interface SysDistrictMapper {
-    int deleteByPrimaryKey(String id);
+    int deleteByPrimaryKey(Integer distId);
 
     int insert(SysDistrict record);
 
     int insertSelective(SysDistrict record);
 
-    SysDistrict selectByPrimaryKey(String id);
+    SysDistrict selectByPrimaryKey(Integer distId);
 
     int updateByPrimaryKeySelective(SysDistrict record);
 

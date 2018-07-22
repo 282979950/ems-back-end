@@ -1,124 +1,75 @@
 package com.ems.entity;
 
+import com.ems.common.Const;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.Date;
-/*
- * 角色表实体
+import java.util.List;
+
+/**
+ * 角色实体
  */
-public class SysRole {
-    private String id;//id
+@Getter
+@Setter
+public class SysRole extends BaseEntity {
+    /**
+     * 角色ID
+     */
+    private Integer roleId;
 
-    private Integer roleId;//角色ID
+    /**
+     * 角色名称
+     */
+    private String roleName;
 
-    private String roleName;//角色名称
+    /**
+     * 角色能访问的区域
+     */
+    private String roleDists;
 
-    private String roleAuthorities;//角色权限
+    /**
+     * 角色能访问的区域
+     */
+    private List<Integer> roleDistList;
 
-    private Date createTime;//创建时间
+    /**
+     * 角色能访问的组织
+     */
+    private String roleOrgs;
 
-    private Long createBy;//创建者
+    /**
+     * 角色能访问的组织
+     */
+    private List<Integer> roleOrgList;
 
-    private Date updateTime;//更新时间
-
-    private Long updateBy;//更新者
-
-    private Boolean useable;//是否可用
-
-    private String remarks;//备注
-
-    public SysRole(String id, Integer roleId, String roleName, String roleAuthorities, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
-        this.id = id;
+    public SysRole(Integer roleId, String roleName, String roleDists, String roleOrgs, Date createTime, Integer createBy, Date updateTime, Integer updateBy,
+                   Boolean useable, String remarks) {
+        super(createTime, createBy, updateTime, updateBy, useable, remarks);
         this.roleId = roleId;
         this.roleName = roleName;
-        this.roleAuthorities = roleAuthorities;
-        this.createTime = createTime;
-        this.createBy = createBy;
-        this.updateTime = updateTime;
-        this.updateBy = updateBy;
-        this.useable = useable;
-        this.remarks = remarks;
+        this.roleDists = roleDists;
+        this.roleOrgs = roleOrgs;
     }
 
     public SysRole() {
         super();
     }
 
-    public String getId() {
-        return id;
+    private void createDistList() {
+        String[] distArray = roleDists.split(Const.DEFAULT_SEPARATOR);
+        roleDistList = new ArrayList<>(distArray.length);
+        for (String dist : distArray) {
+            roleDistList.add(Integer.parseInt(dist));
+        }
     }
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName == null ? null : roleName.trim();
-    }
-
-    public String getRoleAuthorities() {
-        return roleAuthorities;
-    }
-
-    public void setRoleAuthorities(String roleAuthorities) {
-        this.roleAuthorities = roleAuthorities == null ? null : roleAuthorities.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Long createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Long getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Long updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Boolean getUseable() {
-        return useable;
-    }
-
-    public void setUseable(Boolean useable) {
-        this.useable = useable;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks == null ? null : remarks.trim();
+    private void createOrgList() {
+        String[] orgArray = roleOrgs.split(Const.DEFAULT_SEPARATOR);
+        roleDistList = new ArrayList<>(orgArray.length);
+        for (String org : orgArray) {
+            roleDistList.add(Integer.parseInt(org));
+        }
     }
 }

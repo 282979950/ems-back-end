@@ -3,56 +3,56 @@
 <mapper namespace="com.ems.entity.mapper.SysRoleMapper">
     <resultMap id="BaseResultMap" type="com.ems.entity.SysRole">
         <constructor>
-            <idArg column="id" jdbcType="CHAR" javaType="java.lang.String"/>
-            <arg column="role_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <idArg column="role_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="role_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="role_authorities" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="role_dists" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="role_orgs" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Integer"/>
             <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
-        id, role_id, role_name, role_authorities, create_time, create_by, update_time, update_by,
+        role_id, role_name, role_dists, role_orgs, create_time, create_by, update_time, update_by,
         useable, remarks
     </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from sys_role
-        where id = #{id,jdbcType=CHAR}
+        where role_id = #{roleId,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from sys_role
-        where id = #{id,jdbcType=CHAR}
+        where role_id = #{roleId,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.ems.entity.SysRole">
-        insert into sys_role (id, role_id, role_name,
-        role_authorities, create_time, create_by,
+        insert into sys_role (role_name, role_dists,
+        role_orgs, create_time, create_by,
         update_time, update_by, useable,
         remarks)
-        values (#{id,jdbcType=CHAR}, #{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR},
-        #{roleAuthorities,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT},
-        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT},
+        values (#{roleName,jdbcType=VARCHAR}, #{roleDists,jdbcType=VARCHAR},
+        #{roleOrgs,jdbcType=VARCHAR}, NOW(), #{createBy,jdbcType=INTEGER},
+        NOW(), #{updateBy,jdbcType=INTEGER}, #{useable,jdbcType=BIT},
         #{remarks,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.ems.entity.SysRole">
         insert into sys_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="roleId != null">
                 role_id,
             </if>
             <if test="roleName != null">
                 role_name,
             </if>
-            <if test="roleAuthorities != null">
-                role_authorities,
+            <if test="roleDists != null">
+                role_dists,
+            </if>
+            <if test="roleOrgs != null">
+                role_orgs,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -74,29 +74,29 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=CHAR},
-            </if>
             <if test="roleId != null">
                 #{roleId,jdbcType=INTEGER},
             </if>
             <if test="roleName != null">
                 #{roleName,jdbcType=VARCHAR},
             </if>
-            <if test="roleAuthorities != null">
-                #{roleAuthorities,jdbcType=VARCHAR},
+            <if test="roleDists != null">
+                #{roleDists,jdbcType=VARCHAR},
+            </if>
+            <if test="roleOrgs != null">
+                #{roleOrgs,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
+                NOW(),
             </if>
             <if test="createBy != null">
-                #{createBy,jdbcType=BIGINT},
+                #{createBy,jdbcType=INTEGER},
             </if>
             <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
+                NOW(),
             </if>
             <if test="updateBy != null">
-                #{updateBy,jdbcType=BIGINT},
+                #{updateBy,jdbcType=INTEGER},
             </if>
             <if test="useable != null">
                 #{useable,jdbcType=BIT},
@@ -109,26 +109,26 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.SysRole">
         update sys_role
         <set>
-            <if test="roleId != null">
-                role_id = #{roleId,jdbcType=INTEGER},
-            </if>
             <if test="roleName != null">
                 role_name = #{roleName,jdbcType=VARCHAR},
             </if>
-            <if test="roleAuthorities != null">
-                role_authorities = #{roleAuthorities,jdbcType=VARCHAR},
+            <if test="roleDists != null">
+                role_dists = #{roleDists,jdbcType=VARCHAR},
+            </if>
+            <if test="roleOrgs != null">
+                role_orgs = #{roleOrgs,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="createBy != null">
-                create_by = #{createBy,jdbcType=BIGINT},
+                create_by = #{createBy,jdbcType=INTEGER},
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
+                update_time = NOW(),
             </if>
             <if test="updateBy != null">
-                update_by = #{updateBy,jdbcType=BIGINT},
+                update_by = #{updateBy,jdbcType=INTEGER},
             </if>
             <if test="useable != null">
                 useable = #{useable,jdbcType=BIT},
@@ -137,19 +137,48 @@
                 remarks = #{remarks,jdbcType=VARCHAR},
             </if>
         </set>
-        where id = #{id,jdbcType=CHAR}
+        where role_id = #{roleId,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.ems.entity.SysRole">
         update sys_role
-        set role_id = #{roleId,jdbcType=INTEGER},
-        role_name = #{roleName,jdbcType=VARCHAR},
-        role_authorities = #{roleAuthorities,jdbcType=VARCHAR},
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-        create_by = #{createBy,jdbcType=BIGINT},
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-        update_by = #{updateBy,jdbcType=BIGINT},
-        useable = #{useable,jdbcType=BIT},
+        set role_name = #{roleName,jdbcType=VARCHAR},
+        role_dists = #{roleDists,jdbcType=VARCHAR},
+        role_orgs = #{roleOrgs,jdbcType=VARCHAR},
+        update_time = NOW(),
+        update_by = #{updateBy,jdbcType=INTEGER},
         remarks = #{remarks,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=CHAR}
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </update>
+    <select id="checkRoleNameExist" parameterType="string" resultType="int">
+        SELECT
+        COUNT (1)
+        FROM
+        sys_role
+        WHERE useable = 1 AND role_name = #{roleName,jdbcType=VARCHAR}
+    </select>
+    <select id="getRoleIdByName" parameterType="string" resultType="int">
+        SELECT role_id FROM sys_role WHERE role_name = #{roleName,jdbcType=VARCHAR} AND useable = 1
+    </select>
+    <select id="getRoleByName" parameterType="string" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        sys_role
+        WHERE useable = 1 AND role_name = #{roleName,jdbcType=VARCHAR}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        sys_role
+        WHERE useable = 1
+    </select>
+    <update id="deleteRoleById" parameterType="map">
+        UPDATE sys_role
+        SET
+        update_time = NOW(),
+        update_by = #{updateBy,jdbcType=INTEGER},
+        useable = 0
+        WHERE role_id = #{roleId,jdbcType=INTEGER}
     </update>
 </mapper>

@@ -3,14 +3,10 @@
 <mapper namespace="com.ems.entity.mapper.SysMenuMapper">
     <resultMap id="BaseResultMap" type="com.ems.entity.SysMenu">
         <constructor>
-            <idArg column="id" jdbcType="CHAR" javaType="java.lang.String"/>
-            <arg column="menu_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="menu_name" jdbcType="CHAR" javaType="java.lang.String"/>
-            <arg column="menu_href" jdbcType="CHAR" javaType="java.lang.String"/>
-            <arg column="menu_level" jdbcType="BIT" javaType="java.lang.Boolean"/>
-            <arg column="menu_parent_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="menu_isroot" jdbcType="BIT" javaType="java.lang.Boolean"/>
-            <arg column="menu_isleaf" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <idArg column="menu_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="menu_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="menu_href" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="menu_parent_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="menu_showable" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
@@ -21,39 +17,32 @@
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
-        id, menu_id, menu_name, menu_href, menu_level, menu_parent_id, menu_isroot, menu_isleaf,
-        menu_showable, create_time, create_by, update_time, update_by, useable, remarks
+        menu_id, menu_name, menu_href, menu_parent_id, menu_showable, create_time, create_by,
+        update_time, update_by, useable, remarks
     </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from sys_menu
-        where id = #{id,jdbcType=CHAR}
+        where menu_id = #{menuId,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from sys_menu
-        where id = #{id,jdbcType=CHAR}
+        where menu_id = #{menuId,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.ems.entity.SysMenu">
-        insert into sys_menu (id, menu_id, menu_name,
-        menu_href, menu_level, menu_parent_id,
-        menu_isroot, menu_isleaf, menu_showable,
-        create_time, create_by, update_time,
-        update_by, useable, remarks
-        )
-        values (#{id,jdbcType=CHAR}, #{menuId,jdbcType=BIGINT}, #{menuName,jdbcType=CHAR},
-        #{menuHref,jdbcType=CHAR}, #{menuLevel,jdbcType=BIT}, #{menuParentId,jdbcType=BIGINT},
-        #{menuIsroot,jdbcType=BIT}, #{menuIsleaf,jdbcType=BIT}, #{menuShowable,jdbcType=BIT},
-        #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP},
-        #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
-        )
+        insert into sys_menu (menu_id, menu_name, menu_href,
+        menu_parent_id, menu_showable, create_time,
+        create_by, update_time, update_by,
+        useable, remarks)
+        values (#{menuId,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuHref,jdbcType=VARCHAR},
+        #{menuParentId,jdbcType=INTEGER}, #{menuShowable,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP},
+        #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT},
+        #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.ems.entity.SysMenu">
         insert into sys_menu
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="menuId != null">
                 menu_id,
             </if>
@@ -63,17 +52,8 @@
             <if test="menuHref != null">
                 menu_href,
             </if>
-            <if test="menuLevel != null">
-                menu_level,
-            </if>
             <if test="menuParentId != null">
                 menu_parent_id,
-            </if>
-            <if test="menuIsroot != null">
-                menu_isroot,
-            </if>
-            <if test="menuIsleaf != null">
-                menu_isleaf,
             </if>
             <if test="menuShowable != null">
                 menu_showable,
@@ -98,29 +78,17 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=CHAR},
-            </if>
             <if test="menuId != null">
-                #{menuId,jdbcType=BIGINT},
+                #{menuId,jdbcType=INTEGER},
             </if>
             <if test="menuName != null">
-                #{menuName,jdbcType=CHAR},
+                #{menuName,jdbcType=VARCHAR},
             </if>
             <if test="menuHref != null">
-                #{menuHref,jdbcType=CHAR},
-            </if>
-            <if test="menuLevel != null">
-                #{menuLevel,jdbcType=BIT},
+                #{menuHref,jdbcType=VARCHAR},
             </if>
             <if test="menuParentId != null">
-                #{menuParentId,jdbcType=BIGINT},
-            </if>
-            <if test="menuIsroot != null">
-                #{menuIsroot,jdbcType=BIT},
-            </if>
-            <if test="menuIsleaf != null">
-                #{menuIsleaf,jdbcType=BIT},
+                #{menuParentId,jdbcType=INTEGER},
             </if>
             <if test="menuShowable != null">
                 #{menuShowable,jdbcType=BIT},
@@ -148,26 +116,14 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.SysMenu">
         update sys_menu
         <set>
-            <if test="menuId != null">
-                menu_id = #{menuId,jdbcType=BIGINT},
-            </if>
             <if test="menuName != null">
-                menu_name = #{menuName,jdbcType=CHAR},
+                menu_name = #{menuName,jdbcType=VARCHAR},
             </if>
             <if test="menuHref != null">
-                menu_href = #{menuHref,jdbcType=CHAR},
-            </if>
-            <if test="menuLevel != null">
-                menu_level = #{menuLevel,jdbcType=BIT},
+                menu_href = #{menuHref,jdbcType=VARCHAR},
             </if>
             <if test="menuParentId != null">
-                menu_parent_id = #{menuParentId,jdbcType=BIGINT},
-            </if>
-            <if test="menuIsroot != null">
-                menu_isroot = #{menuIsroot,jdbcType=BIT},
-            </if>
-            <if test="menuIsleaf != null">
-                menu_isleaf = #{menuIsleaf,jdbcType=BIT},
+                menu_parent_id = #{menuParentId,jdbcType=INTEGER},
             </if>
             <if test="menuShowable != null">
                 menu_showable = #{menuShowable,jdbcType=BIT},
@@ -191,17 +147,13 @@
                 remarks = #{remarks,jdbcType=VARCHAR},
             </if>
         </set>
-        where id = #{id,jdbcType=CHAR}
+        where menu_id = #{menuId,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.ems.entity.SysMenu">
         update sys_menu
-        set menu_id = #{menuId,jdbcType=BIGINT},
-        menu_name = #{menuName,jdbcType=CHAR},
-        menu_href = #{menuHref,jdbcType=CHAR},
-        menu_level = #{menuLevel,jdbcType=BIT},
-        menu_parent_id = #{menuParentId,jdbcType=BIGINT},
-        menu_isroot = #{menuIsroot,jdbcType=BIT},
-        menu_isleaf = #{menuIsleaf,jdbcType=BIT},
+        set menu_name = #{menuName,jdbcType=VARCHAR},
+        menu_href = #{menuHref,jdbcType=VARCHAR},
+        menu_parent_id = #{menuParentId,jdbcType=INTEGER},
         menu_showable = #{menuShowable,jdbcType=BIT},
         create_time = #{createTime,jdbcType=TIMESTAMP},
         create_by = #{createBy,jdbcType=BIGINT},
@@ -209,6 +161,6 @@
         update_by = #{updateBy,jdbcType=BIGINT},
         useable = #{useable,jdbcType=BIT},
         remarks = #{remarks,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=CHAR}
+        where menu_id = #{menuId,jdbcType=INTEGER}
     </update>
 </mapper>

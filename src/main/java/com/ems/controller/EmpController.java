@@ -4,6 +4,8 @@ import com.ems.common.Const;
 import com.ems.common.ServerResponse;
 import com.ems.entity.Employee;
 import com.ems.service.IEmployeeService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by litairan litairan@whtdmh.com on 2018/7/2.
+ * @author litairan on 2018/7/2.
  */
 @Controller
 @RequestMapping("/emp/")
@@ -78,7 +82,7 @@ public class EmpController {
      */
     @RequestMapping(value = "delete.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<Employee> delete(Long empId, HttpSession session) {
+    public ServerResponse<Employee> delete(Integer empId, HttpSession session) {
         Employee currentEmp = (Employee) session.getAttribute(Const.CURRENT_EMPLOYEE);
         if (currentEmp == null) {
             return ServerResponse.createByErrorMessage(Const.EMP_LOGIN_NOTLOGIN);
@@ -112,14 +116,24 @@ public class EmpController {
      */
     @RequestMapping(value = "select.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<Employee>> select(String empNumber, String empName, Long empOrgId, Long empDistrictId, String empLoginName, String empPhone,
-                                                 String empMobile, String empType, String empRoleId, HttpSession session) {
+    public ServerResponse<Map<String, Object>> select(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String
+            empPhone, String empMobile, String empType, HttpSession session) {
         Employee currentEmp = (Employee) session.getAttribute(Const.CURRENT_EMPLOYEE);
         if (currentEmp == null) {
             return ServerResponse.createByErrorMessage(Const.EMP_LOGIN_NOTLOGIN);
         }
-        List<Employee> employeeList = employeeService.select(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType,
-                empRoleId);
-        return ServerResponse.createBySuccess(employeeList);
+        PageHelper.startPage(1, 10);
+        List<Employee> employeeList = employeeService.select(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
+        PageInfo pageInfo = new PageInfo(employeeList);
+        Map<String, Object> result = new HashMap<>(8);
+        result.put("isHasNextPage", pageInfo.isHasNextPage());
+        result.put("isHasPreviousPage", pageInfo.isHasPreviousPage());
+        result.put("isIsFirstPage", pageInfo.isIsFirstPage());
+        result.put("isIsLastPage", pageInfo.isIsLastPage());
+        result.put("total", pageInfo.getTotal());
+        result.put("pageNum", pageInfo.getPageNum());
+        result.put("pageSize", pageInfo.getPageSize());
+        result.put("empList", employeeList);
+        return ServerResponse.createBySuccess(result);
     }
 }

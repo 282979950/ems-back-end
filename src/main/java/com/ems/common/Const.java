@@ -32,4 +32,48 @@ public class Const {
     public static final String EMP_UPDATE_SUCCESS = "用户更新成功";
 
     public static final String EMP_UPDATE_FAIL = "用户更新失败";
+
+    /**
+     * 分页查询默认页
+     */
+    public static final int DEFAULT_PAGE_NUM = 1;
+
+    /**
+     * 分页查询默认页面大小
+     */
+    public static final int DEFAULT_PAGE_SIZE = 20;
+
+    /**
+     * 用户权限类型
+     */
+    public enum EMP_AUTO_TYPE {
+        VISIT(0, "访问"),
+        CREATE(1, "新增"),
+        DELETE(2, "删除"),
+        UPDATE(3, "修改"),
+        RETRIEVE(4, "查询"),
+        IMPORT(5, "导入"),
+        EXPORT(6, "导出");
+
+        private int type;
+        private String desc;
+
+        EMP_AUTO_TYPE(int type, String desc) {
+            this.type = type;
+            this.desc = desc;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+    }
+
+    /**
+     * 默认分隔符
+     */
+    public static final String DEFAULT_SEPARATOR = ",";
 }

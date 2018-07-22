@@ -1,5 +1,10 @@
 package com.ems.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,45 +12,42 @@ import java.util.List;
 /**
  * 区域表实体
  */
+@Getter
+@Setter
 public class SysDistrict extends BaseEntity {
 
     /**
      * 区域ID
      */
-    private Long distId;
+    private Integer distId;
 
     /**
      * 区域名称
      */
+    @NotBlank(message = "区域名称不能为空")
+    @Length(max = 20, message = "区域名称不能超过20个字")
     private String distName;
 
     /**
-     * 区域代码
+     * 区域编码
      */
     private String distCode;
 
     /**
-     * 区域类别
+     * 区域类型
      */
+    @NotBlank(message = "区域类型不能为空")
     private String distCategory;
 
-    /**
-     * 区域等级
-     */
     private String distAddress;
 
-    /**
-     * 父级区域
-     */
-    private Long distParentId;
+    private Integer distParentId;
 
-    /**
-     * 子节点列表
-     */
     private List<SysDistrict> childrenDist;
 
-    public SysDistrict(String id, Long distId, String distName, String distCode, String distCategory, String distAddress, Long distParentId, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
-        super(id, createTime, createBy, updateTime, updateBy, useable, remarks);
+    public SysDistrict(Integer distId, String distName, String distCode, String distCategory, String distAddress, Integer distParentId, Date createTime,
+                       Integer createBy, Date updateTime, Integer updateBy, Boolean useable, String remarks) {
+        super(createTime, createBy, updateTime, updateBy, useable, remarks);
         this.distId = distId;
         this.distName = distName;
         this.distCode = distCode;
@@ -57,61 +59,5 @@ public class SysDistrict extends BaseEntity {
 
     public SysDistrict() {
         super();
-    }
-
-    public Long getDistId() {
-        return distId;
-    }
-
-    public void setDistId(Long distId) {
-        this.distId = distId;
-    }
-
-    public String getDistName() {
-        return distName;
-    }
-
-    public void setDistName(String distName) {
-        this.distName = distName == null ? null : distName.trim();
-    }
-
-    public String getDistCode() {
-        return distCode;
-    }
-
-    public void setDistCode(String distCode) {
-        this.distCode = distCode == null ? null : distCode.trim();
-    }
-
-    public String getDistCategory() {
-        return distCategory;
-    }
-
-    public void setDistCategory(String distCategory) {
-        this.distCategory = distCategory == null ? null : distCategory.trim();
-    }
-
-    public String getDistAddress() {
-        return distAddress;
-    }
-
-    public void setDistAddress(String distAddress) {
-        this.distAddress = distAddress;
-    }
-
-    public Long getDistParentId() {
-        return distParentId;
-    }
-
-    public void setDistParentId(Long distParentId) {
-        this.distParentId = distParentId;
-    }
-
-    public List<SysDistrict> getChildrenDist() {
-        return childrenDist;
-    }
-
-    public void setChildrenDist(List<SysDistrict> childrenDist) {
-        this.childrenDist = childrenDist;
     }
 }
