@@ -7,13 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 public interface EmployeeMapper {
-    int deleteByPrimaryKey(String id);
+    int deleteByPrimaryKey(Integer empId);
 
     int insert(Employee record);
 
     int insertSelective(Employee record);
 
-    Employee selectByPrimaryKey(String id);
+    Employee selectByPrimaryKey(Integer empId);
 
     int updateByPrimaryKeySelective(Employee record);
 
@@ -25,11 +25,11 @@ public interface EmployeeMapper {
 
     List<Employee> selectAll();
 
-    List<Employee> select(@Param("empNumber") String empNumber, @Param("empName") String empName, @Param("empOrgId") Long empOrgId, @Param("empDistrictId")
-    Long empDistrictId, @Param("empLoginName") String empLoginName, @Param("empPhone") String empPhone, @Param("empMobile") String empMobile, @Param
-            ("empType") String empType, @Param("empRoleId") String empRoleId);
+    List<Employee> select(@Param("empNumber") String empNumber, @Param("empName") String empName, @Param("empOrgId") Integer empOrgId, @Param
+            ("empDistrictId") Integer empDistrictId, @Param("empLoginName") String empLoginName, @Param("empPhone") String empPhone, @Param("empMobile")
+                          String empMobile, @Param("empType") String empType);
 
     int getCountWithUnuseable();
 
-    int deleteByEmpId(@Param("empId") Long empId, @Param("updateTime") Date updateTime, @Param("updateBy") Long updateBy);
+    int deleteByEmpId(@Param("empId") Integer empId, @Param("updateTime") Date updateTime, @Param("updateBy") Integer updateBy);
 }

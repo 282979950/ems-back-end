@@ -40,7 +40,7 @@ public interface IEmployeeService {
      * @param employeeId
      * @return
      */
-    int delete(Long employeeId, Employee currentEmp);
+    int delete(Integer employeeId, Employee currentEmp);
 
     /**
      * 更新员工
@@ -69,9 +69,8 @@ public interface IEmployeeService {
      * @param empPhone
      * @param empMobile
      * @param empType
-     * @param empRoleId
      * @return
      */
-    List<Employee> select(String empNumber, String empName, Long empOrgId, Long empDistrictId, String empLoginName, String empPhone, String empMobile, String
-            empType, String empRoleId);
+    List<Employee> select(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone, String empMobile,
+                          String empType);
 }

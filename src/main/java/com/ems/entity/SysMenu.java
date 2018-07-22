@@ -1,49 +1,35 @@
 package com.ems.entity;
 
 import java.util.Date;
-/*
- *菜单表实体 
- */
+
 public class SysMenu {
-    private String id;//id
+    private Integer menuId;
 
-    private Long menuId;//菜单ID
+    private String menuName;
 
-    private String menuName;//菜单名称
+    private String menuHref;
 
-    private String menuHref;//菜单路径
+    private Integer menuParentId;
 
-    private Boolean menuLevel;//菜单等级
+    private Boolean menuShowable;
 
-    private Long menuParentId;//父级id
+    private Date createTime;
 
-    private Boolean menuIsroot;//根节点
+    private Long createBy;
 
-    private Boolean menuIsleaf;//分支
+    private Date updateTime;
 
-    private Boolean menuShowable;//是否显示
+    private Long updateBy;
 
-    private Date createTime;//创建时间
+    private Boolean useable;
 
-    private Long createBy;//创建者
+    private String remarks;
 
-    private Date updateTime;//更新时间
-
-    private Long updateBy;//更新者
-
-    private Boolean useable;//是否可用
-
-    private String remarks;//备注
-
-    public SysMenu(String id, Long menuId, String menuName, String menuHref, Boolean menuLevel, Long menuParentId, Boolean menuIsroot, Boolean menuIsleaf, Boolean menuShowable, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
-        this.id = id;
+    public SysMenu(Integer menuId, String menuName, String menuHref, Integer menuParentId, Boolean menuShowable, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.menuId = menuId;
         this.menuName = menuName;
         this.menuHref = menuHref;
-        this.menuLevel = menuLevel;
         this.menuParentId = menuParentId;
-        this.menuIsroot = menuIsroot;
-        this.menuIsleaf = menuIsleaf;
         this.menuShowable = menuShowable;
         this.createTime = createTime;
         this.createBy = createBy;
@@ -57,19 +43,11 @@ public class SysMenu {
         super();
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
-
-    public Long getMenuId() {
+    public Integer getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(Long menuId) {
+    public void setMenuId(Integer menuId) {
         this.menuId = menuId;
     }
 
@@ -89,36 +67,12 @@ public class SysMenu {
         this.menuHref = menuHref == null ? null : menuHref.trim();
     }
 
-    public Boolean getMenuLevel() {
-        return menuLevel;
-    }
-
-    public void setMenuLevel(Boolean menuLevel) {
-        this.menuLevel = menuLevel;
-    }
-
-    public Long getMenuParentId() {
+    public Integer getMenuParentId() {
         return menuParentId;
     }
 
-    public void setMenuParentId(Long menuParentId) {
+    public void setMenuParentId(Integer menuParentId) {
         this.menuParentId = menuParentId;
-    }
-
-    public Boolean getMenuIsroot() {
-        return menuIsroot;
-    }
-
-    public void setMenuIsroot(Boolean menuIsroot) {
-        this.menuIsroot = menuIsroot;
-    }
-
-    public Boolean getMenuIsleaf() {
-        return menuIsleaf;
-    }
-
-    public void setMenuIsleaf(Boolean menuIsleaf) {
-        this.menuIsleaf = menuIsleaf;
     }
 
     public Boolean getMenuShowable() {

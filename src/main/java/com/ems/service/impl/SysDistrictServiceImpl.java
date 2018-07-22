@@ -1,34 +1,25 @@
 package com.ems.service.impl;
 
+import com.ems.common.BeanValidator;
 import com.ems.entity.SysDistrict;
 import com.ems.entity.mapper.SysDistrictMapper;
+import com.ems.exception.ParameterException;
 import com.ems.service.ISysDistrictService;
-import com.ems.utils.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
- * Created by litairan litairan@whtdmh.com on 2018/7/2.
+ * @author litairan on 2018/7/2.
  */
 @Service("iSysDistrict")
 @Transactional(readOnly = true)
-public class SysDistrictServiceServiceImpl implements ISysDistrictService {
-
-    private static final Logger logger = LoggerFactory.getLogger(SysDistrictServiceServiceImpl.class);
-
-    /**
-     * 区域管理根节点ID
-     */
-    private static final long DISTRICT_ROOT_ID = 1000000000L;
+public class SysDistrictServiceImpl implements ISysDistrictService {
 
     /**
      * 所有区域数据
@@ -48,7 +39,7 @@ public class SysDistrictServiceServiceImpl implements ISysDistrictService {
         districtList = districtMapper.selectAll();
         if (districtList == null || districtList.size() == 0) return;
         for (SysDistrict dist : districtList) {
-            Long parentId = dist.getDistParentId();
+            Integer parentId = dist.getDistParentId();
             if (parentId != null) {
                 SysDistrict parentDist = getDistById(parentId);
                 if (parentDist != null) {
@@ -81,16 +72,12 @@ public class SysDistrictServiceServiceImpl implements ISysDistrictService {
     @Override
     @Transactional(readOnly = false)
     public int createDistrict(SysDistrict district) {
+        BeanValidator.check(district);
         String distName = district.getDistName();
-        if (distName == null || checkDistName(distName)) {
-            return 0;
+        if (checkDistName(distName)) {
+            throw new ParameterException("区域名称:" + distName + "已存在");
         }
-        district.setId(RandomUtils.getUUID());
-        district.setDistId(createDistrictID(district));
         district.setUseable(true);
-        Date now = new Date();
-        district.setCreateTime(now);
-        district.setUpdateTime(now);
         district.setChildrenDist(new ArrayList<SysDistrict>());
         // TODO: 2018/7/4  设置创建者和更新者
         SysDistrict parentDist = getDistById(district.getDistParentId());
@@ -99,25 +86,6 @@ public class SysDistrictServiceServiceImpl implements ISysDistrictService {
         }
         districtList.add(district);
         return districtMapper.insert(district);
-    }
-
-    /**
-     * 生成新区域的ID
-     *
-     * @param district
-     * @return
-     */
-    private Long createDistrictID(SysDistrict district) {
-        return DISTRICT_ROOT_ID + getCountWithUnusable();
-    }
-
-    /**
-     * 获取所有区域（包含useable为false的区域）
-     *
-     * @return
-     */
-    private int getCountWithUnusable() {
-        return districtMapper.getCountWithUnusable();
     }
 
     @Override
@@ -144,7 +112,7 @@ public class SysDistrictServiceServiceImpl implements ISysDistrictService {
         return result;
     }
 
-    private SysDistrict getDistById(Long distId) {
+    private SysDistrict getDistById(Integer distId) {
         for (SysDistrict district : districtList) {
             if (district.getDistId().equals(distId)) {
                 return district;
@@ -165,23 +133,24 @@ public class SysDistrictServiceServiceImpl implements ISysDistrictService {
     @Override
     @Transactional(readOnly = false)
     public int updateSysDistrict(SysDistrict newDistrict) {
+        BeanValidator.check(newDistrict);
         SysDistrict oldDistrict = getDistById(newDistrict.getDistId());
-        if (oldDistrict != null) {
-            oldDistrict.setDistName(newDistrict.getDistName());
-            oldDistrict.setDistCode(newDistrict.getDistCode());
-            oldDistrict.setDistAddress(newDistrict.getDistAddress());
-            oldDistrict.setUpdateTime(new Date());
-            // TODO: 2018/7/6 设置更新者
-            Long oldParentId = oldDistrict.getDistParentId();
-            Long newParentId = newDistrict.getDistParentId();
-            if (oldParentId != null && newParentId != null && !oldParentId.equals(newParentId)) {
-                oldDistrict.setDistParentId(newParentId);
-                // 更新区域树
-                SysDistrict oldParentDist = getDistById(oldParentId);
-                oldParentDist.getChildrenDist().remove(oldDistrict);
-                SysDistrict newParentDist = getDistById(newParentId);
-                newParentDist.getChildrenDist().add(oldDistrict);
-            }
+        if (oldDistrict == null) {
+            throw new ParameterException("需要更新的区域不存在");
+        }
+        oldDistrict.setDistName(newDistrict.getDistName());
+        oldDistrict.setDistCode(newDistrict.getDistCode());
+        oldDistrict.setDistAddress(newDistrict.getDistAddress());
+        // TODO: 2018/7/6 设置更新者
+        Integer oldParentId = oldDistrict.getDistParentId();
+        Integer newParentId = newDistrict.getDistParentId();
+        if (oldParentId != null && newParentId != null && !oldParentId.equals(newParentId)) {
+            oldDistrict.setDistParentId(newParentId);
+            // 更新区域树
+            SysDistrict oldParentDist = getDistById(oldParentId);
+            oldParentDist.getChildrenDist().remove(oldDistrict);
+            SysDistrict newParentDist = getDistById(newParentId);
+            newParentDist.getChildrenDist().add(oldDistrict);
         }
         return districtMapper.updateByPrimaryKey(oldDistrict);
     }
@@ -189,15 +158,16 @@ public class SysDistrictServiceServiceImpl implements ISysDistrictService {
     @Override
     @Transactional(readOnly = false)
     public int deleteSysDistrict(SysDistrict district) {
+        BeanValidator.check(district);
         SysDistrict oldDist = getDistById(district.getDistId());
-        // 如果区域不存在或者含有子区域则不能删除
-        if (oldDist == null || oldDist.getChildrenDist().size() != 0) {
-            return 0;
+        if (oldDist == null) {
+            throw new ParameterException("需要被删除的区域不存在");
+        }
+        if (oldDist.getChildrenDist().size() != 0) {
+            throw new ParameterException("拥有下级的区域不能被删除");
         }
         oldDist.setUseable(false);
-        oldDist.setUpdateTime(new Date());
         // TODO: 2018/7/6 设置更新者
-        //更新区域树
         SysDistrict parentDist = getParentDist(oldDist);
         if (parentDist != null) {
             parentDist.getChildrenDist().remove(oldDist);

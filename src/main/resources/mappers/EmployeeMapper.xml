@@ -3,12 +3,11 @@
 <mapper namespace="com.ems.entity.mapper.EmployeeMapper">
     <resultMap id="BaseResultMap" type="com.ems.entity.Employee">
         <constructor>
-            <idArg column="id" jdbcType="CHAR" javaType="java.lang.String"/>
-            <arg column="emp_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <idArg column="emp_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="emp_number" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="emp_org_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="emp_district_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="emp_org_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="emp_district_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="emp_login_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_password" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_email" jdbcType="VARCHAR" javaType="java.lang.String"/>
@@ -17,60 +16,54 @@
             <arg column="emp_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_management_dist_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="emp_role_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_login_ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_login_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="emp_login_flag" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
-        id, emp_id, emp_number, emp_name, emp_org_id, emp_district_id, emp_login_name, emp_password,
+        emp_id, emp_number, emp_name, emp_org_id, emp_district_id, emp_login_name, emp_password,
         emp_email, emp_phone, emp_mobile, emp_address, emp_type, emp_management_dist_id,
-        emp_role_id, emp_login_ip, emp_login_date, emp_login_flag, create_time, create_by,
-        update_time, update_by, useable, remarks
+        emp_login_ip, emp_login_date, emp_login_flag, create_time, create_by, update_time,
+        update_by, useable, remarks
     </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from employee
-        where id = #{id,jdbcType=CHAR}
+        where emp_id = #{empId,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from employee
-        where id = #{id,jdbcType=CHAR}
+        where emp_id = #{empId,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.ems.entity.Employee">
-        insert into employee (id, emp_id, emp_number,
-        emp_name, emp_org_id, emp_district_id,
-        emp_login_name, emp_password, emp_email,
-        emp_phone, emp_mobile, emp_address,
-        emp_type, emp_management_dist_id, emp_role_id,
-        emp_login_ip, emp_login_date, emp_login_flag,
-        create_time, create_by, update_time,
-        update_by, useable, remarks
-        )
-        values (#{id,jdbcType=CHAR}, #{empId,jdbcType=BIGINT}, #{empNumber,jdbcType=VARCHAR},
-        #{empName,jdbcType=VARCHAR}, #{empOrgId,jdbcType=BIGINT}, #{empDistrictId,jdbcType=BIGINT},
-        #{empLoginName,jdbcType=VARCHAR}, #{empPassword,jdbcType=VARCHAR}, #{empEmail,jdbcType=VARCHAR},
-        #{empPhone,jdbcType=VARCHAR}, #{empMobile,jdbcType=VARCHAR}, #{empAddress,jdbcType=VARCHAR},
-        #{empType,jdbcType=VARCHAR}, #{empManagementDistId,jdbcType=VARCHAR}, #{empRoleId,jdbcType=VARCHAR},
-        #{empLoginIp,jdbcType=VARCHAR}, #{empLoginDate,jdbcType=TIMESTAMP}, #{empLoginFlag,jdbcType=BIT},
-        #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP},
-        #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
-        )
+        insert into employee (emp_id, emp_number, emp_name,
+        emp_org_id, emp_district_id, emp_login_name,
+        emp_password, emp_email, emp_phone,
+        emp_mobile, emp_address, emp_type,
+        emp_management_dist_id, emp_login_ip, emp_login_date,
+        emp_login_flag, create_time, create_by,
+        update_time, update_by, useable,
+        remarks)
+        values (#{empId,jdbcType=INTEGER}, #{empNumber,jdbcType=VARCHAR}, #{empName,jdbcType=VARCHAR},
+        #{empOrgId,jdbcType=INTEGER}, #{empDistrictId,jdbcType=INTEGER}, #{empLoginName,jdbcType=VARCHAR},
+        #{empPassword,jdbcType=VARCHAR}, #{empEmail,jdbcType=VARCHAR}, #{empPhone,jdbcType=VARCHAR},
+        #{empMobile,jdbcType=VARCHAR}, #{empAddress,jdbcType=VARCHAR}, #{empType,jdbcType=VARCHAR},
+        #{empManagementDistId,jdbcType=VARCHAR}, #{empLoginIp,jdbcType=VARCHAR}, #{empLoginDate,jdbcType=TIMESTAMP},
+        #{empLoginFlag,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
+        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{useable,jdbcType=BIT},
+        #{remarks,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.ems.entity.Employee">
         insert into employee
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="empId != null">
                 emp_id,
             </if>
@@ -110,9 +103,6 @@
             <if test="empManagementDistId != null">
                 emp_management_dist_id,
             </if>
-            <if test="empRoleId != null">
-                emp_role_id,
-            </if>
             <if test="empLoginIp != null">
                 emp_login_ip,
             </if>
@@ -142,11 +132,8 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=CHAR},
-            </if>
             <if test="empId != null">
-                #{empId,jdbcType=BIGINT},
+                #{empId,jdbcType=INTEGER},
             </if>
             <if test="empNumber != null">
                 #{empNumber,jdbcType=VARCHAR},
@@ -155,10 +142,10 @@
                 #{empName,jdbcType=VARCHAR},
             </if>
             <if test="empOrgId != null">
-                #{empOrgId,jdbcType=BIGINT},
+                #{empOrgId,jdbcType=INTEGER},
             </if>
             <if test="empDistrictId != null">
-                #{empDistrictId,jdbcType=BIGINT},
+                #{empDistrictId,jdbcType=INTEGER},
             </if>
             <if test="empLoginName != null">
                 #{empLoginName,jdbcType=VARCHAR},
@@ -184,9 +171,6 @@
             <if test="empManagementDistId != null">
                 #{empManagementDistId,jdbcType=VARCHAR},
             </if>
-            <if test="empRoleId != null">
-                #{empRoleId,jdbcType=VARCHAR},
-            </if>
             <if test="empLoginIp != null">
                 #{empLoginIp,jdbcType=VARCHAR},
             </if>
@@ -200,13 +184,13 @@
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="createBy != null">
-                #{createBy,jdbcType=BIGINT},
+                #{createBy,jdbcType=INTEGER},
             </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="updateBy != null">
-                #{updateBy,jdbcType=BIGINT},
+                #{updateBy,jdbcType=INTEGER},
             </if>
             <if test="useable != null">
                 #{useable,jdbcType=BIT},
@@ -219,9 +203,6 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.Employee">
         update employee
         <set>
-            <if test="empId != null">
-                emp_id = #{empId,jdbcType=BIGINT},
-            </if>
             <if test="empNumber != null">
                 emp_number = #{empNumber,jdbcType=VARCHAR},
             </if>
@@ -229,10 +210,10 @@
                 emp_name = #{empName,jdbcType=VARCHAR},
             </if>
             <if test="empOrgId != null">
-                emp_org_id = #{empOrgId,jdbcType=BIGINT},
+                emp_org_id = #{empOrgId,jdbcType=INTEGER},
             </if>
             <if test="empDistrictId != null">
-                emp_district_id = #{empDistrictId,jdbcType=BIGINT},
+                emp_district_id = #{empDistrictId,jdbcType=INTEGER},
             </if>
             <if test="empLoginName != null">
                 emp_login_name = #{empLoginName,jdbcType=VARCHAR},
@@ -258,9 +239,6 @@
             <if test="empManagementDistId != null">
                 emp_management_dist_id = #{empManagementDistId,jdbcType=VARCHAR},
             </if>
-            <if test="empRoleId != null">
-                emp_role_id = #{empRoleId,jdbcType=VARCHAR},
-            </if>
             <if test="empLoginIp != null">
                 emp_login_ip = #{empLoginIp,jdbcType=VARCHAR},
             </if>
@@ -274,13 +252,13 @@
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="createBy != null">
-                create_by = #{createBy,jdbcType=BIGINT},
+                create_by = #{createBy,jdbcType=INTEGER},
             </if>
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="updateBy != null">
-                update_by = #{updateBy,jdbcType=BIGINT},
+                update_by = #{updateBy,jdbcType=INTEGER},
             </if>
             <if test="useable != null">
                 useable = #{useable,jdbcType=BIT},
@@ -289,15 +267,15 @@
                 remarks = #{remarks,jdbcType=VARCHAR},
             </if>
         </set>
-        where id = #{id,jdbcType=CHAR}
+        where emp_id = #{empId,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.ems.entity.Employee">
         update employee
         set
         emp_number = #{empNumber,jdbcType=VARCHAR},
         emp_name = #{empName,jdbcType=VARCHAR},
-        emp_org_id = #{empOrgId,jdbcType=BIGINT},
-        emp_district_id = #{empDistrictId,jdbcType=BIGINT},
+        emp_org_id = #{empOrgId,jdbcType=INTEGER},
+        emp_district_id = #{empDistrictId,jdbcType=INTEGER},
         emp_login_name = #{empLoginName,jdbcType=VARCHAR},
         emp_password = #{empPassword,jdbcType=VARCHAR},
         emp_email = #{empEmail,jdbcType=VARCHAR},
@@ -306,17 +284,16 @@
         emp_address = #{empAddress,jdbcType=VARCHAR},
         emp_type = #{empType,jdbcType=VARCHAR},
         emp_management_dist_id = #{empManagementDistId,jdbcType=VARCHAR},
-        emp_role_id = #{empRoleId,jdbcType=VARCHAR},
         emp_login_ip = #{empLoginIp,jdbcType=VARCHAR},
         emp_login_date = #{empLoginDate,jdbcType=TIMESTAMP},
         emp_login_flag = #{empLoginFlag,jdbcType=BIT},
         create_time = #{createTime,jdbcType=TIMESTAMP},
-        create_by = #{createBy,jdbcType=BIGINT},
+        create_by = #{createBy,jdbcType=INTEGER},
         update_time = #{updateTime,jdbcType=TIMESTAMP},
-        update_by = #{updateBy,jdbcType=BIGINT},
+        update_by = #{updateBy,jdbcType=INTEGER},
         useable = #{useable,jdbcType=BIT},
         remarks = #{remarks,jdbcType=VARCHAR}
-        where emp_id = #{empId,jdbcType=BIGINT}
+        where emp_id = #{empId,jdbcType=INTEGER}
     </update>
     <select id="checkEmpLoginName" resultType="boolean" parameterType="java.lang.String">
         SELECT
@@ -348,10 +325,10 @@
             AND emp_name LIKE CONCAT('%', #{empName,jdbcType=VARCHAR}, '%')
         </if>
         <if test="empOrgId != null and empOrgId != ''">
-            AND emp_org_id LIKE CONCAT('%', #{empOrgId,jdbcType=BIGINT}, '%')
+            AND emp_org_id LIKE CONCAT('%', #{empOrgId,jdbcType=INTEGER}, '%')
         </if>
         <if test="empDistrictId != null and empDistrictId != ''">
-            AND emp_district_id LIKE CONCAT('%', #{empDistrictId,jdbcType=BIGINT}, '%')
+            AND emp_district_id LIKE CONCAT('%', #{empDistrictId,jdbcType=INTEGER}, '%')
         </if>
         <if test="empLoginName != null and empLoginName != ''">
             AND emp_login_name LIKE CONCAT('%', #{empLoginName,jdbcType=VARCHAR}, '%')
@@ -365,9 +342,7 @@
         <if test="empType != null and empType != ''">
             AND emp_type LIKE CONCAT('%', #{empType,jdbcType=VARCHAR}, '%')
         </if>
-        <if test="empRoleId != null and empRoleId != ''">
-            AND emp_role_id LIKE CONCAT('%', #{empRoleId,jdbcType=VARCHAR}, '%')
-        </if>
+        ORDER BY emp_id
     </select>
     <select id="getCountWithUnuseable" resultType="int">
         select
@@ -379,9 +354,9 @@
         SET
         update_time = #{updateTime,jdbcType=TIMESTAMP},
         <if test="updateBy != null and updateBy != ''">
-            update_by = #{updateBy,jdbcType=BIGINT},
+            update_by = #{updateBy,jdbcType=INTEGER},
         </if>
         useable = 0
-        WHERE emp_id = #{empId,jdbcType=BIGINT}
+        WHERE emp_id = #{empId,jdbcType=INTEGER}
     </update>
 </mapper>
