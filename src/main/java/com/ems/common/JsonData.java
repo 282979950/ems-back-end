@@ -41,9 +41,15 @@ public class JsonData{
         return jsonData;
     }
 
-    public static JsonData success(Object object) {
+    public static JsonData successData(Object object) {
         JsonData jsonData = new JsonData(true);
         jsonData.data = object;
+        return jsonData;
+    }
+
+    public static JsonData successMsg(String msg) {
+        JsonData jsonData = new JsonData(true);
+        jsonData.msg = msg;
         return jsonData;
     }
 

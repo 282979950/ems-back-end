@@ -1,7 +1,7 @@
 package com.ems.common;
 
 /**
- * Created by litairan litairan@whtdmh.com on 2018/7/2.
+ * @author litairan on 2018/7/2.
  */
 public class Const {
     /**

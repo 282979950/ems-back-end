@@ -27,9 +27,9 @@ public class EmployeeRole extends BaseEntity {
      */
     private Integer roleId;
 
-    public EmployeeRole(Integer id, Integer empId, Integer roleId, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean useable,
+    public EmployeeRole(Integer id, Integer empId, Integer roleId, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable,
                         String remarks) {
-        super(createTime, createBy, updateTime, updateBy, useable, remarks);
+        super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.id = id;
         this.empId = empId;
         this.roleId = roleId;

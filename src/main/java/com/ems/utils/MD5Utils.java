@@ -3,7 +3,7 @@ package com.ems.utils;
 import java.security.MessageDigest;
 
 /**
- * Created by litairan litairan@whtdmh.com on 2018/7/2.
+ * @author litairan on 2018/7/2.
  */
 public class MD5Utils {
 

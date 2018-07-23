@@ -3,6 +3,7 @@ package com.ems.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -19,16 +20,18 @@ public class SysRolePerm extends BaseEntity {
     /**
      * 角色ID
      */
+    @NotNull
     private Integer roleId;
 
     /**
      * 权限ID
      */
+    @NotNull
     private Integer permId;
 
-    public SysRolePerm(Integer id, Integer roleId, Integer permId, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean useable,
+    public SysRolePerm(Integer id, Integer roleId, Integer permId, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable,
                        String remarks) {
-        super(createTime, createBy, updateTime, updateBy, useable, remarks);
+        super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.id = id;
         this.roleId = roleId;
         this.permId = permId;

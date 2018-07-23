@@ -10,12 +10,12 @@
             <arg column="create_by" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
             <arg column="update_by" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-            <arg column="useable" javaType="java.lang.Boolean" jdbcType="BIT"/>
+            <arg column="usable" javaType="java.lang.Boolean" jdbcType="BIT"/>
             <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR"/>
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
-        id, emp_id, role_id, create_time, create_by, update_time, update_by, useable, remarks
+        id, emp_id, role_id, create_time, create_by, update_time, update_by, usable, remarks
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -30,11 +30,11 @@
     <insert id="insert" parameterType="com.ems.entity.EmployeeRole">
         insert into employee_role (id, emp_id, role_id,
         create_time, create_by, update_time,
-        update_by, useable, remarks
+        update_by, usable, remarks
         )
         values (#{id,jdbcType=INTEGER}, #{empId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER},
         #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
-        #{updateBy,jdbcType=INTEGER}, #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
+        #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
         )
     </insert>
     <insert id="insertSelective" parameterType="com.ems.entity.EmployeeRole">
@@ -61,8 +61,8 @@
             <if test="updateBy != null">
                 update_by,
             </if>
-            <if test="useable != null">
-                useable,
+            <if test="usable != null">
+                usable,
             </if>
             <if test="remarks != null">
                 remarks,
@@ -90,8 +90,8 @@
             <if test="updateBy != null">
                 #{updateBy,jdbcType=INTEGER},
             </if>
-            <if test="useable != null">
-                #{useable,jdbcType=BIT},
+            <if test="usable != null">
+                #{usable,jdbcType=BIT},
             </if>
             <if test="remarks != null">
                 #{remarks,jdbcType=VARCHAR},
@@ -119,8 +119,8 @@
             <if test="updateBy != null">
                 update_by = #{updateBy,jdbcType=INTEGER},
             </if>
-            <if test="useable != null">
-                useable = #{useable,jdbcType=BIT},
+            <if test="usable != null">
+                usable = #{usable,jdbcType=BIT},
             </if>
             <if test="remarks != null">
                 remarks = #{remarks,jdbcType=VARCHAR},
@@ -136,7 +136,7 @@
         create_by = #{createBy,jdbcType=INTEGER},
         update_time = #{updateTime,jdbcType=TIMESTAMP},
         update_by = #{updateBy,jdbcType=INTEGER},
-        useable = #{useable,jdbcType=BIT},
+        usable = #{usable,jdbcType=BIT},
         remarks = #{remarks,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>

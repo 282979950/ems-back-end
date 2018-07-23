@@ -12,8 +12,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by litairan litairan@whtdmh.com on 2018/7/3.
  * 基础实体类
+ *
+ * @author litairan on 2018/7/3.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
@@ -43,10 +44,11 @@ public class BaseEntity implements Serializable {
      * 更新者
      */
     private Integer updateBy;
+
     /**
      * 是否可用
      */
-    private Boolean useable;
+    private Boolean usable;
 
     /**
      * 备注

@@ -11,13 +11,13 @@
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
         perm_id, perm_name, perm_type, menu_id, create_time, create_by, update_time, update_by,
-        useable, remarks
+        usable, remarks
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -32,11 +32,11 @@
     <insert id="insert" parameterType="com.ems.entity.SysPermission">
         insert into sys_permission (perm_id, perm_name, perm_type,
         menu_id, create_time, create_by,
-        update_time, update_by, useable,
+        update_time, update_by, usable,
         remarks)
         values (#{permId,jdbcType=INTEGER}, #{permName,jdbcType=VARCHAR}, #{permType,jdbcType=INTEGER},
         #{menuId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
-        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{useable,jdbcType=BIT},
+        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},
         #{remarks,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.ems.entity.SysPermission">
@@ -66,8 +66,8 @@
             <if test="updateBy != null">
                 update_by,
             </if>
-            <if test="useable != null">
-                useable,
+            <if test="usable != null">
+                usable,
             </if>
             <if test="remarks != null">
                 remarks,
@@ -98,8 +98,8 @@
             <if test="updateBy != null">
                 #{updateBy,jdbcType=INTEGER},
             </if>
-            <if test="useable != null">
-                #{useable,jdbcType=BIT},
+            <if test="usable != null">
+                #{usable,jdbcType=BIT},
             </if>
             <if test="remarks != null">
                 #{remarks,jdbcType=VARCHAR},
@@ -130,8 +130,8 @@
             <if test="updateBy != null">
                 update_by = #{updateBy,jdbcType=INTEGER},
             </if>
-            <if test="useable != null">
-                useable = #{useable,jdbcType=BIT},
+            <if test="usable != null">
+                usable = #{usable,jdbcType=BIT},
             </if>
             <if test="remarks != null">
                 remarks = #{remarks,jdbcType=VARCHAR},
@@ -148,7 +148,7 @@
         create_by = #{createBy,jdbcType=INTEGER},
         update_time = #{updateTime,jdbcType=TIMESTAMP},
         update_by = #{updateBy,jdbcType=INTEGER},
-        useable = #{useable,jdbcType=BIT},
+        usable = #{usable,jdbcType=BIT},
         remarks = #{remarks,jdbcType=VARCHAR}
         where perm_id = #{permId,jdbcType=INTEGER}
     </update>
@@ -157,7 +157,7 @@
         <include refid="Base_Column_List"/>
         from
         sys_permission
-        where useable = 1
+        where usable = 1
     </select>
     <update id="update" parameterType="com.ems.entity.SysPermission">
         update sys_permission
@@ -169,7 +169,7 @@
         create_by = #{createBy,jdbcType=INTEGER},
         update_time = #{updateTime,jdbcType=TIMESTAMP},
         update_by = #{updateBy,jdbcType=INTEGER},
-        useable = #{useable,jdbcType=BIT},
+        usable = #{usable,jdbcType=BIT},
         remarks = #{remarks,jdbcType=VARCHAR}
         where perm_id = #{permId,jdbcType=INTEGER}
     </update>
@@ -178,7 +178,7 @@
         set
         update_time = #{updateTime,jdbcType=TIMESTAMP},
         update_by = #{updateBy,jdbcType=INTEGER},
-        useable = #{useable,jdbcType=BIT},
+        usable = #{usable,jdbcType=BIT},
         where perm_id = #{permId,jdbcType=INTEGER}
     </update>
     <select id="select" parameterType="map" resultMap="BaseResultMap">
@@ -187,7 +187,7 @@
         FROM
         sys_permission a LEFT JOIN sys_menu b
         ON a.menu_id = b.menu_id
-        WHERE a.useable = 1
+        WHERE a.usable = 1
         <if test="permType != null AND permType != ''">
             AND permType = #{permType,jdbcType=INTEGER}
         </if>

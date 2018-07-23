@@ -1,6 +1,7 @@
 package com.ems.service.impl;
 
 import com.ems.common.BeanValidator;
+import com.ems.common.JsonData;
 import com.ems.entity.SysDistrict;
 import com.ems.entity.mapper.SysDistrictMapper;
 import com.ems.exception.ParameterException;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 区域服务实现类
+ *
  * @author litairan on 2018/7/2.
  */
 @Service("iSysDistrict")
@@ -60,9 +63,9 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
     }
 
     @Override
-    public boolean checkUseable(String distName) {
+    public boolean checkUsable(String distName) {
         for (SysDistrict district : districtList) {
-            if (StringUtils.equals(district.getDistName(), distName) && district.getUseable()) {
+            if (StringUtils.equals(district.getDistName(), distName) && district.getUsable()) {
                 return true;
             }
         }
@@ -71,25 +74,29 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
 
     @Override
     @Transactional(readOnly = false)
-    public int createDistrict(SysDistrict district) {
+    public JsonData createDistrict(SysDistrict district) {
         BeanValidator.check(district);
         String distName = district.getDistName();
         if (checkDistName(distName)) {
             throw new ParameterException("区域名称:" + distName + "已存在");
         }
-        district.setUseable(true);
+        district.setUsable(true);
         district.setChildrenDist(new ArrayList<SysDistrict>());
         // TODO: 2018/7/4  设置创建者和更新者
+        int resultCount = districtMapper.insert(district);
+        if (resultCount == 0) {
+            return JsonData.fail("创建区域失败");
+        }
         SysDistrict parentDist = getDistById(district.getDistParentId());
         if (parentDist != null) {
             parentDist.getChildrenDist().add(district);
         }
         districtList.add(district);
-        return districtMapper.insert(district);
+        return JsonData.successMsg("创建区域成功");
     }
 
     @Override
-    public List<SysDistrict> selectDistByName(String name) {
+    public JsonData selectDistByName(String name) {
         List<SysDistrict> result = new ArrayList<>(districtList.size());
         for (SysDistrict district : districtList) {
             String distName = district.getDistName();
@@ -97,11 +104,11 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
                 result.add(district);
             }
         }
-        return result;
+        return JsonData.successData(result);
     }
 
     @Override
-    public List<SysDistrict> selectDistByCode(String code) {
+    public JsonData selectDistByCode(String code) {
         List<SysDistrict> result = new ArrayList<>(districtList.size());
         for (SysDistrict district : districtList) {
             String distCode = district.getDistCode();
@@ -109,7 +116,7 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
                 result.add(district);
             }
         }
-        return result;
+        return JsonData.successData(result);
     }
 
     private SysDistrict getDistById(Integer distId) {
@@ -132,7 +139,7 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
 
     @Override
     @Transactional(readOnly = false)
-    public int updateSysDistrict(SysDistrict newDistrict) {
+    public JsonData updateSysDistrict(SysDistrict newDistrict) {
         BeanValidator.check(newDistrict);
         SysDistrict oldDistrict = getDistById(newDistrict.getDistId());
         if (oldDistrict == null) {
@@ -142,6 +149,10 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         oldDistrict.setDistCode(newDistrict.getDistCode());
         oldDistrict.setDistAddress(newDistrict.getDistAddress());
         // TODO: 2018/7/6 设置更新者
+        int resultCount = districtMapper.updateByPrimaryKey(oldDistrict);
+        if (resultCount == 0) {
+            return JsonData.fail("更新区域失败");
+        }
         Integer oldParentId = oldDistrict.getDistParentId();
         Integer newParentId = newDistrict.getDistParentId();
         if (oldParentId != null && newParentId != null && !oldParentId.equals(newParentId)) {
@@ -152,12 +163,12 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
             SysDistrict newParentDist = getDistById(newParentId);
             newParentDist.getChildrenDist().add(oldDistrict);
         }
-        return districtMapper.updateByPrimaryKey(oldDistrict);
+        return JsonData.successMsg("更新区域成功");
     }
 
     @Override
     @Transactional(readOnly = false)
-    public int deleteSysDistrict(SysDistrict district) {
+    public JsonData deleteSysDistrict(SysDistrict district) {
         BeanValidator.check(district);
         SysDistrict oldDist = getDistById(district.getDistId());
         if (oldDist == null) {
@@ -166,14 +177,18 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         if (oldDist.getChildrenDist().size() != 0) {
             throw new ParameterException("拥有下级的区域不能被删除");
         }
-        oldDist.setUseable(false);
+        oldDist.setUsable(false);
         // TODO: 2018/7/6 设置更新者
+        int resultCount = districtMapper.updateByPrimaryKey(oldDist);
+        if (resultCount == 0) {
+            return JsonData.fail("删除区域失败");
+        }
         SysDistrict parentDist = getParentDist(oldDist);
         if (parentDist != null) {
             parentDist.getChildrenDist().remove(oldDist);
         }
         districtList.remove(oldDist);
-        return districtMapper.updateByPrimaryKey(oldDist);
+        return JsonData.successMsg("删除区域成功");
     }
 
     @Override
@@ -182,17 +197,17 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
     }
 
     @Override
-    public SysDistrict getDistRoot() {
+    public JsonData getDistRoot() {
         for (SysDistrict district : districtList) {
             if (district.getDistParentId() == null) {
-                return district;
+                return JsonData.successData(district);
             }
         }
-        return null;
+        return JsonData.successMsg("区域树为空，需要新建");
     }
 
     @Override
-    public List<SysDistrict> getDistrictList() {
-        return districtList;
+    public JsonData getDistrictList() {
+        return districtList == null ? JsonData.successMsg("区域树为空，需要新建") : JsonData.successData(districtList);
     }
 }

@@ -1,11 +1,10 @@
 package com.ems.service;
 
+import com.ems.common.JsonData;
 import com.ems.entity.SysDistrict;
 
-import java.util.List;
-
 /**
- * Created by litairan litairan@whtdmh.com on 2018/7/2.
+ * @author litairan on 2018/7/2.
  */
 public interface ISysDistrictService {
     /**
@@ -22,7 +21,7 @@ public interface ISysDistrictService {
      * @param distName
      * @return
      */
-    boolean checkUseable(String distName);
+    boolean checkUsable(String distName);
 
     /**
      * 新增区域
@@ -30,7 +29,7 @@ public interface ISysDistrictService {
      * @param district
      * @return
      */
-    int createDistrict(SysDistrict district);
+    JsonData createDistrict(SysDistrict district);
 
     /**
      * 依据区域名称查询
@@ -38,7 +37,7 @@ public interface ISysDistrictService {
      * @param name
      * @return
      */
-    List<SysDistrict> selectDistByName(String name);
+    JsonData selectDistByName(String name);
 
     /**
      * 依据区域名称查询
@@ -46,7 +45,7 @@ public interface ISysDistrictService {
      * @param code
      * @return
      */
-    List<SysDistrict> selectDistByCode(String code);
+    JsonData selectDistByCode(String code);
 
     /**
      * 更新区域
@@ -54,12 +53,12 @@ public interface ISysDistrictService {
      * @param district
      * @return
      */
-    int updateSysDistrict(SysDistrict district);
+    JsonData updateSysDistrict(SysDistrict district);
 
     /**
-     * 假删除(将useable设置为false)
+     * 假删除(将usable设置为false)
      */
-    int deleteSysDistrict(SysDistrict district);
+    JsonData deleteSysDistrict(SysDistrict district);
 
     /**
      * 获取父节点
@@ -74,12 +73,12 @@ public interface ISysDistrictService {
      *
      * @return
      */
-    SysDistrict getDistRoot();
+    JsonData getDistRoot();
 
     /**
      * 获取所有区域的列表
      *
      * @return
      */
-    List<SysDistrict> getDistrictList();
+    JsonData getDistrictList();
 }

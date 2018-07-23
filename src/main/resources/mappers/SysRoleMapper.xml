@@ -11,13 +11,13 @@
             <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Integer"/>
-            <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
         role_id, role_name, role_dists, role_orgs, create_time, create_by, update_time, update_by,
-        useable, remarks
+        usable, remarks
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -32,11 +32,11 @@
     <insert id="insert" parameterType="com.ems.entity.SysRole">
         insert into sys_role (role_name, role_dists,
         role_orgs, create_time, create_by,
-        update_time, update_by, useable,
+        update_time, update_by, usable,
         remarks)
         values (#{roleName,jdbcType=VARCHAR}, #{roleDists,jdbcType=VARCHAR},
         #{roleOrgs,jdbcType=VARCHAR}, NOW(), #{createBy,jdbcType=INTEGER},
-        NOW(), #{updateBy,jdbcType=INTEGER}, #{useable,jdbcType=BIT},
+        NOW(), #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},
         #{remarks,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.ems.entity.SysRole">
@@ -66,8 +66,8 @@
             <if test="updateBy != null">
                 update_by,
             </if>
-            <if test="useable != null">
-                useable,
+            <if test="usable != null">
+                usable,
             </if>
             <if test="remarks != null">
                 remarks,
@@ -98,8 +98,8 @@
             <if test="updateBy != null">
                 #{updateBy,jdbcType=INTEGER},
             </if>
-            <if test="useable != null">
-                #{useable,jdbcType=BIT},
+            <if test="usable != null">
+                #{usable,jdbcType=BIT},
             </if>
             <if test="remarks != null">
                 #{remarks,jdbcType=VARCHAR},
@@ -130,8 +130,8 @@
             <if test="updateBy != null">
                 update_by = #{updateBy,jdbcType=INTEGER},
             </if>
-            <if test="useable != null">
-                useable = #{useable,jdbcType=BIT},
+            <if test="usable != null">
+                usable = #{usable,jdbcType=BIT},
             </if>
             <if test="remarks != null">
                 remarks = #{remarks,jdbcType=VARCHAR},
@@ -154,31 +154,31 @@
         COUNT (1)
         FROM
         sys_role
-        WHERE useable = 1 AND role_name = #{roleName,jdbcType=VARCHAR}
+        WHERE usable = 1 AND role_name = #{roleName,jdbcType=VARCHAR}
     </select>
     <select id="getRoleIdByName" parameterType="string" resultType="int">
-        SELECT role_id FROM sys_role WHERE role_name = #{roleName,jdbcType=VARCHAR} AND useable = 1
+        SELECT role_id FROM sys_role WHERE role_name = #{roleName,jdbcType=VARCHAR} AND usable = 1
     </select>
     <select id="getRoleByName" parameterType="string" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
         sys_role
-        WHERE useable = 1 AND role_name = #{roleName,jdbcType=VARCHAR}
+        WHERE usable = 1 AND role_name = #{roleName,jdbcType=VARCHAR}
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
         sys_role
-        WHERE useable = 1
+        WHERE usable = 1
     </select>
     <update id="deleteRoleById" parameterType="map">
         UPDATE sys_role
         SET
         update_time = NOW(),
         update_by = #{updateBy,jdbcType=INTEGER},
-        useable = 0
+        usable = 0
         WHERE role_id = #{roleId,jdbcType=INTEGER}
     </update>
 </mapper>

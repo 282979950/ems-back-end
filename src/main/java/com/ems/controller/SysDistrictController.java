@@ -1,5 +1,6 @@
 package com.ems.controller;
 
+import com.ems.common.JsonData;
 import com.ems.entity.SysDistrict;
 import com.ems.service.ISysDistrictService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-
 /**
- * Created by litairan litairan@whtdmh.com on 2018/7/2.
+ * @author litairan on 2018/7/2.
  */
 @Controller
 @RequestMapping("/dist/")
@@ -26,7 +25,7 @@ public class SysDistrictController {
      */
     @RequestMapping("getDistTree.do")
     @ResponseBody
-    public SysDistrict getDistTree() {
+    public JsonData getDistTree() {
         return sysDistrictService.getDistRoot();
     }
 
@@ -37,7 +36,7 @@ public class SysDistrictController {
      */
     @RequestMapping("getDistrictList.do")
     @ResponseBody
-    public List<SysDistrict> getDistrictList() {
+    public JsonData getDistrictList() {
         return sysDistrictService.getDistrictList();
     }
 
@@ -47,7 +46,7 @@ public class SysDistrictController {
      */
     @RequestMapping("createDistrict.do")
     @ResponseBody
-    public int createDistrict(SysDistrict district) {
+    public JsonData createDistrict(SysDistrict district) {
         return sysDistrictService.createDistrict(district);
     }
 
@@ -56,7 +55,7 @@ public class SysDistrictController {
      */
     @RequestMapping("deleteDistrict.do")
     @ResponseBody
-    public int deleteDistrict(SysDistrict district) {
+    public JsonData deleteDistrict(SysDistrict district) {
         return sysDistrictService.deleteSysDistrict(district);
     }
 
@@ -65,7 +64,7 @@ public class SysDistrictController {
      */
     @RequestMapping("updateDistrict.do")
     @ResponseBody
-    public int updateDistrict(SysDistrict district) {
+    public JsonData updateDistrict(SysDistrict district) {
         return sysDistrictService.updateSysDistrict(district);
     }
 
@@ -74,7 +73,7 @@ public class SysDistrictController {
      */
     @RequestMapping("selectByName.do")
     @ResponseBody
-    public List<SysDistrict> selectByName(String name) {
+    public JsonData selectByName(String name) {
         return sysDistrictService.selectDistByName(name);
     }
 
@@ -83,7 +82,7 @@ public class SysDistrictController {
      */
     @RequestMapping("selectByCode.do")
     @ResponseBody
-    public List<SysDistrict> selectByCode(String code) {
+    public JsonData selectByCode(String code) {
         return sysDistrictService.selectDistByCode(code);
     }
 }

@@ -23,7 +23,7 @@
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
     </resultMap>
@@ -31,7 +31,7 @@
         emp_id, emp_number, emp_name, emp_org_id, emp_district_id, emp_login_name, emp_password,
         emp_email, emp_phone, emp_mobile, emp_address, emp_type, emp_management_dist_id,
         emp_login_ip, emp_login_date, emp_login_flag, create_time, create_by, update_time,
-        update_by, useable, remarks
+        update_by, usable, remarks
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -50,7 +50,7 @@
         emp_mobile, emp_address, emp_type,
         emp_management_dist_id, emp_login_ip, emp_login_date,
         emp_login_flag, create_time, create_by,
-        update_time, update_by, useable,
+        update_time, update_by, usable,
         remarks)
         values (#{empId,jdbcType=INTEGER}, #{empNumber,jdbcType=VARCHAR}, #{empName,jdbcType=VARCHAR},
         #{empOrgId,jdbcType=INTEGER}, #{empDistrictId,jdbcType=INTEGER}, #{empLoginName,jdbcType=VARCHAR},
@@ -58,7 +58,7 @@
         #{empMobile,jdbcType=VARCHAR}, #{empAddress,jdbcType=VARCHAR}, #{empType,jdbcType=VARCHAR},
         #{empManagementDistId,jdbcType=VARCHAR}, #{empLoginIp,jdbcType=VARCHAR}, #{empLoginDate,jdbcType=TIMESTAMP},
         #{empLoginFlag,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
-        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{useable,jdbcType=BIT},
+        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},
         #{remarks,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.ems.entity.Employee">
@@ -124,8 +124,8 @@
             <if test="updateBy != null">
                 update_by,
             </if>
-            <if test="useable != null">
-                useable,
+            <if test="usable != null">
+                usable,
             </if>
             <if test="remarks != null">
                 remarks,
@@ -181,19 +181,19 @@
                 #{empLoginFlag,jdbcType=BIT},
             </if>
             <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
+                NOW(),
             </if>
             <if test="createBy != null">
                 #{createBy,jdbcType=INTEGER},
             </if>
             <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
+                NOW(),
             </if>
             <if test="updateBy != null">
                 #{updateBy,jdbcType=INTEGER},
             </if>
-            <if test="useable != null">
-                #{useable,jdbcType=BIT},
+            <if test="usable != null">
+                #{usable,jdbcType=BIT},
             </if>
             <if test="remarks != null">
                 #{remarks,jdbcType=VARCHAR},
@@ -260,8 +260,8 @@
             <if test="updateBy != null">
                 update_by = #{updateBy,jdbcType=INTEGER},
             </if>
-            <if test="useable != null">
-                useable = #{useable,jdbcType=BIT},
+            <if test="usable != null">
+                usable = #{usable,jdbcType=BIT},
             </if>
             <if test="remarks != null">
                 remarks = #{remarks,jdbcType=VARCHAR},
@@ -289,9 +289,9 @@
         emp_login_flag = #{empLoginFlag,jdbcType=BIT},
         create_time = #{createTime,jdbcType=TIMESTAMP},
         create_by = #{createBy,jdbcType=INTEGER},
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = NOW(),
         update_by = #{updateBy,jdbcType=INTEGER},
-        useable = #{useable,jdbcType=BIT},
+        usable = #{usable,jdbcType=BIT},
         remarks = #{remarks,jdbcType=VARCHAR}
         where emp_id = #{empId,jdbcType=INTEGER}
     </update>
@@ -299,25 +299,25 @@
         SELECT
         COUNT(1)
         FROM employee
-        WHERE emp_login_name = #{empLoginName} AND useable = 1
+        WHERE emp_login_name = #{empLoginName} AND usable = 1
     </select>
     <select id="selectEmpLogin" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from employee
-        where emp_login_name = #{empLoginName} and emp_password = #{empPassword} and useable = 1
+        where emp_login_name = #{empLoginName} and emp_password = #{empPassword} and usable = 1
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM employee
-        WHERE useable = 1
+        WHERE usable = 1
     </select>
     <select id="select" resultMap="BaseResultMap" parameterType="map">
         SELECT
         <include refid="Base_Column_List"/>
         FROM employee
-        WHERE useable = 1
+        WHERE usable = 1
         <if test="empNumber != null and empNumber != ''">
             AND emp_number LIKE CONCAT('%', #{empNumber,jdbcType=VARCHAR}, '%')
         </if>
@@ -344,7 +344,7 @@
         </if>
         ORDER BY emp_id
     </select>
-    <select id="getCountWithUnuseable" resultType="int">
+    <select id="getCountWithUnusable" resultType="int">
         select
         COUNT(1)
         from employee
@@ -352,11 +352,11 @@
     <update id="deleteByEmpId" parameterType="map">
         UPDATE employee
         SET
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = NOW(),
         <if test="updateBy != null and updateBy != ''">
             update_by = #{updateBy,jdbcType=INTEGER},
         </if>
-        useable = 0
+        usable = 0
         WHERE emp_id = #{empId,jdbcType=INTEGER}
     </update>
 </mapper>

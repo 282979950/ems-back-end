@@ -89,7 +89,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
             return 0;
         }
         SysRole sysRole = getRoleById(roleId);
-        sysRole.setUseable(false);
+        sysRole.setUsable(false);
         // TODO: 2018/7/19
         int resultCount = roleMapper.deleteRoleById(roleId, 1000000000);
         rolePermService.deleteRolePerms(roleId);

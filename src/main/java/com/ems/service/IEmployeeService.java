@@ -1,11 +1,10 @@
 package com.ems.service;
 
+import com.ems.common.JsonData;
 import com.ems.entity.Employee;
 
-import java.util.List;
-
 /**
- * Created by litairan litairan@whtdmh.com on 2018/7/2.
+ * @author litairan on 2018/7/2.
  */
 public interface IEmployeeService {
     /**
@@ -15,7 +14,7 @@ public interface IEmployeeService {
      * @param empPassword
      * @return
      */
-    Employee login(String empLoginName, String empPassword);
+    JsonData login(String empLoginName, String empPassword);
 
     /**
      * 检查登录名是否存在(0不存在,1存在)
@@ -32,7 +31,7 @@ public interface IEmployeeService {
      * @param employee
      * @return
      */
-    int create(Employee employee, Employee currentEmp);
+    JsonData create(Employee employee, Employee currentEmp);
 
     /**
      * 删除员工
@@ -40,7 +39,7 @@ public interface IEmployeeService {
      * @param employeeId
      * @return
      */
-    int delete(Integer employeeId, Employee currentEmp);
+    JsonData delete(Integer employeeId, Employee currentEmp);
 
     /**
      * 更新员工
@@ -49,14 +48,14 @@ public interface IEmployeeService {
      * @param employee
      * @return
      */
-    int update(Employee employee, Employee currentEmp);
+    JsonData update(Employee employee, Employee currentEmp);
 
     /**
      * 获取所有的员工信息
      *
      * @return
      */
-    List<Employee> selcetAll();
+    JsonData selcetAll();
 
     /**
      * 依据参数查询员工信息
@@ -71,6 +70,6 @@ public interface IEmployeeService {
      * @param empType
      * @return
      */
-    List<Employee> select(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone, String empMobile,
+    JsonData select(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone, String empMobile,
                           String empType);
 }

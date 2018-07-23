@@ -58,7 +58,7 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
         permission.setCreateTime(date);
         permission.setUpdateBy(currentEmp.getEmpId());
         permission.setUpdateTime(date);
-        permission.setUseable(true);
+        permission.setUsable(true);
         permissionList.add(permission);
         return permissionMapper.insert(permission);
     }
@@ -91,7 +91,7 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
         }
         permission.setUpdateTime(new Date());
         permission.setUpdateBy(currentEmp.getEmpId());
-        permission.setUseable(false);
+        permission.setUsable(false);
         int resultCount = permissionMapper.deleteByPermId(permission);
         if (resultCount > 0) {
             permissionList.remove(permission);

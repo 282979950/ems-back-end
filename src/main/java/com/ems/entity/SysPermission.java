@@ -2,7 +2,9 @@ package com.ems.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -19,6 +21,8 @@ public class SysPermission extends BaseEntity {
     /**
      * 权限名称
      */
+    @NotNull
+    @Length(max = 20, message = "权限名称不能超过20个字")
     private String permName;
 
     /**
@@ -32,8 +36,8 @@ public class SysPermission extends BaseEntity {
     private Integer menuId;
 
     public SysPermission(Integer permId, String permName, Integer permType, Integer menuId, Date createTime, Integer createBy, Date updateTime, Integer
-            updateBy, Boolean useable, String remarks) {
-        super(createTime, createBy, updateTime, updateBy, useable, remarks);
+            updateBy, Boolean usable, String remarks) {
+        super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.permId = permId;
         this.permName = permName;
         this.permType = permType;

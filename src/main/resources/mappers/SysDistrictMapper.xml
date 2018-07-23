@@ -13,13 +13,13 @@
             <arg column="create_by" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
             <arg column="update_by" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-            <arg column="useable" javaType="java.lang.Boolean" jdbcType="BIT"/>
+            <arg column="usable" javaType="java.lang.Boolean" jdbcType="BIT"/>
             <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR"/>
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
         dist_id, dist_name, dist_code, dist_category, dist_address, dist_parent_id, create_time,
-        create_by, update_time, update_by, useable, remarks
+        create_by, update_time, update_by, usable, remarks
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -76,8 +76,8 @@
             <if test="updateBy != null">
                 update_by,
             </if>
-            <if test="useable != null">
-                useable,
+            <if test="usable != null">
+                usable,
             </if>
             <if test="remarks != null">
                 remarks,
@@ -114,8 +114,8 @@
             <if test="updateBy != null">
                 #{updateBy,jdbcType=INTEGER},
             </if>
-            <if test="useable != null">
-                #{useable,jdbcType=BIT},
+            <if test="usable != null">
+                #{usable,jdbcType=BIT},
             </if>
             <if test="remarks != null">
                 #{remarks,jdbcType=VARCHAR},
@@ -152,8 +152,8 @@
             <if test="updateBy != null">
                 update_by = #{updateBy,jdbcType=INTEGER},
             </if>
-            <if test="useable != null">
-                useable = #{useable,jdbcType=BIT},
+            <if test="usable != null">
+                usable = #{usable,jdbcType=BIT},
             </if>
             <if test="remarks != null">
                 remarks = #{remarks,jdbcType=VARCHAR},
@@ -172,7 +172,7 @@
         create_by = #{createBy,jdbcType=INTEGER},
         update_time = #{updateTime,jdbcType=TIMESTAMP},
         update_by = #{updateBy,jdbcType=INTEGER},
-        useable = #{useable,jdbcType=BIT},
+        usable = #{usable,jdbcType=BIT},
         remarks = #{remarks,jdbcType=VARCHAR}
         where dist_id = #{distId,jdbcType=INTEGER}
     </update>
@@ -182,17 +182,17 @@
         from sys_district
         where dist_name = #{distName}
     </select>
-    <select id="checkUseable" parameterType="java.lang.String" resultType="int">
+    <select id="checkUsable" parameterType="java.lang.String" resultType="int">
         select
         COUNT (1)
         from sys_district
-        where dist_name = #{distName} and useable = 1
+        where dist_name = #{distName} and usable = 1
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from sys_district
-        where useable = 1
+        where usable = 1
     </select>
     <select id="getCountWithUnusable" parameterType="com.ems.entity.SysDistrict" resultType="int">
         select

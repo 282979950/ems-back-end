@@ -11,18 +11,18 @@
             <arg column="log_exception_info" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
     </resultMap>
     <insert id="insert" parameterType="com.ems.entity.SysLog">
         insert into sys_log (log_id, log_title, log_type,
         log_operator, log_operator_ip, log_exception_info,
-        create_time, create_by, useable,
+        create_time, create_by, usable,
         remarks)
         values (#{logId,jdbcType=BIGINT}, #{logTitle,jdbcType=VARCHAR}, #{logType,jdbcType=VARCHAR},
         #{logOperator,jdbcType=VARCHAR}, #{logOperatorIp,jdbcType=VARCHAR}, #{logExceptionInfo,jdbcType=VARCHAR},
-        #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{useable,jdbcType=BIT},
+        #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},
         #{remarks,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.ems.entity.SysLog">
@@ -52,8 +52,8 @@
             <if test="createBy != null">
                 create_by,
             </if>
-            <if test="useable != null">
-                useable,
+            <if test="usable != null">
+                usable,
             </if>
             <if test="remarks != null">
                 remarks,
@@ -84,8 +84,8 @@
             <if test="createBy != null">
                 #{createBy,jdbcType=INTEGER},
             </if>
-            <if test="useable != null">
-                #{useable,jdbcType=BIT},
+            <if test="usable != null">
+                #{usable,jdbcType=BIT},
             </if>
             <if test="remarks != null">
                 #{remarks,jdbcType=VARCHAR},

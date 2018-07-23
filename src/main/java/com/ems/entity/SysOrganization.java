@@ -1,7 +1,7 @@
 package com.ems.entity;
 
 import java.util.Date;
-/*
+/**
  * 机构表实体
  */
 public class SysOrganization {
@@ -25,11 +25,11 @@ public class SysOrganization {
 
     private Long updateBy;//更新者
 
-    private Boolean useable;//是否可用
+    private Boolean usable;//是否可用
 
     private String remarks;//注释
 
-    public SysOrganization(String id, Long orgId, String orgName, String orgCode, String orgCategory, Long orgParentId,  Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
+    public SysOrganization(String id, Long orgId, String orgName, String orgCode, String orgCategory, Long orgParentId,  Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean usable, String remarks) {
         this.id = id;
         this.orgId = orgId;
         this.orgName = orgName;
@@ -40,7 +40,7 @@ public class SysOrganization {
         this.createBy = createBy;
         this.updateTime = updateTime;
         this.updateBy = updateBy;
-        this.useable = useable;
+        this.usable = usable;
         this.remarks = remarks;
     }
 
@@ -128,12 +128,12 @@ public class SysOrganization {
         this.updateBy = updateBy;
     }
 
-    public Boolean getUseable() {
-        return useable;
+    public Boolean getUsable() {
+        return usable;
     }
 
-    public void setUseable(Boolean useable) {
-        this.useable = useable;
+    public void setUsable(Boolean usable) {
+        this.usable = usable;
     }
 
     public String getRemarks() {

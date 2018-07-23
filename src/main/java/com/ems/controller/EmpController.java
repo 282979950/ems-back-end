@@ -1,11 +1,10 @@
 package com.ems.controller;
 
 import com.ems.common.Const;
+import com.ems.common.JsonData;
 import com.ems.common.ServerResponse;
 import com.ems.entity.Employee;
 import com.ems.service.IEmployeeService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author litairan on 2018/7/2.
@@ -32,18 +28,15 @@ public class EmpController {
      */
     @RequestMapping(value = "login.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<Employee> login(String empLoginName, String empPassword, HttpSession session) {
-        if (!employeeService.checkEmpLoginName(empLoginName)) {
-            return ServerResponse.createByErrorMessage(Const.EMP_LOGIN_NOTEXIST);
-        }
+    public JsonData login(String empLoginName, String empPassword, HttpSession session) {
 
-        Employee employee = employeeService.login(empLoginName, empPassword);
-        if (employee == null) {
-            return ServerResponse.createByErrorMessage(Const.EMP_LOGIN_ERRORPASSWORD);
+        JsonData data = employeeService.login(empLoginName, empPassword);
+        if (data.isStatus()) {
+            Employee employee = (Employee) data.getData();
+            employee.setEmpPassword(null);
+            session.setAttribute(Const.CURRENT_EMPLOYEE, employee);
         }
-        employee.setEmpPassword(null);
-        session.setAttribute(Const.CURRENT_EMPLOYEE, employee);
-        return ServerResponse.createBySuccess(Const.EMP_LOGIN_SUCCESS, employee);
+        return data;
     }
 
     /**
@@ -61,20 +54,12 @@ public class EmpController {
      */
     @RequestMapping(value = "create.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<Employee> create(Employee employee, HttpSession session) {
+    public JsonData create(Employee employee, HttpSession session) {
         Employee currentEmp = (Employee) session.getAttribute(Const.CURRENT_EMPLOYEE);
         if (currentEmp == null) {
-            return ServerResponse.createByErrorMessage(Const.EMP_LOGIN_NOTLOGIN);
+            return JsonData.fail(Const.EMP_LOGIN_NOTLOGIN);
         }
-        String empLoginName = employee.getEmpLoginName();
-        if (employeeService.checkEmpLoginName(empLoginName)) {
-            return ServerResponse.createByErrorMessage(Const.EMP_CREATE_EXIST);
-        }
-        int resultCount = employeeService.create(employee, currentEmp);
-        if (resultCount == 0) {
-            return ServerResponse.createByErrorMessage(Const.EMP_CREATE_FAIL);
-        }
-        return ServerResponse.createBySuccessMessage(Const.EMP_CREATE_SUCCESS);
+        return employeeService.create(employee, currentEmp);
     }
 
     /**
@@ -82,16 +67,12 @@ public class EmpController {
      */
     @RequestMapping(value = "delete.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<Employee> delete(Integer empId, HttpSession session) {
+    public JsonData delete(Integer empId, HttpSession session) {
         Employee currentEmp = (Employee) session.getAttribute(Const.CURRENT_EMPLOYEE);
         if (currentEmp == null) {
-            return ServerResponse.createByErrorMessage(Const.EMP_LOGIN_NOTLOGIN);
+            return JsonData.fail(Const.EMP_LOGIN_NOTLOGIN);
         }
-        int resultCount = employeeService.delete(empId, currentEmp);
-        if (resultCount == 0) {
-            return ServerResponse.createByErrorMessage(Const.EMP_DELETE_FAIL);
-        }
-        return ServerResponse.createBySuccessMessage(Const.EMP_DELETE_SUCCESS);
+        return employeeService.delete(empId, currentEmp);
     }
 
     /**
@@ -99,16 +80,12 @@ public class EmpController {
      */
     @RequestMapping(value = "update.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<Employee> update(Employee employee, HttpSession session) {
+    public JsonData update(Employee employee, HttpSession session) {
         Employee currentEmp = (Employee) session.getAttribute(Const.CURRENT_EMPLOYEE);
         if (currentEmp == null) {
-            return ServerResponse.createByErrorMessage(Const.EMP_LOGIN_NOTLOGIN);
+            return JsonData.fail(Const.EMP_LOGIN_NOTLOGIN);
         }
-        int resultCount = employeeService.update(employee, currentEmp);
-        if (resultCount == 0) {
-            return ServerResponse.createByErrorMessage(Const.EMP_UPDATE_FAIL);
-        }
-        return ServerResponse.createBySuccessMessage(Const.EMP_UPDATE_SUCCESS);
+        return employeeService.update(employee, currentEmp);
     }
 
     /**
@@ -116,24 +93,12 @@ public class EmpController {
      */
     @RequestMapping(value = "select.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<Map<String, Object>> select(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String
+    public JsonData select(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String
             empPhone, String empMobile, String empType, HttpSession session) {
         Employee currentEmp = (Employee) session.getAttribute(Const.CURRENT_EMPLOYEE);
         if (currentEmp == null) {
-            return ServerResponse.createByErrorMessage(Const.EMP_LOGIN_NOTLOGIN);
+            return JsonData.fail(Const.EMP_LOGIN_NOTLOGIN);
         }
-        PageHelper.startPage(1, 10);
-        List<Employee> employeeList = employeeService.select(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
-        PageInfo pageInfo = new PageInfo(employeeList);
-        Map<String, Object> result = new HashMap<>(8);
-        result.put("isHasNextPage", pageInfo.isHasNextPage());
-        result.put("isHasPreviousPage", pageInfo.isHasPreviousPage());
-        result.put("isIsFirstPage", pageInfo.isIsFirstPage());
-        result.put("isIsLastPage", pageInfo.isIsLastPage());
-        result.put("total", pageInfo.getTotal());
-        result.put("pageNum", pageInfo.getPageNum());
-        result.put("pageSize", pageInfo.getPageSize());
-        result.put("empList", employeeList);
-        return ServerResponse.createBySuccess(result);
+        return employeeService.select(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
     }
 }

@@ -19,7 +19,7 @@ public interface SysDistrictMapper {
 
     int checkDistName(String distName);
 
-    int checkUseable(String distName);
+    int checkUsable(String distName);
 
     List<SysDistrict> selectAll();
 

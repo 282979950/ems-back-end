@@ -19,11 +19,11 @@ public class SysLog {
 
     private Integer createBy;
 
-    private Boolean useable;
+    private Boolean usable;
 
     private String remarks;
 
-    public SysLog(Long logId, String logTitle, String logType, String logOperator, String logOperatorIp, String logExceptionInfo, Date createTime, Integer createBy, Boolean useable, String remarks) {
+    public SysLog(Long logId, String logTitle, String logType, String logOperator, String logOperatorIp, String logExceptionInfo, Date createTime, Integer createBy, Boolean usable, String remarks) {
         this.logId = logId;
         this.logTitle = logTitle;
         this.logType = logType;
@@ -32,7 +32,7 @@ public class SysLog {
         this.logExceptionInfo = logExceptionInfo;
         this.createTime = createTime;
         this.createBy = createBy;
-        this.useable = useable;
+        this.usable = usable;
         this.remarks = remarks;
     }
 
@@ -104,12 +104,12 @@ public class SysLog {
         this.createBy = createBy;
     }
 
-    public Boolean getUseable() {
-        return useable;
+    public Boolean getUsable() {
+        return usable;
     }
 
-    public void setUseable(Boolean useable) {
-        this.useable = useable;
+    public void setUsable(Boolean usable) {
+        this.usable = usable;
     }
 
     public String getRemarks() {

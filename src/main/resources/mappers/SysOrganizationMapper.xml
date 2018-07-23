@@ -13,13 +13,13 @@
       <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean" />
       <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     id, org_id, org_name, org_code, org_category, org_parent_id,
-     create_time, create_by, update_time, update_by, useable, remarks
+     create_time, create_by, update_time, update_by, usable, remarks
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
@@ -29,20 +29,20 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sys_organization
-    where id = #{id,jdbcType=CHAR} and useable ="1"
+    where id = #{id,jdbcType=CHAR} and usable ="1"
   </delete>
   <insert id="insert" parameterType="com.ems.entity.SysOrganization" >
     insert into sys_organization (id, org_id, org_name,
       org_code, org_category,
       org_parent_id,
       create_time, create_by, update_time,
-      update_by, useable, remarks
+      update_by, usable, remarks
       )
     values (#{id,jdbcType=CHAR}, #{orgId,jdbcType=BIGINT}, #{orgName,jdbcType=VARCHAR},
       #{orgCode,jdbcType=VARCHAR}, #{orgCategory,jdbcType=VARCHAR},
       #{orgParentId,jdbcType=BIGINT},
       #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP},
-      #{updateBy,jdbcType=BIGINT}, #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
+      #{updateBy,jdbcType=BIGINT}, #{usable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ems.entity.SysOrganization" >
@@ -78,8 +78,8 @@
       <if test="updateBy != null" >
         update_by,
       </if>
-      <if test="useable != null" >
-        useable,
+      <if test="usable != null" >
+        usable,
       </if>
       <if test="remarks != null" >
         remarks,
@@ -116,8 +116,8 @@
       <if test="updateBy != null" >
         #{updateBy,jdbcType=BIGINT},
       </if>
-      <if test="useable != null" >
-        #{useable,jdbcType=BIT},
+      <if test="usable != null" >
+        #{usable,jdbcType=BIT},
       </if>
       <if test="remarks != null" >
         #{remarks,jdbcType=VARCHAR},
@@ -154,8 +154,8 @@
       <if test="updateBy != null" >
         update_by = #{updateBy,jdbcType=BIGINT},
       </if>
-      <if test="useable != null" >
-        useable = #{useable,jdbcType=BIT},
+      <if test="usable != null" >
+        usable = #{usable,jdbcType=BIT},
       </if>
       <if test="remarks != null" >
         remarks = #{remarks,jdbcType=VARCHAR},
@@ -174,7 +174,7 @@
       create_by = #{createBy,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       update_by = #{updateBy,jdbcType=BIGINT},
-      useable = #{useable,jdbcType=BIT},
+      usable = #{usable,jdbcType=BIT},
       remarks = #{remarks,jdbcType=VARCHAR}
     where id = #{id,jdbcType=CHAR}
   </update>
@@ -183,11 +183,11 @@
     select
     <include refid="Base_Column_List" />
     from sys_organization
-    where useable ="1"
+    where usable ="1"
   </select>
   <!-- 查看表中是否存在一条数据 -->
   <select id="findListByCount" resultType="java.lang.Integer">
-     SELECT COUNT(0) FROM sys_organization  WHERE useable =1
+     SELECT COUNT(0) FROM sys_organization  WHERE usable =1
   </select>
   <!-- 根据机构名称获取对应机构等级 -->
   <select id="findByOrgName" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -202,121 +202,22 @@
   <!-- 根据id查看是否存在一条记录 -->
   <select id="findIdByCount" resultType="java.lang.Integer" parameterType="java.lang.String">
 
-    SELECT COUNT(0) FROM sys_organization  WHERE useable =1 AND id=#{id}
+    SELECT COUNT(0) FROM sys_organization  WHERE usable =1 AND id=#{id}
   </select>
   <!-- 根据id修改机构名称 -->
   <update id="updateOrgNameById" parameterType="java.lang.String">
     UPDATE sys_organization SET org_name =#{orgName}
-  WHERE useable =1 AND id=#{id}
+  WHERE usable =1 AND id=#{id}
   </update>
   <!-- 删除时查看是否存在子集 -->
   <select id="selectOrganizationByid" resultType="java.lang.Integer" parameterType="java.lang.Long">
 
-     SELECT COUNT(0) FROM sys_organization  WHERE useable =1 AND org_parent_id=#{orgId}
+     SELECT COUNT(0) FROM sys_organization  WHERE usable =1 AND org_parent_id=#{orgId}
   </select>
   <!-- 删除数据此处只需要修改删除标记即可 -->
   <update id="deleteOrganization" parameterType="java.lang.String">
 
-    UPDATE sys_organization SET useable=0
+    UPDATE sys_organization SET usable=0
     WHERE   id=#{id}
   </update>
-<mapper namespace="com.ems.entity.mapper.SysOrganizationMapper">
-    <resultMap id="BaseResultMap" type="com.ems.entity.SysOrganization">
-        <constructor>
-            <arg column="org_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="org_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="org_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="org_category" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="org_parent_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="useable" jdbcType="BIT" javaType="java.lang.Boolean"/>
-            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
-        </constructor>
-    </resultMap>
-    <insert id="insert" parameterType="com.ems.entity.SysOrganization">
-        insert into sys_organization (org_id, org_name, org_code,
-        org_category, org_parent_id, create_time,
-        create_by, update_time, update_by,
-        useable, remarks)
-        values (#{orgId,jdbcType=BIGINT}, #{orgName,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR},
-        #{orgCategory,jdbcType=VARCHAR}, #{orgParentId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
-        #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT},
-        #{useable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR})
-    </insert>
-    <insert id="insertSelective" parameterType="com.ems.entity.SysOrganization">
-        insert into sys_organization
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="orgId != null">
-                org_id,
-            </if>
-            <if test="orgName != null">
-                org_name,
-            </if>
-            <if test="orgCode != null">
-                org_code,
-            </if>
-            <if test="orgCategory != null">
-                org_category,
-            </if>
-            <if test="orgParentId != null">
-                org_parent_id,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="createBy != null">
-                create_by,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
-            <if test="updateBy != null">
-                update_by,
-            </if>
-            <if test="useable != null">
-                useable,
-            </if>
-            <if test="remarks != null">
-                remarks,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="orgId != null">
-                #{orgId,jdbcType=BIGINT},
-            </if>
-            <if test="orgName != null">
-                #{orgName,jdbcType=VARCHAR},
-            </if>
-            <if test="orgCode != null">
-                #{orgCode,jdbcType=VARCHAR},
-            </if>
-            <if test="orgCategory != null">
-                #{orgCategory,jdbcType=VARCHAR},
-            </if>
-            <if test="orgParentId != null">
-                #{orgParentId,jdbcType=BIGINT},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="createBy != null">
-                #{createBy,jdbcType=BIGINT},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateBy != null">
-                #{updateBy,jdbcType=BIGINT},
-            </if>
-            <if test="useable != null">
-                #{useable,jdbcType=BIT},
-            </if>
-            <if test="remarks != null">
-                #{remarks,jdbcType=VARCHAR},
-            </if>
-        </trim>
-    </insert>
 </mapper>

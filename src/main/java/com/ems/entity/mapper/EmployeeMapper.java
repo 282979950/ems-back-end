@@ -3,7 +3,6 @@ package com.ems.entity.mapper;
 import com.ems.entity.Employee;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 public interface EmployeeMapper {
@@ -29,7 +28,7 @@ public interface EmployeeMapper {
             ("empDistrictId") Integer empDistrictId, @Param("empLoginName") String empLoginName, @Param("empPhone") String empPhone, @Param("empMobile")
                           String empMobile, @Param("empType") String empType);
 
-    int getCountWithUnuseable();
+    int getCountWithUnusable();
 
-    int deleteByEmpId(@Param("empId") Integer empId, @Param("updateTime") Date updateTime, @Param("updateBy") Integer updateBy);
+    int deleteByEmpId(@Param("empId") Integer empId, @Param("updateBy") Integer updateBy);
 }
