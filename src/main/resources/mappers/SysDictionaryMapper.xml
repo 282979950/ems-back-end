@@ -29,7 +29,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sys_dictionary
-    where id = #{id,jdbcType=CHAR}
+    where id = #{id,jdbcType=CHAR} and useable ="1"
   </delete>
   <insert id="insert" parameterType="com.ems.entity.SysDictionary" >
     insert into sys_dictionary (id, dict_id, dict_key, 
@@ -176,4 +176,29 @@
       remarks = #{remarks,jdbcType=VARCHAR}
     where id = #{id,jdbcType=CHAR}
   </update>
+  <!-- 查询所有数据List -->
+  <select id="findList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_dictionary
+    where useable ="1" 
+  </select>
+  <!-- 修改时查看是否有该条记录 -->
+   <select id="selectCountById" parameterType="java.lang.String" >
+    select 
+     COUNT(0)
+    from sys_dictionary
+    where useable ="1" 
+    and
+    id = #{id,jdbcType=CHAR}
+  </select>
+   <!-- 根据字典类型查看对应字典数据List -->
+  <select id="findListByType" resultMap="BaseResultMap" parameterType="java.lang.String"  >
+    select 
+      <include refid="Base_Column_List" />
+    from sys_dictionary
+    where useable ="1" 
+    and 
+    dict_category = #{dictCategory,jdbcType=VARCHAR}
+  </select>
 </mapper>

@@ -15,13 +15,7 @@ public class SysOrganization {
 
     private String orgCategory;//机构类别
 
-    private Boolean orgLevel;//机构等级
-
     private Long orgParentId;//父级机构
-
-    private Boolean orgIsroot;//根节点
-
-    private Boolean orgIsleaf;//分支
 
     private Date createTime;//创建时间
 
@@ -35,16 +29,13 @@ public class SysOrganization {
 
     private String remarks;//注释
 
-    public SysOrganization(String id, Long orgId, String orgName, String orgCode, String orgCategory, Boolean orgLevel, Long orgParentId, Boolean orgIsroot, Boolean orgIsleaf, Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
+    public SysOrganization(String id, Long orgId, String orgName, String orgCode, String orgCategory, Long orgParentId,  Date createTime, Long createBy, Date updateTime, Long updateBy, Boolean useable, String remarks) {
         this.id = id;
         this.orgId = orgId;
         this.orgName = orgName;
         this.orgCode = orgCode;
         this.orgCategory = orgCategory;
-        this.orgLevel = orgLevel;
         this.orgParentId = orgParentId;
-        this.orgIsroot = orgIsroot;
-        this.orgIsleaf = orgIsleaf;
         this.createTime = createTime;
         this.createBy = createBy;
         this.updateTime = updateTime;
@@ -97,36 +88,12 @@ public class SysOrganization {
         this.orgCategory = orgCategory == null ? null : orgCategory.trim();
     }
 
-    public Boolean getOrgLevel() {
-        return orgLevel;
-    }
-
-    public void setOrgLevel(Boolean orgLevel) {
-        this.orgLevel = orgLevel;
-    }
-
     public Long getOrgParentId() {
         return orgParentId;
     }
 
     public void setOrgParentId(Long orgParentId) {
         this.orgParentId = orgParentId;
-    }
-
-    public Boolean getOrgIsroot() {
-        return orgIsroot;
-    }
-
-    public void setOrgIsroot(Boolean orgIsroot) {
-        this.orgIsroot = orgIsroot;
-    }
-
-    public Boolean getOrgIsleaf() {
-        return orgIsleaf;
-    }
-
-    public void setOrgIsleaf(Boolean orgIsleaf) {
-        this.orgIsleaf = orgIsleaf;
     }
 
     public Date getCreateTime() {
