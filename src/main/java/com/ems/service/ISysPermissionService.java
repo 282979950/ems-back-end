@@ -1,9 +1,8 @@
 package com.ems.service;
 
+import com.ems.common.JsonData;
 import com.ems.entity.Employee;
 import com.ems.entity.SysPermission;
-
-import java.util.List;
 
 /**
  * 系统权限服务接口
@@ -17,7 +16,7 @@ public interface ISysPermissionService {
      * @param currentEmp
      * @return
      */
-    int createPermission(SysPermission permission, Employee currentEmp);
+    JsonData createPermission(SysPermission permission, Employee currentEmp);
 
     /**
      * 更新权限
@@ -26,7 +25,7 @@ public interface ISysPermissionService {
      * @return
      */
 
-    int updatePermission(SysPermission permission, Employee currentEmp);
+    JsonData updatePermission(SysPermission permission, Employee currentEmp);
 
     /**
      * 删除权限（假删除）
@@ -34,7 +33,7 @@ public interface ISysPermissionService {
      * @param permId
      * @return
      */
-    int deletePermission(Integer permId, Employee currentEmp);
+    JsonData deletePermission(Integer permId, Employee currentEmp);
 
     /**
      * 依据权限名称和目录名称查询权限
@@ -44,5 +43,5 @@ public interface ISysPermissionService {
      * @param menuName
      * @return
      */
-    List<SysPermission> selectPermission(String permName, Integer permType, String menuName);
+    JsonData selectPermission(String permName, Integer permType, String menuName);
 }

@@ -31,4 +31,6 @@ public interface EmployeeMapper {
     int getCountWithUnusable();
 
     int deleteByEmpId(@Param("empId") Integer empId, @Param("updateBy") Integer updateBy);
+
+    Employee selectByEmpId(@Param("empId") Integer empId);
 }

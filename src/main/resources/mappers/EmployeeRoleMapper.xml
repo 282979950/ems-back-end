@@ -140,4 +140,10 @@
         remarks = #{remarks,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <select id="selectByEmpId" parameterType="integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM employee_role
+        WHERE emp_id = #{empId,jdbcType=INTEGER} AND usable = 1
+    </select>
 </mapper>

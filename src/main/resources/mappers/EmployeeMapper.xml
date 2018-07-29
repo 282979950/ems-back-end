@@ -359,4 +359,10 @@
         usable = 0
         WHERE emp_id = #{empId,jdbcType=INTEGER}
     </update>
+    <select id="selectByEmpId" parameterType="integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM employee
+        WHERE emp_id = #{empId,jdbcType=INTEGER} usable = 1
+    </select>
 </mapper>

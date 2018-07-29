@@ -28,11 +28,13 @@ public class SysPermission extends BaseEntity {
     /**
      * 权限类型
      */
+    @NotNull
     private Integer permType;
 
     /**
      * 目录ID
      */
+    @NotNull
     private Integer menuId;
 
     public SysPermission(Integer permId, String permName, Integer permType, Integer menuId, Date createTime, Integer createBy, Date updateTime, Integer

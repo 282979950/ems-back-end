@@ -1,9 +1,12 @@
 package com.ems.service.impl;
 
+import com.ems.common.BeanValidator;
 import com.ems.common.Const;
-import com.ems.dto.SysRoleDTO;
+import com.ems.common.JsonData;
 import com.ems.entity.SysRole;
 import com.ems.entity.mapper.SysRoleMapper;
+import com.ems.exception.ParameterException;
+import com.ems.param.SysRoleParam;
 import com.ems.service.ISysRolePermService;
 import com.ems.service.ISysRoleService;
 import com.google.common.collect.Lists;
@@ -39,72 +42,99 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     @Override
     @Transactional(readOnly = false)
-    public int createRole(SysRoleDTO roleDTO) {
-        String roleName = roleDTO.getRoleName();
+    public JsonData createRole(SysRoleParam roleParam) {
+        BeanValidator.check(roleParam);
+        String roleName = roleParam.getRoleName();
         if (checkRoleNameExist(roleName)) {
-            return 0;
+            throw new ParameterException("角色名称已存在");
         }
         SysRole role = new SysRole();
         role.setRoleName(roleName);
-        role.setRoleDists(StringUtils.join(roleDTO.getDistIdList(), Const.DEFAULT_SEPARATOR));
-        role.setRoleOrgs(StringUtils.join(roleDTO.getOrgIdList(), Const.DEFAULT_SEPARATOR));
-        role.setRemarks(roleDTO.getRemarks());
+        role.setRoleDists(StringUtils.join(roleParam.getDistIdList(), Const.DEFAULT_SEPARATOR));
+        role.setRoleOrgs(StringUtils.join(roleParam.getOrgIdList(), Const.DEFAULT_SEPARATOR));
+        role.setRemarks(roleParam.getRemarks());
         // TODO: 2018/7/18
         role.setCreateBy(1000000000);
         role.setUpdateBy(1000000000);
         int resultCount = roleMapper.insertSelective(role);
+        if (resultCount == 0) {
+            return JsonData.fail("创建角色失败");
+        }
         Integer roleId = roleMapper.getRoleIdByName(roleName);
-        rolePermService.changeRolePerms(roleId, roleDTO.getPermIdList());
-        return resultCount;
+        JsonData data = rolePermService.changeRolePerms(roleId, roleParam.getPermIdList());
+        if (data.isStatus()) {
+            return JsonData.successMsg("创建角色成功");
+        } else {
+            return JsonData.fail("创建角色失败");
+        }
     }
 
     @Override
-    public int updateRole(SysRoleDTO roleDTO) {
-        Integer roleId = roleDTO.getRoleId();
-        //检查roleId是否存在
+    @Transactional(readOnly = false)
+    public JsonData updateRole(SysRoleParam roleParam) {
+        Integer roleId = roleParam.getRoleId();
         if (!checkRoleIdExist(roleId)) {
-            return 0;
+            throw new ParameterException("角色ID不存在");
         }
         SysRole sysRole = getRoleById(roleId);
+        if (sysRole == null) {
+            throw new ParameterException("角色不存在");
+        }
         sysRole.setRoleName(null);
-        String roleName = roleDTO.getRoleName();
-        //检查新的roleName是否存在
+        String roleName = roleParam.getRoleName();
         if (checkRoleNameExist(roleName)) {
-            return 0;
+            throw new ParameterException("角色名称已存在");
         }
         sysRole.setRoleName(roleName);
-        sysRole.setRoleDists(StringUtils.join(roleDTO.getDistIdList(), Const.DEFAULT_SEPARATOR));
-        sysRole.setRoleOrgs(StringUtils.join(roleDTO.getOrgIdList(), Const.DEFAULT_SEPARATOR));
+        sysRole.setRoleDists(StringUtils.join(roleParam.getDistIdList(), Const.DEFAULT_SEPARATOR));
+        sysRole.setRoleOrgs(StringUtils.join(roleParam.getOrgIdList(), Const.DEFAULT_SEPARATOR));
         sysRole.setCreateBy(1000000000);
         sysRole.setUpdateBy(1000000000);
         int resultCount = roleMapper.updateByPrimaryKey(sysRole);
-        rolePermService.changeRolePerms(roleId, roleDTO.getPermIdList());
-        return resultCount;
+        if (resultCount == 0) {
+            return JsonData.fail("更新角色失败");
+        }
+        JsonData data = rolePermService.changeRolePerms(roleId, roleParam.getPermIdList());
+        if (data.isStatus()) {
+            return JsonData.successMsg("创建角色成功");
+        } else {
+            return JsonData.fail("创建角色失败");
+        }
     }
 
     @Override
-    public int deleteRole(Integer roleId) {
-        //检查roleId是否存在
+    @Transactional(readOnly = false)
+    public JsonData deleteRole(Integer roleId) {
         if (!checkRoleIdExist(roleId)) {
-            return 0;
+            throw new ParameterException("角色ID不存在");
         }
         SysRole sysRole = getRoleById(roleId);
+        if (sysRole == null) {
+            throw new ParameterException("角色不存在");
+        }
         sysRole.setUsable(false);
         // TODO: 2018/7/19
         int resultCount = roleMapper.deleteRoleById(roleId, 1000000000);
+        if (resultCount == 0) {
+            return JsonData.fail("删除角色失败");
+        }
         rolePermService.deleteRolePerms(roleId);
-        return resultCount;
+        return JsonData.successMsg("删除角色成功");
     }
 
     @Override
-    public List<SysRole> selectRole(String roleName) {
+    public JsonData selectRole(String roleName) {
         List<SysRole> roleList = Lists.newArrayList();
         for (SysRole sysRole : sysRoleList) {
-            if(sysRole.getRoleName().contains(roleName)){
+            if (sysRole.getRoleName().contains(roleName)) {
                 roleList.add(sysRole);
             }
         }
-        return roleList;
+        if (roleList.size() == 0) {
+            return JsonData.successMsg("查询结果为空");
+        } else {
+            return JsonData.successData(roleList);
+        }
     }
 
     private boolean checkRoleIdExist(Integer roleId) {

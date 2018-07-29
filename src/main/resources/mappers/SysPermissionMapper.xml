@@ -32,12 +32,11 @@
     <insert id="insert" parameterType="com.ems.entity.SysPermission">
         insert into sys_permission (perm_id, perm_name, perm_type,
         menu_id, create_time, create_by,
-        update_time, update_by, usable,
+        update_time, update_by,
         remarks)
         values (#{permId,jdbcType=INTEGER}, #{permName,jdbcType=VARCHAR}, #{permType,jdbcType=INTEGER},
-        #{menuId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
-        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},
-        #{remarks,jdbcType=VARCHAR})
+        #{menuId,jdbcType=INTEGER}, NOW(), #{createBy,jdbcType=INTEGER}, NOW(),
+        #{updateBy,jdbcType=INTEGER},#{remarks,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.ems.entity.SysPermission">
         insert into sys_permission
@@ -165,20 +164,17 @@
         perm_name = #{permName,jdbcType=VARCHAR},
         perm_type = #{permType,jdbcType=INTEGER},
         menu_id = #{menuId,jdbcType=INTEGER},
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-        create_by = #{createBy,jdbcType=INTEGER},
         update_time = #{updateTime,jdbcType=TIMESTAMP},
-        update_by = #{updateBy,jdbcType=INTEGER},
-        usable = #{usable,jdbcType=BIT},
+        update_by = NOW(),
         remarks = #{remarks,jdbcType=VARCHAR}
         where perm_id = #{permId,jdbcType=INTEGER}
     </update>
     <update id="deleteByPermId" parameterType="com.ems.entity.SysPermission">
         update sys_permission
         set
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = NOW(),
         update_by = #{updateBy,jdbcType=INTEGER},
-        usable = #{usable,jdbcType=BIT},
+        usable = 0,
         where perm_id = #{permId,jdbcType=INTEGER}
     </update>
     <select id="select" parameterType="map" resultMap="BaseResultMap">
