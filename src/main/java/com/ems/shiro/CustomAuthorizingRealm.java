@@ -79,13 +79,16 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
         }
 
         // 校验用户名密码
-        Employee emp = employeeService.selectEmpLogin(userName, password);
+        Employee emp = employeeService.getEmpByLoginName(userName);
+        if (emp == null) {
+            return null;
+        }
         if (emp.getEmpLoginFlag().equals(Global.FALSE)) {
             throw new AuthenticationException("该帐号已禁止登录,请联系管理员");
         }
         Principal principal = new Principal(emp);
         infoCache.remove(principal);
-        return new SimpleAuthenticationInfo(principal, password, ByteSource.Util.bytes(Global.DEFAULT_MD5_SALT), getName());
+        return new SimpleAuthenticationInfo(principal, emp.getEmpPassword(), ByteSource.Util.bytes(Global.DEFAULT_MD5_SALT), getName());
     }
 
     /**

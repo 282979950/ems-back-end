@@ -307,6 +307,12 @@
         from employee
         where emp_login_name = #{empLoginName} and emp_password = #{empPassword} and usable = 1
     </select>
+    <select id="getEmpByLoginName" resultMap="BaseResultMap" parameterType="string">
+        select
+        <include refid="Base_Column_List"/>
+        from employee
+        where emp_login_name = #{empLoginName,jdbcType=VARCHAR} and usable = 1
+    </select>
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>

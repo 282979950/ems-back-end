@@ -11,10 +11,11 @@
     <title>表具管理系统</title>
 </head>
 <body>
-<form action="login.do">
-    <input type="text" name="username"> <br>
-    <input type="password" name="password"> <br>
+<form action="login" method="post">
+    <input type="text" name="username" value="${username}"><br>
+    <input type="password" name="password" value="${password}"> <br>
     <input type="submit" value="提交">
+    <p>${message}</p>
 </form>
 </body>
 </html>

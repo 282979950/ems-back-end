@@ -60,6 +60,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
+    public Employee getEmpByLoginName(String empLoginName) {
+        return employeeMapper.getEmpByLoginName(empLoginName);
+    }
+
+    @Override
     public Employee selectEmpLogin(String empLoginName, String empPassword) {
         if (!checkEmpLoginName(empLoginName)) {
             throw new ParameterException("用户登录名不存在");

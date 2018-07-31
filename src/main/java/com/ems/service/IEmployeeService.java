@@ -27,6 +27,14 @@ public interface IEmployeeService {
     Employee selectEmpLogin(String empLoginName, String empPassword);
 
     /**
+     * 根据登录名获取员工登录信息
+     *
+     * @param empLoginName
+     * @return
+     */
+    Employee getEmpByLoginName(String empLoginName);
+
+    /**
      * 检查登录名是否存在(0不存在,1存在)
      *
      * @return

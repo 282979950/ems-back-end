@@ -14,7 +14,7 @@
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="customAuthorizingRealm"/>
         <property name="sessionManager" ref="customSessionManager"/>
-        <!--<property name="cacheManager" ref="shiroCacheManager"/>-->
+        <property name="cacheManager" ref="shiroCacheManager"/>
     </bean>
 
     <!--自定义Realm-->
@@ -66,12 +66,12 @@
     <!-- 安全认证过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login.jsp"/>
-        <property name="successUrl" value="/index.jsp"/>
+        <property name="loginUrl" value="/login"/>
+        <property name="successUrl" value="/index"/>
         <property name="filters">
             <map>
                 <entry key="authc" value-ref="customFormAuthenticationFilter"/>
-                <entry key="user" value-ref="userAuthorizationFilter"/>
+                <!--<entry key="user" value-ref="userAuthorizationFilter"/>-->
             </map>
         </property>
         <property name="filterChainDefinitions" ref="shiroFilterChainDefinitions"/>
@@ -86,8 +86,7 @@
     <bean name="shiroFilterChainDefinitions" class="java.lang.String">
         <constructor-arg>
             <value>
-                /login.jsp=anon
-                /login.do=authc
+                /login=authc
                 /logout=logout
                 /unauthorize=authc
                 /**=user,perms

@@ -1,5 +1,6 @@
 package com.ems.shiro;
 
+import com.ems.common.Const;
 import com.ems.utils.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
@@ -52,15 +53,15 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
         String className = e.getClass().getName();
         String message;
         if (e instanceof UnknownAccountException) {
-            throw new AuthenticationException("用户登录名不存在, 请重试.");
+            message = Const.EMP_LOGIN_NOTEXIST;
         } else if (e instanceof IncorrectCredentialsException) {
-            throw new AuthenticationException("用户密码错误，请重试！");
+            message = Const.EMP_LOGIN_ERRORPASSWORD;
         } else if (e.getMessage() != null && StringUtils.startsWith(e.getMessage(), "msg:")) {
             // TODO: 2018/7/26 清理msg：开头的异常消息
             message = StringUtils.replace(e.getMessage(), "msg:", "");
         } else {
             e.printStackTrace();
-            throw new RuntimeException("系统出现点问题，请稍后再试！");
+            message = Const.EMP_LOGIN_EXCEPTION;
         }
         request.setAttribute(getFailureKeyAttribute(), className);
         request.setAttribute(DEFAULT_MESSAGE_PARAM, message);

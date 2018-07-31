@@ -48,8 +48,8 @@ CREATE TABLE `employee` (
   KEY `emp_district_id_index` (`emp_district_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1000000001 DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `employee` VALUES ('1000000000', 'test00', 'test00', '1001', '1011', 'ltr00', 'F68625125825F5EF868864F306759FC6', null, null, null, null, '测试员', '', null, null, '1', null, null, '2018-07-10 12:03:40', null, '1', null);
-
+INSERT INTO `employee` VALUES ('1000000000', 'test00', 'test00', '1001', '1011', 'ltr00', 'F68625125825F5EF868864F306759FC6', null, null, null, null, '测试员','', null, null, '1', null, null, '2018-07-10 12:03:40', null, '1', null);
+INSERT INTO `employee` VALUES ('1000000001', 'admin', 'admin', '1001', '1001', 'admin', '191ee01c52eee2056317f96d10d1ae48', '', '', '', '', '管理员', '', '', null, '1', null, null, null, null, '1', '');
 -- ----------------------------
 -- 员工位置信息表
 -- ----------------------------

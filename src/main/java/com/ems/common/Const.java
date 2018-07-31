@@ -13,6 +13,8 @@ public class Const {
 
     public static final String EMP_LOGIN_ERRORPASSWORD = "用户密码错误";
 
+    public static final String EMP_LOGIN_EXCEPTION = "用户登录认证异常";
+
     public static final String EMP_LOGIN_SUCCESS = "用户登录成功";
 
     public static final String EMP_LOGIN_NOTLOGIN = "用户未登录";
