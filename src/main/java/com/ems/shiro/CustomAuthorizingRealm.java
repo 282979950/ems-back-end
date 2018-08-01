@@ -72,7 +72,6 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 
         String userName = token.getUsername();
-        String password = new String(token.getPassword());
         int activeSessionSize = systemService.getSessionDao().getActiveSessions(false).size();
         if (log.isDebugEnabled()) {
             log.debug("login submit, active session size: {}, username: {}", activeSessionSize, token.getUsername());

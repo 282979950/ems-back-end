@@ -1,23 +1,17 @@
 package com.ems.controller;
 
-import com.ems.common.Const;
-import com.ems.common.JsonData;
-import com.ems.service.IEmployeeService;
 import com.ems.shiro.CustomFormAuthenticationFilter;
 import com.ems.shiro.Principal;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * @author litairan on 2018/7/27.
@@ -25,9 +19,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/")
 public class LoginController {
-
-    @Autowired
-    private IEmployeeService employeeService;
 
     /**
      * 进入登录页面
@@ -65,17 +56,20 @@ public class LoginController {
      * 进入主页
      */
     @RequestMapping(value = "index", method = RequestMethod.GET)
-    public String index() {
+    public String index(Model model) {
+        Subject subject = SecurityUtils.getSubject();
+        Principal principal = (Principal) subject.getPrincipal();
+        model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, principal.getLoginName());
         return "index";
     }
 
     /**
      * 员工登出
      */
-    @RequestMapping(value = "logout", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonData logout(HttpSession session) {
-        session.removeAttribute(Const.CURRENT_EMPLOYEE);
-        return JsonData.successMsg(Const.EMP_LOGOUT_SUCCESS);
+    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    public String logout(HttpServletRequest request, Model model) {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return "login";
     }
 }

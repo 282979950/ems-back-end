@@ -11,6 +11,9 @@
     <title>表具管理系统</title>
 </head>
 <body>
-欢迎使用表具管理系统！
+${username}，欢迎使用表具管理系统！
+<form action="logout" method="post">
+    <input type="submit" value="登出">
+</form>
 </body>
 </html>

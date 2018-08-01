@@ -14,7 +14,7 @@
 <form action="login" method="post">
     <input type="text" name="username" value="${username}"><br>
     <input type="password" name="password" value="${password}"> <br>
-    <input type="submit" value="提交">
+    <input type="submit" value="登录">
     <p>${message}</p>
 </form>
 </body>
