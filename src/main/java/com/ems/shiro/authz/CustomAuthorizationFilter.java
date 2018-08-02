@@ -1,4 +1,4 @@
-package com.ems.shiro;
+package com.ems.shiro.authz;
 
 import com.ems.service.SystemService;
 import com.ems.utils.ServletUtils;

@@ -4,6 +4,7 @@ import com.ems.common.Const;
 import com.ems.common.JsonData;
 import com.ems.entity.Employee;
 import com.ems.service.IEmployeeService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ public class EmpController {
     /**
      * 新建员工
      */
+    @RequiresRoles("sys:emp:create")
     @RequestMapping(value = "create.do", method = RequestMethod.GET)
     @ResponseBody
     public JsonData create(Employee employee, HttpSession session) {
@@ -38,6 +40,7 @@ public class EmpController {
     /**
      * 删除员工（假删除）
      */
+    @RequiresRoles("sys:emp:delete")
     @RequestMapping(value = "delete.do", method = RequestMethod.GET)
     @ResponseBody
     public JsonData delete(Integer empId, HttpSession session) {
@@ -51,6 +54,7 @@ public class EmpController {
     /**
      * 更新员工
      */
+    @RequiresRoles("sys:emp:update")
     @RequestMapping(value = "update.do", method = RequestMethod.GET)
     @ResponseBody
     public JsonData update(Employee employee, HttpSession session) {
@@ -64,6 +68,7 @@ public class EmpController {
     /**
      * 查询员工
      */
+    @RequiresRoles("sys:emp:retrive")
     @RequestMapping(value = "select.do", method = RequestMethod.GET)
     @ResponseBody
     public JsonData select(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String

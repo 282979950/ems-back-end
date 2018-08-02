@@ -30,7 +30,7 @@ public class Global {
     /**
      * 属性文件加载对象
      */
-    private static PropertiesLoader loader = new PropertiesLoader("tdmh.properties");
+    private static PropertiesLoader loader = new PropertiesLoader("ems.properties");
 
     /**
      * 显示/隐藏
@@ -71,9 +71,14 @@ public class Global {
     public static final String UPDATE_APP_FILE = "update_pakage/";
 
     /**
-     *
+     * 系统默认盐
      */
     public static final String DEFAULT_MD5_SALT = "TDMHEMS";
+
+    /**
+     * 是否允许用户多次登录
+     */
+    public static final boolean USER_MUTIL_LOGIN_ALLOWED = false;
 
     /**
      * 获取当前对象实例

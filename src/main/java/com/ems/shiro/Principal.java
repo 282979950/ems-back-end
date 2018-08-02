@@ -44,15 +44,4 @@ public class Principal implements Serializable {
         this.userType = employee.getEmpType();
         this.distId = employee.getEmpDistrictId();
     }
-
-    /**
-     * 获取SESSIONID
-     */
-//    public String getSessionId() {
-//        try {
-//            return (String) UserUtils.getSession().getId();
-//        } catch (Exception e) {
-//            return "";
-//        }
-//    }
 }

@@ -1,4 +1,4 @@
-package com.ems.shiro;
+package com.ems.shiro.authc;
 
 import com.ems.common.Const;
 import com.ems.utils.StringUtils;

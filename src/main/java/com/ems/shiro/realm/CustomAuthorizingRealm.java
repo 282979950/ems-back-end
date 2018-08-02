@@ -1,9 +1,13 @@
-package com.ems.shiro;
+package com.ems.shiro.realm;
 
 import com.ems.common.Global;
 import com.ems.entity.Employee;
+import com.ems.entity.SysPermission;
+import com.ems.entity.SysRole;
 import com.ems.service.IEmployeeService;
 import com.ems.service.SystemService;
+import com.ems.shiro.Principal;
+import com.ems.shiro.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -13,6 +17,7 @@ import org.apache.shiro.authz.permission.WildcardPermission;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
@@ -47,7 +52,7 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 
     private SessionManager sessionManager;
 
-    private Cache<String, Deque<Serializable>> cache;
+    private Cache<Integer, Deque<Serializable>> cache;
 
     private Cache<Principal, SimpleAuthorizationInfo> infoCache;
 
@@ -67,16 +72,12 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) {
-        log.info("==enter login doGetAuthenticationInfo==");
-
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-
         String userName = token.getUsername();
-        int activeSessionSize = systemService.getSessionDao().getActiveSessions(false).size();
-        if (log.isDebugEnabled()) {
-            log.debug("login submit, active session size: {}, username: {}", activeSessionSize, token.getUsername());
-        }
-
+//        int activeSessionSize = systemService.getSessionDao().getActiveSessions(false).size();
+//        if (log.isDebugEnabled()) {
+//            log.debug("login submit, active session size: {}, username: {}", activeSessionSize, token.getUsername());
+//        }
         // 校验用户名密码
         Employee emp = employeeService.getEmpByLoginName(userName);
         if (emp == null) {
@@ -95,29 +96,23 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-//        log.info("==enter doGetAuthorizationInfo====");
-//
-//        Principal principal = (Principal) getAvailablePrincipal(principals);
-//
-//        boolean mobileLogin = principal.isMobileLogin();
-//
-//        log.info("===enter doGetAuthorizationInfo=mobileLogin===" + mobileLogin);
-//
-//        // 获取当前已登录的用户
-//        if (!Global.TRUE.equals(Global.getConfig("user.multiAccountLogin")) && mobileLogin) {
-//            Subject subject = UserUtils.getSubject();
+        log.info("==enter doGetAuthorizationInfo====");
+
+        Principal principal = (Principal) getAvailablePrincipal(principals);
+
+        // 获取当前已登录的用户
+//        if (!Boolean.valueOf(Global.getConfig("user.multiLoginAllowed"))) {
+//            Subject subject = ShiroUtils.getSubject();
 //            Session session = subject.getSession();
 //            Serializable sessionId = session.getId();
 //            Principal p = (Principal) subject.getPrincipal();
-//            log.info("==principal userid==" + principal.getId() + "===p userid==" + p.getId() + "===session id==" + sessionId);
 //            if (principal.equals(p)) {
-//                String userId = p.getId();
+//                Integer userId = p.getId();
 //                Deque<Serializable> deque = cache.get(userId);
 //                if (deque == null) {
-//                    deque = new LinkedList<Serializable>();
+//                    deque = new LinkedList<>();
 //                    cache.put(userId, deque);
 //                }
-//                log.info("====begin deque===" + deque.size());
 //                Collection<Session> _sessions = systemService.getSessionDao().getActiveSessions(true, principal, session);
 //                int count = 0;
 //                for (Session s : _sessions) {
@@ -131,70 +126,49 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 //                }
 //                //如果队列里没有此sessionId，且用户没有被踢出；放入队列
 //                if (!deque.contains(sessionId) && session.getAttribute("kickout") == null) {
-//                    //	log.info("====put sessionid=="+sessionId);
 //                    deque.push(sessionId);
 //                }
-//                log.info("==deque size==" + deque.size());
 //                //如果队列里的sessionId数超出最大会话数，开始踢人
 //                while (deque.size() > maxSession) {
-//                    Serializable kickoutSessionId = null;
-//                    //踢后者，当不是正常退出时，得等到超时才能再次登录，故不建议用
-//                    if (Global.TRUE.equals(Global.getConfig("user.kickoutAfter"))) { //如果踢出后者
-//                        kickoutSessionId = deque.getFirst();
+//                    Serializable kickoutSessionId;
+//                    if (Boolean.valueOf(Global.getConfig("user.kickoutAfter"))) {
 //                        kickoutSessionId = deque.removeFirst();
-//                    } else { //否则踢出前者
+//                    } else {
 //                        kickoutSessionId = deque.removeLast();
 //                    }
 //                    try {
-//                        log.info("====kickoutSessionId===" + kickoutSessionId);
 //                        Collection<Session> sessions = systemService.getSessionDao().getActiveSessions(true, principal, null);
 //                        for (Session s : sessions) {
 //                            String sid = (String) s.getId();
-//                            //log.info("====for each session id==="+sid);
 //                            if (sid.equals(kickoutSessionId)) {
 //                                s.setAttribute("kickout", true);
 //                            }
 //                        }
-//                    } catch (Exception e) {//ignore exception
+//                    } catch (Exception e) {
 //                        log.error("==Session set attribute==" + e.getMessage());
 //                    }
 //                }
 //            }
 //        }
-//        log.info("====SystemAuthorizingRealm  query user begin==");
-//        User user = systemService.getUserByLoginName(principal.getLoginName());
-//        log.info("====SystemAuthorizingRealm query user end==" + user.getLoginName());
-//        if (user != null) {
-//            Session session = UserUtils.getSession();
-//            log.info("====SystemAuthorizingRealm session==" + session.toString() + "==session=" + session);
-//            session.setAttribute(Global.SESSION_USER_ID, user.getId());
-//            SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-//            List<Menu> list = UserUtils.getMenuList();
-//            for (Menu menu : list) {
-//                //	log.info("==permission=="+menu.getPermission());
-//                if (StringUtils.isNotBlank(menu.getPermission())) {
-//                    // 添加基于Permission的权限信息
-//                    for (String permission : StringUtils.split(menu.getPermission(), ",")) {
-//                        info.addStringPermission(permission);
-//                    }
-//                }
-//            }
-//            // 添加用户权限
-//            info.addStringPermission("user");
-//            // 添加用户角色信息
-//            for (Role role : user.getRoleList()) {
-//                info.addRole(role.getEnname());
-//            }
-//            infoCache.put(principal, info);
-//            // 更新登录IP和时间
-//            systemService.updateUserLoginInfo(user);
-//            // 记录登录日志
-//            LogUtils.saveLog(Servlets.getRequest(), "系统登录");
-//            return info;
-//        } else {
-//            return null;
-//        }
-        return null;
+        Employee emp = employeeService.getEmpByLoginName(principal.getLoginName());
+        if (emp == null) {
+            return null;
+        }
+        Session session = ShiroUtils.getSession();
+        session.setAttribute(Global.SESSION_USER_ID, emp.getEmpId());
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        Set<SysRole> roles = emp.getRoles();
+        for (SysRole role : roles) {
+            info.addRole(role.getRoleName());
+            Set<SysPermission> permissions = role.getPermissions();
+            for (SysPermission permission : permissions) {
+                info.addStringPermission(permission.getPermName());
+            }
+        }
+        info.addRole("user");
+        infoCache.put(principal, info);
+        // TODO: 2018/8/1 更新登录IP和时间
+        return info;
     }
 
     @Override
@@ -223,15 +197,16 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo info = infoCache.get(principal);
         if (info != null) {
             Set<String> permissions = info.getStringPermissions();
-            boolean flag = false;
+            if (permissions == null) {
+                return false;
+            }
             for (String p : permissions) {
                 Permission pp = new WildcardPermission(p);
                 if (permission.equals(pp)) {
-                    flag = true;
-                    break;
+                    return true;
                 }
             }
-            return flag;
+            return false;
         } else {
             return super.isPermitted(principals, permission);
         }

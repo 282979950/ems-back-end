@@ -4,10 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-import javax.management.relation.Role;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 员工表实体
@@ -110,7 +109,7 @@ public class Employee extends BaseEntity {
     /**
      * 员工角色列表
      */
-    private List<Role> roleList;
+    private Set<SysRole> roles;
 
     public Employee(Integer empId, String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPassword, String
             empEmail, String empPhone, String empMobile, String empAddress, String empType, String empManagementDistId, String empLoginIp, Date empLoginDate,

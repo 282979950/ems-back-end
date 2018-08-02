@@ -1,6 +1,6 @@
 package com.ems.service;
 
-import com.ems.shiro.CustomAuthorizingRealm;
+import com.ems.shiro.realm.CustomAuthorizingRealm;
 import com.ems.shiro.session.SessionDAO;
 import com.ems.utils.DigestUtils;
 import com.ems.utils.Encodes;

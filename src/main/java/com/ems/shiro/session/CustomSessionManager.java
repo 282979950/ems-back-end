@@ -1,4 +1,4 @@
-package com.ems.shiro;
+package com.ems.shiro.session;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.session.InvalidSessionException;

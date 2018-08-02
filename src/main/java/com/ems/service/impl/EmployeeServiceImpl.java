@@ -183,7 +183,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
             return null;
         }
         // TODO: 2018/7/25 设置角色信息
-        emp.setRoleList(employeeRoleMapper.selectByEmpId(empId));
+//        emp.setRoleList(employeeRoleMapper.selectByEmpId(empId));
         sysCacheService.put(USER_CACHE, USER_CACHE_ID_ + emp.getEmpId(), emp);
         sysCacheService.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + emp.getEmpLoginName(), emp);
         return emp;

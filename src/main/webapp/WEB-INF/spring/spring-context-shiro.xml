@@ -18,7 +18,7 @@
     </bean>
 
     <!--自定义Realm-->
-    <bean id="customAuthorizingRealm" class="com.ems.shiro.CustomAuthorizingRealm">
+    <bean id="customAuthorizingRealm" class="com.ems.shiro.realm.CustomAuthorizingRealm">
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
     </bean>
 
@@ -29,7 +29,7 @@
     </bean>
 
     <!-- 自定义会话管理配置 -->
-    <bean id="customSessionManager" class="com.ems.shiro.CustomSessionManager">
+    <bean id="customSessionManager" class="com.ems.shiro.session.CustomSessionManager">
         <property name="sessionDAO" ref="sessionDAO"/>
         <!-- 会话超时时间，单位：毫秒  -->
         <property name="globalSessionTimeout" value="28800000"/>
@@ -71,16 +71,16 @@
         <property name="filters">
             <map>
                 <entry key="authc" value-ref="customFormAuthenticationFilter"/>
-                <!--<entry key="user" value-ref="userAuthorizationFilter"/>-->
+                <entry key="user" value-ref="customAuthorizationFilter"/>
             </map>
         </property>
         <property name="filterChainDefinitions" ref="shiroFilterChainDefinitions"/>
     </bean>
 
     <!--表单验证过滤器-->
-    <bean id="customFormAuthenticationFilter" class="com.ems.shiro.CustomFormAuthenticationFilter"/>
+    <bean id="customFormAuthenticationFilter" class="com.ems.shiro.authc.CustomFormAuthenticationFilter"/>
     <!--用户权限过滤器-->
-    <bean id="userAuthorizationFilter" class="com.ems.shiro.CustomAuthorizationFilter"/>
+    <bean id="customAuthorizationFilter" class="com.ems.shiro.authz.CustomAuthorizationFilter"/>
 
     <!-- Shiro权限过滤过滤器定义 -->
     <bean name="shiroFilterChainDefinitions" class="java.lang.String">
@@ -88,21 +88,9 @@
             <value>
                 /login=authc
                 /logout=logout
-                /unauthorize=authc
-                /**=user,perms
+                <!--/index=roles[user]-->
+                /**=user
             </value>
         </constructor-arg>
     </bean>
-
-    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
-    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-
-    <!-- AOP式方法级权限检查  -->
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
-        <property name="proxyTargetClass" value="true"/>
-    </bean>
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
-    </bean>
-
 </beans>

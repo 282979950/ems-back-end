@@ -3,6 +3,7 @@ package com.ems.controller;
 import com.ems.common.JsonData;
 import com.ems.entity.SysDistrict;
 import com.ems.service.ISysDistrictService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class SysDistrictController {
      *
      * @return
      */
+    @RequiresPermissions("sys:dist:visit")
     @RequestMapping("getDistTree.do")
     @ResponseBody
     public JsonData getDistTree() {
@@ -34,6 +36,7 @@ public class SysDistrictController {
      *
      * @return
      */
+    @RequiresPermissions("sys:dist:visit")
     @RequestMapping("getDistrictList.do")
     @ResponseBody
     public JsonData getDistrictList() {
@@ -44,6 +47,7 @@ public class SysDistrictController {
      * 新增区域
      *
      */
+    @RequiresPermissions("sys:dist:create")
     @RequestMapping("createDistrict.do")
     @ResponseBody
     public JsonData createDistrict(SysDistrict district) {
@@ -53,6 +57,7 @@ public class SysDistrictController {
     /**
      * 删除区域
      */
+    @RequiresPermissions("sys:dist:delete")
     @RequestMapping("deleteDistrict.do")
     @ResponseBody
     public JsonData deleteDistrict(SysDistrict district) {
@@ -62,6 +67,7 @@ public class SysDistrictController {
     /**
      * 更新区域
      */
+    @RequiresPermissions("sys:dist:update")
     @RequestMapping("updateDistrict.do")
     @ResponseBody
     public JsonData updateDistrict(SysDistrict district) {
@@ -71,6 +77,7 @@ public class SysDistrictController {
     /**
      * 依据区域名称查询
      */
+    @RequiresPermissions("sys:dist:retrive")
     @RequestMapping("selectByName.do")
     @ResponseBody
     public JsonData selectByName(String name) {
@@ -80,6 +87,7 @@ public class SysDistrictController {
     /**
      * 依据区域名称查询
      */
+    @RequiresPermissions("sys:dist:retrive")
     @RequestMapping("selectByCode.do")
     @ResponseBody
     public JsonData selectByCode(String code) {
