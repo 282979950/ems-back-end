@@ -1,8 +1,10 @@
 package com.ems.controller;
 
-import com.ems.shiro.CustomFormAuthenticationFilter;
 import com.ems.shiro.Principal;
+import com.ems.shiro.authc.CustomFormAuthenticationFilter;
+import com.ems.shiro.utils.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
@@ -55,10 +57,10 @@ public class LoginController {
     /**
      * 进入主页
      */
+    @RequiresRoles("user")
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String index(Model model) {
-        Subject subject = SecurityUtils.getSubject();
-        Principal principal = (Principal) subject.getPrincipal();
+        Principal principal = ShiroUtils.getPrincipal();
         model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, principal.getLoginName());
         return "index";
     }

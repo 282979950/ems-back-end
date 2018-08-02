@@ -74,7 +74,7 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
         }
         oldPermission.setPermName(permission.getPermName());
         oldPermission.setMenuId(permission.getMenuId());
-        oldPermission.setPermType(permission.getPermType());
+        oldPermission.setPermCaption(permission.getPermCaption());
         oldPermission.setUpdateBy(currentEmp.getEmpId());
         oldPermission.setRemarks(currentEmp.getRemarks());
         int resultCount = permissionMapper.update(oldPermission);
@@ -102,8 +102,8 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
     }
 
     @Override
-    public JsonData selectPermission(String permName, Integer permType, String menuName) {
-        List<SysPermission> permissions = permissionMapper.select(permName, permType, menuName);
+    public JsonData selectPermission(String permName, String permCaption, String menuName) {
+        List<SysPermission> permissions = permissionMapper.select(permName, permCaption, menuName);
         if (permissions == null || permissions.size()==0) {
             return JsonData.successMsg("查询结果为空");
         }

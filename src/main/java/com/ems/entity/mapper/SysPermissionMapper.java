@@ -24,5 +24,5 @@ public interface SysPermissionMapper {
 
     int deleteByPermId(SysPermission permId);
 
-    List<SysPermission> select(@Param("permName") String permName, @Param("permType") Integer permType, @Param("menuName") String menuName);
+    List<SysPermission> select(@Param("permName") String permName, @Param("permCaption") String permCaption, @Param("menuName") String menuName);
 }

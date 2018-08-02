@@ -39,9 +39,9 @@ public interface ISysPermissionService {
      * 依据权限名称和目录名称查询权限
      *
      * @param permName
-     * @param permType
+     * @param permCaption
      * @param menuName
      * @return
      */
-    JsonData selectPermission(String permName, Integer permType, String menuName);
+    JsonData selectPermission(String permName, String permCaption, String menuName);
 }

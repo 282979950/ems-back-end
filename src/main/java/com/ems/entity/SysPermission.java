@@ -13,6 +13,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class SysPermission extends BaseEntity {
+
     /**
      * 权限ID
      */
@@ -26,10 +27,9 @@ public class SysPermission extends BaseEntity {
     private String permName;
 
     /**
-     * 权限类型
+     * 权限标题
      */
-    @NotNull
-    private Integer permType;
+    private String permCaption;
 
     /**
      * 目录ID
@@ -37,12 +37,12 @@ public class SysPermission extends BaseEntity {
     @NotNull
     private Integer menuId;
 
-    public SysPermission(Integer permId, String permName, Integer permType, Integer menuId, Date createTime, Integer createBy, Date updateTime, Integer
+    public SysPermission(Integer permId, String permName, String permCaption, Integer menuId, Date createTime, Integer createBy, Date updateTime, Integer
             updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.permId = permId;
         this.permName = permName;
-        this.permType = permType;
+        this.permCaption = permCaption;
         this.menuId = menuId;
     }
 
