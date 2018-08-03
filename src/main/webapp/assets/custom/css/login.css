@@ -1,0 +1,63 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2018-7-31, 15:19:18
+    Author     : Administrator
+*/
+body {
+    margin: 0;
+    height: 100%;
+    background: linear-gradient(270deg, #8fc189, #4fa49a, #477da9, #5a6ba2);
+    background-size: 800% 800%;
+    -webkit-animation: background 10s ease infinite;
+    -moz-animation: background 10s ease infinite;
+    animation: background 10s ease infinite;
+}
+.login-container {
+    margin: 72px auto;
+    border-radius: 4px;
+    padding: 16px;
+    width: 80%;
+    background-color: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.6);
+}
+.illustration{
+    text-align: center;
+    padding: 0vw;
+    font-size: 100px;
+    color: #fff;
+}
+.login-container .material-icons{
+    color: mintcream;
+}
+.login-container input{
+    color: white;
+}
+.login-title {
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    margin: 5px;
+}
+.login-btn{
+    width: 60%;
+    margin: 0% 20%;
+}
+@-webkit-keyframes background {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@-moz-keyframes background {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes background { 
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}

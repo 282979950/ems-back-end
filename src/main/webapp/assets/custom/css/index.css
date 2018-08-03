@@ -1,0 +1,101 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2018-7-31, 15:19:27
+    Author     : Administrator
+*/
+.tabs-extra{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; 
+    margin-top: 10px;
+}
+.panes-extra{
+    
+}
+.tabs-extra li{
+    float: none!important;
+}
+.no-margin{
+    margin: 0!important;
+}
+.width-full{
+    width: 100%;
+}
+.children-width-full > div{
+    width: 100%;
+}
+/*系统管理*/
+.regional,
+.organization,
+.user,
+.role,
+.permission,
+.dictionary,
+.log,
+.announcement,
+/*账户管理*/
+.inbound,
+.file,
+.install,
+.account,
+.alter,
+/*充值缴费管理*/
+.prePayment,
+.replaceCard,
+.postPayment,
+.invoice,
+/*维修补气管理*/
+.input,
+.fillGas,
+.balance,
+.initCard,
+/*账务处理*/
+.preStrike,
+.strike,
+/*表具运行管理*/
+.record,
+.control,
+.exception,
+/*查询统计*/
+.cardQuery,
+.accountQuery,
+.userQuery,
+.exceptionQuery,
+.businessDataQuery,
+.businessReportQuery
+{}
+.nav-item{}
+.pane{}
+.panes{
+    width: 100%;
+}
+.search-box,.data-box,.controller-box{
+    margin: 20px;
+    text-align: center;
+}
+.search-box label,input,select{
+    display: inline;
+    width: 50%!important;
+    font-size: 15px;
+}
+.emp-name,.emp-deptno,.emp-job{}
+.general{
+    display: inline;
+    width: 50%!important;
+    font-size: 13px;
+}
+.display-block{
+    display: inline-block;
+}
+.align-center{
+    margin: auto;
+    text-align: center;
+    vertical-align: middle;
+}
+.color-white{
+    color: white;
+}
