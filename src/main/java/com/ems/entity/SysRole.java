@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 角色实体
@@ -16,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 public class SysRole extends BaseEntity {
+
     /**
      * 角色ID
      */
@@ -47,6 +49,11 @@ public class SysRole extends BaseEntity {
      * 角色能访问的组织
      */
     private List<Integer> roleOrgList;
+
+    /**
+     * 角色权限
+     */
+    private Set<SysPermission> permissions;
 
     public SysRole(Integer roleId, String roleName, String roleDists, String roleOrgs, Date createTime, Integer createBy, Date updateTime, Integer updateBy,
                    Boolean usable, String remarks) {

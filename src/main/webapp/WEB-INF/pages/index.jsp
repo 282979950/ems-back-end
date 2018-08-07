@@ -8,9 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>index</title>
+    <title>表具管理系统</title>
 </head>
 <body>
-Hello World!
+${username}，欢迎使用表具管理系统！
+<form action="logout" method="post">
+    <input type="submit" value="登出">
+</form>
 </body>
 </html>

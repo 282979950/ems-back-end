@@ -4,7 +4,10 @@ import com.ems.common.BeanValidator;
 import com.ems.common.JsonData;
 import com.ems.entity.Employee;
 import com.ems.entity.mapper.EmployeeMapper;
+import com.ems.entity.mapper.EmployeeRoleMapper;
+import com.ems.exception.ParameterException;
 import com.ems.service.IEmployeeService;
+import com.ems.service.ISysCacheService;
 import com.ems.utils.MD5Utils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -26,22 +29,26 @@ import java.util.Map;
 @Transactional(readOnly = false)
 public class EmployeeServiceImpl implements IEmployeeService {
 
+    public static final String USER_CACHE = "USER_CACHE";
+
+    public static final String USER_CACHE_ID_ = "USER_CACHE_ID_";
+
+    public static final String USER_CACHE_LOGIN_NAME_ = "USER_CACHE_LOGIN_NAME_";
+
+    public static final String USER_CACHE_LIST_BY_OFFICE_ID_ = "USER_CACHE_LIST_BY_OFFICE_ID_";
+
+    @Autowired
+    private ISysCacheService sysCacheService;
+
     @Autowired
     private EmployeeMapper employeeMapper;
 
+    @Autowired
+    private EmployeeRoleMapper employeeRoleMapper;
+
     @Override
     public JsonData login(String empLoginName, String empPassword) {
-        if(!checkEmpLoginName(empLoginName)) {
-            return JsonData.fail("用户登录名不存在");
-        }
-        String encodePassword = MD5Utils.MD5EncodeUtf8(empPassword);
-        Employee employee = employeeMapper.selectEmpLogin(empLoginName, encodePassword);
-        if (employee == null) {
-            return JsonData.fail("用户密码错误");
-        }
-        else {
-            return JsonData.successMsg("用户登录成功");
-        }
+        return JsonData.success(selectEmpLogin(empLoginName, empPassword), "用户登录成功");
     }
 
     @Override
@@ -50,6 +57,24 @@ public class EmployeeServiceImpl implements IEmployeeService {
             return false;
         }
         return employeeMapper.checkEmpLoginName(empLoginName);
+    }
+
+    @Override
+    public Employee getEmpByLoginName(String empLoginName) {
+        return employeeMapper.getEmpByLoginName(empLoginName);
+    }
+
+    @Override
+    public Employee selectEmpLogin(String empLoginName, String empPassword) {
+        if (!checkEmpLoginName(empLoginName)) {
+            throw new ParameterException("用户登录名不存在");
+        }
+        String encodePassword = MD5Utils.MD5EncodeUtf8(empPassword);
+        Employee employee = employeeMapper.selectEmpLogin(empLoginName, encodePassword);
+        if (employee == null) {
+            throw new ParameterException("用户密码错误");
+        }
+        return employee;
     }
 
     @Override
@@ -146,5 +171,21 @@ public class EmployeeServiceImpl implements IEmployeeService {
         result.put("pageSize", pageInfo.getPageSize());
         result.put("empList", employeeList);
         return JsonData.successData(result);
+    }
+
+    public Employee getEmpById(Integer empId) {
+        Employee emp = (Employee) sysCacheService.get(USER_CACHE, USER_CACHE_ID_ + empId);
+        if (emp != null) {
+            return emp;
+        }
+        emp = employeeMapper.selectByEmpId(empId);
+        if (emp == null) {
+            return null;
+        }
+        // TODO: 2018/7/25 设置角色信息
+//        emp.setRoleList(employeeRoleMapper.selectByEmpId(empId));
+        sysCacheService.put(USER_CACHE, USER_CACHE_ID_ + emp.getEmpId(), emp);
+        sysCacheService.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + emp.getEmpLoginName(), emp);
+        return emp;
     }
 }

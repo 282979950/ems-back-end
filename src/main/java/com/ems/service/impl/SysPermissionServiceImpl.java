@@ -1,19 +1,22 @@
 package com.ems.service.impl;
 
+import com.ems.common.BeanValidator;
+import com.ems.common.JsonData;
 import com.ems.entity.Employee;
 import com.ems.entity.SysPermission;
 import com.ems.entity.mapper.SysPermissionMapper;
+import com.ems.exception.ParameterException;
 import com.ems.service.ISysPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.Date;
 import java.util.List;
 
 /**
  * 系统权限服务实现类
+ *
  * @author litairan on 2018/7/13.
  */
 @Service("iSysPermissionService")
@@ -49,58 +52,63 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
 
     @Override
     @Transactional
-    public int createPermission(SysPermission permission, Employee currentEmp) {
-        if (permission.getPermId() == null || permission.getPermName() == null || permission.getMenuId() == null || permission.getPermType() == null) {
-            return 0;
-        }
+    public JsonData createPermission(SysPermission permission, Employee currentEmp) {
+        BeanValidator.check(permission);
         permission.setCreateBy(currentEmp.getEmpId());
-        Date date = new Date();
-        permission.setCreateTime(date);
         permission.setUpdateBy(currentEmp.getEmpId());
-        permission.setUpdateTime(date);
-        permission.setUsable(true);
+        int resultCount = permissionMapper.insert(permission);
+        if (resultCount == 0) {
+            return JsonData.fail("新建权限失败");
+        }
         permissionList.add(permission);
-        return permissionMapper.insert(permission);
+        return JsonData.successMsg("新建权限成功");
     }
 
     @Override
     @Transactional
-    public int updatePermission(SysPermission permission, Employee currentEmp) {
-        if (permission.getPermId() == null || permission.getPermName() == null || permission.getMenuId() == null || permission.getPermType() == null) {
-            return 0;
-        }
+    public JsonData updatePermission(SysPermission permission, Employee currentEmp) {
+        BeanValidator.check(permission);
         SysPermission oldPermission = getPermissionById(permission.getPermId());
         if (oldPermission == null) {
-            return 0;
+            throw new ParameterException("原权限不存在");
         }
         oldPermission.setPermName(permission.getPermName());
         oldPermission.setMenuId(permission.getMenuId());
-        oldPermission.setPermType(permission.getPermType());
-        oldPermission.setUpdateTime(new Date());
+        oldPermission.setPermCaption(permission.getPermCaption());
         oldPermission.setUpdateBy(currentEmp.getEmpId());
         oldPermission.setRemarks(currentEmp.getRemarks());
-        return permissionMapper.update(oldPermission);
+        int resultCount = permissionMapper.update(oldPermission);
+        if (resultCount == 0) {
+            return JsonData.fail("更新权限失败");
+        } else {
+            return JsonData.successMsg("更新权限成功");
+        }
     }
 
     @Override
     @Transactional
-    public int deletePermission(Integer permId, Employee currentEmp) {
+    public JsonData deletePermission(Integer permId, Employee currentEmp) {
         SysPermission permission = getPermissionById(permId);
         if (permission == null) {
-            return 0;
+            throw new ParameterException("原权限不存在");
         }
-        permission.setUpdateTime(new Date());
         permission.setUpdateBy(currentEmp.getEmpId());
-        permission.setUsable(false);
         int resultCount = permissionMapper.deleteByPermId(permission);
-        if (resultCount > 0) {
-            permissionList.remove(permission);
+        if (resultCount == 0) {
+            return JsonData.fail("删除权限失败");
         }
-        return resultCount;
+        permissionList.remove(permission);
+        return JsonData.successMsg("删除权限成功");
     }
 
     @Override
-    public List<SysPermission> selectPermission(String permName, Integer permType, String menuName) {
-        return permissionMapper.select(permName, permType, menuName);
+    public JsonData selectPermission(String permName, String permCaption, String menuName) {
+        List<SysPermission> permissions = permissionMapper.select(permName, permCaption, menuName);
+        if (permissions == null || permissions.size()==0) {
+            return JsonData.successMsg("查询结果为空");
+        }
+        else {
+            return JsonData.successData(permissions);
+        }
     }
 }

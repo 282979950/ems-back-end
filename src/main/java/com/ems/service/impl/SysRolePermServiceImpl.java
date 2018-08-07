@@ -1,7 +1,9 @@
 package com.ems.service.impl;
 
+import com.ems.common.JsonData;
 import com.ems.entity.SysRolePerm;
 import com.ems.entity.mapper.SysRolePermMapper;
+import com.ems.exception.ParameterException;
 import com.ems.service.ISysRolePermService;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,21 +26,34 @@ public class SysRolePermServiceImpl implements ISysRolePermService {
 
     @Override
     @Transactional(readOnly = false)
-    public void changeRolePerms(Integer roleId, List<Integer> permList) {
-        if (roleId == null || permList == null) {
-            return;
+    public JsonData changeRolePerms(Integer roleId, List<Integer> permList) {
+        if (roleId == null) {
+            throw new ParameterException("权限不能为空");
+        }
+        if (permList == null) {
+            throw new ParameterException("权限列表不能为空");
         }
         List<SysRolePerm> rolePermList = getRolePermList(roleId,permList);
         //删除旧的权限
         deleteRolePerms(roleId);
         //批量插入新的权限
-        rolePermMapper.batchInsert(rolePermList);
+        int size = permList.size();
+        if (size == 0) {
+            return JsonData.successMsg("更新权限成功");
+        }
+        int resultCount = rolePermMapper.batchInsert(rolePermList);
+        if (size == resultCount) {
+            return JsonData.successMsg("更新权限成功");
+        }
+        else {
+            return JsonData.fail("更新权限失败");
+        }
     }
 
     @Override
     @Transactional(readOnly = false)
-    public void deleteRolePerms(Integer roleId){
-        rolePermMapper.deleteByRoleId(roleId);
+    public int deleteRolePerms(Integer roleId){
+        return rolePermMapper.deleteByRoleId(roleId);
     }
 
     private List<SysRolePerm> getRolePermList(Integer roleId, List<Integer> permList) {
@@ -47,7 +62,7 @@ public class SysRolePermServiceImpl implements ISysRolePermService {
             SysRolePerm rolePerm = new SysRolePerm();
             rolePerm.setRoleId(roleId);
             rolePerm.setPermId(perm);
-            // TODO: 2018/7/19
+            // TODO: 2018/7/19 设置创建者和更新者
             rolePerm.setCreateBy(1000000000);
             rolePerm.setUpdateBy(1000000000);
             rolePermList.add(rolePerm);

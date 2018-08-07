@@ -1,5 +1,7 @@
 package com.ems.service;
 
+import com.ems.common.JsonData;
+
 import java.util.List;
 
 /**
@@ -8,8 +10,7 @@ import java.util.List;
  * @author litairan on 2018/7/19.
  */
 public interface ISysRolePermService {
-    void changeRolePerms(Integer roleId, List<Integer> permList);
+    JsonData changeRolePerms(Integer roleId, List<Integer> permList);
 
-    void deleteRolePerms(Integer roleId);
-
+    int deleteRolePerms(Integer roleId);
 }

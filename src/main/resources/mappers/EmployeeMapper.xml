@@ -307,6 +307,12 @@
         from employee
         where emp_login_name = #{empLoginName} and emp_password = #{empPassword} and usable = 1
     </select>
+    <!--<select id="getEmpByLoginName" resultMap="BaseResultMap" parameterType="string">-->
+    <!--select-->
+    <!--<include refid="Base_Column_List"/>-->
+    <!--from employee-->
+    <!--where emp_login_name = #{empLoginName,jdbcType=VARCHAR} and usable = 1-->
+    <!--</select>-->
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
@@ -359,4 +365,56 @@
         usable = 0
         WHERE emp_id = #{empId,jdbcType=INTEGER}
     </update>
+    <select id="selectByEmpId" parameterType="integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM employee
+        WHERE emp_id = #{empId,jdbcType=INTEGER} usable = 1
+    </select>
+
+    <resultMap id="userMap" type="com.ems.entity.Employee">
+        <id property="empId" column="emp_id"/>
+        <result property="empName" column="emp_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="empOrgId" column="emp_org_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="empDistrictId" column="emp_district_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="empLoginName" column="emp_login_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="empPassword" column="emp_password" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="empEmail" column="emp_email" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="empPhone" column="emp_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="empMobile" column="emp_mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="empAddress" column="emp_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="empType" column="emp_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="empManagementDistId" column="emp_management_dist_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="empLoginIp" column="emp_login_ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="empLoginDate" column="emp_login_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="empLoginFlag" column="emp_login_flag" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="createBy" column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="updateBy" column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="usable" column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <collection property="roles" ofType="com.ems.entity.SysRole">
+            <id property="roleId" column="role_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <result property="roleName" column="role_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <collection property="permissions" ofType="com.ems.entity.SysPermission">
+                <id property="permId" column="perm_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+                <result property="permName" column="perm_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+                <result property="permCaption" column="perm_caption" jdbcType="VARCHAR" javaType="java.lang.String"/>
+                <result property="menuId" column="menu_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            </collection>
+        </collection>
+    </resultMap>
+    <select id="getEmpByLoginName" parameterType="string" resultMap="userMap">
+        SELECT
+        e.emp_id, e.emp_number, e.emp_name, e.emp_org_id, e.emp_district_id, e.emp_login_name, e.emp_password, e.emp_email, e.emp_phone, e.emp_mobile,
+        e.emp_address, e.emp_type, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e.emp_login_flag, e.create_time, e.create_by, e.update_time,
+        e.update_by, e.usable, e.remarks, r.role_id, r.role_name, p.perm_id, p.perm_name, p.perm_caption, p.menu_id
+        FROM employee e
+        LEFT JOIN employee_role er on er.emp_id = e.emp_id
+        LEFT JOIN sys_role r on r.role_id = er.role_id
+        LEFT JOIN sys_role_perm rp on rp.role_id = r.role_id
+        LEFT JOIN sys_permission p on p.perm_id = rp.perm_id
+        WHERE e.emp_login_name = #{empLoginName,jdbcType=VARCHAR}
+    </select>
 </mapper>

@@ -5,7 +5,7 @@
         <constructor>
             <idArg column="perm_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="perm_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="perm_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="perm_caption" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="menu_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
@@ -16,7 +16,7 @@
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
-        perm_id, perm_name, perm_type, menu_id, create_time, create_by, update_time, update_by,
+        perm_id, perm_name, perm_caption, menu_id, create_time, create_by, update_time, update_by,
         usable, remarks
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -30,14 +30,13 @@
         where perm_id = #{permId,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.ems.entity.SysPermission">
-        insert into sys_permission (perm_id, perm_name, perm_type,
+        insert into sys_permission (perm_id, perm_name, perm_caption,
         menu_id, create_time, create_by,
-        update_time, update_by, usable,
+        update_time, update_by,
         remarks)
-        values (#{permId,jdbcType=INTEGER}, #{permName,jdbcType=VARCHAR}, #{permType,jdbcType=INTEGER},
-        #{menuId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
-        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},
-        #{remarks,jdbcType=VARCHAR})
+        values (#{permId,jdbcType=INTEGER}, #{permName,jdbcType=VARCHAR}, #{permCaption,jdbcType=VARCHAR},
+        #{menuId,jdbcType=INTEGER}, NOW(), #{createBy,jdbcType=INTEGER}, NOW(),
+        #{updateBy,jdbcType=INTEGER},#{remarks,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.ems.entity.SysPermission">
         insert into sys_permission
@@ -48,8 +47,8 @@
             <if test="permName != null">
                 perm_name,
             </if>
-            <if test="permType != null">
-                perm_type,
+            <if test="permCaption != null">
+                perm_caption,
             </if>
             <if test="menuId != null">
                 menu_id,
@@ -80,8 +79,8 @@
             <if test="permName != null">
                 #{permName,jdbcType=VARCHAR},
             </if>
-            <if test="permType != null">
-                #{permType,jdbcType=INTEGER},
+            <if test="permCaption != null">
+                #{permCaption,jdbcType=VARCHAR},
             </if>
             <if test="menuId != null">
                 #{menuId,jdbcType=INTEGER},
@@ -112,8 +111,8 @@
             <if test="permName != null">
                 perm_name = #{permName,jdbcType=VARCHAR},
             </if>
-            <if test="permType != null">
-                perm_type = #{permType,jdbcType=INTEGER},
+            <if test="permCaption != null">
+                perm_caption = #{permCaption,jdbcType=VARCHAR},
             </if>
             <if test="menuId != null">
                 menu_id = #{menuId,jdbcType=INTEGER},
@@ -142,7 +141,7 @@
     <update id="updateByPrimaryKey" parameterType="com.ems.entity.SysPermission">
         update sys_permission
         set perm_name = #{permName,jdbcType=VARCHAR},
-        perm_type = #{permType,jdbcType=INTEGER},
+        perm_caption = #{permCaption,jdbcType=VARCHAR},
         menu_id = #{menuId,jdbcType=INTEGER},
         create_time = #{createTime,jdbcType=TIMESTAMP},
         create_by = #{createBy,jdbcType=INTEGER},
@@ -163,33 +162,30 @@
         update sys_permission
         set
         perm_name = #{permName,jdbcType=VARCHAR},
-        perm_type = #{permType,jdbcType=INTEGER},
+        perm_caption = #{permCaption,jdbcType=VARCHAR},
         menu_id = #{menuId,jdbcType=INTEGER},
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-        create_by = #{createBy,jdbcType=INTEGER},
         update_time = #{updateTime,jdbcType=TIMESTAMP},
-        update_by = #{updateBy,jdbcType=INTEGER},
-        usable = #{usable,jdbcType=BIT},
+        update_by = NOW(),
         remarks = #{remarks,jdbcType=VARCHAR}
         where perm_id = #{permId,jdbcType=INTEGER}
     </update>
     <update id="deleteByPermId" parameterType="com.ems.entity.SysPermission">
         update sys_permission
         set
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = NOW(),
         update_by = #{updateBy,jdbcType=INTEGER},
-        usable = #{usable,jdbcType=BIT},
+        usable = 0,
         where perm_id = #{permId,jdbcType=INTEGER}
     </update>
     <select id="select" parameterType="map" resultMap="BaseResultMap">
         SELECT
-        a.perm_name,a.perm_type,b.menu_name,a.create_time,a.create_by,a.update_time,a.update_by
+        a.perm_name,a.perm_caption,b.menu_name,a.create_time,a.create_by,a.update_time,a.update_by
         FROM
         sys_permission a LEFT JOIN sys_menu b
         ON a.menu_id = b.menu_id
         WHERE a.usable = 1
-        <if test="permType != null AND permType != ''">
-            AND permType = #{permType,jdbcType=INTEGER}
+        <if test="permCaption != null AND permCaption != ''">
+            AND permCaption = #{permCaption,jdbcType=VARCHAR}
         </if>
         <if test="permName != null AND permName != ''">
             AND permName LIKE CONCAT('%', #{permName,jdbcType=VARCHAR}, '%')

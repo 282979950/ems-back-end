@@ -1,6 +1,10 @@
 package com.ems.entity.mapper;
 
 import com.ems.entity.EmployeeRole;
+import org.apache.ibatis.annotations.Param;
+
+import javax.management.relation.Role;
+import java.util.List;
 
 public interface EmployeeRoleMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +18,6 @@ public interface EmployeeRoleMapper {
     int updateByPrimaryKeySelective(EmployeeRole record);
 
     int updateByPrimaryKey(EmployeeRole record);
+
+    List<Role> selectByEmpId(@Param("empId") Integer empId);
 }

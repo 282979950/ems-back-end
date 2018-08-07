@@ -7,6 +7,7 @@ import com.ems.entity.SysDictionary;
 import com.ems.service.SysDictionaryService;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,12 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = "/sdy")
+@RequestMapping(value = "/dic")
 public class SysDictionaryController {
 
     @Resource
     private SysDictionaryService sysDictionaryService;
 
+    @RequiresRoles("sys:dic:visit")
     @RequestMapping(value = {"/listData.do"})
     @ResponseBody
     //获取字典数据列(List)
@@ -36,6 +38,7 @@ public class SysDictionaryController {
     }
 
     //新增数据
+    @RequiresRoles("sys:dic:create")
     @RequestMapping(value = {"/insert.do"})
     @ResponseBody
     public Map<String, Object> addSysDictionaryOnPc(SysDictionary sdy, HttpServletRequest request, HttpServletResponse respose) {
@@ -77,6 +80,7 @@ public class SysDictionaryController {
     }
 
     //删除数据
+    @RequiresRoles("sys:dic:delete")
     @RequestMapping(value = {"/delete.do"})
     @ResponseBody
     public Map<String, Object> deleteSysDictionaryOnPc(HttpServletRequest request, HttpServletResponse respose, String id) {
@@ -107,6 +111,7 @@ public class SysDictionaryController {
     }
 
     //根据字典类型查看对应数据字典信息
+    @RequiresRoles("sys:dic:retrieve")
     @RequestMapping(value = {"/dictByType.do"})
     @ResponseBody
     public Object selectDictByType(HttpServletRequest request, HttpServletResponse respose, String dictCategory) {

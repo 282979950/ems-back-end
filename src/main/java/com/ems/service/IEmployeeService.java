@@ -7,6 +7,7 @@ import com.ems.entity.Employee;
  * @author litairan on 2018/7/2.
  */
 public interface IEmployeeService {
+
     /**
      * 员工登录
      *
@@ -15,6 +16,23 @@ public interface IEmployeeService {
      * @return
      */
     JsonData login(String empLoginName, String empPassword);
+
+    /**
+     * 获取员工登录信息
+     *
+     * @param empLoginName
+     * @param empPassword
+     * @return
+     */
+    Employee selectEmpLogin(String empLoginName, String empPassword);
+
+    /**
+     * 根据登录名获取员工登录信息
+     *
+     * @param empLoginName
+     * @return
+     */
+    Employee getEmpByLoginName(String empLoginName);
 
     /**
      * 检查登录名是否存在(0不存在,1存在)
@@ -71,5 +89,5 @@ public interface IEmployeeService {
      * @return
      */
     JsonData select(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone, String empMobile,
-                          String empType);
+                    String empType);
 }
