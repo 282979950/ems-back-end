@@ -22,6 +22,7 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
 
     public static final String DEFAULT_MESSAGE_PARAM = "message";
 
+    @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
         String username = getUsername(request);
         String password = getPassword(request);
@@ -36,6 +37,7 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
     /**
      * 登录成功之后跳转URL
      */
+    @Override
     public String getSuccessUrl() {
         return super.getSuccessUrl();
     }

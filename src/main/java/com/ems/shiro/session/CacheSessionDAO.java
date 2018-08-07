@@ -43,14 +43,12 @@ public class CacheSessionDAO extends EnterpriseCacheSessionDAO implements Sessio
                 return;
             }
             // 如果是视图文件，则不更新SESSION
-            if (StringUtils.startsWith(uri, Global
-                    .getConfig("web.view.prefix"))
-                    && StringUtils.endsWith(uri, Global.getConfig("web.view.suffix"))) {
+            if (StringUtils.startsWith(uri, Global.getConfig("web.view.prefix")) && StringUtils.endsWith(uri, Global.getConfig("web.view.suffix"))) {
                 return;
             }
             // 手动控制不更新SESSION
             String updateSession = request.getParameter("updateSession");
-            if (updateSession.equals(Global.FALSE) || updateSession.equals(Global.NO)) {
+            if (Boolean.valueOf(updateSession) || updateSession.equals(Global.NO)) {
                 return;
             }
         }
@@ -85,6 +83,7 @@ public class CacheSessionDAO extends EnterpriseCacheSessionDAO implements Sessio
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
+        log.info("读取session：{}", sessionId.toString());
         return super.doReadSession(sessionId);
     }
 

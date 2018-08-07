@@ -2,6 +2,7 @@ package com.ems.shiro.authz;
 
 import com.ems.service.SystemService;
 import com.ems.utils.ServletUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
@@ -19,6 +20,7 @@ import java.io.IOException;
  *
  * @author litairan
  */
+@Slf4j
 public class CustomAuthorizationFilter extends AuthorizationFilter {
 
     @Autowired
@@ -29,6 +31,7 @@ public class CustomAuthorizationFilter extends AuthorizationFilter {
         return false;
     }
 
+    @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;

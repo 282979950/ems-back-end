@@ -40,12 +40,13 @@
 
         <property name="sessionIdCookie" ref="sessionIdCookie"/>
         <property name="sessionIdCookieEnabled" value="true"/>
+        <property name="sessionListeners" ref="customSessionListener"/>
     </bean>
 
     <!-- 自定义Session存储容器 -->
     <bean id="sessionDAO" class="com.ems.shiro.session.CacheSessionDAO">
         <property name="sessionIdGenerator" ref="uuidSessionIdGenerator"/>
-        <property name="activeSessionsCacheName" value="activeSessionsCache"/>
+        <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>
         <property name="cacheManager" ref="shiroCacheManager"/>
     </bean>
 
@@ -59,9 +60,10 @@
     <!-- 指定本系统SESSIONID, 默认为: JSESSIONID 问题: 与SERVLET容器名冲突, 如JETTY, TOMCAT 等默认JSESSIONID,
         当跳出SHIRO SERVLET时如ERROR-PAGE容器会为JSESSIONID重新分配值导致登录会话丢失! -->
     <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-        <constructor-arg name="name" value="ems.session.id"/>
+        <constructor-arg name="name" value="EMS_SESSION_ID"/>
     </bean>
 
+    <bean id="customSessionListener" class="com.ems.shiro.session.CustomSessionListener"/>
 
     <!-- 安全认证过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
