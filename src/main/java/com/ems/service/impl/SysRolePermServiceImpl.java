@@ -5,6 +5,7 @@ import com.ems.entity.SysRolePerm;
 import com.ems.entity.mapper.SysRolePermMapper;
 import com.ems.exception.ParameterException;
 import com.ems.service.ISysRolePermService;
+import com.ems.shiro.utils.ShiroUtils;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,9 +63,9 @@ public class SysRolePermServiceImpl implements ISysRolePermService {
             SysRolePerm rolePerm = new SysRolePerm();
             rolePerm.setRoleId(roleId);
             rolePerm.setPermId(perm);
-            // TODO: 2018/7/19 设置创建者和更新者
-            rolePerm.setCreateBy(1000000000);
-            rolePerm.setUpdateBy(1000000000);
+            Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+            rolePerm.setCreateBy(currentEmpId);
+            rolePerm.setUpdateBy(currentEmpId);
             rolePermList.add(rolePerm);
         }
         return rolePermList;

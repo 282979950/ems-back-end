@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ems.entity.mapper.MeterMapper">
+    <resultMap id="BaseResultMap" type="com.ems.entity.Meter">
+        <constructor>
+            <idArg column="meter_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="meter_stop_code" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="meter_category" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="meter_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="meter_direction" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="meter_prod_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="meter_entry_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="meter_install_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="meter_scrap_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="meter_validityperiod" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="meter_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="meter_comm_key" jdbcType="CHAR" javaType="java.lang.String"/>
+            <arg column="meter_comm_num" jdbcType="CHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        meter_id, meter_code, meter_stop_code, meter_type_id, meter_direction, meter_prod_date,
+        meter_entry_date, meter_install_time, meter_scrap_time, meter_validityperiod, meter_status,
+        meter_comm_key, meter_comm_num, create_time, create_by, update_time, update_by, usable,
+        remarks
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from meter
+        where meter_id = #{meterId,jdbcType=INTEGER}
+    </select>
+    <insert id="insert" parameterType="com.ems.entity.Meter">
+        insert into meter (meter_id, meter_code, meter_stop_code,
+        meter_type_id, meter_direction, meter_prod_date,
+        meter_entry_date, meter_install_time, meter_scrap_time,
+        meter_validityperiod, meter_status, meter_comm_key,
+        meter_comm_num, create_time, create_by,
+        update_time, update_by, usable,
+        remarks)
+        values (#{meterId,jdbcType=INTEGER}, #{meterCode,jdbcType=VARCHAR}, #{meterStopCode,jdbcType=DECIMAL},
+        #{meterTypeId,jdbcType=INTEGER}, #{meterDirection,jdbcType=BIT}, #{meterProdDate,jdbcType=TIMESTAMP},
+        #{meterEntryDate,jdbcType=TIMESTAMP}, #{meterInstallTime,jdbcType=TIMESTAMP}, #{meterScrapTime,jdbcType=TIMESTAMP},
+        #{meterValidityperiod,jdbcType=INTEGER}, #{meterStatus,jdbcType=INTEGER}, #{meterCommKey,jdbcType=CHAR},
+        #{meterCommNum,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
+        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},
+        #{remarks,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ems.entity.Meter">
+        insert into meter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="meterId != null">
+                meter_id,
+            </if>
+            <if test="meterCode != null">
+                meter_code,
+            </if>
+            <if test="meterStopCode != null">
+                meter_stop_code,
+            </if>
+            <if test="meterTypeId != null">
+                meter_type_id,
+            </if>
+            <if test="meterDirection != null">
+                meter_direction,
+            </if>
+            <if test="meterProdDate != null">
+                meter_prod_date,
+            </if>
+            <if test="meterEntryDate != null">
+                meter_entry_date,
+            </if>
+            <if test="meterInstallTime != null">
+                meter_install_time,
+            </if>
+            <if test="meterScrapTime != null">
+                meter_scrap_time,
+            </if>
+            <if test="meterValidityperiod != null">
+                meter_validityperiod,
+            </if>
+            <if test="meterStatus != null">
+                meter_status,
+            </if>
+            <if test="meterCommKey != null">
+                meter_comm_key,
+            </if>
+            <if test="meterCommNum != null">
+                meter_comm_num,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="usable != null">
+                usable,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="meterId != null">
+                #{meterId,jdbcType=INTEGER},
+            </if>
+            <if test="meterCode != null">
+                #{meterCode,jdbcType=VARCHAR},
+            </if>
+            <if test="meterStopCode != null">
+                #{meterStopCode,jdbcType=DECIMAL},
+            </if>
+            <if test="meterTypeId != null">
+                #{meterTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="meterDirection != null">
+                #{meterDirection,jdbcType=BIT},
+            </if>
+            <if test="meterProdDate != null">
+                #{meterProdDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="meterEntryDate != null">
+                #{meterEntryDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="meterInstallTime != null">
+                #{meterInstallTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="meterScrapTime != null">
+                #{meterScrapTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="meterValidityperiod != null">
+                #{meterValidityperiod,jdbcType=INTEGER},
+            </if>
+            <if test="meterStatus != null">
+                #{meterStatus,jdbcType=INTEGER},
+            </if>
+            <if test="meterCommKey != null">
+                #{meterCommKey,jdbcType=CHAR},
+            </if>
+            <if test="meterCommNum != null">
+                #{meterCommNum,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="usable != null">
+                #{usable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.Meter">
+        update meter
+        <set>
+            <if test="meterCode != null">
+                meter_code = #{meterCode,jdbcType=VARCHAR},
+            </if>
+            <if test="meterStopCode != null">
+                meter_stop_code = #{meterStopCode,jdbcType=DECIMAL},
+            </if>
+            <if test="meterTypeId != null">
+                meter_type_id = #{meterTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="meterDirection != null">
+                meter_direction = #{meterDirection,jdbcType=BIT},
+            </if>
+            <if test="meterProdDate != null">
+                meter_prod_date = #{meterProdDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="meterEntryDate != null">
+                meter_entry_date = #{meterEntryDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="meterInstallTime != null">
+                meter_install_time = #{meterInstallTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="meterScrapTime != null">
+                meter_scrap_time = #{meterScrapTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="meterValidityperiod != null">
+                meter_validityperiod = #{meterValidityperiod,jdbcType=INTEGER},
+            </if>
+            <if test="meterStatus != null">
+                meter_status = #{meterStatus,jdbcType=INTEGER},
+            </if>
+            <if test="meterCommKey != null">
+                meter_comm_key = #{meterCommKey,jdbcType=CHAR},
+            </if>
+            <if test="meterCommNum != null">
+                meter_comm_num = #{meterCommNum,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="usable != null">
+                usable = #{usable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where meter_id = #{meterId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ems.entity.Meter">
+        update meter
+        set meter_code = #{meterCode,jdbcType=VARCHAR},
+        meter_stop_code = #{meterStopCode,jdbcType=DECIMAL},
+        meter_type_id = #{meterTypeId,jdbcType=INTEGER},
+        meter_direction = #{meterDirection,jdbcType=BIT},
+        meter_prod_date = #{meterProdDate,jdbcType=TIMESTAMP},
+        meter_entry_date = #{meterEntryDate,jdbcType=TIMESTAMP},
+        meter_install_time = #{meterInstallTime,jdbcType=TIMESTAMP},
+        meter_scrap_time = #{meterScrapTime,jdbcType=TIMESTAMP},
+        meter_validityperiod = #{meterValidityperiod,jdbcType=INTEGER},
+        meter_status = #{meterStatus,jdbcType=INTEGER},
+        meter_comm_key = #{meterCommKey,jdbcType=CHAR},
+        meter_comm_num = #{meterCommNum,jdbcType=CHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_by = #{updateBy,jdbcType=INTEGER},
+        usable = #{usable,jdbcType=BIT},
+        remarks = #{remarks,jdbcType=VARCHAR}
+        where meter_id = #{meterId,jdbcType=INTEGER}
+    </update>
+    <insert id="entryMeter" parameterType="com.ems.param.MeterEntryParam">
+        insert into meter (meter_code, meter_stop_code,
+        meter_type_id, meter_direction, meter_prod_date,
+        meter_entry_date, create_time, create_by,
+        update_time, update_by, usable,
+        remarks)
+        values (#{meterCode,jdbcType=VARCHAR}, #{meterStopCode,jdbcType=DECIMAL},
+        #{meterTypeId,jdbcType=INTEGER}, #{meterDirection,jdbcType=BIT}, #{meterProdDate,jdbcType=TIMESTAMP},
+        #{meterEntryDate,jdbcType=TIMESTAMP}, NOW(), #{createBy,jdbcType=INTEGER},
+        NOW(), #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},
+        #{remarks,jdbcType=VARCHAR})
+    </insert>
+    <select id="checkMeterExist" parameterType="string" resultType="boolean">
+        select
+        count(1)
+        from meter
+        where meter_code = #{meterCode,jdbcType=VARCHAR} and usable = 1
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        m.meter_id, m.meter_code, m.meter_stop_code, m.meter_type_id, mt.meter_category, mt.meter_type, m.meter_direction, m.meter_prod_date,
+        m.meter_entry_date, m.meter_install_time, m.meter_scrap_time, m.meter_validityperiod, m.meter_status,
+        m.meter_comm_key, m.meter_comm_num, m.create_time, m.create_by, m.update_time, m.update_by, m.usable,
+        m.remarks
+        from meter m left join meter_type mt on m.meter_type_id = mt.meter_type_id
+        where m.usable = 1
+    </select>
+</mapper>

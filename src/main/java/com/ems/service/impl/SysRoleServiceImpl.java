@@ -9,6 +9,7 @@ import com.ems.exception.ParameterException;
 import com.ems.param.SysRoleParam;
 import com.ems.service.ISysRolePermService;
 import com.ems.service.ISysRoleService;
+import com.ems.shiro.utils.ShiroUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,9 @@ public class SysRoleServiceImpl implements ISysRoleService {
         role.setRoleDists(StringUtils.join(roleParam.getDistIdList(), Const.DEFAULT_SEPARATOR));
         role.setRoleOrgs(StringUtils.join(roleParam.getOrgIdList(), Const.DEFAULT_SEPARATOR));
         role.setRemarks(roleParam.getRemarks());
-        // TODO: 2018/7/18
-        role.setCreateBy(1000000000);
-        role.setUpdateBy(1000000000);
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        role.setCreateBy(currentEmpId);
+        role.setUpdateBy(currentEmpId);
         int resultCount = roleMapper.insertSelective(role);
         if (resultCount == 0) {
             return JsonData.fail("创建角色失败");
@@ -113,8 +114,8 @@ public class SysRoleServiceImpl implements ISysRoleService {
             throw new ParameterException("角色不存在");
         }
         sysRole.setUsable(false);
-        // TODO: 2018/7/19
-        int resultCount = roleMapper.deleteRoleById(roleId, 1000000000);
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        int resultCount = roleMapper.deleteRoleById(roleId, currentEmpId);
         if (resultCount == 0) {
             return JsonData.fail("删除角色失败");
         }

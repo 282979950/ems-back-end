@@ -172,20 +172,4 @@ public class EmployeeServiceImpl implements IEmployeeService {
         result.put("empList", employeeList);
         return JsonData.successData(result);
     }
-
-    public Employee getEmpById(Integer empId) {
-        Employee emp = (Employee) sysCacheService.get(USER_CACHE, USER_CACHE_ID_ + empId);
-        if (emp != null) {
-            return emp;
-        }
-        emp = employeeMapper.selectByEmpId(empId);
-        if (emp == null) {
-            return null;
-        }
-        // TODO: 2018/7/25 设置角色信息
-//        emp.setRoleList(employeeRoleMapper.selectByEmpId(empId));
-        sysCacheService.put(USER_CACHE, USER_CACHE_ID_ + emp.getEmpId(), emp);
-        sysCacheService.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + emp.getEmpLoginName(), emp);
-        return emp;
-    }
 }
