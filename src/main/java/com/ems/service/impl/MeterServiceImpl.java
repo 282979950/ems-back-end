@@ -5,7 +5,7 @@ import com.ems.common.JsonData;
 import com.ems.entity.Meter;
 import com.ems.entity.mapper.MeterMapper;
 import com.ems.entity.mapper.MeterTypeMapper;
-import com.ems.param.MeterEntryParam;
+import com.ems.param.EntryMeterParam;
 import com.ems.service.IMeterService;
 import com.ems.shiro.utils.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class MeterServiceImpl implements IMeterService {
 
     @Override
     @Transactional
-    public JsonData entryMeter(MeterEntryParam param) {
+    public JsonData entryMeter(EntryMeterParam param) {
         BeanValidator.check(param);
         String meterCode = param.getMeterCode();
         if (checkMeterExist(meterCode)) {
@@ -73,6 +73,22 @@ public class MeterServiceImpl implements IMeterService {
         return JsonData.success(meters, "查询表具成功");
     }
 
+    @Override
+    public Integer getMeterIdByMeterCode(String meterCode) {
+        return meterMapper.getMeterIdByMeterCode(meterCode);
+    }
+
+    @Override
+    public int updateMeter(Meter meter) {
+        if (meter.getUpdateTime() == null) {
+            meter.setUpdateTime(new Date());
+        }
+        if (meter.getUpdateBy() == null) {
+            meter.setUpdateBy(ShiroUtils.getPrincipal().getId());
+        }
+        return meterMapper.updateByPrimaryKeySelective(meter);
+    }
+
     /**
      * 校验表具是否已经入库
      *
@@ -82,4 +98,6 @@ public class MeterServiceImpl implements IMeterService {
     private boolean checkMeterExist(String meterCode) {
         return meterMapper.checkMeterExist(meterCode);
     }
+
+
 }

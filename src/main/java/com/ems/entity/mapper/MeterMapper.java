@@ -1,7 +1,7 @@
 package com.ems.entity.mapper;
 
 import com.ems.entity.Meter;
-import com.ems.param.MeterEntryParam;
+import com.ems.param.EntryMeterParam;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,9 +17,11 @@ public interface MeterMapper {
 
     int updateByPrimaryKey(Meter record);
 
-    int entryMeter(MeterEntryParam param);
+    int entryMeter(EntryMeterParam param);
 
     boolean checkMeterExist(@Param("meterCode") String meterCode);
 
     List<Meter> selectAll();
+
+    Integer getMeterIdByMeterCode(@Param("meterCode") String meterCode);
 }

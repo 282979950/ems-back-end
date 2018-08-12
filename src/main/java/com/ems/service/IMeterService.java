@@ -1,7 +1,8 @@
 package com.ems.service;
 
 import com.ems.common.JsonData;
-import com.ems.param.MeterEntryParam;
+import com.ems.entity.Meter;
+import com.ems.param.EntryMeterParam;
 
 /**
  * 表具服务类
@@ -16,7 +17,7 @@ public interface IMeterService {
      * @param param
      * @return
      */
-    JsonData entryMeter(MeterEntryParam param);
+    JsonData entryMeter(EntryMeterParam param);
 
 
     /**
@@ -25,4 +26,20 @@ public interface IMeterService {
      * @return
      */
     JsonData selectAll();
+
+    /**
+     * 获取表具ID
+     *
+     * @param meterCode
+     * @return
+     */
+    Integer getMeterIdByMeterCode(String meterCode);
+
+    /**
+     * 更新表具信息
+     *
+     * @param meter
+     * @return
+     */
+    int updateMeter(Meter meter);
 }

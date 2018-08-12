@@ -78,4 +78,9 @@ public class Const {
      * 默认分隔符
      */
     public static final String DEFAULT_SEPARATOR = ",";
+
+    /**
+     * 默认IC卡密码
+     */
+    public static final String DEFAULT_ICCARD_PASSWORD = "B62307";
 }
