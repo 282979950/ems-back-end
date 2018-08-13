@@ -50,6 +50,6 @@ public class PasswordUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(encodePassword("123", Global.DEFAULT_MD5_SALT));
+        System.out.println(encodePassword("0000", Global.DEFAULT_MD5_SALT));
     }
 }

@@ -1,0 +1,22 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2018-8-1, 11:50:57
+    Author     : Administrator
+*/
+.repaint-toast{
+    position: fixed;
+    margin: auto;
+    width: 60vw;
+    height: 6vh;
+    /*line-height: 6vh;*/
+    left: 20vw;
+    right: 20vw;
+    top: 80vh!important;
+    display: inline-block;
+    text-align: center;
+    letter-spacing: 0.3vw;
+}

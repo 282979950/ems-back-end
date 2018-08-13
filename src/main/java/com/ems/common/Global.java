@@ -76,6 +76,11 @@ public class Global {
     public static final String DEFAULT_MD5_SALT = "TDMHEMS";
 
     /**
+     * 系统默认SESSIONID
+     */
+    public static final String DEFAULT_SESSION_ID = "EMS_SESSION_ID";
+
+    /**
      * 是否允许用户多次登录
      */
     public static final boolean USER_MUTIL_LOGIN_ALLOWED = false;

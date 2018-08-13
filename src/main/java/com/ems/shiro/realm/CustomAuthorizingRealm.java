@@ -18,7 +18,6 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,15 +49,24 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
      */
     private static int maxSession = 1;
 
-    private SessionManager sessionManager;
+    private CacheManager cacheManager;
 
-    private Cache<Integer, Deque<Serializable>> cache;
+    /**
+     * 活动会话缓存
+     * key为用户ID，value为会话队列
+     */
+    private Cache<Integer, Deque<Serializable>> activeSessionCache;
 
-    private Cache<Principal, SimpleAuthorizationInfo> infoCache;
+    /**
+     * 授权缓存
+     */
+    private Cache<Principal, SimpleAuthorizationInfo> authorizationInfoCache;
 
+    @Override
     public void setCacheManager(CacheManager cacheManager) {
-        this.cache = cacheManager.getCache("shiro-activeSessionCache");
-        this.infoCache = cacheManager.getCache("authorizationInfo-cache");
+        this.cacheManager = cacheManager;
+        this.activeSessionCache = cacheManager.getCache("shiro-activeSessionCache");
+        this.authorizationInfoCache = cacheManager.getCache("authorizationInfo-cache");
     }
 
     @Autowired
@@ -87,7 +95,7 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
             throw new AuthenticationException("该帐号已禁止登录,请联系管理员");
         }
         Principal principal = new Principal(emp);
-        infoCache.remove(principal);
+        authorizationInfoCache.remove(principal);
         return new SimpleAuthenticationInfo(principal, emp.getEmpPassword(), ByteSource.Util.bytes(Global.DEFAULT_MD5_SALT), getName());
     }
 
@@ -96,67 +104,23 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        log.info("==enter doGetAuthorizationInfo====");
+        log.info("==开始获取授权信息====");
 
         Principal principal = (Principal) getAvailablePrincipal(principals);
 
-        // 获取当前已登录的用户
-//        if (!Boolean.valueOf(Global.getConfig("user.multiLoginAllowed"))) {
-//            Subject subject = ShiroUtils.getSubject();
-//            Session session = subject.getSession();
-//            Serializable sessionId = session.getId();
-//            Principal p = (Principal) subject.getPrincipal();
-//            if (principal.equals(p)) {
-//                Integer userId = p.getId();
-//                Deque<Serializable> deque = cache.get(userId);
-//                if (deque == null) {
-//                    deque = new LinkedList<>();
-//                    cache.put(userId, deque);
-//                }
-//                Collection<Session> _sessions = systemService.getSessionDao().getActiveSessions(true, principal, session);
-//                int count = 0;
-//                for (Session s : _sessions) {
-//                    String sid = (String) s.getId();
-//                    if (!deque.contains(sid)) {
-//                        count++;
-//                    }
-//                }
-//                if (count == _sessions.size()) {
-//                    deque.clear();
-//                }
-//                //如果队列里没有此sessionId，且用户没有被踢出；放入队列
-//                if (!deque.contains(sessionId) && session.getAttribute("kickout") == null) {
-//                    deque.push(sessionId);
-//                }
-//                //如果队列里的sessionId数超出最大会话数，开始踢人
-//                while (deque.size() > maxSession) {
-//                    Serializable kickoutSessionId;
-//                    if (Boolean.valueOf(Global.getConfig("user.kickoutAfter"))) {
-//                        kickoutSessionId = deque.removeFirst();
-//                    } else {
-//                        kickoutSessionId = deque.removeLast();
-//                    }
-//                    try {
-//                        Collection<Session> sessions = systemService.getSessionDao().getActiveSessions(true, principal, null);
-//                        for (Session s : sessions) {
-//                            String sid = (String) s.getId();
-//                            if (sid.equals(kickoutSessionId)) {
-//                                s.setAttribute("kickout", true);
-//                            }
-//                        }
-//                    } catch (Exception e) {
-//                        log.error("==Session set attribute==" + e.getMessage());
-//                    }
-//                }
-//            }
-//        }
         Employee emp = employeeService.getEmpByLoginName(principal.getLoginName());
         if (emp == null) {
             return null;
         }
         Session session = ShiroUtils.getSession();
         session.setAttribute(Global.SESSION_USER_ID, emp.getEmpId());
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+
+        SimpleAuthorizationInfo info = authorizationInfoCache.get(principal);
+        if (info == null) {
+            info = new SimpleAuthorizationInfo();
+        } else {
+            return info;
+        }
         Set<SysRole> roles = emp.getRoles();
         for (SysRole role : roles) {
             info.addRole(role.getRoleName());
@@ -166,7 +130,7 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
             }
         }
         info.addRole("user");
-        infoCache.put(principal, info);
+        authorizationInfoCache.put(principal, info);
         // TODO: 2018/8/1 更新登录IP和时间
         return info;
     }
@@ -194,7 +158,7 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
         log.info("==enter SystemAuthorizingRealm isPermitted 666=begin=");
         authorizationValidate(permission);
         Principal principal = (Principal) getAvailablePrincipal(principals);
-        SimpleAuthorizationInfo info = infoCache.get(principal);
+        SimpleAuthorizationInfo info = authorizationInfoCache.get(principal);
         if (info != null) {
             Set<String> permissions = info.getStringPermissions();
             if (permissions == null) {

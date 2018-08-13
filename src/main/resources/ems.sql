@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-08-02 16:36:59
+Date: 2018-08-08 22:00:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -51,8 +51,8 @@ CREATE TABLE `employee` (
 -- ----------------------------
 -- Records of employee
 -- ----------------------------
-INSERT INTO `employee` VALUES ('1000000000', 'test', 'test', '1001', '1011', 'test', '191ee01c52eee2056317f96d10d1ae48', null, null, null, null, '测试员', '', null, null, '1', null, null, '2018-07-10 12:03:40', null, '1', null);
-INSERT INTO `employee` VALUES ('1000000001', 'admin', 'admin', '1001', '1001', 'admin', '191ee01c52eee2056317f96d10d1ae48', '', '', '', '', '管理员', ' ', '', null, '1', null, null, null, null, '1', '');
+INSERT INTO `employee` VALUES ('1000000000', 'test', 'test', '1001', '1011', 'test', '4acfaf58decb315fea0ae13c58e5bdce', null, null, null, null, '测试员', '', null, null, '1', null, null, '2018-07-10 12:03:40', null, '1', null);
+INSERT INTO `employee` VALUES ('1000000001', 'admin', 'admin', '1001', '1001', 'admin', '4acfaf58decb315fea0ae13c58e5bdce', '', '', '', '', '管理员', ' ', '', null, '1', null, null, null, null, '1', '');
 
 -- ----------------------------
 -- Table structure for `employee_location`
@@ -103,14 +103,13 @@ INSERT INTO `employee_role` VALUES ('1', '1000000001', '1001', '2018-08-01 15:16
 -- ----------------------------
 DROP TABLE IF EXISTS `meter`;
 CREATE TABLE `meter` (
-  `id` char(32) NOT NULL,
-  `meter_id` bigint(20) unsigned NOT NULL COMMENT '表具ID',
-  `meter_code` varchar(20) DEFAULT NULL COMMENT '表编号',
-  `meter_stopcode` decimal(10,3) unsigned NOT NULL DEFAULT '0.000' COMMENT '表止码',
+  `meter_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '表具ID',
+  `meter_code` varchar(20) NOT NULL COMMENT '表编号',
+  `meter_stop_code` decimal(10,3) unsigned NOT NULL DEFAULT '0.000' COMMENT '表止码',
   `meter_type_id` int(8) unsigned NOT NULL COMMENT '表具型号ID',
-  `meter_direction` tinyint(1) DEFAULT NULL COMMENT '表向',
+  `meter_direction` tinyint(1) NOT NULL COMMENT '表向',
   `meter_prod_date` datetime NOT NULL COMMENT '表具生产日期',
-  `meter_entry_date` datetime NOT NULL COMMENT '表具录入时间',
+  `meter_entry_date` datetime NOT NULL COMMENT '表具入库时间',
   `meter_install_time` datetime DEFAULT NULL COMMENT '表具安装时间',
   `meter_scrap_time` datetime DEFAULT NULL COMMENT '表具报废时间',
   `meter_validityperiod` int(10) unsigned DEFAULT '0' COMMENT '表具有效期(单位：年)',
@@ -118,43 +117,71 @@ CREATE TABLE `meter` (
   `meter_comm_key` char(32) DEFAULT NULL COMMENT '通讯密钥',
   `meter_comm_num` char(20) DEFAULT NULL COMMENT '通讯号码',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `create_by` bigint(20) unsigned DEFAULT NULL COMMENT '创建者',
+  `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `update_by` bigint(20) unsigned DEFAULT NULL COMMENT '更新者',
+  `update_by` int(10) unsigned DEFAULT NULL COMMENT '更新者',
   `usable` tinyint(1) unsigned DEFAULT '1' COMMENT '是否可用',
-  `remarks` varchar(255) DEFAULT NULL COMMENT '注释',
-  PRIMARY KEY (`id`),
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`meter_id`),
   UNIQUE KEY `meter_id_index` (`meter_id`) USING BTREE,
-  KEY `meter_type_id_index` (`meter_type_id`) USING BTREE,
-  CONSTRAINT `fk_meter_type_id` FOREIGN KEY (`meter_type_id`) REFERENCES `meter_type` (`meter_type_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  KEY `meter_type_id_index` (`meter_type_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1000000002 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of meter
 -- ----------------------------
+INSERT INTO `meter` VALUES ('1000000000', '001090500001', '0.000', '1', '1', '2018-08-08 17:23:48', '2018-08-08 17:23:51', null, null, '0', '1', null, null, null, null, null, null, '1', null);
+INSERT INTO `meter` VALUES ('1000000001', '101090500001', '0.000', '2', '1', '2018-08-08 21:57:11', '2018-08-08 21:57:11', null, null, '0', '1', null, null, '2018-08-08 21:57:10', '1000000001', '2018-08-08 21:57:10', '1000000001', null, null);
 
 -- ----------------------------
 -- Table structure for `meter_type`
 -- ----------------------------
 DROP TABLE IF EXISTS `meter_type`;
 CREATE TABLE `meter_type` (
-  `id` char(32) NOT NULL,
-  `meter_type_id` int(8) unsigned NOT NULL COMMENT '表具型号ID',
+  `meter_type_id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '表具型号ID',
   `meter_category` varchar(20) NOT NULL COMMENT '表具类别',
   `meter_type` varchar(20) NOT NULL COMMENT '表具型号',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `create_by` bigint(20) unsigned DEFAULT NULL COMMENT '创建者',
+  `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `update_by` bigint(20) unsigned DEFAULT NULL COMMENT '更新者',
-  `usable` tinyint(1) unsigned DEFAULT '1' COMMENT '是否可用',
+  `update_by` int(10) unsigned DEFAULT NULL COMMENT '更新者',
+  `usable` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT NULL COMMENT '注释',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`meter_type_id`),
   UNIQUE KEY `meter_type_id_index` (`meter_type_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of meter_type
 -- ----------------------------
+INSERT INTO `meter_type` VALUES ('1', 'IC卡表', '10-3B(LMN)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('2', 'IC卡表', '10-4A(G)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('3', 'IC卡表', '10-4A(LMN)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('4', 'IC卡表', '16-3B(LMN)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('5', 'IC卡表', '16-4A(ACD)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('6', 'IC卡表', '16-4A(LMN)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('7', 'IC卡表', '2.5-3B(C)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('8', 'IC卡表', '2.5-3B(C)（T1）', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('9', 'IC卡表', '2.5-3B(CQ)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('10', 'IC卡表', '2.5-3B(QK)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('11', 'IC卡表', '25-3B(LMN)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('12', 'IC卡表', '25-4A(ACD)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('13', 'IC卡表', '25-4A(LMN)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('14', 'IC卡表', '40-3B(LMN)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('15', 'IC卡表', '40-4A(G)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('16', 'IC卡表', '40-4A(LMN)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('17', 'IC卡表', '4-3B(C)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('18', 'IC卡表', '4-3B(C) (II)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('19', 'IC卡表', '4-3B(C) (T1)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('20', 'IC卡表', '4-3B(C) (T1Q)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('21', 'IC卡表', '4-3B(C)（Y6）', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('22', 'IC卡表', '4-3B(CQ)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('23', 'IC卡表', '4-3B(CQ)（T1）', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('24', 'IC卡表', '4-3B(QK)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('25', 'IC卡表', '6-3B(C)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('26', 'IC卡表', '6-3B(C)（T1）', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('27', 'IC卡表', '6-3B(CQ)', null, null, null, null, '1', '');
+INSERT INTO `meter_type` VALUES ('28', 'IC卡表', '6-3B(QK)', null, null, null, null, '1', '');
 
 -- ----------------------------
 -- Table structure for `sys_dictionary`
@@ -272,7 +299,7 @@ INSERT INTO `sys_menu` VALUES ('1008', '日志管理', '/sys/log', '1001', '1', 
 INSERT INTO `sys_menu` VALUES ('1009', '公告管理', '/sys/notice', '1001', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1010', '账户开户管理', '/accout/', '1000', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1011', '用户建档', '/accout/createarchives', '1010', '1', null, null, null, null, '1', '');
-INSERT INTO `sys_menu` VALUES ('1012', '表具入库', '/accout/warehouse', '1010', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_menu` VALUES ('1012', '表具入库', '/accout/entryMeter', '1010', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1013', '挂表信息', '/accout/installation', '1010', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1014', '账户开户', '/accout/create', '1010', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1015', '账户管理', '/accout/mgt', '1010', '1', null, null, null, null, '1', '');
@@ -374,56 +401,56 @@ INSERT INTO `sys_permission` VALUES ('1000', 'sys:dist:visit', '', '1002', '2018
 INSERT INTO `sys_permission` VALUES ('1001', 'sys:dist:create', '', '1002', '2018-08-01 21:41:53', '1000000001', '2018-08-01 21:42:23', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1002', 'sys:dist:delete', '', '1002', '2018-08-02 03:45:22', '1000000001', '2018-08-02 03:46:14', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1003', 'sys:dist:update', '', '1002', '2018-08-02 09:48:49', '1000000001', '2018-08-02 09:50:06', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1004', 'sys:dist:retrive', '', '1002', '2018-08-02 15:52:17', '1000000001', '2018-08-02 15:53:58', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1004', 'sys:dist:retrieve', '', '1002', '2018-08-02 15:52:17', '1000000001', '2018-08-02 15:53:58', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1005', 'sys:dist:import', '', '1002', '2018-08-02 21:55:46', '1000000001', '2018-08-02 21:57:51', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1006', 'sys:dist:export', '', '1002', '2018-08-03 03:59:13', '1000000001', '2018-08-03 04:01:43', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1007', 'sys:org:visit', '', '1003', '2018-08-01 16:23:52', '1000000001', '2018-08-01 16:23:59', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1008', 'sys:org:create', '', '1003', '2018-08-01 22:27:19', '1000000001', '2018-08-01 22:27:52', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1009', 'sys:org:delete', '', '1003', '2018-08-02 04:30:48', '1000000001', '2018-08-02 04:31:44', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1010', 'sys:org:update', '', '1003', '2018-08-02 10:34:16', '1000000001', '2018-08-02 10:35:36', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1011', 'sys:org:retrive', '', '1003', '2018-08-02 16:37:43', '1000000001', '2018-08-02 16:39:27', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1011', 'sys:org:retrieve', '', '1003', '2018-08-02 16:37:43', '1000000001', '2018-08-02 16:39:27', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1012', 'sys:org:import', '', '1003', '2018-08-02 22:41:12', '1000000001', '2018-08-02 22:43:19', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1013', 'sys:org:export', '', '1003', '2018-08-03 04:44:39', '1000000001', '2018-08-03 04:47:11', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1014', 'sys:emp:visit', '', '1004', '2018-08-01 17:09:18', '1000000001', '2018-08-01 17:09:29', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1015', 'sys:emp:create', '', '1004', '2018-08-01 23:12:45', '1000000001', '2018-08-01 23:13:20', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1016', 'sys:emp:delete', '', '1004', '2018-08-02 05:16:13', '1000000001', '2018-08-02 05:17:12', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1017', 'sys:emp:update', '', '1004', '2018-08-02 11:19:42', '1000000001', '2018-08-02 11:21:05', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1018', 'sys:emp:retrive', '', '1004', '2018-08-02 17:23:09', '1000000001', '2018-08-02 17:24:57', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1018', 'sys:emp:retrieve', '', '1004', '2018-08-02 17:23:09', '1000000001', '2018-08-02 17:24:57', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1019', 'sys:emp:import', '', '1004', '2018-08-02 23:26:38', '1000000001', '2018-08-02 23:28:49', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1020', 'sys:emp:export', '', '1004', '2018-08-03 05:30:05', '1000000001', '2018-08-03 05:32:40', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1021', 'sys:role:visit', '', '1005', '2018-08-01 17:54:44', '1000000001', '2018-08-01 17:54:58', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1022', 'sys:role:create', '', '1005', '2018-08-01 23:58:12', '1000000001', '2018-08-01 23:58:50', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1023', 'sys:role:delete', '', '1005', '2018-08-02 06:01:39', '1000000001', '2018-08-02 06:02:42', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1024', 'sys:role:update', '', '1005', '2018-08-02 12:05:08', '1000000001', '2018-08-02 12:06:33', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1025', 'sys:role:retrive', '', '1005', '2018-08-02 18:08:35', '1000000001', '2018-08-02 18:10:25', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1025', 'sys:role:retrieve', '', '1005', '2018-08-02 18:08:35', '1000000001', '2018-08-02 18:10:25', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1026', 'sys:role:import', '', '1005', '2018-08-03 00:12:04', '1000000001', '2018-08-03 00:14:18', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1027', 'sys:role:export', '', '1005', '2018-08-03 06:15:31', '1000000001', '2018-08-03 06:18:10', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1028', 'sys:auth:visit', '', '1006', '2018-08-01 18:40:10', '1000000001', '2018-08-01 18:40:26', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1029', 'sys:auth:create', '', '1006', '2018-08-02 00:43:38', '1000000001', '2018-08-02 00:44:18', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1030', 'sys:auth:delete', '', '1006', '2018-08-02 06:47:05', '1000000001', '2018-08-02 06:48:11', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1031', 'sys:auth:update', '', '1006', '2018-08-02 12:50:34', '1000000001', '2018-08-02 12:52:03', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1032', 'sys:auth:retrive', '', '1006', '2018-08-02 18:54:01', '1000000001', '2018-08-02 18:55:54', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1032', 'sys:auth:retrieve', '', '1006', '2018-08-02 18:54:01', '1000000001', '2018-08-02 18:55:54', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1033', 'sys:auth:import', '', '1006', '2018-08-03 00:57:30', '1000000001', '2018-08-03 00:59:46', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1034', 'sys:auth:export', '', '1006', '2018-08-03 07:00:58', '1000000001', '2018-08-03 07:03:38', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1035', 'sys:dic:visit', '', '1007', '2018-08-01 19:25:35', '1000000001', '2018-08-01 19:25:56', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1036', 'sys:dic:create', '', '1007', '2018-08-02 01:29:04', '1000000001', '2018-08-02 01:29:47', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1037', 'sys:dic:delete', '', '1007', '2018-08-02 07:32:31', '1000000001', '2018-08-02 07:33:39', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1038', 'sys:dic:update', '', '1007', '2018-08-02 13:36:00', '1000000001', '2018-08-02 13:37:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1039', 'sys:dic:retrive', '', '1007', '2018-08-02 19:39:27', '1000000001', '2018-08-02 19:41:24', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1039', 'sys:dic:retrieve', '', '1007', '2018-08-02 19:39:27', '1000000001', '2018-08-02 19:41:24', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1040', 'sys:dic:import', '', '1007', '2018-08-03 01:42:55', '1000000001', '2018-08-03 01:45:16', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1041', 'sys:dic:export', '', '1007', '2018-08-03 07:46:24', '1000000001', '2018-08-03 07:49:07', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1042', 'sys:log:visit', '', '1008', '2018-08-01 20:11:01', '1000000001', '2018-08-01 20:11:25', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1043', 'sys:log:create', '', '1008', '2018-08-02 02:14:30', '1000000001', '2018-08-02 02:15:17', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1044', 'sys:log:delete', '', '1008', '2018-08-02 08:17:57', '1000000001', '2018-08-02 08:19:09', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1045', 'sys:log:update', '', '1008', '2018-08-02 14:21:26', '1000000001', '2018-08-02 14:23:00', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1046', 'sys:log:retrive', '', '1008', '2018-08-02 20:24:54', '1000000001', '2018-08-02 20:26:52', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1046', 'sys:log:retrieve', '', '1008', '2018-08-02 20:24:54', '1000000001', '2018-08-02 20:26:52', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1047', 'sys:log:import', '', '1008', '2018-08-03 02:28:21', '1000000001', '2018-08-03 02:30:45', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1048', 'sys:log:export', '', '1008', '2018-08-03 08:31:50', '1000000001', '2018-08-03 08:34:37', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1049', 'sys:notice:visit', '', '1009', '2018-08-01 20:56:27', '1000000001', '2018-08-01 20:56:53', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1050', 'sys:notice:create', '', '1009', '2018-08-02 02:59:56', '1000000001', '2018-08-02 03:00:45', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1051', 'sys:notice:delete', '', '1009', '2018-08-02 09:03:23', '1000000001', '2018-08-02 09:04:38', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1052', 'sys:notice:update', '', '1009', '2018-08-02 15:06:52', '1000000001', '2018-08-02 15:08:30', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1053', 'sys:notice:retrive', '', '1009', '2018-08-02 21:10:20', '1000000001', '2018-08-02 21:12:22', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1053', 'sys:notice:retrieve', '', '1009', '2018-08-02 21:10:20', '1000000001', '2018-08-02 21:12:22', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1054', 'sys:notice:import', '', '1009', '2018-08-03 03:13:47', '1000000001', '2018-08-03 03:16:13', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1055', 'sys:notice:export', '', '1009', '2018-08-03 09:17:16', '1000000001', '2018-08-03 09:20:05', '1000000001', '1', '');
 
@@ -533,13 +560,12 @@ INSERT INTO `sys_role_perm` VALUES ('56', '1001', '1055', '2020-08-26 12:22:11',
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` char(32) NOT NULL,
-  `user_id` bigint(20) unsigned NOT NULL COMMENT '用户ID',
-  `user_name` varchar(20) DEFAULT NULL COMMENT '机构名称',
+  `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户编号',
+  `user_name` varchar(20) DEFAULT NULL COMMENT '用户名称',
   `user_phone` varchar(20) DEFAULT NULL COMMENT '用户电话',
   `user_idcard` varchar(20) DEFAULT NULL COMMENT '用户身份证号码',
   `user_deed` varchar(20) DEFAULT NULL COMMENT '用户房产证号码',
-  `user_dist_id` bigint(20) unsigned DEFAULT NULL COMMENT '用户所在区域ID',
+  `user_dist_id` bigint(20) unsigned NOT NULL COMMENT '用户所在区域ID',
   `user_address` varchar(100) NOT NULL COMMENT '用户住址',
   `user_type` tinyint(2) unsigned DEFAULT NULL COMMENT '用户类型',
   `user_gas_type` tinyint(2) unsigned DEFAULT NULL COMMENT '用气类型',
@@ -554,7 +580,7 @@ CREATE TABLE `user` (
   `update_by` int(10) unsigned DEFAULT NULL COMMENT '更新者',
   `usable` tinyint(1) unsigned DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT NULL COMMENT '注释',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id` (`user_id`) USING BTREE,
   KEY `user_dist_id_index` (`user_dist_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -568,7 +594,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user_meters`;
 CREATE TABLE `user_meters` (
-  `id` char(32) NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` bigint(20) unsigned NOT NULL COMMENT '用户ID',
   `meter_id` bigint(20) unsigned NOT NULL COMMENT '表具ID',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',

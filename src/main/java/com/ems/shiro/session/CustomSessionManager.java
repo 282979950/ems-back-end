@@ -1,5 +1,6 @@
 package com.ems.shiro.session;
 
+import com.ems.common.Global;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
@@ -35,10 +36,9 @@ public class CustomSessionManager extends DefaultWebSessionManager {
 
     @Override
     protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
-        // 如果参数中包含“sessionId”参数，则使用此sid会话。 例如：http://localhost/project?sessionId=xxx&cookie=true
-        String sessionId = request.getParameter("sessionId");
+        String sessionId = request.getParameter(Global.DEFAULT_SESSION_ID);
         if (StringUtils.isNotBlank(sessionId)) {
-            // 是否将sid保存到cookie，浏览器模式下使用此参数。
+            // 是否将保存到cookie，浏览器模式下使用此参数。
             if (WebUtils.isTrue(request, "cookie")) {
                 HttpServletRequest rq = (HttpServletRequest) request;
                 HttpServletResponse rs = (HttpServletResponse) response;
@@ -62,6 +62,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         super.validateSessions();
     }
 
+    @Override
     protected Session retrieveSession(SessionKey sessionKey) {
         try {
             return super.retrieveSession(sessionKey);
@@ -71,6 +72,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public Date getStartTimestamp(SessionKey key) {
         try {
             return super.getStartTimestamp(key);
@@ -80,6 +82,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public Date getLastAccessTime(SessionKey key) {
         try {
             return super.getLastAccessTime(key);
@@ -89,6 +92,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public long getTimeout(SessionKey key) {
         try {
             return super.getTimeout(key);
@@ -98,6 +102,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public void setTimeout(SessionKey key, long maxIdleTimeInMillis) {
         try {
             super.setTimeout(key, maxIdleTimeInMillis);
@@ -106,6 +111,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public void touch(SessionKey key) {
         try {
             super.touch(key);
@@ -114,6 +120,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public String getHost(SessionKey key) {
         try {
             return super.getHost(key);
@@ -123,6 +130,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public Collection<Object> getAttributeKeys(SessionKey key) {
         try {
             return super.getAttributeKeys(key);
@@ -132,6 +140,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public Object getAttribute(SessionKey sessionKey, Object attributeKey) {
         try {
             return super.getAttribute(sessionKey, attributeKey);
@@ -141,6 +150,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public void setAttribute(SessionKey sessionKey, Object attributeKey, Object value) {
         try {
             super.setAttribute(sessionKey, attributeKey, value);
@@ -149,6 +159,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public Object removeAttribute(SessionKey sessionKey, Object attributeKey) {
         try {
             return super.removeAttribute(sessionKey, attributeKey);
@@ -158,6 +169,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public void stop(SessionKey key) {
         try {
             super.stop(key);
@@ -166,6 +178,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         }
     }
 
+    @Override
     public void checkValid(SessionKey key) {
         try {
             super.checkValid(key);

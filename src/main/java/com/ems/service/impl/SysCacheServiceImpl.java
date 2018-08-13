@@ -26,40 +26,49 @@ public class SysCacheServiceImpl implements ISysCacheService {
 
     private static final String SYS_CACHE = "SYS_CACHE";
 
+    @Override
     public Object get(String key) {
         return get(SYS_CACHE, key);
     }
 
+    @Override
     public Object get(String key, Object defaultValue) {
         Object value = get(key);
         return value != null ? value : defaultValue;
     }
 
+    @Override
     public void put(String key, Object value) {
         put(SYS_CACHE, key, value);
     }
 
+    @Override
     public void remove(String key) {
         remove(SYS_CACHE, key);
     }
 
+    @Override
     public Object get(String cacheName, String key) {
         return getCache(cacheName).get(getKey(key));
     }
 
+    @Override
     public Object get(String cacheName, String key, Object defaultValue) {
         Object value = get(cacheName, getKey(key));
         return value != null ? value : defaultValue;
     }
 
+    @Override
     public void put(String cacheName, String key, Object value) {
         getCache(cacheName).put(getKey(key), value);
     }
 
+    @Override
     public void remove(String cacheName, String key) {
         getCache(cacheName).remove(getKey(key));
     }
 
+    @Override
     public void removeAll(String cacheName) {
         Cache<String, Object> cache = getCache(cacheName);
         Set<String> keys = cache.keys();

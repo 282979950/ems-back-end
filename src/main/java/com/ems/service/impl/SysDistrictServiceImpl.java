@@ -6,6 +6,7 @@ import com.ems.entity.SysDistrict;
 import com.ems.entity.mapper.SysDistrictMapper;
 import com.ems.exception.ParameterException;
 import com.ems.service.ISysDistrictService;
+import com.ems.shiro.utils.ShiroUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,7 +83,9 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         }
         district.setUsable(true);
         district.setChildrenDist(new ArrayList<SysDistrict>());
-        // TODO: 2018/7/4  设置创建者和更新者
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        district.setCreateBy(currentEmpId);
+        district.setUpdateBy(currentEmpId);
         int resultCount = districtMapper.insert(district);
         if (resultCount == 0) {
             return JsonData.fail("创建区域失败");
@@ -148,7 +151,8 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         oldDistrict.setDistName(newDistrict.getDistName());
         oldDistrict.setDistCode(newDistrict.getDistCode());
         oldDistrict.setDistAddress(newDistrict.getDistAddress());
-        // TODO: 2018/7/6 设置更新者
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        oldDistrict.setUpdateBy(currentEmpId);
         int resultCount = districtMapper.updateByPrimaryKey(oldDistrict);
         if (resultCount == 0) {
             return JsonData.fail("更新区域失败");
