@@ -5,7 +5,6 @@
   Time: 9:02
   To change this template use File | Settings | File Templates.
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -15,18 +14,18 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <title>表具管理系统</title>
-        <link rel="stylesheet" href="assets/materialize/fonts/material-icons.min.css"/>
-        <link type="text/css" rel="stylesheet" href="assets/materialize/css/materialize.min.css" media="screen"/>
-        <link type="text/css" rel="stylesheet" href="assets/fonts/ionicons.min.css"/>
-        <link type="text/css" rel="stylesheet" href="assets/custom/css/common.css"/>
-        <link type="text/css" rel="stylesheet" href="assets/custom/css/login.css"/>
-        <script type="text/javascript" src="assets/materialize/js/jquery.min.js"></script>
-        <script type="text/javascript" src="assets/materialize/js/materialize.min.js"></script>
-        <script type="text/javascript" src="assets/custom/js/common.js"></script>
-        <script type="text/javascript" src="assets/custom/js/login.js"></script>
+        <link rel="stylesheet" href="../assets/materialize/fonts/material-icons.min.css"/>
+        <link type="text/css" rel="stylesheet" href="../assets/materialize/css/materialize.min.css" media="screen"/>
+        <link type="text/css" rel="stylesheet" href="../assets/fonts/ionicons.min.css"/>
+        <link type="text/css" rel="stylesheet" href="../assets/custom/css/common.css"/>
+        <link type="text/css" rel="stylesheet" href="../assets/custom/css/login.css"/>
+        <script type="text/javascript" src="../assets/materialize/js/jquery.min.js"></script>
+        <script type="text/javascript" src="../assets/materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="../assets/custom/js/common.js"></script>
+        <script type="text/javascript" src="../assets/custom/js/login.js"></script>
     </head>
     <body>
-        <form class="login-container" action="login.action" method="post">
+        <form class="login-container" action="login" method="post">
             <!--<h1 class="login-title">登录</h1>-->
             <div class="illustration">
                 <i class="ion-ios-navigate"></i>
