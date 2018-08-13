@@ -1,5 +1,6 @@
 package com.ems.param;
 
+import com.ems.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -15,7 +16,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class MeterEntryParam {
+public class EntryMeterParam extends BaseEntity {
 
     /**
      * 表具编号
@@ -61,32 +62,4 @@ public class MeterEntryParam {
      * 表具入库日期
      */
     private Date meterEntryDate;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 创建者
-     */
-    private Integer createBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
-
-    /**
-     * 更新者
-     */
-    private Integer updateBy;
-
-    /**
-     * 是否可用
-     */
-    private Boolean usable;
-
-    @Length(max = 255, message = "备注长度不能超过255个字")
-    private String remarks;
 }

@@ -257,7 +257,7 @@
         remarks = #{remarks,jdbcType=VARCHAR}
         where meter_id = #{meterId,jdbcType=INTEGER}
     </update>
-    <insert id="entryMeter" parameterType="com.ems.param.MeterEntryParam">
+    <insert id="entryMeter" parameterType="com.ems.param.EntryMeterParam">
         insert into meter (meter_code, meter_stop_code,
         meter_type_id, meter_direction, meter_prod_date,
         meter_entry_date, create_time, create_by,
@@ -283,5 +283,11 @@
         m.remarks
         from meter m left join meter_type mt on m.meter_type_id = mt.meter_type_id
         where m.usable = 1
+    </select>
+    <select id="getMeterIdByMeterCode" parameterType="string" resultType="integer">
+        select
+        meter_id
+        from meter
+        where meter_code = #{meterCode,jdbcType=VARCHAR} and usable = 1
     </select>
 </mapper>

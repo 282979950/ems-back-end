@@ -41,7 +41,9 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
     @PostConstruct
     private void initializeSysDistTree() {
         districtList = districtMapper.selectAll();
-        if (districtList == null || districtList.size() == 0) return;
+        if (districtList == null || districtList.size() == 0) {
+            return;
+        }
         for (SysDistrict dist : districtList) {
             Integer parentId = dist.getDistParentId();
             if (parentId != null) {

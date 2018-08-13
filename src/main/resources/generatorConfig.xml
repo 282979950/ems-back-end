@@ -65,7 +65,7 @@
 
         <!--<table tableName="sys_dictionary" domainObjectName="SysDictionary" enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
-        <table tableName="sys_district" domainObjectName="SysDistrict" enableCountByExample="false" enableUpdateByExample="false"
+        <table tableName="user_orders" domainObjectName="UserOrders" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <!--<table tableName="sys_log" domainObjectName="SysLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
                <!--enableSelectByExample="false" selectByExampleQueryId="false"/>-->

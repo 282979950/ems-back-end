@@ -1,13 +1,13 @@
 package com.ems.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 身份证工具类
@@ -139,8 +139,9 @@ public class IdcardUtils extends StringUtils {
 				e.printStackTrace();
 			}
 			Calendar cal = Calendar.getInstance();
-			if (birthDate != null)
+			if (birthDate != null) {
 				cal.setTime(birthDate);
+			}
 			// 获取出生年(完全表现形式,如：2010)
 			String sYear = String.valueOf(cal.get(Calendar.YEAR));
 			idCard18 = idCard.substring(0, 6) + sYear + idCard.substring(8);

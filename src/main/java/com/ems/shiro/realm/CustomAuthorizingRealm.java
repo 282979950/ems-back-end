@@ -82,10 +82,6 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         String userName = token.getUsername();
-//        int activeSessionSize = systemService.getSessionDao().getActiveSessions(false).size();
-//        if (log.isDebugEnabled()) {
-//            log.debug("login submit, active session size: {}, username: {}", activeSessionSize, token.getUsername());
-//        }
         // 校验用户名密码
         Employee emp = employeeService.getEmpByLoginName(userName);
         if (emp == null) {
