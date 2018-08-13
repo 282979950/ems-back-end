@@ -31,7 +31,12 @@ app.initIndex = function () {
                     tabsElement.appendChild(tabElement);
                     var paneElement = panesElement.getElementsByClassName('pane')[0].cloneNode(true);
                     paneElement.id = [name, '-', 'pane'].join(''), paneElement.innerHTML = app.getPaneContent(name);
-                    panesElement.appendChild(paneElement), app.initPane(paneElement);
+                    var entityName = 'Emp';
+                    panesElement.appendChild(paneElement), app.initPane({
+                        pane: paneElement,
+                        url: ['get', entityName, 'BySearch', '.', 'do'].join(''),
+                        pageNumber: 1
+                    });
                     instance.destroy(), instance = M.Tabs.init(tabsElement, {swipeable: true});
                     instance.select(paneId), instance.updateTabIndicator();
                 }
