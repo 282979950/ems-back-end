@@ -25,6 +25,14 @@
         <script type="text/javascript" src="../assets/custom/js/login.js"></script>
     </head>
     <body>
+        <%--
+        <form action="login" method="post">
+            <input type="text" name="username" value="${username}"><br>
+            <input type="password" name="password" value="${password}"> <br>
+            <input type="submit" value="登录">
+            <p>${message}</p>
+        </form>
+        --%>
         <form class="login-container" action="login" method="post">
             <!--<h1 class="login-title">登录</h1>-->
             <div class="illustration">
@@ -43,9 +51,8 @@
                     <label for="password" class="white-text">密码</label>
                     <span class="helper-text white-text" data-error="字段长度为4-16位" data-success="验证通过"></span>
                 </div>
-                <!--<a class="btn waves-effect waves-light login-btn">登录</a>-->
             </div>
-            <input type="submit" class="btn waves-effect waves-light login-btn" value="登录"/>
+            <button type="submit" class="btn waves-effect waves-light login-btn">登录</button>
         </form>
     </body>
 </html>
