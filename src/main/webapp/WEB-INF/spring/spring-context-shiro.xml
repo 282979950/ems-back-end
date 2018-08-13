@@ -90,6 +90,7 @@
             <value>
                 /login=authc
                 /logout=logout
+                /assets/**=anon
                 <!--/index=roles[user]-->
                 /**=user
             </value>
