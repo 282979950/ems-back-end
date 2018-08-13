@@ -5,7 +5,6 @@
   Time: 9:02
   To change this template use File | Settings | File Templates.
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -26,7 +25,7 @@
         <script type="text/javascript" src="assets/custom/js/login.js"></script>
     </head>
     <body>
-        <form class="login-container" action="login.action" method="post">
+        <form class="login-container" action="login" method="post">
             <!--<h1 class="login-title">登录</h1>-->
             <div class="illustration">
                 <i class="ion-ios-navigate"></i>
