@@ -99,3 +99,21 @@ and open the template in the editor.
 .color-white{
     color: white;
 }
+.input-num,.go,.set-size{
+    width: 80px!important;
+}
+.operation-text{
+    vertical-align: top;
+}
+
+.tip{
+    width: 240px;
+}
+.menus{
+    margin-top: 50px;
+}
+.logout-form{
+    margin-top: 10px;
+    width: 100%;
+    text-align: right;
+}
