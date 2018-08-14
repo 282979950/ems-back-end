@@ -225,6 +225,25 @@ ${username}，欢迎使用表具管理系统！
                 <button class="modal-close waves-effect waves-green btn">取消</button>
             </div>
         </div>
+        <div class="modal modal-fixed-footer">
+            <div class="modal-content align-center">
+                <h4 class="title">Title</h4>
+            </div>
+            <div class="modal-footer align-center">
+                <button class="modal-close waves-effect waves-green btn">DisAgree</button>
+                <button class="modal-close waves-effect waves-green btn">Agree</button>
+            </div>
+        </div>
+
+        <div class="modal tip">
+            <div class="modal-content align-center">
+                <h6>提示信息</h6>
+            </div>
+            <div class="modal-footer align-center">
+                <button class="modal-close waves-effect waves-green btn">确定</button>
+                <button class="modal-close waves-effect waves-green btn">取消</button>
+            </div>
+        </div>
         <script type="text/javascript">
             app.initIndex();
         </script>
