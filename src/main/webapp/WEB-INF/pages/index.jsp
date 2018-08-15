@@ -18,124 +18,236 @@
     <link type="text/css" rel="stylesheet" href="../assets/fonts/ionicons.min.css"/>
     <link type="text/css" rel="stylesheet" href="../assets/custom/css/common.css"/>
     <link type="text/css" rel="stylesheet" href="../assets/custom/css/index.css"/>
+    <link type="text/css" rel="stylesheet" href="../assets/mdui-v0.4.1/css/mdui.min.css"/>
     <script type="text/javascript" src="../assets/materialize/js/jquery.min.js"></script>
     <script type="text/javascript" src="../assets/materialize/js/materialize.min.js"></script>
     <script type="text/javascript" src="../assets/custom/js/common.js"></script>
     <script type="text/javascript" src="../assets/custom/js/index.js"></script>
+    <script type="text/javascript" src="../assets/mdui-v0.4.1/js/mdui.min.js"></script>
+
 </head>
-<body>
-<%--
-${username}，欢迎使用表具管理系统！
-<form action="logout" method="post">
-    <input type="submit" value="登出">
-</form>
---%>
-<div class="slider">
-    <ul class="slides">
-        <li>
-            <img src="assets/custom/img/07.jpg" alt="07"/>
-            <div class="caption center-align">
-                <h3>This is our big Tagline!</h3>
-                <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-            </div>
-        </li>
-        <li>
-            <img src="assets/custom/img/08.jpg" alt="08"/>
-            <div class="caption center-align">
-                <h3>This is our big Tagline!</h3>
-                <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-            </div>
-        </li>
-        <li>
-            <img src="assets/custom/img/09.jpg" alt="09"/>
-            <div class="caption center-align">
-                <h3>This is our big Tagline!</h3>
-                <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-            </div>
-        </li>
-        <li>
-            <img src="assets/custom/img/10.jpg" alt="10"/>
-            <div class="caption center-align">
-                <h3>This is our big Tagline!</h3>
-                <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-            </div>
-        </li>
-    </ul>
-</div>
-<div class="row">
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink mdui-loaded">
+<header class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-theme">
+        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#main-drawer', swipe: true}"mdui-tooltip="{content: '展开/隐藏'}"><i class="mdui-icon material-icons">menu</i></span>
 
-    <div class="col s2" style=" overflow-y:auto; height:450px; ">
-
-        <ul class="collapsible collapsible-accordion ">
-            <li>
-                <div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">home</i>系统管理</div>
-                <div class="collapsible-body no-padding children-width-full">
-                    <div class="waves-effect   btn-large nav-item regional">区域管理</div>
-                    <div class="waves-effect   btn-large nav-item organization">机构管理</div>
-                    <div class="waves-effect   btn-large nav-item user">用户管理</div>
-                    <div class="waves-effect   btn-large nav-item role">角色管理</div>
-                    <div class="waves-effect   btn-large nav-item permission">权限管理</div>
-                    <div class="waves-effect   btn-large nav-item dictionary">字典管理</div>
-                    <div class="waves-effect   btn-large nav-item log">日志管理</div>
-                    <div class="waves-effect   btn-large nav-item announcement">公告管理</div>
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">account_box</i>账户管理</div>
-                <div class="collapsible-body no-padding children-width-full">
-                    <div class="waves-effect  btn-large nav-item inbound">表具入库</div>
-                    <div class="waves-effect  btn-large nav-item file">用户建档</div>
-                    <div class="waves-effect  btn-large nav-item install">挂表</div>
-                    <div class="waves-effect  btn-large nav-item account">开户</div>
-                    <div class="waves-effect  btn-large nav-item alter">账户变更</div>
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header waves-effect waves-light green color-white"><i class="material-icons">payment</i>充值缴费管理</div>
-                <div class="collapsible-body no-padding children-width-full">
-                    <div class="waves-effect  btn-large nav-item prePayment">预付费充值</div>
-                    <div class="waves-effect  btn-large nav-item replaceCard">补卡充值</div>
-                    <div class="waves-effect  btn-large nav-item postPayment">后付费充值</div>
-                    <div class="waves-effect  btn-large nav-item invoice">发票管理</div>
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">local_gas_station</i>维修补气管理</div>
-                <div class="collapsible-body no-padding children-width-full">
-                    <div class="waves-effect  btn-large nav-item input">维修单录入</div>
-                    <div class="waves-effect  btn-large nav-item fillGas">维修补气</div>
-                    <div class="waves-effect  btn-large nav-item balance">补缴结算</div>
-                    <div class="waves-effect  btn-large nav-item initCard">IC卡初始化</div>
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">library_books</i>账务处理</div>
-                <div class="collapsible-body no-padding children-width-full">
-                    <div class="waves-effect  btn-large nav-item preStrike">预冲账</div>
-                    <div class="waves-effect  btn-large nav-item strike">冲账</div>
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">network_check</i>表具运行管理</div>
-                <div class="collapsible-body no-padding children-width-full">
-                    <div class="waves-effect  btn-large nav-item record">抄表</div>
-                    <div class="waves-effect  btn-large nav-item control">阀门控制</div>
-                    <div class="waves-effect  btn-large nav-item exception">异常情况</div>
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">query_builder</i>查询统计</div>
-                <div class="collapsible-body no-padding children-width-full">
-                    <div class="waves-effect  btn-large nav-item cardQuery">IC卡查询</div>
-                    <div class="waves-effect  btn-large nav-item accountQuery">开户信息查询</div>
-                    <div class="waves-effect  btn-large nav-item userQuery">用户信息查询</div>
-                    <div class="waves-effect  btn-large nav-item exceptionQuery">异常用户查询</div>
-                    <div class="waves-effect  btn-large nav-item businessDataQuery">营业数据查询</div>
-                    <div class="waves-effect  btn-large nav-item businessReportQuery">营业报表查询</div>
-                </div>
-            </li>
-        </ul>
+        <div class="mdui-toolbar-spacer"></div>
+        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '锁屏'}"><i class="mdui-icon material-icons">https</i></span>
+        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '刷新'}"><i class="mdui-icon material-icons">cached</i></span>
+        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '退出'}"><i class="mdui-icon material-icons">power_settings_new</i></span>
     </div>
+</header>
+<div class="mdui-drawer NavigationBars" id="main-drawer">
+    <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">home</i>
+                <div class="mdui-list-item-content">系统管理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list" style="">
+                <div class="mdui-list-item mdui-ripple ">区域管理</div>
+                <div class="mdui-list-item mdui-ripple ">机构管理</div>
+                <div class="mdui-list-item mdui-ripple ">用户管理</div>
+                <div class="mdui-list-item mdui-ripple ">角色管理</div>
+                <div class="mdui-list-item mdui-ripple ">权限管理</div>
+                <div class="mdui-list-item mdui-ripple ">字典管理</div>
+                <div class="mdui-list-item mdui-ripple ">日志管理</div>
+                <div class="mdui-list-item mdui-ripple ">公告管理</div>
+            </div>
+        </div>
+
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">account_box</i>
+                <div class="mdui-list-item-content">账户管理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list" style="">
+                <div class="mdui-list-item mdui-ripple">表具入库</div>
+                <div class="mdui-list-item mdui-ripple">用户建档</div>
+                <div class="mdui-list-item mdui-ripple">挂表</div>
+                <div class="mdui-list-item mdui-ripple">开户</div>
+                <div class="mdui-list-item mdui-ripple">账户变更</div>
+            </div>
+        </div>
+
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">payment</i>
+                <div class="mdui-list-item-content">充值缴费管理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list" style="">
+                <div class="mdui-list-item mdui-ripple">预付费充值</div>
+                <div class="mdui-list-item mdui-ripple">补卡充值</div>
+                <div class="mdui-list-item mdui-ripple">后付费充值</div>
+                <div class="mdui-list-item mdui-ripple">发票管理</div>
+            </div>
+        </div>
+
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">local_gas_station</i>
+                <div class="mdui-list-item-content">维修补气管理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list" style="">
+                <div class="mdui-list-item mdui-ripple">维修单录入</div>
+                <div class="mdui-list-item mdui-ripple">维修补气</div>
+                <div class="mdui-list-item mdui-ripple">补缴结算</div>
+                <div class="mdui-list-item mdui-ripple">IC卡初始化</div>
+            </div>
+        </div>
+
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">account_box</i>
+                <div class="mdui-list-item-content">账务处理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list" style="">
+                <div class="mdui-list-item mdui-ripple">预冲账</div>
+                <div class="mdui-list-item mdui-ripple">冲账</div>
+            </div>
+        </div>
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">network_check</i>
+                <div class="mdui-list-item-content">表具运行管理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list" style="">
+                <div class="mdui-list-item mdui-ripple">抄表</div>
+                <div class="mdui-list-item mdui-ripple">阀门控制</div>
+                <div class="mdui-list-item mdui-ripple">异常情况</div>
+            </div>
+        </div>
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">query_builder</i>
+                <div class="mdui-list-item-content">查询统计</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list" style="">
+                <div class="mdui-list-item mdui-ripple">IC卡查询</div>
+                <div class="mdui-list-item mdui-ripple">开户信息查询</div>
+                <div class="mdui-list-item mdui-ripple">用户信息查询</div>
+                <div class="mdui-list-item mdui-ripple">异常用户查询</div>
+                <div class="mdui-list-item mdui-ripple">营业数据查询</div>
+                <div class="mdui-list-item mdui-ripple">营业报表查询</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--<body>--%>
+<%--<div class="slider">--%>
+    <%--<ul class="slides">--%>
+        <%--<li>--%>
+            <%--<img src="assets/custom/img/07.jpg" alt="07"/>--%>
+            <%--<div class="caption center-align">--%>
+                <%--<h3>This is our big Tagline!</h3>--%>
+                <%--<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>--%>
+            <%--</div>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<img src="assets/custom/img/08.jpg" alt="08"/>--%>
+            <%--<div class="caption center-align">--%>
+                <%--<h3>This is our big Tagline!</h3>--%>
+                <%--<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>--%>
+            <%--</div>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<img src="assets/custom/img/09.jpg" alt="09"/>--%>
+            <%--<div class="caption center-align">--%>
+                <%--<h3>This is our big Tagline!</h3>--%>
+                <%--<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>--%>
+            <%--</div>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<img src="assets/custom/img/10.jpg" alt="10"/>--%>
+            <%--<div class="caption center-align">--%>
+                <%--<h3>This is our big Tagline!</h3>--%>
+                <%--<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>--%>
+            <%--</div>--%>
+        <%--</li>--%>
+    <%--</ul>--%>
+<%--</div>--%>
+<%--<div class="row">--%>
+
+   <%--<div class="col s2">--%>
+
+    <%--<ul class="collapsible collapsible-accordion "style=" overflow-y:auto; height:450px;"onmousemove="selectin(this)" onmouseout="leave(this)">--%>
+        <%--<li>--%>
+            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">home</i>系统管理<i class="material-icons" style="position: absolute;right: 0px;">keyboard_arrow_down</i></div>--%>
+            <%--<div class="collapsible-body no-padding children-width-full">--%>
+                <%--<div class="waves-effect   btn-large nav-item dist">区域管理</div>--%>
+                <%--<div class="waves-effect   btn-large nav-item organization">机构管理</div>--%>
+                <%--<div class="waves-effect   btn-large nav-item user">用户管理</div>--%>
+                <%--<div class="waves-effect   btn-large nav-item role">角色管理</div>--%>
+                <%--<div class="waves-effect   btn-large nav-item permission">权限管理</div>--%>
+                <%--<div class="waves-effect   btn-large nav-item dictionary">字典管理</div>--%>
+                <%--<div class="waves-effect   btn-large nav-item log">日志管理</div>--%>
+                <%--<div class="waves-effect   btn-large nav-item announcement">公告管理</div>--%>
+            <%--</div>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">account_box</i>账户管理</div>--%>
+            <%--<div class="collapsible-body no-padding children-width-full">--%>
+                <%--<div class="waves-effect  btn-large nav-item inbound">表具入库</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item file">用户建档</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item install">挂表</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item account">开户</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item alter">账户变更</div>--%>
+            <%--</div>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<div class="collapsible-header waves-effect waves-light green color-white"><i class="material-icons">payment</i>充值缴费管理</div>--%>
+            <%--<div class="collapsible-body no-padding children-width-full">--%>
+                <%--<div class="waves-effect  btn-large nav-item prePayment">预付费充值</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item replaceCard">补卡充值</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item postPayment">后付费充值</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item invoice">发票管理</div>--%>
+            <%--</div>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">local_gas_station</i>维修补气管理</div>--%>
+            <%--<div class="collapsible-body no-padding children-width-full">--%>
+                <%--<div class="waves-effect  btn-large nav-item input">维修单录入</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item fillGas">维修补气</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item balance">补缴结算</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item initCard">IC卡初始化</div>--%>
+            <%--</div>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">library_books</i>账务处理</div>--%>
+            <%--<div class="collapsible-body no-padding children-width-full">--%>
+                <%--<div class="waves-effect  btn-large nav-item preStrike">预冲账</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item strike">冲账</div>--%>
+            <%--</div>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">network_check</i>表具运行管理</div>--%>
+            <%--<div class="collapsible-body no-padding children-width-full">--%>
+                <%--<div class="waves-effect  btn-large nav-item record">抄表</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item control">阀门控制</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item exception">异常情况</div>--%>
+            <%--</div>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">query_builder</i>查询统计</div>--%>
+            <%--<div class="collapsible-body no-padding children-width-full">--%>
+                <%--<div class="waves-effect  btn-large nav-item cardQuery">IC卡查询</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item accountQuery">开户信息查询</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item userQuery">用户信息查询</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item exceptionQuery">异常用户查询</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item businessDataQuery">营业数据查询</div>--%>
+                <%--<div class="waves-effect  btn-large nav-item businessReportQuery">营业报表查询</div>--%>
+            <%--</div>--%>
+        <%--</li>--%>
+    <%--</ul>--%>
+    <%--</div>--%>
 
     <div class="col s10">
         <ul class="tabs z-depth-3 tabs-fixed-width tabs-extra">
@@ -204,48 +316,29 @@ ${username}，欢迎使用表具管理系统！
             </div>
         </div>
 
-            </div>
-        </div>
-        <div class="modal modal-fixed-footer">
-            <div class="modal-content align-center">
-                <h4 class="title">Title</h4>
-            </div>
-            <div class="modal-footer align-center">
-                <button class="modal-close waves-effect waves-green btn">DisAgree</button>
-                <button class="modal-close waves-effect waves-green btn">Agree</button>
-            </div>
-        </div>
+    </div>
+</div>
+<div class="modal modal-fixed-footer">
+    <div class="modal-content align-center">
+        <h4 class="title">Title</h4>
+    </div>
+    <div class="modal-footer align-center">
+        <button class="modal-close waves-effect waves-green btn">DisAgree</button>
+        <button class="modal-close waves-effect waves-green btn">Agree</button>
+    </div>
+</div>
 
-        <div class="modal tip">
-            <div class="modal-content align-center">
-                <h6>提示信息</h6>
-            </div>
-            <div class="modal-footer align-center">
-                <button class="modal-close waves-effect waves-green btn">确定</button>
-                <button class="modal-close waves-effect waves-green btn">取消</button>
-            </div>
-        </div>
-        <div class="modal modal-fixed-footer">
-            <div class="modal-content align-center">
-                <h4 class="title">Title</h4>
-            </div>
-            <div class="modal-footer align-center">
-                <button class="modal-close waves-effect waves-green btn">DisAgree</button>
-                <button class="modal-close waves-effect waves-green btn">Agree</button>
-            </div>
-        </div>
-
-        <div class="modal tip">
-            <div class="modal-content align-center">
-                <h6>提示信息</h6>
-            </div>
-            <div class="modal-footer align-center">
-                <button class="modal-close waves-effect waves-green btn">确定</button>
-                <button class="modal-close waves-effect waves-green btn">取消</button>
-            </div>
-        </div>
-        <script type="text/javascript">
-            app.initIndex();
-        </script>
+<div class="modal tip">
+    <div class="modal-content align-center">
+        <h6>提示信息</h6>
+    </div>
+    <div class="modal-footer align-center">
+        <button class="modal-close waves-effect waves-green btn">确定</button>
+        <button class="modal-close waves-effect waves-green btn">取消</button>
+    </div>
+</div>
+<script type="text/javascript">
+     app.initIndex();
+</script>
 </body>
 </html>
