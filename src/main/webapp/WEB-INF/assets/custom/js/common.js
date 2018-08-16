@@ -35,7 +35,7 @@ var app = {
                     </label>\n\
                 </div>\n\
                 <div class="col s3 align-center">\n\
-                    <div class="waves-effect waves-light green lighten-4 btn search-button">\n\
+                    <div class="waves-effect waves-light green lighten-2 btn search-button">\n\
                         <i class="material-icons">search</i>\n\
                     </div>\n\
                 </div>\n\
@@ -81,13 +81,13 @@ var app = {
                     共<span class="pageCount"></span>页\n\
                 </span>\n\
                 <div class="controllers">\n\
-                    <a class="waves-effect waves-light light-blue lighten-4 btn" name="first">首页</a>\n\
-                    <a class="waves-effect waves-light light-blue lighten-4 btn" name="prev">上一页</a>\n\
-                    <a class="waves-effect waves-light light-blue lighten-4 btn" name="next">下一页</a>\n\
-                    <a class="waves-effect waves-light light-blue lighten-4 btn" name="last">尾页</a>\n\
+                    <a class="waves-effect waves-light light-blue lighten-2 btn" name="first">首页</a>\n\
+                    <a class="waves-effect waves-light light-blue lighten-2 btn" name="prev">上一页</a>\n\
+                    <a class="waves-effect waves-light light-blue lighten-2 btn" name="next">下一页</a>\n\
+                    <a class="waves-effect waves-light light-blue lighten-2 btn" name="last">尾页</a>\n\
                 </div>\n\
                 <input type="number" class="validate input-num" pattern="^\d*$" autocomplete="off"/>\n\
-                <input type="button" class="waves-effect waves-light light-blue lighten-4 btn go" value="Go"/>\n\
+                <input type="button" class="waves-effect waves-light light-blue lighten-2 btn go" value="Go"/>\n\
                 <select name="pageSize" class="set-size">\n\
                     <option value="5">5</option>\n\
                     <option value="8" selected="selected">8</option>\n\
@@ -96,14 +96,55 @@ var app = {
                     <option value="30">30</option>\n\
                 </select>\n\
             </div>',
+    distTemplate: '<div class="row search-box">\n\
+                <div class="col s3">\n\
+                    <label>区域名称：<input type="text" class="field distName" name="distName" placeholder="区域名称"/></label>\n\
+                </div>\n\
+                <div class="col s3">\n\
+                    <label>区域编码：<input type="text" class="field distCode" name="distCode" placeholder="区域名称"/></label>\n\
+                </div>\n\
+                <div class="col s3 align-center">\n\
+                    <div class="waves-effect waves-light blue lighten-2 btn search-button">\n\
+                        <i class="material-icons">search</i>\n\
+                    </div>\n\
+                </div>\n\
+            </div>\n\
+            <div class="row operation-box">\n\
+                <div class="col s4">\n\
+                    <div class="waves-effect waves-light green lighten-2 btn operator add align-center">\n\
+                        <i class="material-icons">add</i>新增</span>\n\
+                    </div>\n\
+                    <div class="waves-effect waves-light green lighten-2 btn operator edit align-center">\n\
+                        <i class="material-icons">edit</i>编辑</span>\n\
+                    </div>\n\
+                    <div class="waves-effect waves-light green lighten-2 btn operator delete align-center">\n\
+                        <i class="material-icons">delete</i>删除</span>\n\
+                    </div>\n\
+                </div>\n\
+            </div>\n\
+            <div class="row data-box mdui-table">\n\
+                <table class="highlight centered responsive-table mdui-table-hoverable">\n\
+                    <thead class="fields">\n\
+                        <tr>\n\
+                            <th><label><input type="checkbox" class="selected"/><span></span></label></th>\n\
+                            <th class="distName">区域名称</th>\n\
+                            <th class="distCode">区域编码</th>\n\
+                            <th class="distCategory">区域类别</th>\n\
+                            <th class="distAddress">区域地址</th>\n\
+                            <th class="distParentId">父级区域</th>\n\
+                        </tr>\n\
+                    </thead>\n\
+                    <tbody class="records"></tbody>\n\
+                </table>\n\
+            </div>',
     getPaneContent: function (name) {
         var paneContent = '';
         switch (name) {
             /*
              * 系统管理：区域管理 机构管理 用户管理 角色管理 权限管理 字典管理 日志管理 公告管理
              */
-            case 'regional':
-                paneContent = this.template;
+            case 'dist':
+                paneContent = this.distTemplate;
                 break;
             case 'organization':
                 paneContent = this.template;
@@ -192,6 +233,7 @@ var app = {
         }
         return paneContent;
     },
+    // 分页页面渲染
     render:function(context){
         var pane = context.pane;
         var theadElement = pane.getElementsByClassName('fields')[0];
@@ -273,6 +315,58 @@ var app = {
             }
         });
     },
+    // 无分页页面渲染
+    renderWithoutPage: function (context) {
+        var pane = context.pane;
+        var theadElement = pane.getElementsByClassName('fields')[0];
+        var fieldsElement = theadElement.children[0];
+        var tbodyElement = pane.getElementsByClassName('records')[0];
+        $.ajax({
+            type: 'GET',
+            url: context.url,
+            contentType: 'application/json;charset=utf-8',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                tbodyElement.innerHTML = '';
+                var data = response.data;
+                context.pane.tableData = data;
+                for (var i = 0, limit = data.length; i < limit; i++) {
+                    var tr = tbodyElement.insertRow(i);
+                    $(tr).data('distId', data[i].distId);
+                    for (var cell, j = 0, counter = fieldsElement.children.length; j < counter; j++) {
+                        cell = tr.insertCell(j);
+                        cell.className = fieldsElement.children[j].className;
+                        cell.title = j === 0 ? '选中' : fieldsElement.children[j].innerHTML.trim();
+                        cell.innerHTML = j === 0 ? '<label><input type="checkbox" class="selected"/><span></span></label>' : (data[i][fieldsElement.children[j].className] ? data[i][fieldsElement.children[j].className] : null);
+                    }
+                }
+                fieldsElement.children[0].children[0].children[0].checked = false;
+                fieldsElement.children[0].children[0].onclick = function () {
+                    for (var i = 0, limit = tbodyElement.children.length; i < limit; i++) {
+                        var row = tbodyElement.children[i];
+                        row.children[0].children[0].children[0].checked = this.children[0].checked;
+                    }
+                };
+                tbodyElement.onclick = function (evt) {
+                    var self = this, srcEle = evt.target;
+                    if (srcEle.className === 'selected') {
+                        srcEle.parentNode.onchange = function () {
+                            var allChecked = true;
+                            for (var i = 0, limit = self.children.length; i < limit; i++) {
+                                var row = self.children[i];
+                                if (!row.children[0].children[0].children[0].checked) {
+                                    allChecked = false;
+                                }
+                            }
+                            fieldsElement.children[0].children[0].children[0].checked = allChecked;
+                        }
+                    }
+                }
+            }
+        });
+    },
     initPane: function (context) {
         var self=this;
         var searchBoxElement=context.pane.getElementsByClassName('search-box')[0];
@@ -313,13 +407,14 @@ var app = {
         }
         var operationBoxElement=context.pane.getElementsByClassName('operation-box')[0];
         //var operations=['add','edit','delete'];
-        
+
         var operationElements=operationBoxElement.getElementsByClassName('operator');
         for(var i=0,limit=operationElements.length;i<limit;i++){
             var operationElement=operationElements[i];
             operationElement.onclick=function(){
                 var theadElement = context.pane.getElementsByClassName('fields')[0];
                 var tbodyElement = context.pane.getElementsByClassName('records')[0];
+                // 获取对应行的数据
                 this.classList.contains('add')&&(function(){
                     var elem = document.querySelector('.modal');
                     var modalContent=elem.getElementsByClassName('modal-content')[0];
@@ -337,7 +432,7 @@ var app = {
                                        return elem[elem.name]=elem.options[elem.selectedIndex].value;
                                        break;
                                }
-                           }
+                           };
                            var rowElem=document.createElement('div');
                            rowElem.className='row';
                            var formElement=document.createElement('form');
@@ -362,7 +457,7 @@ var app = {
                                 fieldContainer.appendChild(labelElement);
                                 rowElement.appendChild(fieldContainer);
                                 formElement.appendChild(rowElement);
-                           }                           
+                           }
                            rowElem.appendChild(formElement);
                            modalContent.appendChild(rowElem);
                     })();
@@ -371,17 +466,12 @@ var app = {
                         modalFooter.children[0].onclick=function(){
                             console.log('save');
                             var fields=modalContent.getElementsByClassName('field');
-                            var record={};
-                            for(var i=0,limit=fields.length;i<limit;i++){
-                                var field=fields[i];
-                                record[field.name]=field.value;
-                            }
+                            var data = getRecordData(fields);
                             $.ajax({
                                 type: 'POST',
-                                url: ['add','EMP','.do'].join(''),
-                                //url: ['edit',context.pane.id.replace('-pane','').toUpperCase(),'.do'].join(''),
-                                contentType: 'application/json;charset=utf-8',
-                                data:JSON.stringify(record),
+                                url: 'dist/createDistrict.do',
+                                contentType: 'application/x-www-form-urlencoded',
+                                data: data,
                                 beforeSend: function (xhr){
                                     xhr.withCredentials = true;
                                 },
@@ -391,19 +481,15 @@ var app = {
                                         html: response.message,
                                         classes: 'rounded repaint-toast'
                                     });
-                                    if(response.done){
-                                        var parameterMap = {
-                                            url:context.url,
-                                            pane:context.pane,
-                                            pageNumber: 1,
-                                            pageSize:Number(pageSizeElement.options[pageSizeElement.selectedIndex].value),
-                                            fields:fields
-                                        };
-                                        self.render(parameterMap);
+                                    if (response.status) {
+                                        self.renderWithoutPage({
+                                            url: context.url,
+                                            pane: context.pane
+                                        });
                                     }
                                 }
                             });
-                        }
+                        };
                         modalFooter.children[1].innerHTML='取消';
                         var instance = M.Modal.init(elem, {});
                         instance.open();
@@ -467,24 +553,24 @@ var app = {
                             }
                             $.ajax({
                                 type: 'POST',
-                                url: ['edit','EMP','.do'].join(''),
+                                url: 'dist/updateDistrict.do',
                                 //url: ['edit',context.pane.id.replace('-pane','').toUpperCase(),'.do'].join(''),
-                                contentType: 'application/json;charset=utf-8',
-                                data:JSON.stringify(record),
-                                beforeSend: function (xhr){
+                                contentType: 'application/x-www-form-urlencoded',
+                                data: record,
+                                beforeSend: function (xhr) {
                                     xhr.withCredentials = true;
                                 },
-                                success: function (response){
+                                success: function (response) {
                                     console.log(response);
                                     M.toast({
                                         html: response.message,
                                         classes: 'rounded repaint-toast'
                                     });
-                                    if(response.done){
-                                        var row=rows[0];
-                                        for(var i=1,limit=row.children.length;i<limit;i++){
-                                            var cell=row.children[i];
-                                            cell.innerHTML=record[cell.className];
+                                    if (response.status) {
+                                        var row = rows[0];
+                                        for (var i = 1, limit = row.children.length; i < limit; i++) {
+                                            var cell = row.children[i];
+                                            cell.innerHTML = record[cell.className];
                                         }
                                     }
                                 }
@@ -496,68 +582,65 @@ var app = {
                         console.log(instance.options);
                     }
                 })();
-                this.classList.contains('delete')&&(function(){
-                    var rows=[];
-                    for(var i=0,limit=tbodyElement.children.length;i<limit;i++){
-                        var row=tbodyElement.children[i];
-                        row.children[0].children[0].children[0].checked&&rows.push(row);
+                this.classList.contains('delete') && (function (context) {
+                    var rows = [];
+                    for (var i = 0, limit = tbodyElement.children.length; i < limit; i++) {
+                        var row = tbodyElement.children[i];
+                        row.children[0].children[0].children[0].checked && rows.push(row);
                     }
-                    if(rows.length===0){
+                    if (rows.length === 0) {
                         M.toast({
                             html: '请至少选择一条记录删除',
                             classes: 'rounded repaint-toast'
                         });
-                    }else{
+                    } else {
                         var ele = document.querySelector('.tip');
-                        var modalContent=ele.getElementsByClassName('modal-content')[0];
-                        modalContent.innerHTML='';
-                        var titleElement=document.createElement('h6');
-                        titleElement.innerHTML='提示信息';
-                        var cueElement=document.createElement('div');
-                        cueElement.className='align-center';
-                        cueElement.innerHTML='确定删除选中记录吗？';
+                        var modalContent = ele.getElementsByClassName('modal-content')[0];
+                        modalContent.innerHTML = '';
+                        var titleElement = document.createElement('h6');
+                        titleElement.innerHTML = '提示信息';
+                        var cueElement = document.createElement('div');
+                        cueElement.className = 'align-center';
+                        cueElement.innerHTML = '确定删除选中记录吗？';
                         modalContent.appendChild(titleElement);
                         modalContent.appendChild(cueElement);
                         var instance = M.Modal.init(ele, {
-                            startingTop:'30%',
-                            endingTop:'36%'
+                            startingTop: '30%',
+                            endingTop: '36%'
                         });
                         instance.open();
-                        var modalFooter=ele.getElementsByClassName('modal-footer')[0];
-                        modalFooter.children[0].onclick=function(){
-                        var records=[];
-                        var fieldsElement=theadElement.children[0];
-                        for(var i=0,limit=rows.length;i<limit;i++){
-                            var row=rows[i],record={};
-                            for(var j=1,size=fieldsElement.children.length;j<size;j++){
-                                var fieldElement=fieldsElement.children[j],cell=row.children[j];
-                                record[fieldElement.className]=cell.innerHTML;
+                        var modalFooter = ele.getElementsByClassName('modal-footer')[0];
+                        modalFooter.children[0].onclick = function () {
+                            var records = [];
+                            var fieldsElement = theadElement.children[0];
+                            var data = context.data;
+                            for (var i = 0, limit = rows.length; i < limit; i++) {
+                                var row = rows[i], record = {};
+                                for (var j = 1, size = fieldsElement.children.length; j < size; j++) {
+                                    var fieldElement = fieldsElement.children[j], cell = row.children[j];
+                                    record[fieldElement.className] = cell.innerHTML;
+                                }
+                                records.push(record);
                             }
-                            records.push(record);
-                        }
-                        $.ajax({
+                            $.ajax({
                                 type: 'POST',
-                                url: ['deleteBatch','EMP','.do'].join(''),
+                                url: 'dist/deleteDistrict.do',
                                 contentType: 'application/json;charset=utf-8',
-                                data:JSON.stringify(records),
-                                beforeSend: function (xhr){
+                                data: records,
+                                beforeSend: function (xhr) {
                                     xhr.withCredentials = true;
                                 },
-                                success: function (response){
+                                success: function (response) {
                                     console.log(response);
                                     M.toast({
                                         html: response.message,
                                         classes: 'rounded repaint-toast'
                                     });
-                                    if(response.done){
-                                        var parameterMap = {
-                                            url:context.url,
-                                            pane:context.pane,
-                                            pageNumber: 1,
-                                            pageSize:Number(pageSizeElement.options[pageSizeElement.selectedIndex].value),
-                                            fields:fields
-                                        };
-                                        self.render(parameterMap);
+                                    if (response.status) {
+                                        self.renderWithoutPage({
+                                            url: context.url,
+                                            pane: context.pane
+                                        });
                                     }
                                 }
                             });
@@ -566,164 +649,167 @@ var app = {
                 })();
             };
         }
-        
+
         var pageSizeElement = context.pane.getElementsByClassName('set-size')[0];
-        //var pageSize = Number(pageSizeElement.options[pageSizeElement.selectedIndex].value);
-        self.render({
-            url:context.url,
-            pane:context.pane,
-            pageNumber: context.pageNumber,
-            pageSize:Number(pageSizeElement.options[pageSizeElement.selectedIndex].value),
-            fields:fields
-        });
-//        var shadeElement = document.getElementsByClassName('shade')[0];
-//        shadeElement.hidden = false;
-
-        pageSizeElement.onchange = function () {
-            var fields={};
-            for(var i=0,limit=fieldElements.length;i<limit;i++){
-                var fieldElement=fieldElements[i];
-                switch(fieldElement.nodeName){
-                    case 'INPUT':
-                        fields[fieldElement.name]=fieldElement.value;
-                        break;
-                    case 'SELECT':
-                        fields[fieldElement.name]=fieldElement.options[fieldElement.selectedIndex].value
-                        break;
-                }
-            }
-            var parameterMap = {
+        if (pageSizeElement) {
+            self.render({
                 url:context.url,
                 pane:context.pane,
-                pageNumber: 1,
-                pageSize:Number(this.options[this.selectedIndex].value),
-                fields:fields
-            };
-            self.render(parameterMap);
-        };
-        var inputNumberElement = context.pane.getElementsByClassName('input-num')[0];
-        inputNumberElement.oninput = function () {
-            if (isNaN(this.value)) {
-                this.value = '';
-            } else {
-                this.value = Number(this.value);
-            }
-        };
-        context.pane.getElementsByClassName('go')[0].onclick = function (){
-            var fields={};
-            for(var i=0,limit=fieldElements.length;i<limit;i++){
-                var fieldElement=fieldElements[i];
-                switch(fieldElement.nodeName){
-                    case 'INPUT':
-                        fields[fieldElement.name]=fieldElement.value;
-                        break;
-                    case 'SELECT':
-                        fields[fieldElement.name]=fieldElement.options[fieldElement.selectedIndex].value
-                        break;
-                }
-            }
-            var parameterMap={
-                url:context.url,
-                pane:context.pane,
+                pageNumber: context.pageNumber,
                 pageSize:Number(pageSizeElement.options[pageSizeElement.selectedIndex].value),
                 fields:fields
-            },pane=context.pane;
-            if(inputNumberElement.value<inputNumberElement.min){
-                parameterMap.pageNumber = inputNumberElement.min;
-                self.render(parameterMap);
-                inputNumberElement.value='';
-            }else if(inputNumberElement.value<=inputNumberElement.max){
-                parameterMap.pageNumber=inputNumberElement.value;
-                self.render(parameterMap);
-                inputNumberElement.value='';
-            }else{
-                parameterMap.pageNumber=inputNumberElement.max;
-                self.render(parameterMap);
-                inputNumberElement.value='';
-            }
-        };
-        var controllerElement = context.pane.getElementsByClassName('controller-box')[0];
-        controllerElement.onclick = function (evt){
-            var fields={};
-            for(var i=0,limit=fieldElements.length;i<limit;i++){
-                var fieldElement=fieldElements[i];
-                switch(fieldElement.nodeName){
-                    case 'INPUT':
-                        fields[fieldElement.name]=fieldElement.value;
-                        break;
-                    case 'SELECT':
-                        fields[fieldElement.name]=fieldElement.options[fieldElement.selectedIndex].value
-                        break;
+            });
+            pageSizeElement.onchange = function () {
+                var fields={};
+                for(var i=0,limit=fieldElements.length;i<limit;i++){
+                    var fieldElement=fieldElements[i];
+                    switch(fieldElement.nodeName){
+                        case 'INPUT':
+                            fields[fieldElement.name]=fieldElement.value;
+                            break;
+                        case 'SELECT':
+                            fields[fieldElement.name]=fieldElement.options[fieldElement.selectedIndex].value
+                            break;
+                    }
                 }
-            }
-            var pane=context.pane;
-            var pageNumber = pane.getElementsByClassName('pageNumber')[0].innerHTML === '' ? 0 : Number(pane.getElementsByClassName('pageNumber')[0].innerHTML);
-            var pageCount = pane.getElementsByClassName('pageCount')[0].innerHTML === '' ? 0 : Number(pane.getElementsByClassName('pageCount')[0].innerHTML);
-            var parameterMap = {
-                url:context.url,
-                pane:context.pane,
-                pageSize:Number(pageSizeElement.options[pageSizeElement.selectedIndex].value),
-                fields:fields
+                var parameterMap = {
+                    url:context.url,
+                    pane:context.pane,
+                    pageNumber: 1,
+                    pageSize:Number(this.options[this.selectedIndex].value),
+                    fields:fields
+                };
+                self.render(parameterMap);
             };
-            var srcElement = evt.target;
-            switch (srcElement.name){
-                case 'first':
-                    (function(){
-                       if(srcElement.classList.contains('disabled')){
-                           return false;
-                       }else{
-                            parameterMap.pageNumber = pageCount > 0 ? 1 : 0;
-                            self.render(parameterMap);
-                       }
-                    })()
+            var inputNumberElement = context.pane.getElementsByClassName('input-num')[0];
+            inputNumberElement.oninput = function () {
+                if (isNaN(this.value)) {
+                    this.value = '';
+                } else {
+                    this.value = Number(this.value);
+                }
+            };
+            context.pane.getElementsByClassName('go')[0].onclick = function (){
+                var fields={};
+                for(var i=0,limit=fieldElements.length;i<limit;i++){
+                    var fieldElement=fieldElements[i];
+                    switch(fieldElement.nodeName){
+                        case 'INPUT':
+                            fields[fieldElement.name]=fieldElement.value;
+                            break;
+                        case 'SELECT':
+                            fields[fieldElement.name]=fieldElement.options[fieldElement.selectedIndex].value
+                            break;
+                    }
+                }
+                var parameterMap={
+                    url:context.url,
+                    pane:context.pane,
+                    pageSize:Number(pageSizeElement.options[pageSizeElement.selectedIndex].value),
+                    fields:fields
+                },pane=context.pane;
+                if(inputNumberElement.value<inputNumberElement.min){
+                    parameterMap.pageNumber = inputNumberElement.min;
+                    self.render(parameterMap);
+                    inputNumberElement.value='';
+                }else if(inputNumberElement.value<=inputNumberElement.max){
+                    parameterMap.pageNumber=inputNumberElement.value;
+                    self.render(parameterMap);
+                    inputNumberElement.value='';
+                }else{
+                    parameterMap.pageNumber=inputNumberElement.max;
+                    self.render(parameterMap);
+                    inputNumberElement.value='';
+                }
+            };
+            var controllerElement = context.pane.getElementsByClassName('controller-box')[0];
+            controllerElement.onclick = function (evt){
+                var fields={};
+                for(var i=0,limit=fieldElements.length;i<limit;i++){
+                    var fieldElement=fieldElements[i];
+                    switch(fieldElement.nodeName){
+                        case 'INPUT':
+                            fields[fieldElement.name]=fieldElement.value;
+                            break;
+                        case 'SELECT':
+                            fields[fieldElement.name]=fieldElement.options[fieldElement.selectedIndex].value
+                            break;
+                    }
+                }
+                var pane=context.pane;
+                var pageNumber = pane.getElementsByClassName('pageNumber')[0].innerHTML === '' ? 0 : Number(pane.getElementsByClassName('pageNumber')[0].innerHTML);
+                var pageCount = pane.getElementsByClassName('pageCount')[0].innerHTML === '' ? 0 : Number(pane.getElementsByClassName('pageCount')[0].innerHTML);
+                var parameterMap = {
+                    url:context.url,
+                    pane:context.pane,
+                    pageSize:Number(pageSizeElement.options[pageSizeElement.selectedIndex].value),
+                    fields:fields
+                };
+                var srcElement = evt.target;
+                switch (srcElement.name){
+                    case 'first':
+                        (function(){
+                            if(srcElement.classList.contains('disabled')){
+                                return false;
+                            }else{
+                                parameterMap.pageNumber = pageCount > 0 ? 1 : 0;
+                                self.render(parameterMap);
+                            }
+                        })()
 
-                    break;
-                case 'prev':
+                        break;
+                    case 'prev':
 //                    --pageNumber > 0 && (function(){
 //                        parameterMap.pageNumber = pageNumber;
 //                        self.render(parameterMap);
 //                    })();
-                    (function(){
-                       if(srcElement.classList.contains('disabled')||--pageNumber < 1){
-                           return false;
-                       } 
-                       else{
+                        (function(){
+                            if(srcElement.classList.contains('disabled')||--pageNumber < 1){
+                                return false;
+                            }
+                            else{
 //                           if(--pageNumber > 0){
                                 parameterMap.pageNumber = pageNumber;
                                 self.render(parameterMap);
 //                           }
-                       }
-                    })()
-                    break;
-                case 'next':
+                            }
+                        })()
+                        break;
+                    case 'next':
 //                    ++pageNumber <= pageCount && (function(){
 //                        parameterMap.pageNumber = pageNumber;
 //                        self.render(parameterMap);
 //                    })();
-                    (function(){
-                        if(srcElement.classList.contains('disabled')||++pageNumber>pageCount){
-                            return false;
-                        }else{
+                        (function(){
+                            if(srcElement.classList.contains('disabled')||++pageNumber>pageCount){
+                                return false;
+                            }else{
 //                              if(++pageNumber <= pageCount){
-                                    parameterMap.pageNumber = pageNumber;
-                                    self.render(parameterMap);
+                                parameterMap.pageNumber = pageNumber;
+                                self.render(parameterMap);
 //                              }
-                        }
-                    })()
-                    break;
-                case 'last':
-                    (function(){
-                        if(srcElement.classList.contains('disabled')){
-                            return false;
-                        }else{
-                            parameterMap.pageNumber = pageCount;
-                            self.render(parameterMap); 
+                            }
+                        })()
+                        break;
+                    case 'last':
+                        (function(){
+                            if(srcElement.classList.contains('disabled')){
+                                return false;
+                            }else{
+                                parameterMap.pageNumber = pageCount;
+                                self.render(parameterMap);
 //                            srcElement.classList.add('disabled');
 //                            srcElement.previousElementSibling.classList.add('disabled');
-                        }
-                    })();
-                    break;
+                            }
+                        })();
+                        break;
+                }
             }
+        } else {
+            self.renderWithoutPage({
+                url:context.url,
+                pane:context.pane
+            });
         }
     }
 };

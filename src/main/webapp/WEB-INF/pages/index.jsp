@@ -38,7 +38,7 @@
         <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '退出'}"><i class="mdui-icon material-icons">power_settings_new</i></span>
     </div>
 </header>
-<div class="mdui-drawer NavigationBars" id="main-drawer">
+<div class="mdui-drawer">
     <div class="mdui-list" mdui-collapse="{accordion: true}">
         <div class="mdui-collapse-item">
             <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
@@ -47,14 +47,14 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
-                <div class="mdui-list-item mdui-ripple ">区域管理</div>
-                <div class="mdui-list-item mdui-ripple ">机构管理</div>
-                <div class="mdui-list-item mdui-ripple ">用户管理</div>
-                <div class="mdui-list-item mdui-ripple ">角色管理</div>
-                <div class="mdui-list-item mdui-ripple ">权限管理</div>
-                <div class="mdui-list-item mdui-ripple ">字典管理</div>
-                <div class="mdui-list-item mdui-ripple ">日志管理</div>
-                <div class="mdui-list-item mdui-ripple ">公告管理</div>
+                <div class="mdui-list-item mdui-ripple nav-item dist">区域管理</div>
+                <div class="mdui-list-item mdui-ripple nav-itemorganization">机构管理</div>
+                <div class="mdui-list-item mdui-ripple nav-item user">用户管理</div>
+                <div class="mdui-list-item mdui-ripple nav-item role">角色管理</div>
+                <div class="mdui-list-item mdui-ripple nav-item permission">权限管理</div>
+                <div class="mdui-list-item mdui-ripple nav-item dictionary">字典管理</div>
+                <div class="mdui-list-item mdui-ripple nav-item log">日志管理</div>
+                <div class="mdui-list-item mdui-ripple nav-item announcement">公告管理</div>
             </div>
         </div>
 
@@ -65,11 +65,11 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
-                <div class="mdui-list-item mdui-ripple">表具入库</div>
-                <div class="mdui-list-item mdui-ripple">用户建档</div>
-                <div class="mdui-list-item mdui-ripple">挂表</div>
-                <div class="mdui-list-item mdui-ripple">开户</div>
-                <div class="mdui-list-item mdui-ripple">账户变更</div>
+                <div class="mdui-list-item mdui-ripple nav-item inbound">表具入库</div>
+                <div class="mdui-list-item mdui-ripple nav-item file">用户建档</div>
+                <div class="mdui-list-item mdui-ripple nav-item install">挂表</div>
+                <div class="mdui-list-item mdui-ripple nav-item account">开户</div>
+                <div class="mdui-list-item mdui-ripple nav-item alter">账户变更</div>
             </div>
         </div>
 
@@ -80,10 +80,10 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
-                <div class="mdui-list-item mdui-ripple">预付费充值</div>
-                <div class="mdui-list-item mdui-ripple">补卡充值</div>
-                <div class="mdui-list-item mdui-ripple">后付费充值</div>
-                <div class="mdui-list-item mdui-ripple">发票管理</div>
+                <div class="mdui-list-item mdui-ripple nav-item prePayment">预付费充值</div>
+                <div class="mdui-list-item mdui-ripple nav-item replaceCard">补卡充值</div>
+                <div class="mdui-list-item mdui-ripple nav-item postPayment">后付费充值</div>
+                <div class="mdui-list-item mdui-ripple nav-item invoice">发票管理</div>
             </div>
         </div>
 
@@ -94,10 +94,10 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
-                <div class="mdui-list-item mdui-ripple">维修单录入</div>
-                <div class="mdui-list-item mdui-ripple">维修补气</div>
-                <div class="mdui-list-item mdui-ripple">补缴结算</div>
-                <div class="mdui-list-item mdui-ripple">IC卡初始化</div>
+                <div class="mdui-list-item mdui-ripple nav-item input">维修单录入</div>
+                <div class="mdui-list-item mdui-ripple nav-item fillGas">维修补气</div>
+                <div class="mdui-list-item mdui-ripple nav-item balance">补缴结算</div>
+                <div class="mdui-list-item mdui-ripple nav-item initCard">IC卡初始化</div>
             </div>
         </div>
 
@@ -108,8 +108,8 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
-                <div class="mdui-list-item mdui-ripple">预冲账</div>
-                <div class="mdui-list-item mdui-ripple">冲账</div>
+                <div class="mdui-list-item mdui-ripple nav-item ">预冲账</div>
+                <div class="mdui-list-item mdui-ripple nav-item ">冲账</div>
             </div>
         </div>
         <div class="mdui-collapse-item">
@@ -119,9 +119,9 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
-                <div class="mdui-list-item mdui-ripple">抄表</div>
-                <div class="mdui-list-item mdui-ripple">阀门控制</div>
-                <div class="mdui-list-item mdui-ripple">异常情况</div>
+                <div class="mdui-list-item mdui-ripple nav-item record">抄表</div>
+                <div class="mdui-list-item mdui-ripple nav-item control">阀门控制</div>
+                <div class="mdui-list-item mdui-ripple nav-item exception">异常情况</div>
             </div>
         </div>
         <div class="mdui-collapse-item">
@@ -131,192 +131,21 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
-                <div class="mdui-list-item mdui-ripple">IC卡查询</div>
-                <div class="mdui-list-item mdui-ripple">开户信息查询</div>
-                <div class="mdui-list-item mdui-ripple">用户信息查询</div>
-                <div class="mdui-list-item mdui-ripple">异常用户查询</div>
-                <div class="mdui-list-item mdui-ripple">营业数据查询</div>
-                <div class="mdui-list-item mdui-ripple">营业报表查询</div>
+                <div class="mdui-list-item mdui-ripple nav-item ardQuery">IC卡查询</div>
+                <div class="mdui-list-item mdui-ripple nav-item accountQuery">开户信息查询</div>
+                <div class="mdui-list-item mdui-ripple nav-item userQuery">用户信息查询</div>
+                <div class="mdui-list-item mdui-ripple nav-item exceptionQuery">异常用户查询</div>
+                <div class="mdui-list-item mdui-ripple nav-item businessDataQuery">营业数据查询</div>
+                <div class="mdui-list-item mdui-ripple nav-item businessReportQuery">营业报表查询</div>
             </div>
         </div>
     </div>
 </div>
-
-<%--<body>--%>
-<%--<div class="slider">--%>
-    <%--<ul class="slides">--%>
-        <%--<li>--%>
-            <%--<img src="assets/custom/img/07.jpg" alt="07"/>--%>
-            <%--<div class="caption center-align">--%>
-                <%--<h3>This is our big Tagline!</h3>--%>
-                <%--<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-            <%--<img src="assets/custom/img/08.jpg" alt="08"/>--%>
-            <%--<div class="caption center-align">--%>
-                <%--<h3>This is our big Tagline!</h3>--%>
-                <%--<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-            <%--<img src="assets/custom/img/09.jpg" alt="09"/>--%>
-            <%--<div class="caption center-align">--%>
-                <%--<h3>This is our big Tagline!</h3>--%>
-                <%--<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-            <%--<img src="assets/custom/img/10.jpg" alt="10"/>--%>
-            <%--<div class="caption center-align">--%>
-                <%--<h3>This is our big Tagline!</h3>--%>
-                <%--<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-    <%--</ul>--%>
-<%--</div>--%>
-<%--<div class="row">--%>
-
-   <%--<div class="col s2">--%>
-
-    <%--<ul class="collapsible collapsible-accordion "style=" overflow-y:auto; height:450px;"onmousemove="selectin(this)" onmouseout="leave(this)">--%>
-        <%--<li>--%>
-            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">home</i>系统管理<i class="material-icons" style="position: absolute;right: 0px;">keyboard_arrow_down</i></div>--%>
-            <%--<div class="collapsible-body no-padding children-width-full">--%>
-                <%--<div class="waves-effect   btn-large nav-item dist">区域管理</div>--%>
-                <%--<div class="waves-effect   btn-large nav-item organization">机构管理</div>--%>
-                <%--<div class="waves-effect   btn-large nav-item user">用户管理</div>--%>
-                <%--<div class="waves-effect   btn-large nav-item role">角色管理</div>--%>
-                <%--<div class="waves-effect   btn-large nav-item permission">权限管理</div>--%>
-                <%--<div class="waves-effect   btn-large nav-item dictionary">字典管理</div>--%>
-                <%--<div class="waves-effect   btn-large nav-item log">日志管理</div>--%>
-                <%--<div class="waves-effect   btn-large nav-item announcement">公告管理</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">account_box</i>账户管理</div>--%>
-            <%--<div class="collapsible-body no-padding children-width-full">--%>
-                <%--<div class="waves-effect  btn-large nav-item inbound">表具入库</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item file">用户建档</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item install">挂表</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item account">开户</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item alter">账户变更</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-            <%--<div class="collapsible-header waves-effect waves-light green color-white"><i class="material-icons">payment</i>充值缴费管理</div>--%>
-            <%--<div class="collapsible-body no-padding children-width-full">--%>
-                <%--<div class="waves-effect  btn-large nav-item prePayment">预付费充值</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item replaceCard">补卡充值</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item postPayment">后付费充值</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item invoice">发票管理</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">local_gas_station</i>维修补气管理</div>--%>
-            <%--<div class="collapsible-body no-padding children-width-full">--%>
-                <%--<div class="waves-effect  btn-large nav-item input">维修单录入</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item fillGas">维修补气</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item balance">补缴结算</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item initCard">IC卡初始化</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">library_books</i>账务处理</div>--%>
-            <%--<div class="collapsible-body no-padding children-width-full">--%>
-                <%--<div class="waves-effect  btn-large nav-item preStrike">预冲账</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item strike">冲账</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">network_check</i>表具运行管理</div>--%>
-            <%--<div class="collapsible-body no-padding children-width-full">--%>
-                <%--<div class="waves-effect  btn-large nav-item record">抄表</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item control">阀门控制</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item exception">异常情况</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-            <%--<div class="collapsible-header waves-effect waves-light green  color-white"><i class="material-icons">query_builder</i>查询统计</div>--%>
-            <%--<div class="collapsible-body no-padding children-width-full">--%>
-                <%--<div class="waves-effect  btn-large nav-item cardQuery">IC卡查询</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item accountQuery">开户信息查询</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item userQuery">用户信息查询</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item exceptionQuery">异常用户查询</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item businessDataQuery">营业数据查询</div>--%>
-                <%--<div class="waves-effect  btn-large nav-item businessReportQuery">营业报表查询</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-    <%--</ul>--%>
-    <%--</div>--%>
-
-    <div class="col s10">
-        <ul class="tabs z-depth-3 tabs-fixed-width tabs-extra">
-            <li class="tab col s2"><a href="#home-pane">主页</a></li>
-        </ul>
-        <div class="panes z-depth-3 panes-extra">
-            <div id="home-pane" class="pane col s12">
-                <div class="row search-box">
-                    <div class="col s3">
-                        <label>员工名称：<input type="text" class="emp-name" placeholder="员工名称"/></label>
-                    </div>
-                    <div class="col s3">
-                        <label>
-                            部门编号：
-                            <select class="emp-deptno">
-                                <option value="" disabled selected>请选择</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="col s3">
-                        <label>
-                            部门编号：
-                            <select class="emp-job">
-                                <option value="" disabled selected>请选择</option>
-                                <option value="CLERK">职员</option>
-                                <option value="SALESMAN">销售员</option>
-                                <option value="ANALYST">分析师</option>
-                                <option value="MANAGER">经理</option>
-                                <option value="PRESIDENT">董事长</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="col s3 align-center">
-                        <div class="waves-effect waves-light green lighten-4 btn">
-                            <i class="material-icons">search</i>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row data-box">
-                    <table>
-                        <thead class="fields">
-                        <tr>
-                            <th class="empno">编号</th>
-                            <th class="ename">姓名</th>
-                            <th class="job">职务</th>
-                            <th class="mgr">上级</th>
-                            <th class="hiredate">时间</th>
-                            <th class="sal">工资</th>
-                            <th class="comm">补助</th>
-                            <th class="deptno">部门</th>
-                        </tr>
-                        </thead>
-                        <tbody class="records"></tbody>
-                    </table>
-                </div>
-                <div class="row controller-box">
-                    <a class="waves-effect waves-light light-blue lighten-4 btn">首页</a>
-                    <a class="waves-effect waves-light light-blue lighten-4 btn">上一页</a>
-                    <a class="waves-effect waves-light light-blue lighten-4 btn">下一页</a>
-                    <a class="waves-effect waves-light light-blue lighten-4 btn">尾页</a>
-                </div>
-            </div>
-        </div>
-
+</div>
+<div class="mdui-container">
+    <h1 class="mdui-text-color-blue container-title">公司简介</h1>
+    <div class="mdui-typo mdui-typo-body-1 container-main">
+        武汉蓝焰自动化应用技术有限责任公司系由武汉市天然气有限公司、武汉市燃气热力集团有限公司、港华投资有限公司、湖北震新机电设备技术开发有限公司投资组建的中港合资企业。公司以促进我国燃气事业现代化发展为宗旨，以高新技术为手段，致力于为燃气经营企业提供全方位、多层面的高品质产品，是燃气行业智能化方案及产品集成供应商。 公司坐落于武汉市硚口区高新技术开发区，公司建立了完善的质量管理与评测体系，于2002年通过ISO9001质量管理体系认证，质量管理体系在2005年进行复评换证期间又一并通过了ISO14001环境管理体系认证，GB/T28001职业健康安全管理体系认证。从2005年至今，上述三个管理体系均一次通过了每年的第三方监督审核和每三年的到期再认证工作，且管理体系至今均持续有效运行。在经营管理上，根据公司“立足市场需求﹑稳定产品质量﹑推广应用经验﹑拓展国内市场”的经营方针，以丰富的产品链涵盖不同的细分市场，满足不同用户的多重需求，并将科学的营销概念和体贴入微的服务理念融于产品服务中。全新的竞争环境和不断变化的消费者需求激励我公司锐意求新，不断进取，以坚忍不拔的创业精神和精益求精的严格要求不断完善自我，从而形成了“追求卓越品质 创造至上服务”的企业经营管理理念。 公司现建有电脑自控装配流水线、自动包装线，整机自动综合检测台、标牌自动嵌装机、自动写卡机、锁螺丝机等自动化生产设备；建有完备的质量检测、控制体系和先进的气密性及计量检测设备；有自主研发的条码管理系统、 仓储管理系统 、固定资产管理系统、IC卡表售卡管理系统、短信智能表售卡管理系统。目前已形成年产30万台智能燃气表的生产规模。产品行销天津、河北、河南、湖南、湖北、广东、山东等省市，是国内唯一一家在单一城市使用时间最长用户最多的智能表生产企业。公司采取“交钥匙”方式为用户提供健全优质的售后服务。设立了专门的客户服务部，对用户有关专业人员进行全方位系统的培训，包括了公司产品系统工作原理﹑安装﹑使用﹑售卡维修﹑管理等各项内容，指导维修服务人员熟悉掌握有关用户的报修﹑投诉等事项的技术处理。同时负责用户产品使用情况的随访跟踪。公司技术开发部﹑技术研究实验室，为技术开发研究建立良好的设备条件。在围绕公司核心产品完善改进的基础上，跟踪国内外相关产品的研制进展及应用情况等信息的研究，根据市场需求，全力投入力量进行相关产品的开发﹑研制工作。还与华中科技大学、武汉理工大学及其它院校﹑科研院所及湖北电信等建立了紧密的协作关系，为新项目产品的开发研制提供了必要的科研技术环境支持。公司荣获多项技术专利，并被授予湖北省高新技术企业。以市场为先导、以质量为保障、以技术为支撑，蓝焰人一定能在中国燃气行业成就了一段美丽的风景。
     </div>
 </div>
 <div class="modal modal-fixed-footer">
