@@ -36,19 +36,20 @@
         <form class="login-container" action="login" method="post">
             <!--<h1 class="login-title">登录</h1>-->
             <div class="illustration">
-                <i class="ion-ios-navigate"></i>
+                <%--<i class="ion-ios-navigate"></i>--%>
+               <img  src="../assets/custom/img/lanyan-login.png">
             </div>
             <div class="row">
                 <div class="input-field col s12">
                     <i class="material-icons prefix">account_circle</i>
-                    <input type="text" id="username" name="username" class="validate" required pattern="^[a-zA-Z]\w{3,15}$" autocomplete="off"/> 
-                    <label for="username" class="white-text">用户名</label>
+                    <input type="text" id="username" name="username" class="validate"  placeholder="账号" required pattern="^[a-zA-Z]\w{3,15}$" autocomplete="off"/>
+                    <%--<label for="username" class="white-text">用户名</label>--%>
                     <span class="helper-text white-text" data-error="字段长度为4-16位，首位必须为字母" data-success="验证通过"></span>
                 </div>           
                 <div class="input-field col s12">
                     <i class="material-icons prefix">locker</i>
-                    <input type="password" id="password" name="password" class="validate" required pattern="\w{4,16}" autocomplete="off"/>
-                    <label for="password" class="white-text">密码</label>
+                    <input type="password" id="password" name="password" class="validate" placeholder="密码" required pattern="\w{4,16}" autocomplete="off"/>
+                    <%--<label for="password" class="white-text">密码</label>--%>
                     <span class="helper-text white-text" data-error="字段长度为4-16位" data-success="验证通过"></span>
                 </div>
             </div>
