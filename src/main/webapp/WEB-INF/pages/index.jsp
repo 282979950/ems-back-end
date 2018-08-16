@@ -30,7 +30,8 @@
 <header class="mdui-appbar mdui-appbar-fixed">
     <div class="mdui-toolbar mdui-color-theme">
         <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#main-drawer', swipe: true}"mdui-tooltip="{content: '展开/隐藏'}"><i class="mdui-icon material-icons">menu</i></span>
-
+        <img class="no-margin" src="../assets/custom/img/lanyan-logo.jpg">
+        <span class="mdui-typo-headline no-select no-margin">蓝焰表具管理系统</span>
         <div class="mdui-toolbar-spacer"></div>
         <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '锁屏'}"><i class="mdui-icon material-icons">https</i></span>
         <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '刷新'}"><i class="mdui-icon material-icons">cached</i></span>
@@ -38,12 +39,12 @@
     </div>
 </header>
 <div class="mdui-drawer NavigationBars" id="main-drawer">
-    <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+    <div class="mdui-list" mdui-collapse="{accordion: true}">
         <div class="mdui-collapse-item">
             <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">home</i>
-                <div class="mdui-list-item-content">系统管理</div>
-                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">home</i>
+                <div class="mdui-list-item-content mdui-text-color-blue">系统管理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
                 <div class="mdui-list-item mdui-ripple ">区域管理</div>
@@ -58,10 +59,10 @@
         </div>
 
         <div class="mdui-collapse-item">
-            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">account_box</i>
-                <div class="mdui-list-item-content">账户管理</div>
-                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple mdui-text-color-blue">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">account_box</i>
+                <div class="mdui-list-item-content mdui-text-color-blue">账户管理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
                 <div class="mdui-list-item mdui-ripple">表具入库</div>
@@ -74,9 +75,9 @@
 
         <div class="mdui-collapse-item">
             <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">payment</i>
-                <div class="mdui-list-item-content">充值缴费管理</div>
-                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">payment</i>
+                <div class="mdui-list-item-content mdui-text-color-blue">充值缴费管理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
                 <div class="mdui-list-item mdui-ripple">预付费充值</div>
@@ -88,9 +89,9 @@
 
         <div class="mdui-collapse-item">
             <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">local_gas_station</i>
-                <div class="mdui-list-item-content">维修补气管理</div>
-                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">local_gas_station</i>
+                <div class="mdui-list-item-content mdui-text-color-blue">维修补气管理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
                 <div class="mdui-list-item mdui-ripple">维修单录入</div>
@@ -102,9 +103,9 @@
 
         <div class="mdui-collapse-item">
             <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">account_box</i>
-                <div class="mdui-list-item-content">账务处理</div>
-                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">monetization_on</i>
+                <div class="mdui-list-item-content mdui-text-color-blue">账务处理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
                 <div class="mdui-list-item mdui-ripple">预冲账</div>
@@ -113,9 +114,9 @@
         </div>
         <div class="mdui-collapse-item">
             <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">network_check</i>
-                <div class="mdui-list-item-content">表具运行管理</div>
-                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">network_check</i>
+                <div class="mdui-list-item-content mdui-text-color-blue">表具运行管理</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
                 <div class="mdui-list-item mdui-ripple">抄表</div>
@@ -125,9 +126,9 @@
         </div>
         <div class="mdui-collapse-item">
             <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">query_builder</i>
-                <div class="mdui-list-item-content">查询统计</div>
-                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">assessment</i>
+                <div class="mdui-list-item-content mdui-text-color-blue">查询统计</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
                 <div class="mdui-list-item mdui-ripple">IC卡查询</div>
