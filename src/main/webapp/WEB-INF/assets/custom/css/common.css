@@ -7,6 +7,9 @@ and open the template in the editor.
     Created on : 2018-8-1, 11:50:57
     Author     : Administrator
 */
+body {
+    font-family: "Microsoft Yahei", "sans-serif" !important;
+}
 .repaint-toast{
     position: fixed;
     margin: auto;
@@ -19,4 +22,20 @@ and open the template in the editor.
     display: inline-block;
     text-align: center;
     letter-spacing: 0.3vw;
+}
+.ly-blue {
+    background-color: #007cc2;
+}
+.ly-sci-blue {
+    background-color: #015198;
+}
+
+.tabs-content.carousel.carousel-slider {
+    height: 100%;
+}
+.mdui-container.doc-container.doc-no-cover {
+    position: fixed;
+    top: 64px;
+    bottom: 0;
+    padding: 30px;
 }
