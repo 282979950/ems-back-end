@@ -29,7 +29,9 @@
 <body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink mdui-loaded">
 <header class="mdui-appbar mdui-appbar-fixed">
     <div class="mdui-toolbar mdui-color-theme">
-        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#main-drawer', swipe: true}"mdui-tooltip="{content: '展开/隐藏'}"><i class="mdui-icon material-icons">menu</i></span>
+        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '.mdui-drawer', swipe: true}"mdui-tooltip="{content: '展开/隐藏'}">
+            <i class="mdui-icon material-icons">menu</i>
+        </span>
         <img class="no-margin" src="../assets/custom/img/lanyan-logo.jpg">
         <span class="mdui-typo-headline no-select no-margin">蓝焰表具管理系统</span>
         <div class="mdui-toolbar-spacer"></div>
@@ -108,8 +110,8 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
-                <div class="mdui-list-item mdui-ripple nav-item ">预冲账</div>
-                <div class="mdui-list-item mdui-ripple nav-item ">冲账</div>
+                <div class="mdui-list-item mdui-ripple nav-item preStrike">预冲账</div>
+                <div class="mdui-list-item mdui-ripple nav-item strike">冲账</div>
             </div>
         </div>
         <div class="mdui-collapse-item">
