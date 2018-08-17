@@ -105,20 +105,20 @@ var app = {
                 </div>\n\
                 <div class="col s2 align-center">\n\
                     <div class="waves-effect waves-light blue lighten-2 btn search-button">\n\
-                        <label class="material-icons color-white">search</label><label class="color-white">查询</label>\n\
+                        <i class="material-icons color-white iconstyle">search</i>&nbsp;&nbsp;查询\n\
                     </div>\n\
                 </div>\n\
             </div>\n\
             <div class="row operation-box">\n\
                 <div class="col s4">\n\
                     <div class="waves-effect waves-light green lighten-2 btn operator add align-center">\n\
-                        <i class="material-icons">add</i>新增</span>\n\
+                        <i class="material-icons iconstyle">add</i>&nbsp;&nbsp;新增</span>\n\
                     </div>\n\
                     <div class="waves-effect waves-light green lighten-2 btn operator edit align-center">\n\
-                        <i class="material-icons">edit</i>编辑</span>\n\
+                        <i class="material-icons iconstyle">edit</i>&nbsp;&nbsp;编辑</span>\n\
                     </div>\n\
                     <div class="waves-effect waves-light green lighten-2 btn operator delete align-center">\n\
-                        <i class="material-icons">delete</i>删除</span>\n\
+                        <i class="material-icons iconstyle">delete</i>&nbsp;&nbsp;删除</span>\n\
                     </div>\n\
                 </div>\n\
             </div>\n\

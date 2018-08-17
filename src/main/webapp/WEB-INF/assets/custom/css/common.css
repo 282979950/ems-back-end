@@ -39,3 +39,8 @@ body {
     bottom: 0;
     padding: 30px;
 }
+.iconstyle{
+    position: absolute;
+    left: 6%;
+    top: 6%;
+}
