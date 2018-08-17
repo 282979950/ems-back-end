@@ -97,15 +97,15 @@ var app = {
                 </select>\n\
             </div>',
     distTemplate: '<div class="row search-box">\n\
-                <div class="col s3">\n\
+                <div class="col s2">\n\
                     <label>区域名称：<input type="text" class="field distName" name="distName" placeholder="区域名称"/></label>\n\
                 </div>\n\
-                <div class="col s3">\n\
+                <div class="col s2">\n\
                     <label>区域编码：<input type="text" class="field distCode" name="distCode" placeholder="区域名称"/></label>\n\
                 </div>\n\
-                <div class="col s3 align-center">\n\
+                <div class="col s2 align-center">\n\
                     <div class="waves-effect waves-light blue lighten-2 btn search-button">\n\
-                        <i class="material-icons">search</i>\n\
+                        <label class="material-icons color-white">search</label><label class="color-white">查询</label>\n\
                     </div>\n\
                 </div>\n\
             </div>\n\
@@ -420,6 +420,15 @@ var app = {
                     var modalContent=elem.getElementsByClassName('modal-content')[0];
                     modalContent.innerHTML='';
                     (function(){
+                        var element_i=document.createElement('i');
+                        element_i.className='material-icons';
+                        element_i.innerHTML='clear';
+                        element_i.style.cursor='pointer';
+                        element_i.style.position='absolute';
+                        element_i.style.right='1%';
+                        element_i.style.top='3%';
+                        element_i.style.color='#2bbbad';
+                        modalContent.appendChild(element_i)
                            var titleElement=document.createElement('h4');
                            titleElement.innerHTML='新增';
                            modalContent.appendChild(titleElement);
@@ -440,10 +449,13 @@ var app = {
                            var fieldsElement=theadElement.children[0];
                            for(var i=1,limit=fieldsElement.children.length;i<limit;i++){
                                 var cell=fieldsElement.children[i];
+                                var label = document.createElement('label')
+                                label.innerHTML=cell.innerHTML+':   ';
+                                label.style.fontSize='14px';
+                                label.style.fontFamily='宋体';
                                 var rowElement=document.createElement('div');
-                                rowElement.className='row';
                                 var fieldContainer=document.createElement('div');
-                                fieldContainer.className='col s12';
+                                fieldContainer.className='col s6';
                                 var labelElement=document.createElement('div');
                                 labelElement.innerHTML=cell.title;
                                 var inputElement=document.createElement('input');
@@ -457,6 +469,8 @@ var app = {
                                 fieldContainer.appendChild(labelElement);
                                 rowElement.appendChild(fieldContainer);
                                 formElement.appendChild(rowElement);
+                                label.appendChild(inputElement);
+                                fieldContainer.appendChild(label);
                            }
                            rowElem.appendChild(formElement);
                            modalContent.appendChild(rowElem);
