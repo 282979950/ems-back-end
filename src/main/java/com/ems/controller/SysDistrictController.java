@@ -3,6 +3,7 @@ package com.ems.controller;
 import com.ems.common.JsonData;
 import com.ems.entity.SysDistrict;
 import com.ems.service.ISysDistrictService;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,27 +21,15 @@ public class SysDistrictController {
     private ISysDistrictService sysDistrictService;
 
     /**
-     * 获取区域树
-     *
-     * @return
-     */
-    @RequiresPermissions("sys:dist:visit")
-    @RequestMapping("getDistTree.do")
-    @ResponseBody
-    public JsonData getDistTree() {
-        return sysDistrictService.getDistRoot();
-    }
-
-    /**
      * 获取区域列表
      *
      * @return
      */
     @RequiresPermissions("sys:dist:visit")
-    @RequestMapping("getDistrictList.do")
+    @RequestMapping("listData.do")
     @ResponseBody
     public JsonData getDistrictList() {
-        return sysDistrictService.getDistrictList();
+        return sysDistrictService.listData();
     }
 
     /**
@@ -48,7 +37,7 @@ public class SysDistrictController {
      *
      */
     @RequiresPermissions("sys:dist:create")
-    @RequestMapping("createDistrict.do")
+    @RequestMapping(value = "createDistrict.do")
     @ResponseBody
     public JsonData createDistrict(SysDistrict district) {
         return sysDistrictService.createDistrict(district);
@@ -78,19 +67,9 @@ public class SysDistrictController {
      * 依据区域名称查询
      */
     @RequiresPermissions("sys:dist:retrive")
-    @RequestMapping("selectByName.do")
+    @RequestMapping("selectDistrict.do")
     @ResponseBody
-    public JsonData selectByName(String name) {
-        return sysDistrictService.selectDistByName(name);
-    }
-
-    /**
-     * 依据区域名称查询
-     */
-    @RequiresPermissions("sys:dist:retrive")
-    @RequestMapping("selectByCode.do")
-    @ResponseBody
-    public JsonData selectByCode(String code) {
-        return sysDistrictService.selectDistByCode(code);
+    public JsonData selectDistrict(@Param("distName") String distName, @Param("distCode") String distCode) {
+        return sysDistrictService.selectDistrict(distName, distCode);
     }
 }

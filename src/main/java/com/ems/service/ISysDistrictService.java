@@ -7,6 +7,7 @@ import com.ems.entity.SysDistrict;
  * @author litairan on 2018/7/2.
  */
 public interface ISysDistrictService {
+
     /**
      * 检查区域是否存在
      *
@@ -26,6 +27,7 @@ public interface ISysDistrictService {
     /**
      * 新增区域
      * district中distName,distParentId不能为空
+     *
      * @param district
      * @return
      */
@@ -34,18 +36,11 @@ public interface ISysDistrictService {
     /**
      * 依据区域名称查询
      *
-     * @param name
+     * @param distName
+     * @param distCode
      * @return
      */
-    JsonData selectDistByName(String name);
-
-    /**
-     * 依据区域名称查询
-     *
-     * @param code
-     * @return
-     */
-    JsonData selectDistByCode(String code);
+    JsonData selectDistrict(String distName, String distCode);
 
     /**
      * 更新区域
@@ -57,28 +52,16 @@ public interface ISysDistrictService {
 
     /**
      * 假删除(将usable设置为false)
-     */
-    JsonData deleteSysDistrict(SysDistrict district);
-
-    /**
-     * 获取父节点
      *
      * @param district
      * @return
      */
-    SysDistrict getParentDist(SysDistrict district);
-
-    /**
-     * 获取区域树结构
-     *
-     * @return
-     */
-    JsonData getDistRoot();
+    JsonData deleteSysDistrict(SysDistrict district);
 
     /**
      * 获取所有区域的列表
      *
      * @return
      */
-    JsonData getDistrictList();
+    JsonData listData();
 }

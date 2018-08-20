@@ -5,12 +5,12 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 区域表实体
+ *
+ * @author litairan
  */
 @Getter
 @Setter
@@ -52,11 +52,6 @@ public class SysDistrict extends BaseEntity {
      */
     private Integer distParentId;
 
-    /**
-     * 子区域列表
-     */
-    private List<SysDistrict> childrenDist;
-
     public SysDistrict(Integer distId, String distName, String distCode, String distCategory, String distAddress, Integer distParentId, Date createTime,
                        Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
@@ -66,7 +61,6 @@ public class SysDistrict extends BaseEntity {
         this.distCategory = distCategory;
         this.distAddress = distAddress;
         this.distParentId = distParentId;
-        this.childrenDist = new ArrayList<>();
     }
 
     public SysDistrict() {

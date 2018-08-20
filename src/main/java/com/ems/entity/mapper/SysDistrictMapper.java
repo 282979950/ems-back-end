@@ -1,6 +1,7 @@
 package com.ems.entity.mapper;
 
 import com.ems.entity.SysDistrict;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,11 +18,17 @@ public interface SysDistrictMapper {
 
     int updateByPrimaryKey(SysDistrict record);
 
-    int checkDistName(String distName);
+    boolean checkDistName(String distName);
 
-    int checkUsable(String distName);
+    boolean checkUsable(String distName);
 
     List<SysDistrict> selectAll();
 
     int getCountWithUnusable();
+
+    List<SysDistrict> getChildrenDist(@Param("distId") Integer distId);
+
+    int deleteBatch(List<SysDistrict> districts);
+
+    List<SysDistrict> selectDistrict(@Param("distName")String distName, @Param("distCode")String distCode);
 }

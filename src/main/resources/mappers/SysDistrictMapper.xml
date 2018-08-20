@@ -176,13 +176,13 @@
         remarks = #{remarks,jdbcType=VARCHAR}
         where dist_id = #{distId,jdbcType=INTEGER}
     </update>
-    <select id="checkDistName" parameterType="java.lang.String" resultType="int">
+    <select id="checkDistName" parameterType="java.lang.String" resultType="boolean">
         select
         COUNT (1)
         from sys_district
         where dist_name = #{distName}
     </select>
-    <select id="checkUsable" parameterType="java.lang.String" resultType="int">
+    <select id="checkUsable" parameterType="java.lang.String" resultType="boolean">
         select
         COUNT (1)
         from sys_district
@@ -198,5 +198,53 @@
         select
         count(1)
         from sys_district
+    </select>
+    <select id="getChildrenDist" resultMap="BaseResultMap" parameterType="integer">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_district
+        where dist_parent_id = #{distId,jdbcType=INTEGER} and usable = 1
+    </select>
+    <update id="deleteBatch" parameterType="list">
+        update sys_district
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_by = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateBy != null">
+                        when id=#{i.distId} then #{i.updateBy}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateTime != null">
+                        when id=#{i.distId} then NOW()
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="usable =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.usable != null">
+                        when id=#{i.distId} then 0
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index">
+            dist_id = #{i.distId}
+        </foreach>
+    </update>
+    <select id="selectDistrict" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_district
+        where usable = 1
+        <if test="distName != null and distName != ''">
+            AND dist_name LIKE CONCAT('%', #{distName,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="distCode != null and distCode != ''">
+            AND dist_code LIKE CONCAT('%', #{distCode,jdbcType=VARCHAR}, '%')
+        </if>
     </select>
 </mapper>

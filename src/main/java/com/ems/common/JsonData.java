@@ -23,7 +23,7 @@ public class JsonData{
     /**
      * 消息
      */
-    private String msg;
+    private String message;
 
     /**
      * 数据
@@ -37,7 +37,7 @@ public class JsonData{
     public static JsonData success(Object object, String msg) {
         JsonData jsonData = new JsonData(true);
         jsonData.data = object;
-        jsonData.msg = msg;
+        jsonData.message = msg;
         return jsonData;
     }
 
@@ -49,7 +49,7 @@ public class JsonData{
 
     public static JsonData successMsg(String msg) {
         JsonData jsonData = new JsonData(true);
-        jsonData.msg = msg;
+        jsonData.message = msg;
         return jsonData;
     }
 
@@ -59,15 +59,15 @@ public class JsonData{
 
     public static JsonData fail(String msg) {
         JsonData jsonData = new JsonData(false);
-        jsonData.msg = msg;
+        jsonData.message = msg;
         return jsonData;
     }
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("status", status);
-        if (msg != null) {
-            result.put("msg", msg);
+        if (message != null) {
+            result.put("message", message);
         }
         if (data != null) {
             result.put("data", data);
