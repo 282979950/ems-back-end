@@ -13,6 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>表具管理系统</title>
+    <link rel="shortcut icon" href="../assets/custom/img/lanyan-log.ico" type="image/x-icon"/>
     <link type="text/css" rel="stylesheet" href="../assets/materialize/fonts/material-icons.min.css"/>
     <link type="text/css" rel="stylesheet" href="../assets/materialize/css/materialize.min.css" media="screen"/>
     <link type="text/css" rel="stylesheet" href="../assets/fonts/ionicons.min.css"/>
