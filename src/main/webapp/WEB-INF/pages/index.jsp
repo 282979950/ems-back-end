@@ -23,10 +23,11 @@
     <script type="text/javascript" src="../assets/materialize/js/materialize.min.js"></script>
     <script type="text/javascript" src="../assets/custom/js/common.js"></script>
     <script type="text/javascript" src="../assets/custom/js/index.js"></script>
-    <script type="text/javascript" src="../assets/mdui-v0.4.1/js/mdui.min.js"></script>
+    <script type="text/javascript" src="../assets/custom/js/component.js"></script>
+    <script type="text/javascript" src="../assets/mdui-v0.4.1/js/mdui.js"></script>
 
 </head>
-<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink mdui-loaded">
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue mdui-loaded">
 <header class="mdui-appbar mdui-appbar-fixed">
     <div class="mdui-toolbar mdui-color-theme">
         <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '.mdui-drawer', swipe: true}"mdui-tooltip="{content: '展开/隐藏'}">

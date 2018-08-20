@@ -39,3 +39,26 @@ body {
     bottom: 0;
     padding: 30px;
 }
+
+.mdui-table thead th {
+    font-size: 15px;
+    color: #2196f3;
+    max-width: 200px;
+}
+
+.mdui-table thead td {
+    max-width: 200px;
+}
+
+.mdui-table.mdui-table-selectable.mdui-table-hoverable td, .mdui-table.mdui-table-selectable.mdui-table-hoverable th {
+    padding: 0;
+    vertical-align: middle;
+}
+
+.mdui-table-cell-checkbox .mdui-checkbox {
+    margin-top: 0 !important;
+}
+
+.mdui-table-cell-checkbox {
+    width: 36px;
+}
