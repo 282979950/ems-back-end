@@ -13,12 +13,12 @@ body {
 .repaint-toast{
     position: fixed;
     margin: auto;
-    width: 60vw;
+    width: 20vw;
     height: 6vh;
     /*line-height: 6vh;*/
     left: 20vw;
-    right: 20vw;
-    top: 80vh!important;
+    right: 15vw;
+    top: 60vh!important;
     display: inline-block;
     text-align: center;
     letter-spacing: 0.3vw;
@@ -61,4 +61,10 @@ body {
 
 .mdui-table-cell-checkbox {
     width: 36px;
+}
+
+.iconstyle{
+    position: absolute;
+    left: 6%;
+    top: 6%;
 }
