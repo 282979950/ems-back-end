@@ -96,47 +96,25 @@ var app = {
                     <option value="30">30</option>\n\
                 </select>\n\
             </div>',
-    distTemplate: '<div class="row search-box">\n\
-                <div class="col s3">\n\
-                    <label>区域名称：<input type="text" class="field distName" name="distName" placeholder="区域名称"/></label>\n\
-                </div>\n\
-                <div class="col s3">\n\
-                    <label>区域编码：<input type="text" class="field distCode" name="distCode" placeholder="区域名称"/></label>\n\
-                </div>\n\
-                <div class="col s3 align-center">\n\
-                    <div class="waves-effect waves-light blue lighten-2 btn search-button">\n\
-                        <i class="material-icons">search</i>\n\
-                    </div>\n\
-                </div>\n\
-            </div>\n\
-            <div class="row operation-box">\n\
-                <div class="col s4">\n\
-                    <div class="waves-effect waves-light green lighten-2 btn operator add align-center">\n\
-                        <i class="material-icons">add</i>新增</span>\n\
-                    </div>\n\
-                    <div class="waves-effect waves-light green lighten-2 btn operator edit align-center">\n\
-                        <i class="material-icons">edit</i>编辑</span>\n\
-                    </div>\n\
-                    <div class="waves-effect waves-light green lighten-2 btn operator delete align-center">\n\
-                        <i class="material-icons">delete</i>删除</span>\n\
-                    </div>\n\
-                </div>\n\
-            </div>\n\
-            <div class="row data-box mdui-table">\n\
-                <table class="highlight centered responsive-table mdui-table-hoverable">\n\
-                    <thead class="fields">\n\
-                        <tr>\n\
-                            <th><label><input type="checkbox" class="selected"/><span></span></label></th>\n\
-                            <th class="distName">区域名称</th>\n\
-                            <th class="distCode">区域编码</th>\n\
-                            <th class="distCategory">区域类别</th>\n\
-                            <th class="distAddress">区域地址</th>\n\
-                            <th class="distParentId">父级区域</th>\n\
-                        </tr>\n\
-                    </thead>\n\
-                    <tbody class="records"></tbody>\n\
-                </table>\n\
-            </div>',
+    distTemplate: '<div class="mdui-toolbar">' +
+                    '<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator add" mdui-tooltip="{content:\'新增\'}">' +
+                        '<i class="mdui-icon material-icons mdui-text-color-blue">add</i>\n' +
+                    '</div>\n' +
+                    '<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator edit" mdui-tooltip="{content: \'编辑\'}">' +
+                        '<i class="mdui-icon material-icons mdui-text-color-blue">edit</i>\n' +
+                    '</div>\n' +
+                    '<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator delete" mdui-tooltip="{content: \'删除\'}">' +
+                        '<i class="mdui-icon material-icons mdui-text-color-blue">delete</i>\n' +
+                    '</div>\n' +
+                    '<div class="search-condition">\n' +
+                        '<label>区域名称：<input type="text" class="field distName" name="distName" placeholder="区域名称"/></label>' +
+                        '<label>区域编码：<input type="text" class="field distCode" name="distCode" placeholder="区域名称"/></label>' +
+                    '</div>\n' +
+                    '<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator search search-button" mdui-tooltip="{content: \'搜索\'}">' +
+                        '<i class="mdui-icon material-icons mdui-text-color-blue">search</i>\n' +
+                    '</div>\n' +
+                    '</div>\n' +
+                    '<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     getPaneContent: function (name) {
         var paneContent = '';
         switch (name) {
@@ -318,9 +296,6 @@ var app = {
     // 无分页页面渲染
     renderWithoutPage: function (context) {
         var pane = context.pane;
-        var theadElement = pane.getElementsByClassName('fields')[0];
-        var fieldsElement = theadElement.children[0];
-        var tbodyElement = pane.getElementsByClassName('records')[0];
         $.ajax({
             type: 'GET',
             url: context.url,
@@ -329,85 +304,72 @@ var app = {
                 xhr.withCredentials = true;
             },
             success: function (response) {
-                tbodyElement.innerHTML = '';
                 var data = response.data;
-                context.pane.tableData = data;
-                for (var i = 0, limit = data.length; i < limit; i++) {
-                    var tr = tbodyElement.insertRow(i);
-                    $(tr).data('distId', data[i].distId);
-                    for (var cell, j = 0, counter = fieldsElement.children.length; j < counter; j++) {
-                        cell = tr.insertCell(j);
-                        cell.className = fieldsElement.children[j].className;
-                        cell.title = j === 0 ? '选中' : fieldsElement.children[j].innerHTML.trim();
-                        cell.innerHTML = j === 0 ? '<label><input type="checkbox" class="selected"/><span></span></label>' : (data[i][fieldsElement.children[j].className] ? data[i][fieldsElement.children[j].className] : null);
-                    }
-                }
-                fieldsElement.children[0].children[0].children[0].checked = false;
-                fieldsElement.children[0].children[0].onclick = function () {
-                    for (var i = 0, limit = tbodyElement.children.length; i < limit; i++) {
-                        var row = tbodyElement.children[i];
-                        row.children[0].children[0].children[0].checked = this.children[0].checked;
-                    }
-                };
-                tbodyElement.onclick = function (evt) {
-                    var self = this, srcEle = evt.target;
-                    if (srcEle.className === 'selected') {
-                        srcEle.parentNode.onchange = function () {
-                            var allChecked = true;
-                            for (var i = 0, limit = self.children.length; i < limit; i++) {
-                                var row = self.children[i];
-                                if (!row.children[0].children[0].children[0].checked) {
-                                    allChecked = false;
-                                }
-                            }
-                            fieldsElement.children[0].children[0].children[0].checked = allChecked;
-                        }
-                    }
-                }
+                context.tableData = data;
+                app.table = context.table = app.createTable({
+                    parent: '.mdui-table-fluid',
+                    fields: [{
+                        name: 'distName',
+                        caption: '区域名称'
+                    }, {
+                        name: 'distCode',
+                        caption: '区域编码'
+                    }, {
+                        name: 'distCategory',
+                        caption: '区域类别'
+                    }, {
+                        name: 'distAddress',
+                        caption: '区域地址'
+                    }, {
+                        name: 'distParentId',
+                        caption: '父级区域'
+                    }],
+                    data: data
+                });
             }
         });
     },
     initPane: function (context) {
         var self=this;
-        var searchBoxElement=context.pane.getElementsByClassName('search-box')[0];
-        var searchButtonElement=searchBoxElement.getElementsByClassName('search-button')[0];
-        var fieldElements=searchBoxElement.getElementsByClassName('field'),fields={};
-        for(var i=0,limit=fieldElements.length;i<limit;i++){
-            var fieldElement=fieldElements[i];
-            switch(fieldElement.nodeName){
-                case 'INPUT':
-                    fields[fieldElement.name]=fieldElement.value;
-                    break;
-                case 'SELECT':
-                    fields[fieldElement.name]=fieldElement.options[fieldElement.selectedIndex].value
-                    break;
-            }
-        }
-        searchButtonElement.onclick=function(){
-            var fields={};
-            for(var i=0,limit=fieldElements.length;i<limit;i++){
-                var fieldElement=fieldElements[i];
-                switch(fieldElement.nodeName){
-                    case 'INPUT':
-                        fields[fieldElement.name]=fieldElement.value;
-                        break;
-                    case 'SELECT':
-                        fields[fieldElement.name]=fieldElement.options[fieldElement.selectedIndex].value;
-                        break;
-                }
-            }
-            var parameterMap={
-                url:context.url,
-                pane:context.pane,
-                pageNumber:1,
-                pageSize:Number(pageSizeElement.options[pageSizeElement.selectedIndex].value),
-                fields: fields
-            }
-            self.render(parameterMap);
-        }
-        var operationBoxElement=context.pane.getElementsByClassName('operation-box')[0];
-        //var operations=['add','edit','delete'];
+        // var searchConditionElement = context.pane.getElementsByClassName('search-condition')[0];
+        // var searchButtonElement = context.pane.getElementsByClassName('search-button')[0];
+        // var fieldElements = searchConditionElement.children();
+        // var fields={};
+        // for (var i = 0, limit = fieldElements.length; i < limit; i++) {
+        //     var fieldElement = fieldElements[i];
+        //     switch (fieldElement.nodeName) {
+        //         case 'INPUT':
+        //             fields[fieldElement.name] = fieldElement.value;
+        //             break;
+        //         case 'SELECT':
+        //             fields[fieldElement.name] = fieldElement.options[fieldElement.selectedIndex].value
+        //             break;
+        //     }
+        // }
+        // searchButtonElement.onclick=function(){
+        //     var fields={};
+        //     for(var i=0,limit=fieldElements.length;i<limit;i++){
+        //         var fieldElement=fieldElements[i];
+        //         switch(fieldElement.nodeName){
+        //             case 'INPUT':
+        //                 fields[fieldElement.name]=fieldElement.value;
+        //                 break;
+        //             case 'SELECT':
+        //                 fields[fieldElement.name]=fieldElement.options[fieldElement.selectedIndex].value;
+        //                 break;
+        //         }
+        //     }
+        //     var parameterMap={
+        //         url:context.url,
+        //         pane:context.pane,
+        //         pageNumber:1,
+        //         pageSize:Number(pageSizeElement.options[pageSizeElement.selectedIndex].value),
+        //         fields: fields
+        //     };
+        //     self.render(parameterMap);
+        // };
 
+        var operationBoxElement=context.pane.getElementsByClassName('mdui-toolbar')[0];
         var operationElements=operationBoxElement.getElementsByClassName('operator');
         for(var i=0,limit=operationElements.length;i<limit;i++){
             var operationElement=operationElements[i];
@@ -494,62 +456,81 @@ var app = {
                         var instance = M.Modal.init(elem, {});
                         instance.open();
                 })();
-                this.classList.contains('edit')&&(function(){
-                    var rows=[];
-                    for(var i=0,limit=tbodyElement.children.length;i<limit;i++){
-                        var row=tbodyElement.children[i];
-                        row.children[0].children[0].children[0].checked&&rows.push(row);
-                    }
-                    if(rows.length!==1){
+                this.classList.contains('edit') && (function () {
+                    var table = app.table;
+                    var data = JSON.parse(JSON.stringify(table.getSelectedData()));
+                    console.log(data);
+                    if (data.length !== 1) {
                         M.toast({
                             html: '请选择一条记录进行编辑',
                             classes: 'rounded repaint-toast'
                         });
-                    }else{
+                    } else {
                         var elem = document.querySelector('.modal');
-                        var modalContent=elem.getElementsByClassName('modal-content')[0];
-                        modalContent.innerHTML='';
-                        (function(){
-                           var titleElement=document.createElement('h4');
-                           titleElement.innerHTML='编辑';
-                           modalContent.appendChild(titleElement);
-                           var row=rows[0];console.log(row);
-                           var rowElem=document.createElement('div');
-                           rowElem.className='row';
-                           var formElement=document.createElement('form');
-                           formElement.className='col s12';
-                           for(var i=1,limit=row.children.length;i<limit;i++){
-                                var cell=row.children[i];
-                                var rowElement=document.createElement('div');
-                                rowElement.className='row';
-                                var fieldContainer=document.createElement('div');
-                                fieldContainer.className='col s12';
-                                var labelElement=document.createElement('div');
-                                labelElement.innerHTML=cell.title;
-                                var inputElement=document.createElement('input');
-                                inputElement.type='text';
-                                inputElement.style.textAlign='center';
-                                inputElement.name=cell.className;
-                                inputElement.className='field';
-                                inputElement.placeholder=cell.title;
-                                inputElement.value=cell.innerHTML;
-                                labelElement.appendChild(inputElement);
-                                fieldContainer.appendChild(labelElement);
-                                rowElement.appendChild(fieldContainer);
-                                formElement.appendChild(rowElement);
-                           }
-                           rowElem.appendChild(formElement);
-                           modalContent.appendChild(rowElem);
-                        })();
-                        var modalFooter=elem.getElementsByClassName('modal-footer')[0];
-                        modalFooter.children[0].innerHTML='保存';
-                        modalFooter.children[1].innerHTML='取消';
-                        modalFooter.children[0].onclick=function(){
-                            var fields=modalContent.getElementsByClassName('field');
-                            var record={};
-                            for(var i=0,limit=fields.length;i<limit;i++){
-                                var field=fields[i];
-                                record[field.name]=field.value;
+                        var modalContent = elem.getElementsByClassName('modal-content')[0];
+                        modalContent.innerHTML = '';
+                        var form = app.createForm({
+                            parent: '.modal-content',
+                            fields: [{
+                                name: 'distName',
+                                caption: '区域名称'
+                            }, {
+                                name: 'distCode',
+                                caption: '区域编码'
+                            }, {
+                                name: 'distCategory',
+                                caption: '区域类别'
+                            }, {
+                                name: 'distAddress',
+                                caption: '区域地址'
+                            }, {
+                                name: 'distParentId',
+                                caption: '父级区域'
+                            }],
+                            data: data[0]
+                        });
+                        // (function () {
+                        //     var titleElement = document.createElement('h4');
+                        //     titleElement.innerHTML = '编辑';
+                        //     modalContent.appendChild(titleElement);
+                        //     console.log(data);
+                        //     var rowElem = document.createElement('div');
+                        //     rowElem.className = 'row';
+                        //     var formElement = document.createElement('form');
+                        //     formElement.className = 'col s12';
+                        //     var fields = table.getFields();
+                        //     for (var i = 1, limit = fields.length; i < limit; i++) {
+                        //         var cell = row.children[i];
+                        //         var rowElement = document.createElement('div');
+                        //         rowElement.className = 'row';
+                        //         var fieldContainer = document.createElement('div');
+                        //         fieldContainer.className = 'col s12';
+                        //         var labelElement = document.createElement('div');
+                        //         labelElement.innerHTML = cell.title;
+                        //         var inputElement = document.createElement('input');
+                        //         inputElement.type = 'text';
+                        //         inputElement.style.textAlign = 'center';
+                        //         inputElement.name = cell.className;
+                        //         inputElement.className = 'field';
+                        //         inputElement.placeholder = cell.title;
+                        //         inputElement.value = cell.innerHTML;
+                        //         labelElement.appendChild(inputElement);
+                        //         fieldContainer.appendChild(labelElement);
+                        //         rowElement.appendChild(fieldContainer);
+                        //         formElement.appendChild(rowElement);
+                        //     }
+                        //     rowElem.appendChild(formElement);
+                        //     modalContent.appendChild(rowElem);
+                        // })();
+                        var modalFooter = elem.getElementsByClassName('modal-footer')[0];
+                        modalFooter.children[0].innerHTML = '保存';
+                        modalFooter.children[1].innerHTML = '取消';
+                        modalFooter.children[0].onclick = function () {
+                            var fields = modalContent.getElementsByClassName('field');
+                            var record = {};
+                            for (var i = 0, limit = fields.length; i < limit; i++) {
+                                var field = fields[i];
+                                record[field.name] = field.value;
                             }
                             $.ajax({
                                 type: 'POST',
@@ -755,41 +736,28 @@ var app = {
                                 parameterMap.pageNumber = pageCount > 0 ? 1 : 0;
                                 self.render(parameterMap);
                             }
-                        })()
-
+                        })();
                         break;
                     case 'prev':
-//                    --pageNumber > 0 && (function(){
-//                        parameterMap.pageNumber = pageNumber;
-//                        self.render(parameterMap);
-//                    })();
                         (function(){
                             if(srcElement.classList.contains('disabled')||--pageNumber < 1){
                                 return false;
                             }
                             else{
-//                           if(--pageNumber > 0){
                                 parameterMap.pageNumber = pageNumber;
                                 self.render(parameterMap);
-//                           }
                             }
-                        })()
+                        })();
                         break;
                     case 'next':
-//                    ++pageNumber <= pageCount && (function(){
-//                        parameterMap.pageNumber = pageNumber;
-//                        self.render(parameterMap);
-//                    })();
                         (function(){
                             if(srcElement.classList.contains('disabled')||++pageNumber>pageCount){
                                 return false;
                             }else{
-//                              if(++pageNumber <= pageCount){
                                 parameterMap.pageNumber = pageNumber;
                                 self.render(parameterMap);
-//                              }
                             }
-                        })()
+                        })();
                         break;
                     case 'last':
                         (function(){
@@ -798,8 +766,6 @@ var app = {
                             }else{
                                 parameterMap.pageNumber = pageCount;
                                 self.render(parameterMap);
-//                            srcElement.classList.add('disabled');
-//                            srcElement.previousElementSibling.classList.add('disabled');
                             }
                         })();
                         break;
