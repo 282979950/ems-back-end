@@ -107,8 +107,12 @@ var app = {
                         '<i class="mdui-icon material-icons mdui-text-color-blue">delete</i>\n' +
                     '</div>\n' +
                     '<div class="search-condition">\n' +
-                        '<label>区域名称：<input type="text" class="field distName" name="distName" placeholder="区域名称"/></label>' +
-                        '<label>区域编码：<input type="text" class="field distCode" name="distCode" placeholder="区域名称"/></label>' +
+                        '<div class="iconfloat">\n' +
+                            '<label class="iconstyle">区域名称：<input type="text" class=" inputHeight iconstyle field distName" name="distName" placeholder="区域名称"/></label>' +
+                        '</div>\n' +
+                        '<div class="iconfloat">\n' +
+                            '<label class="iconstyle">区域编码：<input type="text" class=" inputHeight iconstyle field distCode" name="distCode" placeholder="区域名称"/></label>' +
+                        '</div>\n' +
                     '</div>\n' +
                     '<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator search search-button" mdui-tooltip="{content: \'搜索\'}">' +
                         '<i class="mdui-icon material-icons mdui-text-color-blue">search</i>\n' +
@@ -310,7 +314,7 @@ var app = {
                     parent: '.mdui-table-fluid',
                     fields: [{
                         name: 'distName',
-                        caption: '区域名称'
+                        caption: '区域名称',
                     }, {
                         name: 'distCode',
                         caption: '区域编码'
@@ -382,6 +386,15 @@ var app = {
                     var modalContent=elem.getElementsByClassName('modal-content')[0];
                     modalContent.innerHTML='';
                     (function(){
+                           var elementi=document.createElement('i');
+                           elementi.className='material-icons';
+                           elementi.innerHTML='clear';
+                           elementi.style.cursor='pointer';
+                           elementi.style.position='absolute';
+                           elementi.style.right='1%';
+                           elementi.style.top='3%';
+                           elementi.style.color='#2bbbad';
+                           modalContent.appendChild(elementi)
                            var titleElement=document.createElement('h4');
                            titleElement.innerHTML='新增';
                            modalContent.appendChild(titleElement);
@@ -402,10 +415,14 @@ var app = {
                            var fieldsElement=theadElement.children[0];
                            for(var i=1,limit=fieldsElement.children.length;i<limit;i++){
                                 var cell=fieldsElement.children[i];
+                                var labels = document.createElement('label')
+                                labels.innerHTML=cell.innerHTML+':';
+                                labels.style.fontSize='16px';
+                                labels.style.fontFamily='宋体';
                                 var rowElement=document.createElement('div');
-                                rowElement.className='row';
+                             //   rowElement.className='row';
                                 var fieldContainer=document.createElement('div');
-                                fieldContainer.className='col s12';
+                                fieldContainer.className='col s6';
                                 var labelElement=document.createElement('div');
                                 labelElement.innerHTML=cell.title;
                                 var inputElement=document.createElement('input');
@@ -419,6 +436,8 @@ var app = {
                                 fieldContainer.appendChild(labelElement);
                                 rowElement.appendChild(fieldContainer);
                                 formElement.appendChild(rowElement);
+                                labels.appendChild(inputElement);
+                                fieldContainer.appendChild(labels);
                            }
                            rowElem.appendChild(formElement);
                            modalContent.appendChild(rowElem);
@@ -486,6 +505,7 @@ var app = {
                             }, {
                                 name: 'distParentId',
                                 caption: '父级区域'
+
                             }],
                             data: data[0]
                         });
