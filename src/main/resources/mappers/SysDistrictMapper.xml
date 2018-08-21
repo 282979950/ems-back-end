@@ -211,21 +211,21 @@
             <trim prefix="update_by = case" suffix="end,">
                 <foreach collection="list" item="i" index="index">
                     <if test="i.updateBy != null">
-                        when id=#{i.distId} then #{i.updateBy}
+                        when dist_id = #{i.distId} then #{i.updateBy}
                     </if>
                 </foreach>
             </trim>
             <trim prefix="update_time = case" suffix="end,">
                 <foreach collection="list" item="i" index="index">
                     <if test="i.updateTime != null">
-                        when id=#{i.distId} then NOW()
+                        when dist_id = #{i.distId} then NOW()
                     </if>
                 </foreach>
             </trim>
             <trim prefix="usable =case" suffix="end,">
                 <foreach collection="list" item="i" index="index">
                     <if test="i.usable != null">
-                        when id=#{i.distId} then 0
+                        when dist_id =#{i.distId} then 0
                     </if>
                 </foreach>
             </trim>

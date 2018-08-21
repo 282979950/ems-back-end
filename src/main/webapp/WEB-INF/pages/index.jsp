@@ -52,7 +52,7 @@
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
                 <div class="mdui-list-item mdui-ripple nav-item dist">区域管理</div>
-                <div class="mdui-list-item mdui-ripple nav-itemorganization">机构管理</div>
+                <div class="mdui-list-item mdui-ripple nav-item organization">机构管理</div>
                 <div class="mdui-list-item mdui-ripple nav-item user">用户管理</div>
                 <div class="mdui-list-item mdui-ripple nav-item role">角色管理</div>
                 <div class="mdui-list-item mdui-ripple nav-item permission">权限管理</div>

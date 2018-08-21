@@ -36,21 +36,20 @@ app.initEvent = function () {
     main.on('add', function () {
         var dialog = mdui.dialog({
             title: 'title',
-            content: '<div class="mdui-dialog-content"></div>',
+            content: ' ',
             buttons: [{
                 text: '确认',
                 onClick: function () {
                     var data = form.getData();
                     $.ajax({
                         type: 'POST',
-                        url: app.currentPageName + '/createDistrict.do',
+                        url: app.currentPageName + '/add.do',
                         contentType: 'application/x-www-form-urlencoded',
                         data: data,
                         beforeSend: function (xhr) {
                             xhr.withCredentials = true;
                         },
                         success: function (response) {
-                            console.log(response);
                             M.toast({
                                 html: response.message,
                                 classes: 'rounded repaint-toast'
@@ -67,6 +66,7 @@ app.initEvent = function () {
                 text: '取消'
             }]
         });
+        $('.mdui-dialog-content').html("");
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields: [{
@@ -91,14 +91,14 @@ app.initEvent = function () {
     main.on('edit', function () {
         var dialog = mdui.dialog({
             title: 'title',
-            content: '<div class="mdui-dialog-content"></div>',
+            content: ' ',
             buttons: [{
                 text: '确认',
                 onClick: function () {
                     var data = form.getData();
                     $.ajax({
                         type: 'POST',
-                        url: app.currentPageName + '/createDistrict.do',
+                        url: app.currentPageName + '/edit.do',
                         contentType: 'application/x-www-form-urlencoded',
                         data: data,
                         beforeSend: function (xhr) {
@@ -139,15 +139,65 @@ app.initEvent = function () {
             }, {
                 name: 'distParentId',
                 caption: '父级区域'
-            }]
+            }],
+            data: table.getSelectedDatas()[0]
         });
         dialog.handleUpdate();
     });
     main.on('delete', function () {
-
+        mdui.dialog({
+            title: 'title',
+            content: '确认删除选中的节点及其子节点？',
+            buttons: [{
+                text: '确认',
+                onClick: function () {
+                    var data = app.table.getSelectedDatas()[0];
+                    $.ajax({
+                        type: 'POST',
+                        url: app.currentPageName + '/delete.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: data,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            console.log(response);
+                            M.toast({
+                                html: response.message,
+                                classes: 'rounded repaint-toast'
+                            });
+                            if (response.status) {
+                                app.renderWithoutPage({
+                                    url: app.currentPageName + '/listData.do'
+                                });
+                            }
+                        }
+                    });
+                }
+            }, {
+                text: '取消'
+            }]
+        });
     });
     main.on('search', function () {
-
+        var data = app.toolbar.getInputsData();
+        $.ajax({
+            type: 'POST',
+            url: app.currentPageName + '/search.do',
+            contentType: 'application/x-www-form-urlencoded',
+            data: data,
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                console.log(response);
+                M.toast({
+                    html: response.message,
+                    classes: 'rounded repaint-toast'
+                });
+                app.table.refresh(response.data)
+            }
+        });
     });
 };
 
