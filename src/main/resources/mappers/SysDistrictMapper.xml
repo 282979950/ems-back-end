@@ -178,13 +178,13 @@
     </update>
     <select id="checkDistName" parameterType="java.lang.String" resultType="boolean">
         select
-        COUNT (1)
+        COUNT(1)
         from sys_district
         where dist_name = #{distName}
     </select>
     <select id="checkUsable" parameterType="java.lang.String" resultType="boolean">
         select
-        COUNT (1)
+        COUNT(1)
         from sys_district
         where dist_name = #{distName} and usable = 1
     </select>

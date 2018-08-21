@@ -198,6 +198,22 @@
     };
 
     /**
+     * 刷新Table
+     */
+    Table.prototype.refresh = function (data) {
+        var _this = this;
+        var tbody = _this.$table.find('tbody');
+        tbody.empty();
+        data.forEach(function (item) {
+            var tdRow = $('<tr></tr>').appendTo(tbody);
+            _this.fields.forEach(function (field) {
+                $('<td>' + (item[field.name] ? item[field.name] : '') + '</td>').appendTo(tdRow);
+            });
+        });
+        _this.init();
+    };
+
+    /**
      * 新建表格
      * @param params
      */
@@ -283,11 +299,111 @@
     };
 
     /**
+     * 获取表单数据
+     * @returns {*}
+     */
+    Form.prototype.getDom = function () {
+        return this.$dom;
+    };
+
+    /**
      * 创建Form表单
      * @param params
      * @returns {Form}
      */
     app.createForm = function (params) {
         return new Form(params);
+    };
+
+    /**
+     * 工具栏控件
+     * @param params
+     * @constructor
+     */
+    function Toolbar(params) {
+        this._init(params);
     }
+
+    /**
+     * 初始化
+     * @param params
+     * @private
+     */
+    Toolbar.prototype._init = function (params) {
+        this._initDom(params);
+        this._initEvents(params);
+    };
+
+    /**
+     * 初始化工具栏dom
+     * @private
+     */
+    Toolbar.prototype._initDom = function (params) {
+        var _this = this;
+        // 表单控件基础dom
+        var baseDom = '<div class="mdui-toolbar"></div>';
+        var parent = _this.$parent = $(params.parent).eq(0);
+        var $toolbar = _this.$dom = $(baseDom).prependTo(parent);
+
+        var fields = _this.fields = params.fields;
+        fields.forEach(function (field) {
+            _this._initItemDom($toolbar, field);
+        });
+    };
+
+    /**
+     * 初始化各个子项dom
+     * @private
+     */
+    Toolbar.prototype._initItemDom = function ($toolbar, field) {
+        switch (field.type) {
+            case 'input':
+                // todo
+                break;
+            default :
+                var $field = $('<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator field"></div>').attr('name', field.name).attr('mdui-tooltip', '{content:\'' + field.caption + '\'}').appendTo($toolbar);
+                $('<i class="mdui-icon material-icons mdui-text-color-blue">' + field.name + '</i>').appendTo($field);
+                break;
+        }
+    };
+
+    /**
+     * 初始化事件
+     * @private
+     */
+    Toolbar.prototype._initEvents = function () {
+        var _this = this;
+        var fields = _this.fields = $('.field');
+        fields.each(function (index, field) {
+            var $field = $(field);
+            $field.on('click', function () {
+                var name = $field.attr('name');
+                switch (name) {
+                    case 'add':
+                        $field.trigger('add');
+                        break;
+                    case 'edit':
+                        $field.trigger('edit');
+                        break;
+                    case 'delete':
+                        $field.trigger('delete');
+                        break;
+                    case 'search':
+                        $field.trigger('search');
+                        break;
+                    default:
+                        break;
+                }
+            })
+        });
+    };
+
+    /**
+     * 新建工具栏
+     * @param params
+     * @returns {Toolbar}
+     */
+    app.createToolbar = function (params) {
+        return new Toolbar(params);
+    };
 })();
