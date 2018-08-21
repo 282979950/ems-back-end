@@ -12,18 +12,24 @@ app.initIndex = function () {
         var containerElement = document.querySelector('.mdui-container');
         elems[0].onclick = function (event) {
             var eventSrc = event.target;
-            var name = app.currentPageName = eventSrc.classList[eventSrc.classList.length - 1];
-            var text = eventSrc.innerText;
             if (eventSrc.classList.contains('nav-item')) {
-                var titleElement = containerElement.children[0];
-                var mainElement = containerElement.children[1];
-                titleElement.innerHTML = text;
-                mainElement.innerHTML = app.getPaneContent(name);
-                app.initPane({
-                    pane: mainElement,
-                    url: name + '/listData.do'
-                });
-                app.initEvent();
+                var name = eventSrc.classList[eventSrc.classList.length - 1];
+                if (!app.currentPageName || app.currentPageName !== name) {
+                    // 切换页面将table和toolbar信息清除
+                    app.table = null;
+                    app.toolbar = null;
+                    app.currentPageName = name;
+                    var text = eventSrc.innerText;
+                    var titleElement = containerElement.children[0];
+                    var mainElement = containerElement.children[1];
+                    titleElement.innerHTML = text;
+                    mainElement.innerHTML = app.getPaneContent(name);
+                    app.initPane({
+                        pane: mainElement,
+                        url: name + '/listData.do'
+                    });
+                    app.initEvent();
+                }
             }
         };
     });
