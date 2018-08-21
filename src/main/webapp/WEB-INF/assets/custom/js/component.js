@@ -257,7 +257,8 @@
         fields.forEach(function (field) {
             var $field = $('<div></div>').addClass('form-field').appendTo(body);
             var $span = $('<span></span>').text(field.caption + ':').appendTo($field);
-            $('<input type="text">').addClass('field').addClass(field.name).attr('name', field.name).attr('placeholder', field.caption).appendTo($span);
+            $span.addClass('captionClass iconstyle');
+            $('<input type="text">').addClass('field').addClass('align-center inputHeight').addClass(field.name).attr('name', field.name).attr('placeholder', field.caption).appendTo($span);
         });
     };
 
