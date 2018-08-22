@@ -68,7 +68,7 @@ public class EmpController {
     /**
      * 查询员工
      */
-    @RequiresRoles("sys:emp:retrive")
+    @RequiresRoles("sys:emp:retrieve")
     @RequestMapping(value = "select.do", method = RequestMethod.GET)
     @ResponseBody
     public JsonData select(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String

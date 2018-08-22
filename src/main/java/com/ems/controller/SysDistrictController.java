@@ -37,7 +37,7 @@ public class SysDistrictController {
      *
      */
     @RequiresPermissions("sys:dist:create")
-    @RequestMapping(value = "createDistrict.do")
+    @RequestMapping(value = "add.do")
     @ResponseBody
     public JsonData createDistrict(SysDistrict district) {
         return sysDistrictService.createDistrict(district);
@@ -47,7 +47,7 @@ public class SysDistrictController {
      * 删除区域
      */
     @RequiresPermissions("sys:dist:delete")
-    @RequestMapping("deleteDistrict.do")
+    @RequestMapping("delete.do")
     @ResponseBody
     public JsonData deleteDistrict(SysDistrict district) {
         return sysDistrictService.deleteSysDistrict(district);
@@ -57,7 +57,7 @@ public class SysDistrictController {
      * 更新区域
      */
     @RequiresPermissions("sys:dist:update")
-    @RequestMapping("updateDistrict.do")
+    @RequestMapping("edit.do")
     @ResponseBody
     public JsonData updateDistrict(SysDistrict district) {
         return sysDistrictService.updateSysDistrict(district);
@@ -66,8 +66,8 @@ public class SysDistrictController {
     /**
      * 依据区域名称查询
      */
-    @RequiresPermissions("sys:dist:retrive")
-    @RequestMapping("selectDistrict.do")
+    @RequiresPermissions("sys:dist:retrieve")
+    @RequestMapping("search.do")
     @ResponseBody
     public JsonData selectDistrict(@Param("distName") String distName, @Param("distCode") String distCode) {
         return sysDistrictService.selectDistrict(distName, distCode);

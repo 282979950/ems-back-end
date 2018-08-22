@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-08-08 22:00:14
+Date: 2018-08-22 08:38:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,7 +45,9 @@ CREATE TABLE `employee` (
   PRIMARY KEY (`emp_id`),
   UNIQUE KEY `emp_id` (`emp_id`) USING BTREE,
   KEY `emp_org_id_index` (`emp_org_id`) USING BTREE,
-  KEY `emp_district_id_index` (`emp_district_id`) USING BTREE
+  KEY `emp_district_id_index` (`emp_district_id`) USING BTREE,
+  CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`emp_org_id`) REFERENCES `sys_organization` (`org_id`),
+  CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`emp_district_id`) REFERENCES `sys_district` (`dist_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000000002 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
@@ -59,8 +61,8 @@ INSERT INTO `employee` VALUES ('1000000001', 'admin', 'admin', '1001', '1001', '
 -- ----------------------------
 DROP TABLE IF EXISTS `employee_location`;
 CREATE TABLE `employee_location` (
-  `id` char(32) NOT NULL,
-  `emp_id` bigint(20) unsigned NOT NULL COMMENT '机构ID',
+  `id` int(10) NOT NULL,
+  `emp_id` int(10) unsigned NOT NULL COMMENT '机构ID',
   `longtitude` decimal(10,7) unsigned DEFAULT NULL COMMENT '经度',
   `latitude` decimal(10,7) unsigned DEFAULT NULL COMMENT '纬度',
   `create_by` bigint(20) unsigned DEFAULT NULL COMMENT '创建者',
@@ -69,7 +71,8 @@ CREATE TABLE `employee_location` (
   `usable` tinyint(1) unsigned DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT NULL COMMENT '注释',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `emp_id_index` (`emp_id`) USING BTREE
+  UNIQUE KEY `emp_id_index` (`emp_id`) USING BTREE,
+  CONSTRAINT `employee_location_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
@@ -90,7 +93,11 @@ CREATE TABLE `employee_role` (
   `update_by` int(10) unsigned NOT NULL COMMENT '更新者',
   `usable` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT '' COMMENT '注释',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `employee_role_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`),
+  CONSTRAINT `employee_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
@@ -120,18 +127,19 @@ CREATE TABLE `meter` (
   `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `update_by` int(10) unsigned DEFAULT NULL COMMENT '更新者',
-  `usable` tinyint(1) unsigned DEFAULT '1' COMMENT '是否可用',
+  `usable` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`meter_id`),
   UNIQUE KEY `meter_id_index` (`meter_id`) USING BTREE,
-  KEY `meter_type_id_index` (`meter_type_id`) USING BTREE
+  KEY `meter_type_id_index` (`meter_type_id`) USING BTREE,
+  CONSTRAINT `meter_ibfk_1` FOREIGN KEY (`meter_type_id`) REFERENCES `meter_type` (`meter_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000000002 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of meter
 -- ----------------------------
 INSERT INTO `meter` VALUES ('1000000000', '001090500001', '0.000', '1', '1', '2018-08-08 17:23:48', '2018-08-08 17:23:51', null, null, '0', '1', null, null, null, null, null, null, '1', null);
-INSERT INTO `meter` VALUES ('1000000001', '101090500001', '0.000', '2', '1', '2018-08-08 21:57:11', '2018-08-08 21:57:11', null, null, '0', '1', null, null, '2018-08-08 21:57:10', '1000000001', '2018-08-08 21:57:10', '1000000001', null, null);
+INSERT INTO `meter` VALUES ('1000000001', '101090500001', '0.000', '2', '1', '2018-08-08 21:57:11', '2018-08-08 21:57:11', null, null, '0', '1', null, null, '2018-08-08 21:57:10', '1000000001', '2018-08-08 21:57:10', '1000000001', '1', null);
 
 -- ----------------------------
 -- Table structure for `meter_type`
@@ -189,22 +197,29 @@ INSERT INTO `meter_type` VALUES ('28', 'IC卡表', '6-3B(QK)', null, null, null,
 DROP TABLE IF EXISTS `sys_dictionary`;
 CREATE TABLE `sys_dictionary` (
   `dict_id` int(4) unsigned NOT NULL AUTO_INCREMENT COMMENT '字典ID',
+  `dict_category` varchar(20) NOT NULL COMMENT '类别',
   `dict_key` varchar(20) NOT NULL,
   `dict_value` varchar(20) NOT NULL,
-  `dict_category` varchar(20) NOT NULL COMMENT '类别',
   `dict_sort` int(10) unsigned DEFAULT NULL,
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `create_by` int(10) unsigned NOT NULL COMMENT '创建者',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
-  `update_by` int(10) unsigned NOT NULL COMMENT '更新者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_by` int(10) unsigned DEFAULT NULL COMMENT '更新者',
   `usable` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT NULL COMMENT '注释',
   UNIQUE KEY `dic_id_index` (`dict_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1007 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of sys_dictionary
 -- ----------------------------
+INSERT INTO `sys_dictionary` VALUES ('1000', 'gasType', '1', '民用', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1001', 'gasType', '2', '商用', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1002', 'userType', '1', '新装IC卡表用户', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1003', 'userType', '2', '机械表换IC卡表用户', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1004', 'userType', '3', '零星用户', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1005', 'userType', '4', '新装短信表用户', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1006', 'userType', '5', '新装物联表用户', null, null, null, null, null, '1', null);
 
 -- ----------------------------
 -- Table structure for `sys_district`
@@ -232,10 +247,10 @@ CREATE TABLE `sys_district` (
 INSERT INTO `sys_district` VALUES ('1000', '石门市', 'SMS', '市', null, null, null, null, null, null, '1', '');
 INSERT INTO `sys_district` VALUES ('1001', '楚江镇', 'CJZ', '镇', null, '1000', null, null, null, null, '1', '');
 INSERT INTO `sys_district` VALUES ('1002', '蒙泉镇', 'CQZ', '镇', null, '1000', null, null, null, null, '1', '');
-INSERT INTO `sys_district` VALUES ('1003', '顺岭岗村', 'SLGC', '村', null, '1002', null, null, null, null, '1', '');
-INSERT INTO `sys_district` VALUES ('1004', '顺岭岗村001', '', '户', null, '1003', null, null, null, null, '1', '');
-INSERT INTO `sys_district` VALUES ('1005', '顺岭岗村002', '', '户', null, '1003', null, null, null, null, '1', '');
-INSERT INTO `sys_district` VALUES ('1006', '顺岭岗村003', '', '户', null, '1003', null, null, null, null, '1', '');
+INSERT INTO `sys_district` VALUES ('1003', '顺岭岗村', 'SLGC', '村', null, '1002', null, null, null, '1000000001', '1', '');
+INSERT INTO `sys_district` VALUES ('1004', '顺岭岗村101', 'AAA', '户', null, '1003', null, null, null, '1000000001', '1', '');
+INSERT INTO `sys_district` VALUES ('1005', '顺岭岗村002', '', '户', null, '1003', null, null, null, '1000000001', '1', '');
+INSERT INTO `sys_district` VALUES ('1006', '顺岭岗村003', '', '户', null, '1003', null, null, null, '1000000001', '1', '');
 INSERT INTO `sys_district` VALUES ('1007', '清水潭村', 'QSTC', '村', null, '1002', null, null, null, null, '1', '');
 INSERT INTO `sys_district` VALUES ('1008', '夹山镇', 'JSZ', '镇', null, '1000', null, null, null, null, '1', '');
 INSERT INTO `sys_district` VALUES ('1009', '二都乡', 'EDX', '乡', null, '1000', null, null, null, null, '1', '');
@@ -298,10 +313,10 @@ INSERT INTO `sys_menu` VALUES ('1007', '字典管理', '/sys/dic', '1001', '1', 
 INSERT INTO `sys_menu` VALUES ('1008', '日志管理', '/sys/log', '1001', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1009', '公告管理', '/sys/notice', '1001', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1010', '账户开户管理', '/accout/', '1000', '1', null, null, null, null, '1', '');
-INSERT INTO `sys_menu` VALUES ('1011', '用户建档', '/accout/createarchives', '1010', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_menu` VALUES ('1011', '用户建档', '/accout/createArchive', '1010', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1012', '表具入库', '/accout/entryMeter', '1010', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1013', '挂表信息', '/accout/installation', '1010', '1', null, null, null, null, '1', '');
-INSERT INTO `sys_menu` VALUES ('1014', '账户开户', '/accout/create', '1010', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_menu` VALUES ('1014', '账户开户', '/accout/createAccount', '1010', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1015', '账户管理', '/accout/mgt', '1010', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1016', '充值缴费管理', '/recharge/', '1000', '1', null, null, null, null, '1', '');
 INSERT INTO `sys_menu` VALUES ('1017', '预付费充值', '/recharge/pre', '1016', '1', null, null, null, null, '1', '');
@@ -336,7 +351,7 @@ INSERT INTO `sys_menu` VALUES ('1042', '营业报表统计', '/querystats/report
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_organization`;
 CREATE TABLE `sys_organization` (
-  `org_id` bigint(20) unsigned NOT NULL COMMENT '机构ID',
+  `org_id` int(4) unsigned NOT NULL AUTO_INCREMENT COMMENT '机构ID',
   `org_name` varchar(50) NOT NULL COMMENT '机构名称',
   `org_code` varchar(50) DEFAULT NULL COMMENT '机构代码',
   `org_category` varchar(20) DEFAULT NULL COMMENT '机构类别',
@@ -347,32 +362,32 @@ CREATE TABLE `sys_organization` (
   `update_by` int(10) unsigned DEFAULT NULL COMMENT '更新者',
   `usable` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT NULL COMMENT '注释',
+  PRIMARY KEY (`org_id`),
   UNIQUE KEY `org_id_index` (`org_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1019 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of sys_organization
 -- ----------------------------
-INSERT INTO `sys_organization` VALUES ('100000000000', '武汉表具管理有限公司', null, '公司', null, null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001000000', '总经办事处1', null, '总经办', '100000000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001001000', '形象部', null, '部门', '100001000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001002000', '艺术部', null, '部门', '100001000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001003000', '教育部', null, '部门', '100001000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001004000', '宣传部', null, '部门', '100001000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001005000', '业务部', null, '部门', '100001000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001006000', '研发部', null, '部门', '100001000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001006001', '实施小组', null, '小组', '100001006000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001006002', '其他小组', null, '小组', '100001006000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001006003', '测试小组', null, '小组', '100001006000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001006004', '电子政务小组', null, '小组', '100001006000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001006005', '档案小组', null, '小组', '100001006000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100001007000', '其他部门', null, '部门', '100001000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100002000000', '总经办事处2', null, '总经办', '100000000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100002001000', '业务部test', null, '部门', '100002000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100002002000', '宣传部test', null, '部门', '100002000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100002003000', '教育部test', null, '部门', '100002000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100002004000', '艺术部test', null, '部门', '100002000000', null, null, null, null, '1', null);
-INSERT INTO `sys_organization` VALUES ('100002005000', '形象部test', null, '部门', '100002000000', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1000', '武汉表具管理有限公司', null, '公司', null, null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1001', '总经办事处1', null, '总经办', '1000', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1002', '形象部', null, '部门', '1001', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1003', '艺术部', null, '部门', '1001', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1004', '教育部', null, '部门', '1001', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1005', '宣传部', null, '部门', '1001', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1006', '业务部', null, '部门', '1001', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1007', '研发部', null, '部门', '1001', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1008', '实施小组', null, '小组', '1007', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1009', '其他小组', null, '小组', '1007', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1010', '测试小组', null, '小组', '1007', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1011', '电子政务小组', null, '小组', '1007', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1012', '档案小组', null, '小组', '1007', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1013', '总经办事处2', null, '总经办', '1000', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1014', '业务部test', null, '部门', '1013', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1015', '宣传部test', null, '部门', '1013', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1016', '教育部test', null, '部门', '1013', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1017', '艺术部test', null, '部门', '1013', null, null, null, null, '1', null);
+INSERT INTO `sys_organization` VALUES ('1018', '形象部test', null, '部门', '1013', null, null, null, null, '1', null);
 
 -- ----------------------------
 -- Table structure for `sys_permission`
@@ -391,7 +406,8 @@ CREATE TABLE `sys_permission` (
   `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`perm_id`),
   UNIQUE KEY `auth_id_index` (`perm_id`) USING BTREE,
-  KEY `fk_menu_id` (`menu_id`)
+  KEY `fk_menu_id` (`menu_id`),
+  CONSTRAINT `sys_permission_ibfk_1` FOREIGN KEY (`menu_id`) REFERENCES `sys_menu` (`menu_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1056 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
@@ -492,7 +508,11 @@ CREATE TABLE `sys_role_perm` (
   `update_by` int(10) unsigned DEFAULT NULL COMMENT '更新者',
   `usable` tinyint(1) unsigned DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `fk_role_perm` (`role_id`) USING BTREE,
+  KEY `fk_perm_id` (`perm_id`),
+  CONSTRAINT `fk_perm_id` FOREIGN KEY (`perm_id`) REFERENCES `sys_permission` (`perm_id`),
+  CONSTRAINT `fk_role_id` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
@@ -565,24 +585,24 @@ CREATE TABLE `user` (
   `user_phone` varchar(20) DEFAULT NULL COMMENT '用户电话',
   `user_idcard` varchar(20) DEFAULT NULL COMMENT '用户身份证号码',
   `user_deed` varchar(20) DEFAULT NULL COMMENT '用户房产证号码',
-  `user_dist_id` bigint(20) unsigned NOT NULL COMMENT '用户所在区域ID',
+  `user_dist_id` int(4) unsigned NOT NULL COMMENT '用户所在区域ID',
   `user_address` varchar(100) NOT NULL COMMENT '用户住址',
-  `user_type` tinyint(2) unsigned DEFAULT NULL COMMENT '用户类型',
-  `user_gas_type` tinyint(2) unsigned DEFAULT NULL COMMENT '用气类型',
-  `user_meter_type` tinyint(2) unsigned DEFAULT NULL COMMENT '用户表类型',
-  `iccard_id` bigint(20) DEFAULT NULL COMMENT 'IC卡编号',
-  `iccard_identifier` varchar(20) DEFAULT NULL COMMENT 'IC卡识别号',
-  `iccard_password` char(6) DEFAULT NULL COMMENT 'IC卡密码',
-  `user_locked` tinyint(1) unsigned DEFAULT '0' COMMENT '是否被锁定',
+  `user_type` int(4) unsigned NOT NULL COMMENT '用户类型',
+  `user_gas_type` int(4) unsigned NOT NULL COMMENT '用气类型',
+  `iccard_id` int(8) unsigned DEFAULT NULL COMMENT 'IC卡编号',
+  `iccard_identifier` varchar(12) DEFAULT NULL COMMENT 'IC卡识别号',
+  `iccard_password` varchar(6) DEFAULT NULL COMMENT 'IC卡密码',
+  `user_locked` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否被锁定',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `update_by` int(10) unsigned DEFAULT NULL COMMENT '更新者',
-  `usable` tinyint(1) unsigned DEFAULT '1' COMMENT '是否可用',
+  `usable` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT NULL COMMENT '注释',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id` (`user_id`) USING BTREE,
-  KEY `user_dist_id_index` (`user_dist_id`) USING BTREE
+  KEY `user_dist_id_index` (`user_dist_id`) USING BTREE,
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`user_dist_id`) REFERENCES `sys_district` (`dist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
@@ -595,17 +615,19 @@ CREATE TABLE `user` (
 DROP TABLE IF EXISTS `user_meters`;
 CREATE TABLE `user_meters` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` bigint(20) unsigned NOT NULL COMMENT '用户ID',
-  `meter_id` bigint(20) unsigned NOT NULL COMMENT '表具ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `meter_id` int(10) unsigned NOT NULL COMMENT '表具ID',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `update_by` int(10) unsigned DEFAULT NULL COMMENT '更新者',
-  `usable` tinyint(1) unsigned DEFAULT '1' COMMENT '是否可用',
+  `usable` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT NULL COMMENT '注释',
   PRIMARY KEY (`id`),
   KEY `user_id_index` (`user_id`) USING BTREE,
-  KEY `meter_id_index` (`meter_id`) USING BTREE
+  KEY `meter_id_index` (`meter_id`) USING BTREE,
+  CONSTRAINT `user_meters_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `user_meters_ibfk_2` FOREIGN KEY (`meter_id`) REFERENCES `meter` (`meter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
@@ -617,24 +639,28 @@ CREATE TABLE `user_meters` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user_orders`;
 CREATE TABLE `user_orders` (
-  `id` char(32) NOT NULL COMMENT '机构ID',
-  `order_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '订单ID',
+  `order_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '订单ID',
   `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
-  `employee_id` bigint(20) unsigned NOT NULL COMMENT '员工ID',
-  `order_payment` decimal(10,2) DEFAULT NULL COMMENT '充值金额',
-  `order_status` int(10) unsigned DEFAULT NULL COMMENT '订单状态',
+  `employee_id` int(10) unsigned NOT NULL COMMENT '员工ID',
+  `order_payment` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '充值金额',
+  `order_gas` decimal(10,2) unsigned DEFAULT NULL COMMENT '充值气量',
+  `order_status` int(4) unsigned DEFAULT NULL COMMENT '订单状态',
   `order_create_time` datetime DEFAULT NULL COMMENT '订单创建时间',
+  `order_prestrike_time` datetime DEFAULT NULL COMMENT '订单预冲账时间',
+  `order_strike_time` datetime DEFAULT NULL COMMENT '订单冲账时间',
   `order_close_time` datetime DEFAULT NULL COMMENT '订单关闭时间',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `update_by` int(10) unsigned DEFAULT NULL COMMENT '更新者',
-  `usable` tinyint(1) unsigned DEFAULT '1' COMMENT '是否可用',
+  `usable` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT NULL COMMENT '注释',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`order_id`),
   UNIQUE KEY `order_id_index` (`order_id`) USING BTREE,
   KEY `employee_id_index` (`employee_id`),
-  KEY `user_id_index` (`user_id`) USING BTREE
+  KEY `user_id_index` (`user_id`) USING BTREE,
+  CONSTRAINT `user_orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `user_orders_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------

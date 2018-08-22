@@ -63,13 +63,12 @@ body {
     width: 36px;
 }
 
-.iconstyle{
+.icon-style{
 
     font-family: 宋体;
     font-size: 16px;
 }
 .iconfloat{
-
     float: left
 }
 .inputHeight{
@@ -83,4 +82,19 @@ body {
     margin: 0px;
     width: 50%;
     line-height: 50px
+}
+
+.mdui-toolbar .mdui-textfield {
+    margin: 0 4px;
+    padding: 0;
+    line-height: 48px;
+    font-size: 15px;
+    font-weight: 700;
+    max-width: 125px;
+}
+
+.mdui-toolbar .mdui-textfield input {
+    margin: 0 2px;
+    border-bottom: 1px solid #2196f3;
+    height: 2rem;
 }

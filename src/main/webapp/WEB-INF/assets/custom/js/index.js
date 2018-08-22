@@ -12,18 +12,24 @@ app.initIndex = function () {
         var containerElement = document.querySelector('.mdui-container');
         elems[0].onclick = function (event) {
             var eventSrc = event.target;
-            var name = app.currentPageName = eventSrc.classList[eventSrc.classList.length - 1];
-            var text = eventSrc.innerText;
             if (eventSrc.classList.contains('nav-item')) {
-                var titleElement = containerElement.children[0];
-                var mainElement = containerElement.children[1];
-                titleElement.innerHTML = text;
-                mainElement.innerHTML = app.getPaneContent(name);
-                app.initPane({
-                    pane: mainElement,
-                    url: name + '/listData.do'
-                });
-                app.initEvent();
+                var name = eventSrc.classList[eventSrc.classList.length - 1];
+                if (!app.currentPageName || app.currentPageName !== name) {
+                    // 切换页面将table和toolbar信息清除
+                    app.table = null;
+                    app.toolbar = null;
+                    app.currentPageName = name;
+                    var text = eventSrc.innerText;
+                    var titleElement = containerElement.children[0];
+                    var mainElement = containerElement.children[1];
+                    titleElement.innerHTML = text;
+                    mainElement.innerHTML = app.getPaneContent(name);
+                    app.initPane({
+                        pane: mainElement,
+                        url: name + '/listData.do'
+                    });
+                    app.initEvent();
+                }
             }
         };
     });
@@ -37,21 +43,20 @@ app.initEvent = function () {
     main.on('add', function () {
         var dialog = mdui.dialog({
             title: 'title',
-            content: '<div class="mdui-dialog-content"></div>',
+            content: ' ',
             buttons: [{
                 text: '确认',
                 onClick: function () {
                     var data = form.getData();
                     $.ajax({
                         type: 'POST',
-                        url: app.currentPageName + '/createDistrict.do',
+                        url: app.currentPageName + '/add.do',
                         contentType: 'application/x-www-form-urlencoded',
                         data: data,
                         beforeSend: function (xhr) {
                             xhr.withCredentials = true;
                         },
                         success: function (response) {
-                            console.log(response);
                             M.toast({
                                 html: response.message,
                                 classes: 'rounded repaint-toast'
@@ -68,6 +73,7 @@ app.initEvent = function () {
                 text: '取消'
             }]
         });
+        $('.mdui-dialog-content').html("");
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields:app.formfields(formNames)
@@ -93,14 +99,14 @@ app.initEvent = function () {
     main.on('edit', function () {
         var dialog = mdui.dialog({
             title: 'title',
-            content: '<div class="mdui-dialog-content"></div>',
+            content: ' ',
             buttons: [{
                 text: '确认',
                 onClick: function () {
                     var data = form.getData();
                     $.ajax({
                         type: 'POST',
-                        url: app.currentPageName + '/createDistrict.do',
+                        url: app.currentPageName + '/edit.do',
                         contentType: 'application/x-www-form-urlencoded',
                         data: data,
                         beforeSend: function (xhr) {
@@ -141,15 +147,65 @@ app.initEvent = function () {
             }, {
                 name: 'distParentId',
                 caption: '父级区域'
-            }]
+            }],
+            data: table.getSelectedDatas()[0]
         });
         dialog.handleUpdate();
     });
     main.on('delete', function () {
-
+        mdui.dialog({
+            title: 'title',
+            content: '确认删除选中的节点及其子节点？',
+            buttons: [{
+                text: '确认',
+                onClick: function () {
+                    var data = app.table.getSelectedDatas()[0];
+                    $.ajax({
+                        type: 'POST',
+                        url: app.currentPageName + '/delete.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: data,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            console.log(response);
+                            M.toast({
+                                html: response.message,
+                                classes: 'rounded repaint-toast'
+                            });
+                            if (response.status) {
+                                app.renderWithoutPage({
+                                    url: app.currentPageName + '/listData.do'
+                                });
+                            }
+                        }
+                    });
+                }
+            }, {
+                text: '取消'
+            }]
+        });
     });
     main.on('search', function () {
-
+        var data = app.toolbar.getInputsData();
+        $.ajax({
+            type: 'POST',
+            url: app.currentPageName + '/search.do',
+            contentType: 'application/x-www-form-urlencoded',
+            data: data,
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                console.log(response);
+                M.toast({
+                    html: response.message,
+                    classes: 'rounded repaint-toast'
+                });
+                app.table.refresh(response.data)
+            }
+        });
     });
 };
 /*

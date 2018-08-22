@@ -180,14 +180,14 @@
     /**
      * 获取选中项的数据
      */
-    Table.prototype.getSelectedData = function () {
+    Table.prototype.getSelectedDatas = function () {
         var _this = this;
-        var data = [];
+        var datas = [];
         var selectedIndexs = _this.getSelectedIndexs();
         selectedIndexs.forEach(function (index) {
-            data.push(_this.data[index]);
+            datas.push(_this.data[index]);
         });
-        return data;
+        return datas;
     };
 
     /**
@@ -359,7 +359,9 @@
     Toolbar.prototype._initItemDom = function ($toolbar, field) {
         switch (field.type) {
             case 'input':
-                // todo
+                var $field = $('<div class="mdui-textfield operator field"></div>').appendTo($toolbar);
+                $('<span class="mdui-text-color-blue">' + field.caption + ':</span>').appendTo($field);
+                $('<input type="text" class="field">').addClass(field.name).attr('name', field.name).appendTo($field);
                 break;
             default :
                 var $field = $('<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator field"></div>').attr('name', field.name).attr('mdui-tooltip', '{content:\'' + field.caption + '\'}').appendTo($toolbar);
@@ -382,7 +384,7 @@
                 switch (name) {
                     case 'add':
                         $field.trigger('add');
-                        break;
+                    break;
                     case 'edit':
                         $field.trigger('edit');
                         break;
@@ -397,6 +399,21 @@
                 }
             })
         });
+    };
+
+    /**
+     * 获取Input中的数据
+     */
+    Toolbar.prototype.getInputsData = function () {
+        var inputsData = [];
+        var $inputs = this.$dom.find('input');
+        $inputs.each(function (index, input) {
+            inputsData.push({
+                name: $(input).attr('name'),
+                value: $(input).val()
+            })
+        });
+        return inputsData;
     };
 
     /**

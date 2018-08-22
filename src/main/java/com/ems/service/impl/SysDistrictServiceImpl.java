@@ -41,7 +41,7 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
     public JsonData createDistrict(SysDistrict district) {
         BeanValidator.check(district);
         String distName = district.getDistName();
-        if (checkDistName(distName)) {
+        if (checkUsable(distName)) {
             throw new ParameterException("区域名称:" + distName + "已存在");
         }
         district.setUsable(true);
@@ -58,7 +58,7 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
     @Override
     public JsonData selectDistrict(String distName, String distCode) {
         List<SysDistrict> districts = districtMapper.selectDistrict(distName, distCode);
-        return districts == null || districts.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.successData(districts);
+        return districts == null || districts.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(districts, "查询成功");
     }
 
     @Override
@@ -66,6 +66,10 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
     public JsonData updateSysDistrict(SysDistrict district) {
         BeanValidator.check(district);
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        String distName = district.getDistName();
+        if (checkUsable(distName)) {
+            throw new ParameterException("区域名称:" + distName + "已存在");
+        }
         district.setUpdateBy(currentEmpId);
         int resultCount = districtMapper.updateByPrimaryKey(district);
         if (resultCount == 0) {
@@ -87,7 +91,7 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         for (SysDistrict dist : districts) {
             dist.setUpdateBy(currentEmpId);
         }
-        int resultCount = districtMapper.updateByPrimaryKey(district);
+        int resultCount = districtMapper.deleteBatch(districts);
         if (resultCount == 0) {
             return JsonData.fail("删除区域失败");
         }
