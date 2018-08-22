@@ -278,7 +278,6 @@ var app = {
     },
     // 无分页页面渲染
     renderWithoutPage: function (context) {
-        console.log(context)
         $.ajax({
             async : false,
             type: 'GET',
@@ -297,7 +296,7 @@ var app = {
                     /*
                      *使用数据模板Getfields中可定义对应数据模板内容
                      */
-                   var names= app.currentPageName;
+                    var names = app.currentPageName;
                     app.table = context.table = app.createTable({
                         parent: '.mdui-table-fluid',
                         fields:app.getFieldNames(names),
@@ -321,6 +320,7 @@ var app = {
                         //     caption: '父级区域'
                       //   }
                      //    ],
+                        fields: app.Getfields(names),
                         data: data
                     });
                 }

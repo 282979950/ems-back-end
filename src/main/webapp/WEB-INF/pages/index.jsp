@@ -20,13 +20,14 @@
     <link type="text/css" rel="stylesheet" href="../assets/custom/css/common.css"/>
     <link type="text/css" rel="stylesheet" href="../assets/custom/css/index.css"/>
     <link type="text/css" rel="stylesheet" href="../assets/mdui-v0.4.1/css/mdui.min.css"/>
+    <link rel="stylesheet" href="../assets/zTree-3.5.16/css/zTreeStyle/zTreeStyle.css" type="text/css">
     <script type="text/javascript" src="../assets/materialize/js/jquery.min.js"></script>
     <script type="text/javascript" src="../assets/materialize/js/materialize.min.js"></script>
     <script type="text/javascript" src="../assets/custom/js/common.js"></script>
     <script type="text/javascript" src="../assets/custom/js/index.js"></script>
     <script type="text/javascript" src="../assets/custom/js/component.js"></script>
     <script type="text/javascript" src="../assets/mdui-v0.4.1/js/mdui.js"></script>
-
+    <script type="text/javascript" src="../assets/zTree-3.5.16/js/jquery.ztree.all-3.5.js"></script>
 </head>
 <body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue mdui-loaded">
 <header class="mdui-appbar mdui-appbar-fixed">
