@@ -97,6 +97,7 @@ var app = {
                 </select>\n\
             </div>',
     distTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
+    orgTemplate :'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     getPaneContent: function (name) {
         var paneContent = '';
         switch (name) {
@@ -106,8 +107,8 @@ var app = {
             case 'dist':
                 paneContent = this.distTemplate;
                 break;
-            case 'organization':
-                paneContent = this.template;
+            case 'org':
+                paneContent = this.orgTemplate;
                 break;
             case 'user':
                 paneContent = this.template;
@@ -277,6 +278,7 @@ var app = {
     },
     // 无分页页面渲染
     renderWithoutPage: function (context) {
+        console.log(context)
         $.ajax({
             async : false,
             type: 'GET',
@@ -291,24 +293,34 @@ var app = {
                 if (app.table) {
                     app.table.refresh(data);
                 } else {
+                    contextTable=  context.table;
+                    /*
+                     *使用数据模板Getfields中可定义对应数据模板内容
+                     */
+                   var names= app.currentPageName;
                     app.table = context.table = app.createTable({
                         parent: '.mdui-table-fluid',
-                        fields: [{
-                            name: 'distName',
-                            caption: '区域名称'
-                        }, {
-                            name: 'distCode',
-                            caption: '区域编码'
-                        }, {
-                            name: 'distCategory',
-                            caption: '区域类别'
-                        }, {
-                            name: 'distAddress',
-                            caption: '区域地址'
-                        }, {
-                            name: 'distParentId',
-                            caption: '父级区域'
-                        }],
+                        fields:app.Getfields(names),
+
+                        //[
+
+                         //   {
+                        //     name: 'distName',
+                        //     caption: '区域名称'
+                        // }, {
+                        //     name: 'distCode',
+                        //     caption: '区域编码'
+                        // }, {
+                        //     name: 'distCategory',
+                        //     caption: '区域类别'
+                        // }, {
+                        //     name: 'distAddress',
+                        //     caption: '区域地址'
+                        // }, {
+                        //     name: 'distParentId',
+                        //     caption: '父级区域'
+                      //   }
+                     //    ],
                         data: data
                     });
                 }

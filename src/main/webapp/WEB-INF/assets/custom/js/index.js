@@ -30,6 +30,7 @@ app.initIndex = function () {
 };
 
 app.initEvent = function () {
+    var formNames =app.currentPageName
     var main = $('.container-main');
     var table = app.table;
     var fields = table.getFields();
@@ -69,22 +70,23 @@ app.initEvent = function () {
         });
         var form = app.createForm({
             parent: '.mdui-dialog-content',
-            fields: [{
-                name: 'distName',
-                caption: '区域名称'
-            }, {
-                name: 'distCode',
-                caption: '区域编码'
-            }, {
-                name: 'distCategory',
-                caption: '区域类别'
-            }, {
-                name: 'distAddress',
-                caption: '区域地址'
-            }, {
-                name: 'distParentId',
-                caption: '父级区域'
-            }]
+            fields:app.formfields(formNames)
+            //[{
+            //     name: 'distName',
+            //     caption: '区域名称'
+            // }, {
+            //     name: 'distCode',
+            //     caption: '区域编码'
+            // }, {
+            //     name: 'distCategory',
+            //     caption: '区域类别'
+            // }, {
+            //     name: 'distAddress',
+            //     caption: '区域地址'
+            // }, {
+            //     name: 'distParentId',
+            //     caption: '父级区域'
+            // }]
         });
         dialog.handleUpdate();
     });
@@ -150,4 +152,47 @@ app.initEvent = function () {
 
     });
 };
+/*
+*选中导航菜单时
+*/
+app.Getfields = function(names){
 
+ if(names){
+
+     if(names=='dist'){
+
+         return [{name: 'distName', caption: '区域名称'}, {name: 'distCode', caption: '区域编码'}, {name: 'distCategory', caption: '区域类别'}, {name: 'distAddress', caption: '区域地址'}, {name: 'distParentId', caption: '父级区域'}]
+     }
+     if(names=='org'){
+
+         return [{name: 'orgId', caption: '机构ID'},{name: 'orgName', caption: '机构名称'}, {name: 'orgCode', caption: '机构编码'}, {name: 'orgCategory', caption: '机构类别'}, {name: 'orgParentId', caption: '父级机构ID'}, {name: 'remarks', caption: '备注信息'}]
+     }
+
+ }else{
+     alert("数据加载出错，请检查该列导航栏数据");
+ }
+
+}
+/*
+ *新增，修改时弹出框,列显示
+ */
+app.formfields = function(names){
+
+    if(names){
+        /*
+         *选中区域管理时
+         */
+        if(names=='dist'){
+
+            return [{name: 'distName', caption: '区域名称'}, {name: 'distCode', caption: '区域编码'}, {name: 'distCategory', caption: '区域类别'}, {name: 'distAddress', caption: '区域地址'}, {name: 'distParentId', caption: '父级区域'}]
+        }
+        if(names=='org'){
+
+            return [{name: 'orgName', caption: '机构名称'}, {name: 'orgCode', caption: '机构编码'}, {name: 'orgCategory', caption: '机构类别'}, {name: 'orgParentId', caption: '父级机构ID'}, {name: 'remarks', caption: '备注信息'}]
+        }
+
+    }else{
+        alert("数据加载出错");
+    }
+
+}
