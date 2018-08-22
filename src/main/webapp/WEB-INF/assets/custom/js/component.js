@@ -384,7 +384,7 @@
                 switch (name) {
                     case 'add':
                         $field.trigger('add');
-                    break;
+                        break;
                     case 'edit':
                         $field.trigger('edit');
                         break;
@@ -424,4 +424,140 @@
     app.createToolbar = function (params) {
         return new Toolbar(params);
     };
+
+    /**
+     * Tree控件默认配置
+     */
+    app.TREE_DEFAULT_SETTING = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            chkboxType: {
+                Y: "ps",
+                N: "ps"
+            }
+        },
+        data: {
+            key: {},
+            simpleData: {
+                enable: true,
+                rootPId: null
+            }
+        }
+    };
+
+    /**
+     * Tree控件
+     * @param params
+     * @constructor
+     */
+    function Tree(params) {
+        this._init(params);
+    }
+
+    /**
+     * 初始化
+     * @private
+     */
+    Tree.prototype._init = function (params) {
+        var setting = this.setting = JSON.parse(JSON.stringify(app.TREE_DEFAULT_SETTING));
+        var idKey = params.idKey;
+        setting.data.simpleData.idKey = this.idKey = params.idKey ? params.idKey : 'id';
+        setting.data.simpleData.pIdKey = this.pIdKey = params.pIdKey ? params.pIdKey : 'pId';
+        setting.data.key.name = this.nameKey = params.name ? params.name : 'name';
+        var ztree = this.ztree = $.fn.zTree.init($(params.parent), setting, params.nodes);
+        ztree.expandAll(true);
+        this._initEvents();
+    };
+
+    /**
+     * 初始化事件
+     * @param params
+     * @returns {Tree}
+     */
+    Tree.prototype._initEvents = function () {
+
+    };
+
+    /**
+     * 获取选中的节点
+     * @returns {Tree}
+     */
+    Tree.prototype.getSelectedNodes = function () {
+        return this.ztree.getSelectedNodes();
+    };
+
+    /**
+     * 获取选中的节点
+     * @returns {Tree}
+     */
+    Tree.prototype.getCheckedNodes = function () {
+        return this.ztree.getCheckedNodes();
+    };
+
+    /**
+     * 获取根节点
+     */
+    Tree.prototype.getRoot = function () {
+        return this.ztree.getNodes()[0];
+    };
+
+    /**
+     * 获取所有节点的列表
+     */
+    Tree.prototype.getAllNodes = function () {
+        var result = [];
+        this._traverseNode(this.getRoot(), result);
+        return result;
+    };
+
+    Tree.prototype._traverseNode = function(node, result) {
+        var _this = this;
+        result.push(node);
+        if (node.children) {
+            node.children.forEach(function (child) {
+                _this._traverseNode(child, result);
+            })
+        }
+    };
+
+    /**
+     * 获取节点
+     */
+    Tree.prototype.getNodeByName = function (name) {
+        var _this = this;
+        var nodes = _this.getAllNodes();
+        var result = null;
+        nodes.forEach(function (node) {
+            if (node[_this.nameKey] === name) {
+                result = node;
+            }
+        });
+        return result;
+    };
+
+    /**
+     * 依据name勾选node
+     */
+    Tree.prototype.selectNodeByName = function (name) {
+        var node = this.getNodeByName(name);
+        this.ztree.selectNode(node, true);
+    };
+
+    /**
+     * 依据name勾选node
+     */
+    Tree.prototype.checkNodeByName = function (name) {
+        var node = this.getNodeByName(name);
+        this.ztree.checkNode(node, true, true);
+    };
+
+    /**
+     * 创建Tree
+     * @param params
+     * @returns {Tree}
+     */
+    app.createTree = function (params) {
+        return new Tree(params);
+    }
 })();
