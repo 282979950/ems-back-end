@@ -3,54 +3,50 @@
 <mapper namespace="com.ems.entity.mapper.SysOrganizationMapper" >
   <resultMap id="BaseResultMap" type="com.ems.entity.SysOrganization" >
     <constructor >
-      <idArg column="id" jdbcType="CHAR" javaType="java.lang.String" />
-      <arg column="org_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <idArg column="org_id" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="org_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="org_code" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="org_category" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="org_parent_id" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean" />
       <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, org_id, org_name, org_code, org_category, org_parent_id,
+     org_id, org_name, org_code, org_category, org_parent_id,
      create_time, create_by, update_time, update_by, usable, remarks
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from sys_organization
-    where id = #{id,jdbcType=CHAR}
+    where org_id = #{orgId}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sys_organization
-    where id = #{id,jdbcType=CHAR} and usable ="1"
+    where org_id = #{orgId} and usable ="1"
   </delete>
   <insert id="insert" parameterType="com.ems.entity.SysOrganization" >
-    insert into sys_organization (id, org_id, org_name,
+    insert into sys_organization ( org_id, org_name,
       org_code, org_category,
       org_parent_id,
       create_time, create_by, update_time,
       update_by, usable, remarks
       )
-    values (#{id,jdbcType=CHAR}, #{orgId,jdbcType=BIGINT}, #{orgName,jdbcType=VARCHAR},
+    values ( #{orgId,jdbcType=BIGINT}, #{orgName,jdbcType=VARCHAR},
       #{orgCode,jdbcType=VARCHAR}, #{orgCategory,jdbcType=VARCHAR},
       #{orgParentId,jdbcType=BIGINT},
-      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP},
-      #{updateBy,jdbcType=BIGINT}, #{usable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
+      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
+      #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ems.entity.SysOrganization" >
     insert into sys_organization
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="orgId != null" >
         org_id,
       </if>
@@ -86,9 +82,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=CHAR},
-      </if>
       <if test="orgId != null" >
         #{orgId,jdbcType=BIGINT},
       </if>
@@ -108,13 +101,13 @@
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createBy != null" >
-        #{createBy,jdbcType=BIGINT},
+        #{createBy,jdbcType=INTEGER},
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateBy != null" >
-        #{updateBy,jdbcType=BIGINT},
+        #{updateBy,jdbcType=INTEGER},
       </if>
       <if test="usable != null" >
         #{usable,jdbcType=BIT},
@@ -127,9 +120,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.SysOrganization" >
     update sys_organization
     <set >
-      <if test="orgId != null" >
-        org_id = #{orgId,jdbcType=BIGINT},
-      </if>
       <if test="orgName != null" >
         org_name = #{orgName,jdbcType=VARCHAR},
       </if>
@@ -146,13 +136,13 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createBy != null" >
-        create_by = #{createBy,jdbcType=BIGINT},
+        create_by = #{createBy,jdbcType=INTEGER},
       </if>
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateBy != null" >
-        update_by = #{updateBy,jdbcType=BIGINT},
+        update_by = #{updateBy,jdbcType=INTEGER},
       </if>
       <if test="usable != null" >
         usable = #{usable,jdbcType=BIT},
@@ -161,22 +151,21 @@
         remarks = #{remarks,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=CHAR}
+    where org_id = #{orgId,jdbcType=CHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ems.entity.SysOrganization" >
     update sys_organization
-    set org_id = #{orgId,jdbcType=BIGINT},
-      org_name = #{orgName,jdbcType=VARCHAR},
+    set org_name = #{orgName,jdbcType=VARCHAR},
       org_code = #{orgCode,jdbcType=VARCHAR},
       org_category = #{orgCategory,jdbcType=VARCHAR},
       org_parent_id = #{orgParentId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=BIGINT},
+      create_by = #{createBy,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=BIGINT},
+      update_by = #{updateBy,jdbcType=INTEGER},
       usable = #{usable,jdbcType=BIT},
       remarks = #{remarks,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=CHAR}
+    where org_id = #{orgId}
   </update>
   <!-- 查询所有数据List -->
   <select id="findList" resultMap="BaseResultMap" >
@@ -189,10 +178,12 @@
   <select id="findListByCount" resultType="java.lang.Integer">
      SELECT COUNT(0) FROM sys_organization  WHERE usable =1
   </select>
-  <!-- 根据机构名称获取对应机构等级 -->
-  <select id="findByOrgName" resultMap="BaseResultMap" parameterType="java.lang.String">
+  <!-- 根据机构名称获取对应相关信息 -->
+  <select id="findByOrgName" resultMap="BaseResultMap" parameterType="java.lang.Long">
 
-    SELECT org_category,org_parent_id FROM sys_organization WHERE org_name = #{orgName}
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM sys_organization WHERE org_id = #{OrgParentId} and usable=1
   </select>
   <!-- 获取机构最大id -->
   <select id="maxOrganization" resultType="java.lang.Long">
@@ -200,14 +191,14 @@
     SELECT MAX(org_id) FROM sys_organization
   </select>
   <!-- 根据id查看是否存在一条记录 -->
-  <select id="findIdByCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+  <select id="findIdByCount" resultType="java.lang.Integer" parameterType="java.lang.Long">
 
-    SELECT COUNT(0) FROM sys_organization  WHERE usable =1 AND id=#{id}
+    SELECT COUNT(0) FROM sys_organization  WHERE usable =1 AND org_id=#{orgId}
   </select>
   <!-- 根据id修改机构名称 -->
-  <update id="updateOrgNameById" parameterType="java.lang.String">
+  <update id="updateOrgNameById" parameterType="java.lang.Long">
     UPDATE sys_organization SET org_name =#{orgName}
-  WHERE usable =1 AND id=#{id}
+  WHERE usable =1 AND org_id=#{orgId}
   </update>
   <!-- 删除时查看是否存在子集 -->
   <select id="selectOrganizationByid" resultType="java.lang.Integer" parameterType="java.lang.Long">
@@ -215,9 +206,26 @@
      SELECT COUNT(0) FROM sys_organization  WHERE usable =1 AND org_parent_id=#{orgId}
   </select>
   <!-- 删除数据此处只需要修改删除标记即可 -->
-  <update id="deleteOrganization" parameterType="java.lang.String">
+  <update id="deleteOrganization" parameterType="java.lang.Long">
 
     UPDATE sys_organization SET usable=0
-    WHERE   id=#{id}
+    WHERE   org_id=#{orgId}
   </update>
+  <!-- 根据条件查询所有数据List -->
+  <select id="findListOrganization" resultMap="BaseResultMap" parameterType="com.ems.entity.SysOrganization" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_organization
+    where usable ="1"
+      <if test="orgName != null and orgName != ''" >
+          AND locate (#{orgName} ,org_name) > 0
+      </if>
+      <if test="orgCode != null and orgCode!=''" >
+          AND locate (#{orgCode} ,org_code) > 0
+      </if>
+      <if test="orgId != null and orgId!=''" >
+          AND locate (#{orgId} ,org_id) > 0
+      </if>
+
+  </select>
 </mapper>

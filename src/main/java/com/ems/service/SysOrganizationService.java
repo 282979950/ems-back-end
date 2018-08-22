@@ -22,13 +22,13 @@ public class SysOrganizationService {
 	}
 	//查看表中是否存在一条数据
 	public Integer findListByCountOnPc(){
-		
+
 		return dao.findListByCount();
 	}
-	//根据机构名称获取对应机构等级机构类别
-	public SysOrganization findByOrgNameOnPc (String org_name){
-		
-		return dao.findByOrgName(org_name);
+	//根据机构id获取对应信息
+	public SysOrganization findByOrgNameOnPc (Long OrgParentId){
+
+		return dao.findByOrgName(OrgParentId);
 	}
 	//新增一条数据
 	@Transactional(readOnly = false)
@@ -37,17 +37,17 @@ public class SysOrganizationService {
 	}
 	//查询表中最大机构id
 	public Long maxOrganizationOnPc(){
-		
+
 		return dao.maxOrganization();
 	}
 	//根据id查看是否存在一条记录
-	public Integer findIdByCountOnPc(String id){
-		
-		return dao.findIdByCount(id);
+	public Integer findIdByCountOnPc(Long orgId){
+
+		return dao.findIdByCount(orgId);
 	}
 	@Transactional(readOnly = false)
-	public Integer updateOrgNameByIdOnPc(String id){
-		return dao.updateOrgNameById(id);
+	public Integer updateOrgNameByIdOnPc(SysOrganization record){
+		return dao.updateByPrimaryKeySelective(record);
 	}
 	//删除机构数据
 	public int deleteByPrimaryKeyOnPc(String id){
@@ -55,13 +55,17 @@ public class SysOrganizationService {
 	}
 	//删除时查看是否存在子集
 	public Integer selectOrganizationByidOnPc(Long orgid){
-		
+
 		return dao.selectOrganizationByid(orgid);
 	}
 	//删除一条数据
 	@Transactional(readOnly = false)
-	public Integer deleteOrganizationOnPc(String id){
-		
-		return dao.deleteOrganization(id);
+	public Integer deleteOrganizationOnPc(Long OrgId){
+
+		return dao.deleteOrganization(OrgId);
+	}
+	//pc端查看机构所有数据(根据条件筛选)
+	public List<SysOrganization> findListOrganizationService(SysOrganization sysz){
+		return dao.findListOrganization(sysz);
 	}
 }

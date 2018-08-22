@@ -300,7 +300,7 @@ var app = {
                    var names= app.currentPageName;
                     app.table = context.table = app.createTable({
                         parent: '.mdui-table-fluid',
-                        fields:app.Getfields(names),
+                        fields:app.getFieldNames(names),
 
                         //[
 
@@ -331,27 +331,28 @@ var app = {
         var self=this;
         app.toolbar = app.createToolbar({
             parent: '.container-main',
-            fields: [{
-                name: 'add',
-                caption: '新增'
-            }, {
-                name: 'edit',
-                caption: '编辑'
-            }, {
-                name: 'delete',
-                caption: '删除'
-            }, {
-                name: 'distName',
-                caption: '区域名称',
-                type: 'input'
-            }, {
-                name: 'distCode',
-                caption: '区域编码',
-                type: 'input'
-            }, {
-                name: 'search',
-                caption: '搜索'
-            }]
+             fields:app.headScreening(app.currentPageName)
+            // [{
+            //     name: 'add',
+            //     caption: '新增'
+            // }, {
+            //     name: 'edit',
+            //     caption: '编辑'
+            // }, {
+            //     name: 'delete',
+            //     caption: '删除'
+            // }, {
+            //     name: 'distName',
+            //     caption: '区域名称',
+            //     type: 'input'
+            // }, {
+            //     name: 'distCode',
+            //     caption: '区域编码',
+            //     type: 'input'
+            // }, {
+            //     name: 'search',
+            //     caption: '搜索'
+            // }]
         });
 
         var pageSizeElement = context.pane.getElementsByClassName('set-size')[0];

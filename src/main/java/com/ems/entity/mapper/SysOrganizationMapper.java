@@ -14,7 +14,7 @@ public interface SysOrganizationMapper {
     int insertSelective(SysOrganization record);
 
     SysOrganization selectByPrimaryKey(String id);
-
+    //修改一条数据
     int updateByPrimaryKeySelective(SysOrganization record);
 
     int updateByPrimaryKey(SysOrganization record);
@@ -23,15 +23,16 @@ public interface SysOrganizationMapper {
     //查看表中是否存在一条数据
     int findListByCount();
     //根据机构名称获取对应机构等级机构类别
-    SysOrganization findByOrgName(String org_name);
+    SysOrganization findByOrgName(Long OrgParentId);
     //获取表中最大机构id
     long maxOrganization();
-    
-    int findIdByCount(String id);
-    //修改一条数据
-    int updateOrgNameById(String id);
+
+    int findIdByCount(Long orgId);
+
     //根据id查看是否存在子集
     int selectOrganizationByid(Long orgid);
     //删除一条记录
-    int deleteOrganization(String id);
+    int deleteOrganization(Long OrgId);
+    //查看所有数据
+    List<SysOrganization>findListOrganization(SysOrganization record);
 }
