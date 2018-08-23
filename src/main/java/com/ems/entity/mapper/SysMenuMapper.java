@@ -2,6 +2,8 @@ package com.ems.entity.mapper;
 
 import com.ems.entity.SysMenu;
 
+import java.util.List;
+
 public interface SysMenuMapper {
     int deleteByPrimaryKey(Integer menuId);
 
@@ -14,4 +16,6 @@ public interface SysMenuMapper {
     int updateByPrimaryKeySelective(SysMenu record);
 
     int updateByPrimaryKey(SysMenu record);
+
+    List<SysMenu> selectAll();
 }

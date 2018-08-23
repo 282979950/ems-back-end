@@ -77,26 +77,24 @@ app.initEvent = function () {
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields:app.formfields(formNames)
-            //[{
-            //     name: 'distName',
-            //     caption: '区域名称'
-            // }, {
-            //     name: 'distCode',
-            //     caption: '区域编码'
-            // }, {
-            //     name: 'distCategory',
-            //     caption: '区域类别'
-            // }, {
-            //     name: 'distAddress',
-            //     caption: '区域地址'
-            // }, {
-            //     name: 'distParentId',
-            //     caption: '父级区域'
-            // }]
-        });
+         });
         dialog.handleUpdate();
     });
     main.on('edit', function () {
+        if(table.getSelectedDatas().length==0){
+            M.toast({
+                html: '请选择一条数据',
+                classes: 'rounded repaint-toast'
+            });
+            return;
+        }
+        if(table.getSelectedDatas().length>1){
+            M.toast({
+                html: '只能选择一条数据',
+                classes: 'rounded repaint-toast'
+            });
+            return;
+        }
         var dialog = mdui.dialog({
             title: 'title',
             content: ' ',
@@ -132,23 +130,8 @@ app.initEvent = function () {
         });
         var form = app.createForm({
             parent: '.mdui-dialog-content',
-            fields: [{
-                name: 'distName',
-                caption: '区域名称'
-            }, {
-                name: 'distCode',
-                caption: '区域编码'
-            }, {
-                name: 'distCategory',
-                caption: '区域类别'
-            }, {
-                name: 'distAddress',
-                caption: '区域地址'
-            }, {
-                name: 'distParentId',
-                caption: '父级区域'
-            }],
-            data: table.getSelectedDatas()[0]
+            fields:app.formfields(formNames),
+            data:table.getSelectedDatas()[0]
         });
         dialog.handleUpdate();
     });
@@ -159,12 +142,13 @@ app.initEvent = function () {
             buttons: [{
                 text: '确认',
                 onClick: function () {
-                    var data = app.table.getSelectedDatas()[0];
+                    var names= app.currentPageName;
+                    var deleteName = deleteNames[names]
+                    var data = app.table.getSelectedIds(deleteName);
                     $.ajax({
                         type: 'POST',
                         url: app.currentPageName + '/delete.do',
-                        contentType: 'application/x-www-form-urlencoded',
-                        data: data,
+                        data:  {ids: data},
                         beforeSend: function (xhr) {
                             xhr.withCredentials = true;
                         },
@@ -223,7 +207,9 @@ app.Getfields = function(names){
 
          return [{name: 'orgId', caption: '机构ID'},{name: 'orgName', caption: '机构名称'}, {name: 'orgCode', caption: '机构编码'}, {name: 'orgCategory', caption: '机构类别'}, {name: 'orgParentId', caption: '父级机构ID'}, {name: 'remarks', caption: '备注信息'}]
      }
-
+     if(names=='permission'){
+         return [{name: 'permId', caption: '权限Id'},{name: 'permName', caption: '权限名称'}, {name: 'permCaption',caption: '权限标题'}, {name: 'menuName',caption: '菜单名称'}];
+     }
  }else{
      alert("数据加载出错，请检查该列导航栏数据");
  }
@@ -246,9 +232,33 @@ app.formfields = function(names){
 
             return [{name: 'orgName', caption: '机构名称'}, {name: 'orgCode', caption: '机构编码'}, {name: 'orgCategory', caption: '机构类别'}, {name: 'orgParentId', caption: '父级机构ID'}, {name: 'remarks', caption: '备注信息'}]
         }
-
+        if(names=='permission'){
+            return [{name: 'permName', caption: '权限名称'}, {name: 'permCaption',caption: '权限标题'}, {name: 'menuId',caption: '菜单名称'/*,type:'selectTree',url:'permission/listAllMenus.do', id:'menuId', text:'menuName', parentId:'menuParentId'*/}];
+        }
     }else{
         alert("数据加载出错");
     }
 
 }
+app.getToolBars = function (names) {
+    if(names){
+        /*
+         *选中区域管理时
+         */
+        if(names=='dist'){
+
+            return   [{name: 'add', caption: '新增'}, {name: 'edit', caption: '编辑'}, {name: 'delete', caption: '删除'}, {name: 'distName', caption: '区域名称', type: 'input'}, {name: 'distCode', caption: '区域编码', type: 'input'}, {name: 'search', caption: '搜索'}];
+        }
+        if(names=='org'){
+
+            return   [{name: 'add', caption: '新增'}, {name: 'edit', caption: '编辑'}, {name: 'delete', caption: '删除'}, {name: 'distName', caption: '区域名称', type: 'input'}, {name: 'distCode', caption: '区域编码', type: 'input'}, {name: 'search', caption: '搜索'}];
+        }
+        if(names=='permission'){
+            return   [{name: 'add', caption: '新增'}, {name: 'edit', caption: '编辑'}, {name: 'delete', caption: '删除'}, {name: 'permName', caption: '权限名称', type: 'input'}, {name: 'permCaption', caption: '权限标题', type: 'input'}, {name: 'menuName', caption: '菜单名称', type: 'input'}, {name: 'search', caption: '搜索'}];
+        }
+    }else{
+        alert("数据加载出错");
+    }
+}
+var deleteNames = {'permission': 'permId','org':'orgId'};
+

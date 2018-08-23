@@ -37,6 +37,8 @@ public class SysPermission extends BaseEntity {
     @NotNull
     private Integer menuId;
 
+    private String menuName;
+
     public SysPermission(Integer permId, String permName, String permCaption, Integer menuId, Date createTime, Integer createBy, Date updateTime, Integer
             updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);

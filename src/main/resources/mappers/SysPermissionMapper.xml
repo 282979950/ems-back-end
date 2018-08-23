@@ -29,12 +29,12 @@
         delete from sys_permission
         where perm_id = #{permId,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.ems.entity.SysPermission">
-        insert into sys_permission (perm_id, perm_name, perm_caption,
+    <insert id="insert" parameterType="com.ems.entity.SysPermission" useGeneratedKeys="true" keyProperty="permId" >
+     insert into sys_permission (perm_name, perm_caption,
         menu_id, create_time, create_by,
         update_time, update_by,
         remarks)
-        values (#{permId,jdbcType=INTEGER}, #{permName,jdbcType=VARCHAR}, #{permCaption,jdbcType=VARCHAR},
+        values (#{permName,jdbcType=VARCHAR}, #{permCaption,jdbcType=VARCHAR},
         #{menuId,jdbcType=INTEGER}, NOW(), #{createBy,jdbcType=INTEGER}, NOW(),
         #{updateBy,jdbcType=INTEGER},#{remarks,jdbcType=VARCHAR})
     </insert>
@@ -164,34 +164,67 @@
         perm_name = #{permName,jdbcType=VARCHAR},
         perm_caption = #{permCaption,jdbcType=VARCHAR},
         menu_id = #{menuId,jdbcType=INTEGER},
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-        update_by = NOW(),
+        update_time = NOW(),
+        update_by = #{updateBy,jdbcType=INTEGER},
         remarks = #{remarks,jdbcType=VARCHAR}
         where perm_id = #{permId,jdbcType=INTEGER}
     </update>
-    <update id="deleteByPermId" parameterType="com.ems.entity.SysPermission">
+    <update id="deleteByPermId" parameterType="map">
         update sys_permission
         set
         update_time = NOW(),
         update_by = #{updateBy,jdbcType=INTEGER},
-        usable = 0,
-        where perm_id = #{permId,jdbcType=INTEGER}
+        usable = 0
+        where perm_id in
+        <foreach item="permId" index="index" collection="permIds" open="(" separator="," close=")">
+            #{permId}
+        </foreach>
     </update>
-    <select id="select" parameterType="map" resultMap="BaseResultMap">
+    <update id="deleteBatch" parameterType="list">
+        update sys_permission
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_by = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateBy != null">
+                        when perm_id = #{i.permId} then #{i.updateBy}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateTime != null">
+                        when perm_id = #{i.permId} then NOW()
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="usable =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.usable != null">
+                        when perm_id =#{i.permId} then 0
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index">
+            perm_id = #{i.permId}
+        </foreach>
+    </update>
+    <select id="select" parameterType="map" resultType="com.ems.entity.SysPermission">
         SELECT
-        a.perm_name,a.perm_caption,b.menu_name,a.create_time,a.create_by,a.update_time,a.update_by
+        a.perm_id as permId,a.perm_name as permName,a.perm_caption as permCaption,b.menu_name as menuName,a.create_time as createTime,a.create_by as createBy,a.update_time as updateTime,a.update_by as updateBy
         FROM
         sys_permission a LEFT JOIN sys_menu b
         ON a.menu_id = b.menu_id
         WHERE a.usable = 1
-        <if test="permCaption != null AND permCaption != ''">
-            AND permCaption = #{permCaption,jdbcType=VARCHAR}
+        <if test="permCaption != null and permCaption != ''">
+            AND perm_caption = #{permCaption,jdbcType=VARCHAR}
         </if>
-        <if test="permName != null AND permName != ''">
-            AND permName LIKE CONCAT('%', #{permName,jdbcType=VARCHAR}, '%')
+        <if test="permName != null and permName != ''">
+            AND perm_name LIKE CONCAT('%', #{permName,jdbcType=VARCHAR}, '%')
         </if>
-        <if test="menuName != null AND menuName != ''">
-            AND menuName LIKE CONCAT('%', #{menuName,jdbcType=VARCHAR}, '%')
+        <if test="menuName != null and menuName != ''">
+            AND menu_name LIKE CONCAT('%', #{menuName,jdbcType=VARCHAR}, '%')
         </if>
         ORDER BY a.perm_id
     </select>
