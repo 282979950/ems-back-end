@@ -5,7 +5,9 @@ import com.ems.entity.Employee;
 import com.ems.entity.SysPermission;
 import com.ems.entity.SysRole;
 import com.ems.service.IEmployeeService;
+import com.ems.service.ISysPermissionService;
 import com.ems.service.SystemService;
+import com.ems.service.impl.SysPermissionServiceImpl;
 import com.ems.shiro.Principal;
 import com.ems.shiro.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -120,6 +122,13 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
         Set<SysRole> roles = emp.getRoles();
         for (SysRole role : roles) {
             info.addRole(role.getRoleName());
+            if(("admin").equals(role.getRoleName())){
+                List<SysPermission> permissions = SysPermissionServiceImpl.getPermissionList();
+                for (SysPermission permission : permissions) {
+                    info.addStringPermission(permission.getPermName());
+                }
+                break;
+            }
             Set<SysPermission> permissions = role.getPermissions();
             for (SysPermission permission : permissions) {
                 info.addStringPermission(permission.getPermName());

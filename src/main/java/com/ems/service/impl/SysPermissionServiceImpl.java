@@ -5,8 +5,10 @@ import com.ems.common.JsonData;
 import com.ems.entity.Employee;
 import com.ems.entity.SysMenu;
 import com.ems.entity.SysPermission;
+import com.ems.entity.SysRolePerm;
 import com.ems.entity.mapper.SysMenuMapper;
 import com.ems.entity.mapper.SysPermissionMapper;
+import com.ems.entity.mapper.SysRolePermMapper;
 import com.ems.exception.ParameterException;
 import com.ems.service.ISysPermissionService;
 import com.ems.shiro.utils.ShiroUtils;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,6 +33,9 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
     private SysPermissionMapper permissionMapper;
 
     @Autowired
+    private SysRolePermMapper sysRolePermMapper;
+
+    @Autowired
     private SysMenuMapper sysMenuMapper;
 
     private static List<SysPermission> permissionList;
@@ -42,6 +48,9 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
         permissionList = permissionMapper.selectAll();
     }
 
+    public static List<SysPermission> getPermissionList(){
+        return  permissionList;
+    }
     /**
      * 依据权限ID获取权限
      *
@@ -101,15 +110,31 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
         for(Integer pId : permIds) {
             SysPermission permission = getPermissionById(pId);
             if (permission == null) {
-                throw new ParameterException("原权限不存在");
+                    throw new ParameterException("原权限不存在");
             }
             permission.setUpdateBy(currentEmpId);
             permission.setUsable(false);
             permList.add(permission);
         }
+        List<SysRolePerm> role_perm = sysRolePermMapper.selectByPermissionId(permIds);
+        if(role_perm.size()>0){
+            throw new ParameterException("原权限不能删除");
+        }
         int resultCount = permissionMapper.deleteBatch(permList);
         if (resultCount == 0) {
             return JsonData.fail("删除权限失败");
+        }
+        Iterator<Integer> it = permIds.iterator();
+        while (it.hasNext()){
+            Integer perId = it.next();
+            Iterator<SysPermission> its = permissionList.iterator();
+            while (its.hasNext()){
+                SysPermission perm = its.next();
+                if(perId.equals(perm.getPermId())){
+                    permissionList.remove(perm);
+                    break;
+                }
+            }
         }
         return JsonData.successMsg("删除权限成功");
     }

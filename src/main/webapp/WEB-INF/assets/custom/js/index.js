@@ -136,6 +136,13 @@ app.initEvent = function () {
         dialog.handleUpdate();
     });
     main.on('delete', function () {
+        if(table.getSelectedDatas().length==0){
+            M.toast({
+                html: '请至少选择一条数据',
+                classes: 'rounded repaint-toast'
+            });
+            return;
+        }
         mdui.dialog({
             title: 'title',
             content: '确认删除选中的节点及其子节点？',
@@ -208,7 +215,10 @@ app.Getfields = function(names){
          return [{name: 'orgId', caption: '机构ID'},{name: 'orgName', caption: '机构名称'}, {name: 'orgCode', caption: '机构编码'}, {name: 'orgCategory', caption: '机构类别'}, {name: 'orgParentId', caption: '父级机构ID'}, {name: 'remarks', caption: '备注信息'}]
      }
      if(names=='permission'){
-         return [{name: 'permId', caption: '权限Id'},{name: 'permName', caption: '权限名称'}, {name: 'permCaption',caption: '权限标题'}, {name: 'menuName',caption: '菜单名称'}];
+         return [{name: 'permName', caption: '权限名称'}, {name: 'permCaption',caption: '权限标题'}, {name: 'menuName',caption: '菜单名称'}];
+     }
+     if(names=='role'){
+         return [{name: 'roleName', caption: '角色名称'}];
      }
  }else{
      alert("数据加载出错，请检查该列导航栏数据");
@@ -235,6 +245,9 @@ app.formfields = function(names){
         if(names=='permission'){
             return [{name: 'permName', caption: '权限名称'}, {name: 'permCaption',caption: '权限标题'}, {name: 'menuId',caption: '菜单名称'/*,type:'selectTree',url:'permission/listAllMenus.do', id:'menuId', text:'menuName', parentId:'menuParentId'*/}];
         }
+        if(names=='role'){
+            return [{name: 'roleName', caption: '角色名称'}, {name: 'distIdList',caption: '角色所属地区'}, {name: 'orgIdList',caption: '角色所属机构'/*,type:'selectTree',url:'permission/listAllMenus.do', id:'menuId', text:'menuName', parentId:'menuParentId'*/},{name: 'permIdList',caption: '角色拥有权限'}];
+        }
     }else{
         alert("数据加载出错");
     }
@@ -256,9 +269,12 @@ app.getToolBars = function (names) {
         if(names=='permission'){
             return   [{name: 'add', caption: '新增'}, {name: 'edit', caption: '编辑'}, {name: 'delete', caption: '删除'}, {name: 'permName', caption: '权限名称', type: 'input'}, {name: 'permCaption', caption: '权限标题', type: 'input'}, {name: 'menuName', caption: '菜单名称', type: 'input'}, {name: 'search', caption: '搜索'}];
         }
+        if(names=='role'){
+            return   [{name: 'add', caption: '新增'}, {name: 'edit', caption: '编辑'}, {name: 'delete', caption: '删除'},{name: 'roleName', caption: '角色名称', type: 'input'}, {name: 'search', caption: '搜索'}];
+        }
     }else{
         alert("数据加载出错");
     }
 }
-var deleteNames = {'permission': 'permId','org':'orgId'};
+var deleteNames = {'permission': 'permId','org':'orgId','role' : 'roleId'};
 

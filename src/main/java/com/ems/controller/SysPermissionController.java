@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author liuxia on 2018/8/20.
+ * @author liuxia on 2018/8/21.
  */
 @Controller
 @RequestMapping(value = "/permission/")
@@ -76,7 +76,7 @@ public class SysPermissionController {
     }
 
     /**
-     * 获取列表
+     * 获取菜单列表
      */
     @RequestMapping("listAllMenus.do")
     @ResponseBody
