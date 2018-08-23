@@ -57,7 +57,7 @@
                 <div class="mdui-list-item mdui-ripple nav-item user">用户管理</div>
                 <div class="mdui-list-item mdui-ripple nav-item role">角色管理</div>
                 <div class="mdui-list-item mdui-ripple nav-item permission">权限管理</div>
-                <div class="mdui-list-item mdui-ripple nav-item dictionary">字典管理</div>
+                <div class="mdui-list-item mdui-ripple nav-item dic">字典管理</div>
                 <div class="mdui-list-item mdui-ripple nav-item log">日志管理</div>
                 <div class="mdui-list-item mdui-ripple nav-item announcement">公告管理</div>
             </div>

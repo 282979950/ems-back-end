@@ -77,22 +77,7 @@ app.initEvent = function () {
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields:app.formfields(formNames)
-            //[{
-            //     name: 'distName',
-            //     caption: '区域名称'
-            // }, {
-            //     name: 'distCode',
-            //     caption: '区域编码'
-            // }, {
-            //     name: 'distCategory',
-            //     caption: '区域类别'
-            // }, {
-            //     name: 'distAddress',
-            //     caption: '区域地址'
-            // }, {
-            //     name: 'distParentId',
-            //     caption: '父级区域'
-            // }]
+
         });
         dialog.handleUpdate();
     });
@@ -133,22 +118,6 @@ app.initEvent = function () {
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields:app.formEditFields(formNames),
-            // [{
-            //     name: 'distName',
-            //     caption: '区域名称'
-            // }, {
-            //     name: 'distCode',
-            //     caption: '区域编码'
-            // }, {
-            //     name: 'distCategory',
-            //     caption: '区域类别'
-            // }, {
-            //     name: 'distAddress',
-            //     caption: '区域地址'
-            // }, {
-            //     name: 'distParentId',
-            //     caption: '父级区域'
-            // }],
             data: table.getSelectedDatas()[0]
         });
         dialog.handleUpdate();
@@ -214,50 +183,70 @@ app.initEvent = function () {
 */
 app.getFieldNames = function(names){
 
- if(names){
+    if(names){
 
-     if(names=='dist'){
+        if(names=='dist'){
 
-         return [{
-             name: 'distName',
-             caption: '区域名称'
-         }, {
-             name: 'distCode',
-             caption: '区域编码'
-         }, {
-             name: 'distCategory',
-             caption: '区域类别'
-         }, {
-             name: 'distAddress',
-             caption: '区域地址'
-         }, {
-             name: 'distParentId',
-             caption: '父级区域'
-         }]
-     }
-     if(names=='org'){
+            return [{
+                name: 'distName',
+                caption: '区域名称'
+            }, {
+                name: 'distCode',
+                caption: '区域编码'
+            }, {
+                name: 'distCategory',
+                caption: '区域类别'
+            }, {
+                name: 'distAddress',
+                caption: '区域地址'
+            }, {
+                name: 'distParentId',
+                caption: '父级区域'
+            }]
+        }
+        if(names=='org'){
 
-         return [{
-             name: 'orgId',
-             caption: '机构ID'
-         },{
-             name: 'orgName',
-             caption: '机构名称'
-         }, {
-             name: 'orgCode',
-             caption: '机构编码'
-         }, {
-             name: 'orgCategory',
-             caption: '机构类别'
-         }, {
-             name: 'orgParentId',
-             caption: '父级机构ID'
-         }]
-     }
+            return [{
+                name: 'orgId',
+                caption: '机构ID'
+            },{
+                name: 'orgName',
+                caption: '机构名称'
+            }, {
+                name: 'orgCode',
+                caption: '机构编码'
+            }, {
+                name: 'orgCategory',
+                caption: '机构类别'
+            }, {
+                name: 'orgParentId',
+                caption: '父级机构ID'
+            }]
+        }
+        if(names=='dic'){
 
- }else{
-     alert("数据加载出错，请检查该列导航栏数据");
- }
+            return [{
+                name: 'dictId',
+                caption: 'ID'
+            },{
+                name: 'dictKey',
+                caption: '字典键'
+            }, {
+                name: 'dictValue',
+                caption: '字典值'
+            }, {
+                name: 'dictCategory',
+                caption: '字典类型'
+            }, {
+                name: 'dictSort',
+                caption: '序号'
+            }]
+
+        }
+
+    }else{
+        alert("数据加载出错，请检查该列导航栏数据");
+    }
 
 }
 /*
@@ -306,6 +295,23 @@ app.formfields = function (names) {
                 caption: '备注信息'
             }]
         }
+        if(names == 'dic'){
+
+            return [{
+                name: 'dictKey',
+                caption: '字典键'
+            }, {
+                name: 'dictValue',
+                caption: '字典值'
+            }, {
+                name: 'dictCategory',
+                caption: '字典类型'
+            }, {
+                name: 'dictSort',
+                caption: '序号'
+            }]
+
+        }
 
     } else {
         alert("数据加载出错");
@@ -353,6 +359,23 @@ app.formEditFields = function (names) {
                 name: 'orgParentId',
                 caption: '父级机构ID'
             }]
+        }
+        if(names == 'dic'){
+
+            return [{
+                name: 'dictKey',
+                caption: '字典键'
+            }, {
+                name: 'dictValue',
+                caption: '字典值'
+            }, {
+                name: 'dictCategory',
+                caption: '字典类型'
+            }, {
+                name: 'dictSort',
+                caption: '序号'
+            }]
+
         }
 
     } else {
@@ -418,6 +441,32 @@ app.headScreening =function(names){
             }]
 
         }
+        if(names == 'dic'){
+
+            return  [{
+                name: 'add',
+                caption: '新增'
+            }, {
+                name: 'edit',
+                caption: '编辑'
+            }, {
+                name: 'delete',
+                caption: '删除'
+            }, {
+                name: 'dictId',
+                caption: '字典ID',
+                type: 'input'
+            },{
+                name: 'dictCategory',
+                caption: '字典类型',
+                type: 'input'
+            }, {
+                name: 'search',
+                caption: '搜索'
+            }]
+
+        }
+
     }
 
 };

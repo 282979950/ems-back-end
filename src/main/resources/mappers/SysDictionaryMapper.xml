@@ -3,52 +3,48 @@
 <mapper namespace="com.ems.entity.mapper.SysDictionaryMapper" >
   <resultMap id="BaseResultMap" type="com.ems.entity.SysDictionary" >
     <constructor >
-      <idArg column="id" jdbcType="CHAR" javaType="java.lang.String" />
-      <arg column="dict_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="dict_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="dict_key" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="dict_value" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="dict_category" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="dict_sort" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean" />
       <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, dict_id, dict_key, dict_value, dict_category, dict_sort, create_time, create_by, 
+    dict_id, dict_key, dict_value, dict_category, dict_sort, create_time, create_by,
     update_time, update_by, usable, remarks
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from sys_dictionary
-    where id = #{id,jdbcType=CHAR}
+    where dict_id = #{dictId}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_dictionary
-    where id = #{id,jdbcType=CHAR} and usable ="1"
+    where dict_id = #{dictId} and usable ="1"
   </delete>
   <insert id="insert" parameterType="com.ems.entity.SysDictionary" >
-    insert into sys_dictionary (id, dict_id, dict_key,
+    insert into sys_dictionary (dict_id, dict_key,
       dict_value, dict_category, dict_sort,
       create_time, create_by, update_time,
       update_by, usable, remarks
       )
-    values (#{id,jdbcType=CHAR}, #{dictId,jdbcType=INTEGER}, #{dictKey,jdbcType=VARCHAR},
+    values ( #{dictId,jdbcType=INTEGER}, #{dictKey,jdbcType=VARCHAR},
       #{dictValue,jdbcType=VARCHAR}, #{dictCategory,jdbcType=VARCHAR}, #{dictSort,jdbcType=INTEGER},
-      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP},
-      #{updateBy,jdbcType=BIGINT}, #{usable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
+      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
+      #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ems.entity.SysDictionary" >
     insert into sys_dictionary
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="dictId != null" >
         dict_id,
       </if>
@@ -84,9 +80,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=CHAR},
-      </if>
       <if test="dictId != null" >
         #{dictId,jdbcType=INTEGER},
       </if>
@@ -106,13 +99,13 @@
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createBy != null" >
-        #{createBy,jdbcType=BIGINT},
+        #{createBy,jdbcType=INTEGER},
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateBy != null" >
-        #{updateBy,jdbcType=BIGINT},
+        #{updateBy,jdbcType=INTEGER},
       </if>
       <if test="usable != null" >
         #{usable,jdbcType=BIT},
@@ -125,9 +118,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ems.entity.SysDictionary" >
     update sys_dictionary
     <set >
-      <if test="dictId != null" >
-        dict_id = #{dictId,jdbcType=INTEGER},
-      </if>
       <if test="dictKey != null" >
         dict_key = #{dictKey,jdbcType=VARCHAR},
       </if>
@@ -144,13 +134,13 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createBy != null" >
-        create_by = #{createBy,jdbcType=BIGINT},
+        create_by = #{createBy,jdbcType=INTEGER},
       </if>
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateBy != null" >
-        update_by = #{updateBy,jdbcType=BIGINT},
+        update_by = #{updateBy,jdbcType=INTEGER},
       </if>
       <if test="usable != null" >
         usable = #{usable,jdbcType=BIT},
@@ -159,22 +149,21 @@
         remarks = #{remarks,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=CHAR}
+    where  dict_id = #{dictId}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ems.entity.SysDictionary" >
     update sys_dictionary
-    set dict_id = #{dictId,jdbcType=INTEGER},
-      dict_key = #{dictKey,jdbcType=VARCHAR},
+    set dict_key = #{dictKey,jdbcType=VARCHAR},
       dict_value = #{dictValue,jdbcType=VARCHAR},
       dict_category = #{dictCategory,jdbcType=VARCHAR},
       dict_sort = #{dictSort,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=BIGINT},
+      create_by = #{createBy,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=BIGINT},
+      update_by = #{updateBy,jdbcType=INTEGER},
       usable = #{usable,jdbcType=BIT},
       remarks = #{remarks,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=CHAR}
+    where dict_id = #{dictId}
   </update>
   <!-- 查询所有数据List -->
   <select id="findList" resultMap="BaseResultMap" >
@@ -182,23 +171,44 @@
     <include refid="Base_Column_List" />
     from sys_dictionary
     where usable ="1"
+    order by update_time desc
   </select>
   <!-- 修改时查看是否有该条记录 -->
-   <select id="selectCountById" parameterType="java.lang.String" >
+  <select id="selectCountById" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
     select
      COUNT(0)
     from sys_dictionary
     where usable ="1"
     and
-    id = #{id,jdbcType=CHAR}
+    dict_id = #{dictId}
   </select>
-   <!-- 根据字典类型查看对应字典数据List -->
+  <!-- 根据字典类型查看对应字典数据List -->
   <select id="findListByType" resultMap="BaseResultMap" parameterType="java.lang.String"  >
     select
-      <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />
     from sys_dictionary
     where usable ="1"
     and
     dict_category = #{dictCategory,jdbcType=VARCHAR}
+  </select>
+  <!-- 删除数据此处只需要修改删除标记即可 -->
+  <update id="deleteSysDictionary" parameterType="java.lang.Integer">
+
+    UPDATE sys_dictionary SET usable=0
+    WHERE   dict_id=#{dictId}
+  </update>
+  <!-- 依据条件查看对应数据List -->
+  <select id="findListByDict" resultMap="BaseResultMap" parameterType="com.ems.entity.SysDictionary"  >
+    select
+    <include refid="Base_Column_List" />
+    from sys_dictionary
+    where usable ="1"
+      <if test="dictId != null" >
+          AND locate (#{dictId} ,dict_id) > 0
+      </if>
+      <if test="dictCategory != null and dictCategory!=''" >
+          AND locate (#{dictCategory} ,dict_category) > 0
+      </if>
+
   </select>
 </mapper>

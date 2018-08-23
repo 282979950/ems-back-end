@@ -30,20 +30,26 @@ public class SysDictionaryService {
 	//修改数据
 	@Transactional(readOnly = false)
 	public Integer updateByPrimaryKeySelective(SysDictionary record){
-		
+
 		return sysDictionaryMapper.updateByPrimaryKeySelective(record);
 	}
 	//根据id查看是否存在该条数据
-	public Integer selectCountByIdOnPc(String id){
-		return sysDictionaryMapper.selectCountById(id);
+	public Integer selectCountByIdOnPc(Integer dictId){
+		return sysDictionaryMapper.selectCountById(dictId);
 	}
 	//数据删除
-	public Integer deleteSysDictionaryById(String id){
-		return sysDictionaryMapper.deleteByPrimaryKey(id);
+	@Transactional(readOnly = false)
+	public Integer deleteSysDictionaryById(int dictId){
+		return sysDictionaryMapper.deleteSysDictionary(dictId);
 	}
 	//根据字典类型查看对应所有字典数值
 	public List<SysDictionary> findListByTypeOnPc(String dictCategory){
-		
+
 		return sysDictionaryMapper.findListByType(dictCategory);
+	}
+	//依据条件查看对应数据
+	public List<SysDictionary> findListByService(SysDictionary sdy){
+
+		return sysDictionaryMapper.findListByDict(sdy);
 	}
 }
