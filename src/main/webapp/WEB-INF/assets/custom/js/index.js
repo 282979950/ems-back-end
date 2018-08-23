@@ -32,6 +32,14 @@ app.initIndex = function () {
                 }
             }
         };
+        $(document).click(function(){
+            $(".tree-combobox-panel").hide();
+        });
+        // mdui.snackbar("系统异常", {
+        //     timeout: 4000,
+        //     buttonColor: 'blue',
+        //     position: 'top'
+        // })
     });
 };
 
@@ -77,22 +85,6 @@ app.initEvent = function () {
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields:app.formfields(formNames)
-            //[{
-            //     name: 'distName',
-            //     caption: '区域名称'
-            // }, {
-            //     name: 'distCode',
-            //     caption: '区域编码'
-            // }, {
-            //     name: 'distCategory',
-            //     caption: '区域类别'
-            // }, {
-            //     name: 'distAddress',
-            //     caption: '区域地址'
-            // }, {
-            //     name: 'distParentId',
-            //     caption: '父级区域'
-            // }]
         });
         dialog.handleUpdate();
     });
@@ -130,7 +122,7 @@ app.initEvent = function () {
                 text: '取消'
             }]
         });
-        var form = app.createForm({
+        var form = app.form =  app.createForm({
             parent: '.mdui-dialog-content',
             fields: [{
                 name: 'distName',
@@ -140,13 +132,34 @@ app.initEvent = function () {
                 caption: '区域编码'
             }, {
                 name: 'distCategory',
-                caption: '区域类别'
+                caption: '区域类别',
+                type : 'listcombobox',
+                options: [{
+                    key: '市',
+                    value: '市'
+                }, {
+                    key: '镇',
+                    value: '镇'
+                }, {
+                    key: '户',
+                    value: '户'
+                }, {
+                    key: '村',
+                    value: '村'
+                }]
             }, {
                 name: 'distAddress',
                 caption: '区域地址'
             }, {
                 name: 'distParentId',
-                caption: '父级区域'
+                caption: '父级区域',
+                type: 'treecombobox',
+                options: {
+                    idKey: 'distId',
+                    pIdKey: 'distParentId',
+                    name: 'distName',
+                    nodes: table.data
+                }
             }],
             data: table.getSelectedDatas()[0]
         });

@@ -202,6 +202,7 @@
      */
     Table.prototype.refresh = function (data) {
         var _this = this;
+        _this.data = data;
         var tbody = _this.$table.find('tbody');
         tbody.empty();
         data.forEach(function (item) {
@@ -257,8 +258,29 @@
         fields.forEach(function (field) {
             var $field = $('<div></div>').addClass('form-field').appendTo(body);
             var $span = $('<span></span>').text(field.caption + ':').appendTo($field);
-            $span.addClass('captionClass iconstyle');
-            $('<input type="text">').addClass('field').addClass('align-center inputHeight').addClass(field.name).attr('name', field.name).attr('placeholder', field.caption).appendTo($span);
+            switch (field.type) {
+                case 'listcombobox':
+                    app.createListCombobox({
+                        parent: $field[0],
+                        clazz: 'field ',
+                        name: field.name,
+                        options: field.options
+                    });
+                    break;
+                case 'treecombobox':
+                    app.createTreeCombobox({
+                        parent: $field[0],
+                        clazz: 'field ',
+                        name: field.name,
+                        options: field.options,
+                        data: params.data ? params.data[field.name] : null
+                    });
+                    break;
+                default:
+                    $span.addClass('captionClass iconstyle');
+                    $('<input type="text">').addClass('field').addClass('align-center inputHeight').addClass(field.name).attr('name', field.name).attr('placeholder', field.caption).appendTo($span);
+                    break;
+            }
         });
     };
 
@@ -270,7 +292,7 @@
     Form.prototype._initData = function (params) {
         var _this = this;
         var $dom = _this.$dom;
-        var data = _this.data = params.data ? params.data : {};
+        var data = _this.data = params.data ? JSON.parse(JSON.stringify(params.data)) : {};
         var $fields = _this.$fields = $dom.find('.field');
         $fields.each(function (index, field) {
             $(field).val(data[field.name]);
@@ -443,6 +465,9 @@
                 enable: true,
                 rootPId: null
             }
+        },
+        view: {
+            showIcon: false
         }
     };
 
@@ -462,21 +487,29 @@
     Tree.prototype._init = function (params) {
         var setting = this.setting = JSON.parse(JSON.stringify(app.TREE_DEFAULT_SETTING));
         var idKey = params.idKey;
+        // 定义节点选中的联动行为，p影响父节点，s影响子节点
+        setting.check.chkboxType.Y = params.Y ? params.Y : 'ps';
+        setting.check.chkboxType.N = params.N ? params.N : 'ps';
         setting.data.simpleData.idKey = this.idKey = params.idKey ? params.idKey : 'id';
         setting.data.simpleData.pIdKey = this.pIdKey = params.pIdKey ? params.pIdKey : 'pId';
         setting.data.key.name = this.nameKey = params.name ? params.name : 'name';
-        var ztree = this.ztree = $.fn.zTree.init($(params.parent), setting, params.nodes);
-        ztree.expandAll(true);
         this._initEvents();
+        var $parent = $(params.parent);
+        var ztree = this.ztree = $.fn.zTree.init($parent, setting, params.nodes);
+        this.$dom = $($parent.children()[0]);
+        ztree.expandAll(true);
     };
 
     /**
      * 初始化事件
-     * @param params
      * @returns {Tree}
      */
     Tree.prototype._initEvents = function () {
-
+        var _this = this;
+        _this.setting.callback = {};
+        _this.setting.callback.onCheck = function () {
+            _this.$dom.trigger('checkNode');
+        };
     };
 
     /**
@@ -511,7 +544,7 @@
         return result;
     };
 
-    Tree.prototype._traverseNode = function(node, result) {
+    Tree.prototype._traverseNode = function (node, result) {
         var _this = this;
         result.push(node);
         if (node.children) {
@@ -541,7 +574,9 @@
      */
     Tree.prototype.selectNodeByName = function (name) {
         var node = this.getNodeByName(name);
-        this.ztree.selectNode(node, true);
+        if (node) {
+            this.ztree.selectNode(node, true);
+        }
     };
 
     /**
@@ -549,7 +584,16 @@
      */
     Tree.prototype.checkNodeByName = function (name) {
         var node = this.getNodeByName(name);
-        this.ztree.checkNode(node, true, true);
+        if (node) {
+            this.ztree.checkNode(node, true, true);
+        }
+    };
+
+    /**
+     * 获取nameKey
+     */
+    Tree.prototype.getNameKey = function () {
+        return this.nameKey;
     };
 
     /**
@@ -559,5 +603,217 @@
      */
     app.createTree = function (params) {
         return new Tree(params);
+    };
+
+    /**
+     * 下拉框控件
+     * @constructor
+     */
+    function ListCombobox(params) {
+        this._init(params);
     }
+
+    /**
+     * 初始化
+     * @param params
+     * @private
+     */
+    ListCombobox.prototype._init = function (params) {
+        this._initDom(params);
+        this._initData(params);
+        this._initEvents(params);
+    };
+
+    /**
+     * 初始化dom
+     */
+    ListCombobox.prototype._initDom = function (params) {
+        var $parent = this.$parent = $(params.parent).eq(0);
+        var $dom = this.$dom = $('<select class="mdui-select"></select>').appendTo($parent);
+        if (params.clazz) {
+            $dom.addClass(params.clazz)
+        }
+        if (params.name) {
+            $dom.attr('name', params.name)
+        }
+        var options = this.options = params.options;
+        if (options) {
+            options.forEach(function (option) {
+                $('<option value="' + option.value + '">' + option.key + '</option>').appendTo($dom);
+            });
+        }
+    };
+
+    /**
+     * 初始化dom
+     */
+    ListCombobox.prototype._initData = function (params) {
+        this.$dom.val(params.value);
+    };
+
+    /**
+     * 初始化dom
+     */
+    ListCombobox.prototype._initEvents = function (params) {
+
+    };
+
+    /**
+     * 初始化dom
+     */
+    ListCombobox.prototype.setValue = function (value) {
+        return this.$dom.val(value);
+    };
+
+    /**
+     *
+     */
+    ListCombobox.prototype.getValue = function () {
+        return this.$dom.val();
+    };
+
+    app.createListCombobox = function (params) {
+        return new ListCombobox(params);
+    };
+
+    /**
+     * 下拉框控件
+     * @constructor
+     */
+    function TreeCombobox(params) {
+        this._init(params);
+    }
+
+    /**
+     * 初始化
+     * @param params
+     * @private
+     */
+    TreeCombobox.prototype._init = function (params) {
+        this._initDom(params);
+        this._initData(params);
+        this._initEvents(params);
+    };
+
+    /**
+     * 初始化dom
+     */
+    TreeCombobox.prototype._initDom = function (params) {
+        var parent = params.parent;
+        var $parent = this.$parent = $(params.parent).eq(0);
+        var $dom = this.$dom = $('<div class="tree-combobox"></div>').appendTo($parent);
+        var $input = this.$input = $('<input/>').appendTo($dom);
+        if (params.clazz) {
+            $input.addClass(params.clazz)
+        }
+        if (params.name) {
+            $input.attr('name', params.name)
+        }
+        var $span = this.$span = $('<span><i class="mdui-icon material-icons">arrow_drop_down</i></span>').appendTo($dom);
+        var options = params.options;
+        options.parent = options.parent ? options.parent : '.tree-combobox-panel';
+        var $panelDom = this.$panelDom = $('<div class="tree-combobox-panel ztree mdui-shadow-2"></div>').css({
+            display: 'none',
+            position: 'absolute'
+        }).appendTo($('body'));
+        this.tree = app.createTree(options);
+    };
+
+    /**
+     * 初始化data
+     */
+    TreeCombobox.prototype._initData = function (params) {
+        var data = this.data = params.data ? JSON.stringify(params.data) : '';
+        var dataList = data.split(',');
+        var _this = this;
+        dataList.forEach(function (item) {
+            _this.tree.checkNodeByName(item);
+        })
+    };
+
+    /**
+     * 初始化events
+     */
+    TreeCombobox.prototype._initEvents = function () {
+        var _this = this;
+        this.$span.click(function (event) {
+            event.stopPropagation();
+            _this.$panelDom.toggle();
+            var $dom = _this.$dom;
+            var offset = $dom.offset();
+            _this.$panelDom.css({
+                left: offset.left,
+                top: offset.top + $dom.height(),
+                'min-width': $dom.width()
+            });
+        });
+
+        this.$panelDom.on('checkNode', function () {
+            var nodes = _this.tree.getCheckedNodes();
+            var nameKey = _this.tree.getNameKey();
+            var value = [];
+            nodes.forEach(function (node) {
+                value.push(node[nameKey]);
+            });
+            var val = _this.data = value.join();
+            _this.$input.val(val);
+            _this.$input.trigger('change');
+        });
+
+        $('.tree-combobox-panel').click(function (event) {
+            event.stopPropagation();
+        });
+    };
+
+    /**
+     * 设置value
+     */
+    TreeCombobox.prototype.setValue = function (value) {
+        this.data = value;
+        this.$input.val(value);
+        var dataList = value.split(',');
+        var _this = this;
+        dataList.forEach(function (item) {
+            _this.tree.checkNodeByName(item);
+        })
+    };
+
+    /**
+     * 获取value
+     */
+    TreeCombobox.prototype.getValue = function () {
+        return this.$input.val();
+    };
+
+    app.createTreeCombobox = function (params) {
+        return new TreeCombobox(params);
+    };
+
+    /**
+     * 消息提示
+     */
+    app.successMessage = function (message) {
+        spop({
+            template: message,
+            position: 'top-center',
+            style: 'success',
+            autoclose: 2000
+        });
+    };
+    app.errorMessage = function (message) {
+        spop({
+            template: message,
+            position: 'top-center',
+            style: 'error',
+            autoclose: 2000
+        });
+    };
+    app.warningMessage = function (message) {
+        spop({
+            template: message,
+            position: 'top-center',
+            style: 'warning',
+            autoclose: 2000
+        });
+    };
 })();

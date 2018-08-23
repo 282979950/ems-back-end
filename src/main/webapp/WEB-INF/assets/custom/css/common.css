@@ -98,3 +98,30 @@ body {
     border-bottom: 1px solid #2196f3;
     height: 2rem;
 }
+.mdui-select {
+    max-width: 170px !important;
+}
+.mdui-select:focus {
+    outline: none;
+}
+
+.tree-combobox {
+    max-width: 170px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tree-combobox input {
+    width: 120px !important;
+    margin: 0;
+    cursor: pointer;
+}
+
+.tree-combobox-panel {
+    width: auto;
+    display: inline-block;
+    max-height: 200px;
+    overflow: auto;
+    background-color: white;
+    z-index: 10000;
+}
