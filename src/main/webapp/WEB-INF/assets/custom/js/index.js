@@ -82,6 +82,20 @@ app.initEvent = function () {
         dialog.handleUpdate();
     });
     main.on('edit', function () {
+        if(table.getSelectedDatas().length==0){
+            M.toast({
+                html: '请选择一条数据',
+                classes: 'rounded repaint-toast'
+            });
+            return;
+        }
+        if(table.getSelectedDatas().length>1){
+            M.toast({
+                html: '只能选择一条数据',
+                classes: 'rounded repaint-toast'
+            });
+            return;
+        }
         var dialog = mdui.dialog({
             title: 'title',
             content: ' ',
@@ -123,18 +137,26 @@ app.initEvent = function () {
         dialog.handleUpdate();
     });
     main.on('delete', function () {
+        if(table.getSelectedDatas().length==0){
+            M.toast({
+                html: '请至少选择一条数据',
+                classes: 'rounded repaint-toast'
+            });
+            return;
+        }
         mdui.dialog({
             title: 'title',
             content: '确认删除选中数据？',
             buttons: [{
                 text: '确认',
                 onClick: function () {
-                    var data = app.table.getSelectedDatas()[0];
+                    var names= app.currentPageName;
+                    var deleteName = deleteNames[names]
+                    var data = app.table.getSelectedIds(deleteName);
                     $.ajax({
                         type: 'POST',
                         url: app.currentPageName + '/delete.do',
-                        contentType: 'application/x-www-form-urlencoded',
-                        data: data,
+                        data:  {ids: data},
                         beforeSend: function (xhr) {
                             xhr.withCredentials = true;
                         },

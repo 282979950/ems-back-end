@@ -4,6 +4,8 @@ import com.ems.common.JsonData;
 import com.ems.entity.Employee;
 import com.ems.entity.SysPermission;
 
+import java.util.List;
+
 /**
  * 系统权限服务接口
  * @author litairan on 2018/7/13.
@@ -16,7 +18,7 @@ public interface ISysPermissionService {
      * @param currentEmp
      * @return
      */
-    JsonData createPermission(SysPermission permission, Employee currentEmp);
+    JsonData createPermission(SysPermission permission);
 
     /**
      * 更新权限
@@ -25,7 +27,7 @@ public interface ISysPermissionService {
      * @return
      */
 
-    JsonData updatePermission(SysPermission permission, Employee currentEmp);
+    JsonData updatePermission(SysPermission permission);
 
     /**
      * 删除权限（假删除）
@@ -33,7 +35,7 @@ public interface ISysPermissionService {
      * @param permId
      * @return
      */
-    JsonData deletePermission(Integer permId, Employee currentEmp);
+    JsonData deletePermission(List<Integer> ids);
 
     /**
      * 依据权限名称和目录名称查询权限
@@ -44,4 +46,10 @@ public interface ISysPermissionService {
      * @return
      */
     JsonData selectPermission(String permName, String permCaption, String menuName);
+
+    /**
+     * 查询所有菜单列表
+     * @return
+     */
+    JsonData listAllMenus();
 }

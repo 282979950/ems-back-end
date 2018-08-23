@@ -163,4 +163,11 @@
         remarks = #{remarks,jdbcType=VARCHAR}
         where menu_id = #{menuId,jdbcType=INTEGER}
     </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        sys_menu
+        where usable = 1 and menu_parent_id is not null
+    </select>
 </mapper>

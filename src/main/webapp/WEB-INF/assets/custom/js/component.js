@@ -32,12 +32,12 @@
         var fields = _this.fields = params.fields;
         var thead = table.find('thead');
         var thRow = $('<tr></tr>').addClass('fields').appendTo(thead);
-        fields.forEach(function (field) {
+        fields == null ? '' : fields.forEach(function (field) {
             $('<th>' + field.caption + '</th>').addClass(field.name).appendTo(thRow);
         });
         var data = _this.data = params.data;
         var tbody = table.find('tbody');
-        data.forEach(function (item) {
+        data == null ? '' : data.forEach(function (item) {
             var tdRow = $('<tr></tr>').appendTo(tbody);
             fields.forEach(function (field) {
                 $('<td>' + (item[field.name] ? item[field.name] : '') + '</td>').appendTo(tdRow);
@@ -189,7 +189,21 @@
         });
         return datas;
     };
-
+    /**
+     * 获取选中项的Id
+     */
+    Table.prototype.getSelectedIds = function (id) {
+        console.log(id);
+        var _this = this;
+        var _id = id;
+        var datas = [];
+        var selectedIndexs = _this.getSelectedIndexs();
+        selectedIndexs.forEach(function (index) {
+            console.log(_this.data[index][_id]);
+            datas.push(_this.data[index][_id]);
+        });
+        return datas;
+    }
     /**
      * 获取table的fields
      */
@@ -202,9 +216,10 @@
      */
     Table.prototype.refresh = function (data) {
         var _this = this;
+        _this.data = data;
         var tbody = _this.$table.find('tbody');
         tbody.empty();
-        data.forEach(function (item) {
+        data == null ? '' : data.forEach(function (item) {
             var tdRow = $('<tr></tr>').appendTo(tbody);
             _this.fields.forEach(function (field) {
                 $('<td>' + (item[field.name] ? item[field.name] : '') + '</td>').appendTo(tdRow);
@@ -256,7 +271,7 @@
         var fields = _this.fields = params.fields;
         fields.forEach(function (field) {
             var $field = $('<div></div>').addClass('form-field').appendTo(body);
-            var $span = $('<span></span>').text(field.caption + ':').appendTo($field);
+            var $span = $('<div></div>').text(field.caption + ':').appendTo($field);
             $span.addClass('captionClass iconstyle');
             $('<input type="text">').addClass('field').addClass('align-center inputHeight').addClass(field.name).attr('name', field.name).attr('placeholder', field.caption).appendTo($span);
         });
@@ -347,7 +362,7 @@
         var $toolbar = _this.$dom = $(baseDom).prependTo(parent);
 
         var fields = _this.fields = params.fields;
-        fields.forEach(function (field) {
+        fields == null ? '' :fields.forEach(function (field) {
             _this._initItemDom($toolbar, field);
         });
     };

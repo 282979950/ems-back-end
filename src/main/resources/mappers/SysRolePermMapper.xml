@@ -153,4 +153,13 @@
             #{rolePerm.updateBy,jdbcType=INTEGER})
         </foreach>
     </insert>
+    <select id="selectByPermissionId" parameterType="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role_perm
+        where perm_id in
+        <foreach collection="permIds" open="(" close=")" separator="," item="permId">
+            #{permId}
+        </foreach>
+    </select>
 </mapper>

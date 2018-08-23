@@ -99,6 +99,8 @@ var app = {
     distTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     orgTemplate :'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     dictionaryTemplate :'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
+    permTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
+    roleTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     getPaneContent: function (name) {
         var paneContent = '';
         switch (name) {
@@ -115,10 +117,10 @@ var app = {
                 paneContent = this.template;
                 break;
             case 'role':
-                paneContent = this.template;
+                paneContent = this.roleTemplate;
                 break;
             case 'permission':
-                paneContent = this.template;
+                paneContent = this.permTemplate;
                 break;
             case 'dic':
                 paneContent = this.dictionaryTemplate;
