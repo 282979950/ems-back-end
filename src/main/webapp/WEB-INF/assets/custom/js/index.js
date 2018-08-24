@@ -278,6 +278,7 @@ app.tableFields = {
 /*
  *新增时弹出框,列显示
  */
+
 app.addFormfields = {
     dist: [{
         name: 'distName',
@@ -332,9 +333,16 @@ app.addFormfields = {
         caption: '权限标题'
     }, {
         name: 'menuId',
-        caption: '菜单名称'
-        /*,type:'selectTree',url:'permission/listAllMenus.do', id:'menuId', text:'menuName', parentId:'menuParentId'*/
-    }],
+        caption: '菜单名称' ,
+        type:'treecombobox' ,
+        options: {
+            idKey: 'menuId',
+            pIdKey: 'menuParentId',
+            name: 'menuName',
+            Y : 'ps',
+            nodes : ajaxTreeCombobox('permission/listAllMenus.do')
+        }
+     }],
     role: [{
         name: 'roleName', caption: '角色名称'
     }, {
@@ -345,9 +353,27 @@ app.addFormfields = {
         name: 'permIdList', caption: '角色拥有权限'
     }]
 };
+
+function ajaxTreeCombobox(url){
+    var data = null;
+    $.ajax({
+        async: false,
+        type: 'POST',
+                url: url,
+                contentType: 'application/json;charset=utf-8',
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (response) {
+                     data = response.data;
+                }
+            });
+    return data;
+}
 /*
  *修改时弹出框,列显示
  */
+
 app.editFormFields = {
     dist: [{
         name: 'distName',

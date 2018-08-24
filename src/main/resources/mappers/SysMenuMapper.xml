@@ -9,9 +9,9 @@
             <arg column="menu_parent_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="menu_showable" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="create_by" jdbcType="BIGINT" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="update_by" jdbcType="BIGINT" javaType="java.lang.Integer"/>
             <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
