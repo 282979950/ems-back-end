@@ -140,9 +140,12 @@
         remarks = #{remarks,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <delete id="deleteByRoleId" parameterType="int">
+    <delete id="deleteByRoleId" parameterType="list">
         DELETE FROM sys_role_perm
         WHERE role_id = #{roleId,jdbcType=INTEGER}
+        <foreach collection="roleIds" item="roleId" open="in (" close=")" separator=",">
+            #{roleId,jdbcType=INTEGER}
+        </foreach>
     </delete>
     <insert id="batchInsert" parameterType="list">
         INSERT INTO
@@ -153,13 +156,4 @@
             #{rolePerm.updateBy,jdbcType=INTEGER})
         </foreach>
     </insert>
-    <select id="selectByPermissionId" parameterType="list" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from sys_role_perm
-        where perm_id in
-        <foreach collection="permIds" open="(" close=")" separator="," item="permId">
-            #{permId}
-        </foreach>
-    </select>
 </mapper>

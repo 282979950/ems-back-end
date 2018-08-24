@@ -27,4 +27,6 @@ public interface SysRoleMapper {
     List<SysRole> selectAll();
 
     int deleteRoleById(@Param("roleId") Integer roleId, @Param("updateBy") Integer updateBy);
+
+    int deleteBatch(List<SysRole> sysRoles);
 }

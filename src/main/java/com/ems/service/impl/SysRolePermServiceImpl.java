@@ -36,7 +36,9 @@ public class SysRolePermServiceImpl implements ISysRolePermService {
         }
         List<SysRolePerm> rolePermList = getRolePermList(roleId,permList);
         //删除旧的权限
-        deleteRolePerms(roleId);
+        List<Integer> roleIds = Lists.newArrayList();
+        roleIds.add(roleId);
+        deleteRolePerms(roleIds);
         //批量插入新的权限
         int size = permList.size();
         if (size == 0) {
@@ -53,8 +55,8 @@ public class SysRolePermServiceImpl implements ISysRolePermService {
 
     @Override
     @Transactional(readOnly = false)
-    public int deleteRolePerms(Integer roleId){
-        return rolePermMapper.deleteByRoleId(roleId);
+    public int deleteRolePerms(List<Integer> roleIds){
+        return rolePermMapper.deleteByRoleId(roleIds);
     }
 
     private List<SysRolePerm> getRolePermList(Integer roleId, List<Integer> permList) {
