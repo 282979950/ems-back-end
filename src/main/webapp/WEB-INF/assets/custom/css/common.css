@@ -40,7 +40,7 @@ body {
     padding: 30px;
 }
 .mdui-table-fluid {
-    box-shadow: none;
+    box-shadow: none !important;
 }
 .mdui-table thead th {
     font-size: 15px;

@@ -502,8 +502,8 @@
         var setting = this.setting = JSON.parse(JSON.stringify(app.TREE_DEFAULT_SETTING));
         var idKey = params.idKey;
         // 定义节点选中的联动行为，p影响父节点，s影响子节点
-        setting.check.chkboxType.Y = params.Y ? params.Y : 'ps';
-        setting.check.chkboxType.N = params.N ? params.N : 'ps';
+        setting.check.chkboxType.Y = params.Y;
+        setting.check.chkboxType.N = params.N;
         setting.data.simpleData.idKey = this.idKey = params.idKey ? params.idKey : 'id';
         setting.data.simpleData.pIdKey = this.pIdKey = params.pIdKey ? params.pIdKey : 'pId';
         setting.data.key.name = this.nameKey = params.name ? params.name : 'name';

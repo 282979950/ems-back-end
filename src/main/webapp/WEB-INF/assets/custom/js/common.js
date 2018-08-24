@@ -303,7 +303,7 @@ var app = {
                     var names = app.currentPageName;
                     app.table = context.table = app.createTable({
                         parent: '.mdui-table-fluid',
-                        fields:app.getFieldNames(names),
+                        fields:app.tableFields[names],
                         data: data
                     });
                 }
@@ -314,7 +314,7 @@ var app = {
         var self=this;
         app.toolbar = app.createToolbar({
             parent: '.container-main',
-             fields:app.headScreening(app.currentPageName)
+             fields:app.headScreening[app.currentPageName]
 
         });
 
