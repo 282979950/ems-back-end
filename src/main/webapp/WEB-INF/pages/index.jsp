@@ -20,6 +20,7 @@
     <link type="text/css" rel="stylesheet" href="../assets/custom/css/common.css"/>
     <link type="text/css" rel="stylesheet" href="../assets/custom/css/index.css"/>
     <link type="text/css" rel="stylesheet" href="../assets/mdui-v0.4.1/css/mdui.min.css"/>
+    <link type="text/css" rel="stylesheet" href="../assets/spop/spop.min.css"/>
     <link rel="stylesheet" href="../assets/zTree-3.5.16/css/zTreeStyle/zTreeStyle.css" type="text/css">
     <script type="text/javascript" src="../assets/materialize/js/jquery.min.js"></script>
     <script type="text/javascript" src="../assets/materialize/js/materialize.min.js"></script>
@@ -28,6 +29,7 @@
     <script type="text/javascript" src="../assets/custom/js/component.js"></script>
     <script type="text/javascript" src="../assets/mdui-v0.4.1/js/mdui.js"></script>
     <script type="text/javascript" src="../assets/zTree-3.5.16/js/jquery.ztree.all-3.5.js"></script>
+    <script type="text/javascript" src="../assets/spop/spop.min.js"></script>
 </head>
 <body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue mdui-loaded">
 <header class="mdui-appbar mdui-appbar-fixed">
@@ -146,20 +148,10 @@
         </div>
     </div>
 </div>
-</div>
 <div class="mdui-container">
     <h1 class="mdui-text-color-blue container-title">公司简介</h1>
     <div class="mdui-typo mdui-typo-body-1 container-main">
         武汉蓝焰自动化应用技术有限责任公司系由武汉市天然气有限公司、武汉市燃气热力集团有限公司、港华投资有限公司、湖北震新机电设备技术开发有限公司投资组建的中港合资企业。公司以促进我国燃气事业现代化发展为宗旨，以高新技术为手段，致力于为燃气经营企业提供全方位、多层面的高品质产品，是燃气行业智能化方案及产品集成供应商。 公司坐落于武汉市硚口区高新技术开发区，公司建立了完善的质量管理与评测体系，于2002年通过ISO9001质量管理体系认证，质量管理体系在2005年进行复评换证期间又一并通过了ISO14001环境管理体系认证，GB/T28001职业健康安全管理体系认证。从2005年至今，上述三个管理体系均一次通过了每年的第三方监督审核和每三年的到期再认证工作，且管理体系至今均持续有效运行。在经营管理上，根据公司“立足市场需求﹑稳定产品质量﹑推广应用经验﹑拓展国内市场”的经营方针，以丰富的产品链涵盖不同的细分市场，满足不同用户的多重需求，并将科学的营销概念和体贴入微的服务理念融于产品服务中。全新的竞争环境和不断变化的消费者需求激励我公司锐意求新，不断进取，以坚忍不拔的创业精神和精益求精的严格要求不断完善自我，从而形成了“追求卓越品质 创造至上服务”的企业经营管理理念。 公司现建有电脑自控装配流水线、自动包装线，整机自动综合检测台、标牌自动嵌装机、自动写卡机、锁螺丝机等自动化生产设备；建有完备的质量检测、控制体系和先进的气密性及计量检测设备；有自主研发的条码管理系统、 仓储管理系统 、固定资产管理系统、IC卡表售卡管理系统、短信智能表售卡管理系统。目前已形成年产30万台智能燃气表的生产规模。产品行销天津、河北、河南、湖南、湖北、广东、山东等省市，是国内唯一一家在单一城市使用时间最长用户最多的智能表生产企业。公司采取“交钥匙”方式为用户提供健全优质的售后服务。设立了专门的客户服务部，对用户有关专业人员进行全方位系统的培训，包括了公司产品系统工作原理﹑安装﹑使用﹑售卡维修﹑管理等各项内容，指导维修服务人员熟悉掌握有关用户的报修﹑投诉等事项的技术处理。同时负责用户产品使用情况的随访跟踪。公司技术开发部﹑技术研究实验室，为技术开发研究建立良好的设备条件。在围绕公司核心产品完善改进的基础上，跟踪国内外相关产品的研制进展及应用情况等信息的研究，根据市场需求，全力投入力量进行相关产品的开发﹑研制工作。还与华中科技大学、武汉理工大学及其它院校﹑科研院所及湖北电信等建立了紧密的协作关系，为新项目产品的开发研制提供了必要的科研技术环境支持。公司荣获多项技术专利，并被授予湖北省高新技术企业。以市场为先导、以质量为保障、以技术为支撑，蓝焰人一定能在中国燃气行业成就了一段美丽的风景。
-    </div>
-</div>
-<div class="modal modal-fixed-footer">
-    <div class="modal-content align-center">
-        <h4 class="title">Title</h4>
-    </div>
-    <div class="modal-footer align-center">
-        <button class="modal-close waves-effect waves-green btn">DisAgree</button>
-        <button class="modal-close waves-effect waves-green btn">Agree</button>
     </div>
 </div>
 

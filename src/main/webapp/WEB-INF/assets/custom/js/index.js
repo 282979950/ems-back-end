@@ -32,6 +32,14 @@ app.initIndex = function () {
                 }
             }
         };
+        $(document).click(function(){
+            $(".tree-combobox-panel").hide();
+        });
+        // mdui.snackbar("系统异常", {
+        //     timeout: 4000,
+        //     buttonColor: 'blue',
+        //     position: 'top'
+        // })
     });
 };
 
