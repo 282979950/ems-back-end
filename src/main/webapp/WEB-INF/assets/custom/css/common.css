@@ -39,7 +39,9 @@ body {
     bottom: 0;
     padding: 30px;
 }
-
+.mdui-table-fluid {
+    box-shadow: none;
+}
 .mdui-table thead th {
     font-size: 15px;
     color: #2196f3;

@@ -295,9 +295,6 @@
                     $('<input type="text">').addClass('field').addClass('align-center inputHeight').addClass(field.name).attr('name', field.name).attr('placeholder', field.caption).appendTo($span);
                     break;
             }
-            var $span = $('<div></div>').text(field.caption + ':').appendTo($field);
-            $span.addClass('captionClass iconstyle');
-            $('<input type="text">').addClass('field').addClass('align-center inputHeight').addClass(field.name).attr('name', field.name).attr('placeholder', field.caption).appendTo($span);
         });
     };
 
