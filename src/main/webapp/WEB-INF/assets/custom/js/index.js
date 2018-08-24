@@ -44,7 +44,10 @@ app.initIndex = function () {
 };
 
 app.initEvent = function () {
+    debugger;
     var formNames =app.currentPageName
+    var dictionaryType = app.dictionary(formNames);
+    alert(dictionaryType)
     var main = $('.container-main');
     var table = app.table;
     var fields = table.getFields();
@@ -303,7 +306,21 @@ app.addFormfields = {
         caption: '机构编码'
     }, {
         name: 'orgCategory',
-        caption: '机构类别'
+        caption: '机构类别',
+        type : 'listcombobox',
+        options: [{
+            key: '市',
+            value: '市'
+        }, {
+            key: '镇',
+            value: '镇'
+        }, {
+            key: '户',
+            value: '户'
+        }, {
+            key: '村',
+            value: '村'
+        }]
     }, {
         name: 'orgParentId',
         caption: '父级机构ID'
@@ -539,4 +556,26 @@ app.deleteNames = {
     'role': 'roleId',
     'dic': 'dictId',
     'dist': 'distId'
+};
+/*
+ *数据字典
+ */
+app.dictionary = function(formNames){
+
+    if(formNames=='org'){
+
+        $.ajax({
+            type: 'POST',
+            url: formNames + '/dictByType.do',
+            contentType: 'application/x-www-form-urlencoded',
+            data: data,
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                console.log(response);
+
+            }
+        });
+    }
 };
