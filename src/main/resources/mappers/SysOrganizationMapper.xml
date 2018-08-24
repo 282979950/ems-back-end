@@ -3,11 +3,11 @@
 <mapper namespace="com.ems.entity.mapper.SysOrganizationMapper" >
   <resultMap id="BaseResultMap" type="com.ems.entity.SysOrganization" >
     <constructor >
-      <idArg column="org_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <idArg column="org_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="org_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="org_code" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="org_category" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="org_parent_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="org_parent_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
@@ -37,9 +37,9 @@
       create_time, create_by, update_time,
       update_by, usable, remarks
       )
-    values ( #{orgId,jdbcType=BIGINT}, #{orgName,jdbcType=VARCHAR},
+    values ( #{orgId,jdbcType=INTEGER}, #{orgName,jdbcType=VARCHAR},
       #{orgCode,jdbcType=VARCHAR}, #{orgCategory,jdbcType=VARCHAR},
-      #{orgParentId,jdbcType=BIGINT},
+      #{orgParentId,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
       #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
       )
@@ -83,7 +83,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="orgId != null" >
-        #{orgId,jdbcType=BIGINT},
+        #{orgId,jdbcType=INTEGER},
       </if>
       <if test="orgName != null" >
         #{orgName,jdbcType=VARCHAR},
@@ -95,7 +95,7 @@
         #{orgCategory,jdbcType=VARCHAR},
       </if>
       <if test="orgParentId != null" >
-        #{orgParentId,jdbcType=BIGINT},
+        #{orgParentId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -130,7 +130,7 @@
         org_category = #{orgCategory,jdbcType=VARCHAR},
       </if>
       <if test="orgParentId != null" >
-        org_parent_id = #{orgParentId,jdbcType=BIGINT},
+        org_parent_id = #{orgParentId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -158,7 +158,7 @@
     set org_name = #{orgName,jdbcType=VARCHAR},
       org_code = #{orgCode,jdbcType=VARCHAR},
       org_category = #{orgCategory,jdbcType=VARCHAR},
-      org_parent_id = #{orgParentId,jdbcType=BIGINT},
+      org_parent_id = #{orgParentId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -179,37 +179,52 @@
      SELECT COUNT(0) FROM sys_organization  WHERE usable =1
   </select>
   <!-- 根据机构名称获取对应相关信息 -->
-  <select id="findByOrgName" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  <select id="findByOrgName" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 
     SELECT
     <include refid="Base_Column_List" />
     FROM sys_organization WHERE org_id = #{OrgParentId} and usable=1
   </select>
   <!-- 获取机构最大id -->
-  <select id="maxOrganization" resultType="java.lang.Long">
+  <select id="maxOrganization" resultType="java.lang.Integer">
 
     SELECT MAX(org_id) FROM sys_organization
   </select>
   <!-- 根据id查看是否存在一条记录 -->
-  <select id="findIdByCount" resultType="java.lang.Integer" parameterType="java.lang.Long">
+  <select id="findIdByCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
 
     SELECT COUNT(0) FROM sys_organization  WHERE usable =1 AND org_id=#{orgId}
   </select>
-  <!-- 根据id修改机构名称 -->
-  <update id="updateOrgNameById" parameterType="java.lang.Long">
-    UPDATE sys_organization SET org_name =#{orgName}
-  WHERE usable =1 AND org_id=#{orgId}
-  </update>
   <!-- 删除时查看是否存在子集 -->
-  <select id="selectOrganizationByid" resultType="java.lang.Integer" parameterType="java.lang.Long">
+  <select id="selectOrganizationByid" resultType="java.lang.Integer" parameterType="com.ems.entity.SysOrganization">
 
-     SELECT COUNT(0) FROM sys_organization  WHERE usable =1 AND org_parent_id=#{orgId}
+     SELECT
+          COUNT(0)
+      FROM
+    sys_organization
+    WHERE usable =1
+    <if test="ids != null ">
+       AND org_parent_id in
+    <foreach item="orgId" collection="ids" open="(" separator="," close=")">
+       #{orgId}
+    </foreach>
+  </if>
   </select>
   <!-- 删除数据此处只需要修改删除标记即可 -->
-  <update id="deleteOrganization" parameterType="java.lang.Long">
+  <update id="deleteOrganization" parameterType="com.ems.entity.SysOrganization">
 
-    UPDATE sys_organization SET usable=0
-    WHERE   org_id=#{orgId}
+    UPDATE
+       sys_organization
+    SET
+       usable=0
+    WHERE
+        1=1
+    <if test="ids != null ">
+      AND org_id in
+    <foreach item="orgId" collection="ids" open="(" separator="," close=")">
+      #{orgId}
+    </foreach>
+  </if>
   </update>
   <!-- 根据条件查询所有数据List -->
   <select id="findListOrganization" resultMap="BaseResultMap" parameterType="com.ems.entity.SysOrganization" >

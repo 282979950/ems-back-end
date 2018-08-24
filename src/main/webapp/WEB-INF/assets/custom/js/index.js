@@ -265,6 +265,12 @@ app.getFieldNames = function(names){
             }]
 
         }
+        if(names=='permission'){
+            return [{name: 'permName', caption: '权限名称'}, {name: 'permCaption',caption: '权限标题'}, {name: 'menuName',caption: '菜单名称'}];
+        }
+        if(names=='role'){
+            return [{name: 'roleName', caption: '角色名称'}];
+        }
 
     }else{
         alert("数据加载出错，请检查该列导航栏数据");
@@ -334,8 +340,25 @@ app.formfields = function (names) {
             }]
 
         }
+        if(names=='permission'){
+            return [{name: 'permName', caption: '权限名称'}, {name: 'permCaption',caption: '权限标题'}, {name: 'menuId',caption: '菜单名称'/*,type:'selectTree',url:'permission/listAllMenus.do', id:'menuId', text:'menuName', parentId:'menuParentId'*/}];
+        }
+        if(names=='role'){
 
-    } else {
+            return [{
+                name: 'roleName', caption: '角色名称'
+            }, {
+                name: 'distIdList',caption: '角色所属地区'
+            }, {
+                name: 'orgIdList',caption: '角色所属机构'
+            },{
+                name: 'permIdList',caption: '角色拥有权限'
+            }];
+
+        }
+
+
+        } else {
         alert("数据加载出错");
     }
 };
@@ -399,7 +422,37 @@ app.formEditFields = function (names) {
             }]
 
         }
+        if(names=='permission'){
 
+            return [{
+                name: 'permName',
+                caption: '权限名称'
+            }, {
+                name: 'permCaption',
+                caption: '权限标题'
+            }, {
+                name: 'menuId',
+                caption: '菜单名称'
+                /*,type:'selectTree',url:'permission/listAllMenus.do', id:'menuId', text:'menuName', parentId:'menuParentId'*/
+            }];
+        }
+        if(names=='role'){
+
+            return [{
+                name: 'roleName',
+                caption: '角色名称'
+            }, {
+                name: 'distIdList',
+                caption: '角色所属地区'
+            }, {
+                name: 'orgIdList',
+                caption: '角色所属机构'
+                /*,type:'selectTree',url:'permission/listAllMenus.do', id:'menuId', text:'menuName', parentId:'menuParentId'*/
+            },{
+                name: 'permIdList',
+                caption: '角色拥有权限'
+            }];
+        }
     } else {
         alert("数据加载出错");
     }
@@ -488,7 +541,56 @@ app.headScreening =function(names){
             }]
 
         }
+        if(names=='permission'){
+
+            return   [{
+                name: 'add',
+                caption: '新增'
+            }, {
+                name: 'edit',
+                caption: '编辑'
+            }, {
+                name: 'delete',
+                caption: '删除'
+            }, {
+                name: 'permName',
+                caption: '权限名称',
+                type: 'input'
+            }, {
+                name: 'permCaption',
+                caption: '权限标题',
+                type: 'input'
+            }, {
+                name: 'menuName',
+                caption: '菜单名称',
+                type: 'input'
+            }, {
+                name: 'search',
+                caption: '搜索'
+            }];
+        }
+        if(names=='role'){
+
+            return   [{
+                name: 'add',
+                caption: '新增'
+            }, {
+                name: 'edit',
+                caption: '编辑'
+            }, {
+                name: 'delete',
+                caption: '删除'
+            },{
+                name: 'roleName',
+                caption: '角色名称',
+                type: 'input'
+            }, {
+                name: 'search',
+                caption: '搜索'
+            }];
+        }
 
     }
 
 };
+var deleteNames = {'permission': 'permId','org':'orgId','role' : 'roleId','dic':'dictId'};

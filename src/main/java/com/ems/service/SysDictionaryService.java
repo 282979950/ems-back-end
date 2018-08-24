@@ -33,14 +33,14 @@ public class SysDictionaryService {
 
 		return sysDictionaryMapper.updateByPrimaryKeySelective(record);
 	}
-	//根据id查看是否存在该条数据
-	public Integer selectCountByIdOnPc(Integer dictId){
-		return sysDictionaryMapper.selectCountById(dictId);
+	//根据条件查看是否存在该条数据
+	public Integer selectCountByIdOnPc(SysDictionary record){
+		return sysDictionaryMapper.selectCountById(record);
 	}
 	//数据删除
 	@Transactional(readOnly = false)
-	public Integer deleteSysDictionaryById(int dictId){
-		return sysDictionaryMapper.deleteSysDictionary(dictId);
+	public Integer deleteSysDictionaryById(SysDictionary record){
+		return sysDictionaryMapper.deleteSysDictionary(record);
 	}
 	//根据字典类型查看对应所有字典数值
 	public List<SysDictionary> findListByTypeOnPc(String dictCategory){

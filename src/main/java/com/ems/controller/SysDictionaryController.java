@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -64,7 +65,7 @@ public class SysDictionaryController {
     public JsonData updateSysDictionaryOnPc(SysDictionary sdy, HttpServletRequest request, HttpServletResponse respose) {
         String msg = "";
         //查询是否存在该条数据
-        int count = sysDictionaryService.selectCountByIdOnPc(sdy.getDictId());
+        int count = sysDictionaryService.selectCountByIdOnPc(sdy);
         if (count > 0) {
             msg = "修改数据成功";
             sdy.setUpdateTime(new Date());
@@ -84,19 +85,21 @@ public class SysDictionaryController {
     @RequiresPermissions("sys:dic:delete")
     @RequestMapping(value = {"/delete.do"})
     @ResponseBody
-    public JsonData deleteSysDictionaryOnPc(SysDictionary sdy,HttpServletRequest request, HttpServletResponse respose) {
-        String msg = "删除一条字典类型"+sdy.getDictCategory()+"成功";
-        if (sdy.getDictId()==null) {
+    public JsonData deleteSysDictionaryOnPc(@RequestParam(value = "ids[]")List <Integer> ids) {
+        SysDictionary sdy = new SysDictionary();
+        String msg = "删除字典成功";
+        if (ids.size()<=0) {
 
             msg = "获取该条数据失败,请联系管理员";
             return JsonData.successMsg(msg);
         }
+        sdy.setIds(ids);
         //查询是否存在该条数据
-        int count = sysDictionaryService.selectCountByIdOnPc(sdy.getDictId());
+        int count = sysDictionaryService.selectCountByIdOnPc(sdy);
 
         if (count > 0) {
 
-            sysDictionaryService.deleteSysDictionaryById(sdy.getDictId());
+            sysDictionaryService.deleteSysDictionaryById(sdy);
 
         } else {
 

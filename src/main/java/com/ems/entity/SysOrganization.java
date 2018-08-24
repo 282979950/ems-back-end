@@ -1,6 +1,7 @@
 package com.ems.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,19 +11,36 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SysOrganization extends BaseEntity{
+    /*
+     *机构ID
+     */
+    private Integer orgId;
+    /*
+     *机构名称
+     */
+    private String orgName;
+    /*
+     *机构代码
+     */
 
-    private Long orgId;//机构ID
+    private String orgCode;
+    /*
+     *机构类别
+     */
 
-    private String orgName;//机构名称
+    private String orgCategory;
+    /*
+     *父级机构
+     */
 
-    private String orgCode;//机构代码
+    private Integer orgParentId;
+    /*
+     *临时参数
+     */
+    private List<Integer> ids;
 
-    private String orgCategory;//机构类别
 
-    private Long orgParentId;//父级机构
-
-
-    public SysOrganization( Long orgId, String orgName, String orgCode, String orgCategory, Long orgParentId,  Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+    public SysOrganization( Integer orgId, String orgName, String orgCode, String orgCategory, Integer orgParentId,  Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         this.orgId = orgId;
         this.orgName = orgName;
         this.orgCode = orgCode;

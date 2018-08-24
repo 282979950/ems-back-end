@@ -10,11 +10,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ems.common.Const;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ems.common.JsonData;
@@ -50,14 +52,14 @@ public class SysOrganizationController {
 		int type=0;//用户选择时类别
 		int sys_type=0;//数据库查询类别;
 
-		long base_orgId=10000000000L;
+		//long base_orgId=10000000000L;
 		//查看表中是否存在数据，若不存在则新增顶级节点
 		int count = sysOrganizationService.findListByCountOnPc();
 		logger.info(count);
 
 		if(count<=0){
 
-			sysz.setOrgId(base_orgId);
+		//	sysz.setOrgId(base_orgId);
 			sysz.setOrgParentId(null);
 			sysz.setCreateTime(new Date());
 			//创建人id(暂无使用模拟数据代替)
@@ -137,7 +139,7 @@ public class SysOrganizationController {
 				return JsonData.fail("新增机构类型只能比上级机构小一级，机构类型依次为：公司，总经办，部门，小组");
 			}
 
-			long maxOrgId = sysOrganizationService.maxOrganizationOnPc();
+			int maxOrgId = sysOrganizationService.maxOrganizationOnPc();
 			logger.info(maxOrgId);
 
 			//存储数据
@@ -155,13 +157,9 @@ public class SysOrganizationController {
 				sysz.setOrgCategory("小组");
 			}
 			sysz.setOrgId(++maxOrgId);
-			if(sds.getOrgParentId()==null){
-				//若没有获取到父级id则说明为顶级节点设置默认值
-				sysz.setOrgParentId(base_orgId);
-			}else{
 
-				sysz.setOrgParentId(sds.getOrgId());
-			}
+			sysz.setOrgParentId(sds.getOrgId());
+
 
 			sysz.setCreateTime(new Date());
 			//创建人id(暂无使用模拟数据代替)
@@ -264,35 +262,30 @@ public class SysOrganizationController {
 	@RequiresPermissions("sys:org:delete")
 	@RequestMapping(value = "/delete.do")
 	@ResponseBody
-	public JsonData deleteOrganization(SysOrganization sysz,HttpServletRequest request,HttpServletResponse response){
+	public JsonData deleteOrganization(@RequestParam(value = "ids[]")List <Integer> ids){
+        SysOrganization sysz = new SysOrganization();
 
 		String msg="";
-		if(sysz.getOrgId()==null){
+		if(ids.size()==0){
 
 			msg="获取数据失败请联系管理员";
 
 			return JsonData.fail(msg);
 
 		}
-		//查看是否存在一条数据
-		int count = sysOrganizationService.findIdByCountOnPc(sysz.getOrgId());
-		if(count<=0){
+        sysz.setIds(ids);
 
-			msg="获取数据失败请联系管理员";
-			return JsonData.fail(msg);
-
-		}
-		//根据机构id查看是否存在子集数据
-		int countById = sysOrganizationService.selectOrganizationByidOnPc(sysz.getOrgId());
+        //根据机构id查看是否存在子集数据
+		int countById = sysOrganizationService.selectOrganizationByidOnPc(sysz);
 		if(countById>0){
 
-			msg="该条数据存在子集请重新选择!";
+			msg="该数据存在子集请重新选择!";
 			return JsonData.fail(msg);
 
 		}else{
 
-			sysOrganizationService.deleteOrganizationOnPc(sysz.getOrgId());
-			msg="删除【"+sysz.getOrgName()+"】成功";
+			sysOrganizationService.deleteOrganizationOnPc(sysz);
+			msg="删除成功";
 		}
 
 		return JsonData.successMsg(msg);
@@ -307,7 +300,7 @@ public class SysOrganizationController {
 		return getChildren(list,null);
 
 	}
-	public static List<List<Object>> getChildren(List<SysOrganization> list,Long pid){
+	public static List<List<Object>> getChildren(List<SysOrganization> list,Integer pid){
 
 		List<List<Object>> res=new ArrayList<List<Object>>();
 

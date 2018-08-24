@@ -20,12 +20,12 @@ public interface SysDictionaryMapper {
     int updateByPrimaryKey(SysDictionary record);
     //查看字典所有数据
     List<SysDictionary> findList();
-    //根据id查看是否存在该条记录
-    int selectCountById(Integer dictId);
+    //根据条件查看是否存在该条记录
+    int selectCountById(SysDictionary record);
     //根据字典类型查看对应字典相关数值
     List<SysDictionary>findListByType(String dictCategory);
     //删除数据
-    int deleteSysDictionary(Integer dictId);
+    int deleteSysDictionary(SysDictionary record);
     //依据条件查看对应数据
     List<SysDictionary>findListByDict(SysDictionary record);
 }
