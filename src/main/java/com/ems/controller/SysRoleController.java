@@ -56,12 +56,23 @@ public class SysRoleController {
     }
 
     /**
-     * 更新权限
+     * 更新角色
      */
     @RequiresPermissions("sys:role:update")
     @RequestMapping("edit.do")
     @ResponseBody
     public JsonData updatePermission(SysRoleParam roleParam) {
         return sysRoleService.updateRole(roleParam);
+    }
+
+    /**
+     * 获取特定角色
+     */
+    @RequiresPermissions("sys:role:retrieve")
+    @RequestMapping("search.do")
+    @ResponseBody
+    public JsonData selectRole(String roleName) {
+//        return sysRoleService
+        return null;
     }
 }
