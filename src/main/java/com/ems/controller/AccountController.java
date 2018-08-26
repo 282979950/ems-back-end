@@ -3,7 +3,6 @@ package com.ems.controller;
 import com.ems.common.JsonData;
 import com.ems.param.CreateAccountParam;
 import com.ems.param.CreateArchiveParam;
-import com.ems.param.EntryMeterParam;
 import com.ems.service.IMeterService;
 import com.ems.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +25,6 @@ public class AccountController {
 
     @Autowired
     private IUserService userService;
-
-    /**
-     * 表具入库
-     *
-     * @param param
-     * @return
-     */
-    @RequestMapping(value = "/entryMeter", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonData entryMeter(EntryMeterParam param) {
-        return meterService.entryMeter(param);
-    }
 
     /**
      * 获取所有表具信息

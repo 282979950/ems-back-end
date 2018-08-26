@@ -101,6 +101,7 @@ var app = {
     dictionaryTemplate :'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     permTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     roleTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
+    entryTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     getPaneContent: function (name) {
         var paneContent = '';
         switch (name) {
@@ -132,7 +133,8 @@ var app = {
                 /*
                  * 账户管理：表具入库 用户建档 挂表 开户 账户变更
                  */
-            case 'inbound':
+            case 'entry':
+                paneContent = this.entryTemplate;
                 break;
             case 'file':
                 break;
@@ -315,7 +317,6 @@ var app = {
         app.toolbar = app.createToolbar({
             parent: '.container-main',
              fields:app.headScreening[app.currentPageName]
-
         });
 
         var pageSizeElement = context.pane.getElementsByClassName('set-size')[0];

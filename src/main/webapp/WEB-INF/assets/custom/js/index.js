@@ -65,10 +65,7 @@ app.initEvent = function () {
                             xhr.withCredentials = true;
                         },
                         success: function (response) {
-                            M.toast({
-                                html: response.message,
-                                classes: 'rounded repaint-toast'
-                            });
+                            response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
                                 app.renderWithoutPage({
                                     url: app.currentPageName + '/listData.do'
@@ -85,23 +82,16 @@ app.initEvent = function () {
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields:app.addFormfields[formNames]
-
         });
         dialog.handleUpdate();
     });
     main.on('edit', function () {
-        if(table.getSelectedDatas().length==0){
-            M.toast({
-                html: '请选择一条数据',
-                classes: 'rounded repaint-toast'
-            });
+        if (table.getSelectedDatas().length === 0) {
+            app.message('请选择一条数据');
             return;
         }
-        if(table.getSelectedDatas().length>1){
-            M.toast({
-                html: '只能选择一条数据',
-                classes: 'rounded repaint-toast'
-            });
+        if (table.getSelectedDatas().length > 1) {
+            app.message('只能选择一条数据');
             return;
         }
         var dialog = mdui.dialog({
@@ -121,10 +111,7 @@ app.initEvent = function () {
                         },
                         success: function (response) {
                             console.log(response);
-                            M.toast({
-                                html: response.message,
-                                classes: 'rounded repaint-toast'
-                            });
+                            response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
                                 app.renderWithoutPage({
                                     url: app.currentPageName + '/listData.do'
@@ -139,13 +126,13 @@ app.initEvent = function () {
         });
         var form = app.createForm({
             parent: '.mdui-dialog-content',
-            fields:app.editFormFields[formNames],
+            fields: app.editFormFields[formNames],
             data: table.getSelectedDatas()[0]
         });
         dialog.handleUpdate();
     });
     main.on('delete', function () {
-        if(table.getSelectedDatas().length==0){
+        if (table.getSelectedDatas().length === 0) {
             M.toast({
                 html: '请至少选择一条数据',
                 classes: 'rounded repaint-toast'
@@ -170,10 +157,7 @@ app.initEvent = function () {
                         },
                         success: function (response) {
                             console.log(response);
-                            M.toast({
-                                html: response.message,
-                                classes: 'rounded repaint-toast'
-                            });
+                            response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
                                 app.renderWithoutPage({
                                     url: app.currentPageName + '/listData.do'
@@ -199,10 +183,7 @@ app.initEvent = function () {
             },
             success: function (response) {
                 console.log(response);
-                M.toast({
-                    html: response.message==null?'':response.message,
-                    classes: 'rounded repaint-toast'
-                });
+                response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                 app.table.refresh(response.data)
             }
         });
@@ -273,6 +254,28 @@ app.tableFields = {
     role: [{
         name: 'roleName',
         caption: '角色名称'
+    }],
+    entry: [{
+        name: 'meterCode',
+        caption: '表具编码'
+    }, {
+        name: 'meterStopCode',
+        caption: '表止码'
+    }, {
+        name: 'meterCategory',
+        caption: '表具类别'
+    }, {
+        name: 'meterType',
+        caption: '表具型号'
+    }, {
+        name: 'meterDirection',
+        caption: '表向'
+    }, {
+        name: 'meterProdDate',
+        caption: '表具生产日期'
+    }, {
+        name: 'meterEntryDate',
+        caption: '表具入库时间'
     }]
 };
 /*
@@ -343,6 +346,28 @@ app.addFormfields = {
         name: 'orgIdList', caption: '角色所属机构'
     }, {
         name: 'permIdList', caption: '角色拥有权限'
+    }],
+    entry: [{
+        name: 'meterCode',
+        caption: '表具编码'
+    }, {
+        name: 'meterStopCode',
+        caption: '表止码'
+    }, {
+        name: 'meterCategory',
+        caption: '表具类别'
+    }, {
+        name: 'meterType',
+        caption: '表具型号'
+    }, {
+        name: 'meterDirection',
+        caption: '表向'
+    }, {
+        name: 'meterProdDate',
+        caption: '表具生产日期'
+    }, {
+        name: 'meterEntryDate',
+        caption: '表具入库时间'
     }]
 };
 /*
@@ -415,6 +440,28 @@ app.editFormFields = {
     }, {
         name: 'permIdList',
         caption: '角色拥有权限'
+    }],
+    entry: [{
+        name: 'meterCode',
+        caption: '表具编码'
+    }, {
+        name: 'meterStopCode',
+        caption: '表止码'
+    }, {
+        name: 'meterCategory',
+        caption: '表具类别'
+    }, {
+        name: 'meterType',
+        caption: '表具型号'
+    }, {
+        name: 'meterDirection',
+        caption: '表向'
+    }, {
+        name: 'meterProdDate',
+        caption: '表具生产日期'
+    }, {
+        name: 'meterEntryDate',
+        caption: '表具入库时间'
     }]
 };
 
@@ -530,6 +577,39 @@ app.headScreening = {
     }, {
         name: 'search',
         caption: '搜索'
+    }],
+    entry: [{
+        name: 'add',
+        caption: '新增'
+    }, {
+        name: 'edit',
+        caption: '编辑'
+    }, {
+        name: 'delete',
+        caption: '删除'
+    }, {
+        name: 'meterCode',
+        caption: '表具编码',
+        type: 'input'
+    }, {
+        name: 'meterCategory',
+        caption: '表具类别',
+        type: 'input'
+    }, {
+        name: 'meterType',
+        caption: '表具型号',
+        type: 'input'
+    }, {
+        name: 'meterDirection',
+        caption: '表向',
+        type: 'input'
+    }, {
+        name: 'meterProdDate',
+        caption: '表具生产日期',
+        type: 'input'
+    }, {
+        name: 'search',
+        caption: '搜索'
     }]
 };
 
@@ -538,5 +618,6 @@ app.deleteNames = {
     'org': 'orgId',
     'role': 'roleId',
     'dic': 'dictId',
-    'dist': 'distId'
+    'dist': 'distId',
+    'entry': 'meterId'
 };

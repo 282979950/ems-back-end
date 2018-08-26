@@ -72,7 +72,7 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
-                <div class="mdui-list-item mdui-ripple nav-item inbound">表具入库</div>
+                <div class="mdui-list-item mdui-ripple nav-item entry">表具入库</div>
                 <div class="mdui-list-item mdui-ripple nav-item file">用户建档</div>
                 <div class="mdui-list-item mdui-ripple nav-item install">挂表</div>
                 <div class="mdui-list-item mdui-ripple nav-item account">开户</div>

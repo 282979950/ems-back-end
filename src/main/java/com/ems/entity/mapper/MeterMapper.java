@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface MeterMapper {
+
     int insert(Meter record);
 
     int insertSelective(Meter record);
@@ -17,11 +18,23 @@ public interface MeterMapper {
 
     int updateByPrimaryKey(Meter record);
 
-    int entryMeter(EntryMeterParam param);
+    List<EntryMeterParam> getAllEntryMeters();
+
+    int addEntryMeter(EntryMeterParam param);
+
+    int editEntryMeter(EntryMeterParam param);
+
+    int deleteEntryMeter(List<Meter> meters);
+
+    List<EntryMeterParam> searchEntryMeter(@Param("meterCode") String meterCode, @Param("meterCategory") String meterCategory, @Param("meterType") String
+            meterType, @Param("meterDirection") Boolean meterDirection);
 
     boolean checkMeterExist(@Param("meterCode") String meterCode);
 
     List<Meter> selectAll();
 
     Integer getMeterIdByMeterCode(@Param("meterCode") String meterCode);
+
+    Meter getMeterByMeterId(@Param("meterId") Integer meterId);
+
 }

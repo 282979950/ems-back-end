@@ -80,19 +80,32 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
 
     @Override
     @Transactional(readOnly = false)
-    public JsonData deleteSysDistrict(SysDistrict district) {
-        BeanValidator.check(district);
-        List<SysDistrict> districts = getChildrenDist(district.getDistId());
-        if (districts == null) {
-            districts = new ArrayList<>();
+    public JsonData deleteSysDistrict(List<Integer> ids) {
+        if (ids == null || ids.size()==0) {
+            return JsonData.successMsg("请选中一个要删除的区域");
+        }
+        List<SysDistrict> preDelete = new ArrayList<>();
+        for (Integer id : ids) {
+            SysDistrict district = getDistrictById(id);
+            if (district != null){
+                List<SysDistrict> children = getChildrenDist(id);
+                if (children != null && children.size() >0) {
+                    return JsonData.fail("不能删除有下级的区域");
+                }else {
+                    preDelete.add(district);
+                }
+            }
+        }
+        if (preDelete.size() == 0) {
+            return JsonData.successMsg("请选中一个要删除的区域");
         }
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        districts.add(district);
-        for (SysDistrict dist : districts) {
+        for (SysDistrict dist : preDelete) {
+            dist.setUsable(false);
             dist.setUpdateBy(currentEmpId);
         }
-        int resultCount = districtMapper.deleteBatch(districts);
-        if (resultCount == 0) {
+        int resultCount = districtMapper.deleteBatch(preDelete);
+        if (resultCount < preDelete.size()) {
             return JsonData.fail("删除区域失败");
         }
         return JsonData.successMsg("删除区域成功");
@@ -106,5 +119,9 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
 
     private List<SysDistrict> getChildrenDist(Integer distId) {
         return districtMapper.getChildrenDist(distId);
+    }
+
+    private  SysDistrict getDistrictById(Integer distId) {
+        return districtMapper.selectByPrimaryKey(distId);
     }
 }

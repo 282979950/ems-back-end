@@ -309,7 +309,7 @@
         var data = _this.data = params.data ? JSON.parse(JSON.stringify(params.data)) : {};
         var $fields = _this.$fields = $dom.find('.field');
         $fields.each(function (index, field) {
-            $(field).val(data[field.name]);
+            $(field).val(data[field.name] === true|| data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
         });
     };
 
@@ -467,7 +467,6 @@
     app.TREE_DEFAULT_SETTING = {
         check: {
             enable: true,
-            chkStyle: "checkbox",
             chkboxType: {
                 Y: "ps",
                 N: "ps"
@@ -481,7 +480,8 @@
             }
         },
         view: {
-            showIcon: false
+            showIcon: false,
+            showTitle: true
         }
     };
 
@@ -504,12 +504,14 @@
         // 定义节点选中的联动行为，p影响父节点，s影响子节点
         setting.check.chkboxType.Y = params.Y;
         setting.check.chkboxType.N = params.N;
+        setting.check.chkStyle = params.chkStyle ? params.chkStyle : 'checkbox';
         setting.data.simpleData.idKey = this.idKey = params.idKey ? params.idKey : 'id';
         setting.data.simpleData.pIdKey = this.pIdKey = params.pIdKey ? params.pIdKey : 'pId';
         setting.data.key.name = this.nameKey = params.name ? params.name : 'name';
+        setting.data.key.title = this.titleKey = params.title ? params.title : '';
         this._initEvents();
         var $parent = $(params.parent);
-        var ztree = this.ztree = $.fn.zTree.init($parent, setting, params.nodes);
+        var ztree = this.ztree = $.fn.zTree.initz($parent, setting, params.nodes);
         this.$dom = $($parent.children()[0]);
         ztree.expandAll(true);
     };
@@ -806,6 +808,14 @@
     /**
      * 消息提示
      */
+    app.message = function (message) {
+        spop({
+            template: message,
+            position: 'top-center',
+            style: 'default',
+            autoclose: 2000
+        });
+    };
     app.successMessage = function (message) {
         spop({
             template: message,

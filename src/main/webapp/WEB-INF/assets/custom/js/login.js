@@ -28,10 +28,7 @@ app.initLogin = function () {
             },
             success: function (response) {
                 console.log(response);
-                M.toast({
-                    html: response.message,
-                    classes: 'rounded repaint-toast'
-                });
+                response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                 setTimeout(function () {
                     window.location.href = 'index.html';
                 }, 2000);
@@ -41,6 +38,8 @@ app.initLogin = function () {
                     html: '错误,状态码:' + statusText,
                     classes: 'rounded repaint-toast'
                 });
+                var message = '错误,状态码:' + statusText
+                response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
             }
         });
     };

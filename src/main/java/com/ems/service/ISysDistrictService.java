@@ -3,6 +3,8 @@ package com.ems.service;
 import com.ems.common.JsonData;
 import com.ems.entity.SysDistrict;
 
+import java.util.List;
+
 /**
  * @author litairan on 2018/7/2.
  */
@@ -53,10 +55,10 @@ public interface ISysDistrictService {
     /**
      * 假删除(将usable设置为false)
      *
-     * @param district
+     * @param ids
      * @return
      */
-    JsonData deleteSysDistrict(SysDistrict district);
+    JsonData deleteSysDistrict(List<Integer> ids);
 
     /**
      * 获取所有区域的列表

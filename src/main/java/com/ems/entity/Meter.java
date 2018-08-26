@@ -32,19 +32,9 @@ public class Meter extends BaseEntity {
     private BigDecimal meterStopCode;
 
     /**
-     * 表具类型ID
-     */
-    private Integer meterTypeId;
-
-    /**
-     * 表具类别
-     */
-    private String meterCategory;
-
-    /**
      * 表具型号
      */
-    private String meterType;
+    private Integer meterTypeId;
 
     /**
      * 表向
@@ -90,18 +80,15 @@ public class Meter extends BaseEntity {
      * 表具通讯号码
      */
     private String meterCommNum;
-
-    public Meter(Integer meterId, String meterCode, BigDecimal meterStopCode, Integer meterTypeId, String meterCategory, String meterType, Boolean
-            meterDirection, Date meterProdDate, Date meterEntryDate, Date meterInstallTime, Date meterScrapTime, Integer meterValidityperiod, Integer
-            meterStatus, String meterCommKey, String meterCommNum, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable,
-                 String remarks) {
+//    Integer,String,BigDecimal,Integer,Boolean,Date,Date,Date,Date,Integer,Integer,String,String,Date,Integer,Date,Integer,Boolean,String
+    public Meter(Integer meterId, String meterCode, BigDecimal meterStopCode, Integer meterTypeId, Boolean meterDirection, Date meterProdDate, Date
+            meterEntryDate, Date meterInstallTime, Date meterScrapTime, Integer meterValidityperiod, Integer meterStatus, String meterCommKey, String
+            meterCommNum, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.meterId = meterId;
         this.meterCode = meterCode;
         this.meterStopCode = meterStopCode;
         this.meterTypeId = meterTypeId;
-        this.meterCategory = meterCategory;
-        this.meterType = meterType;
         this.meterDirection = meterDirection;
         this.meterProdDate = meterProdDate;
         this.meterEntryDate = meterEntryDate;
