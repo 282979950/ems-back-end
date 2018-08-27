@@ -309,7 +309,8 @@
         var data = _this.data = params.data ? JSON.parse(JSON.stringify(params.data)) : {};
         var $fields = _this.$fields = $dom.find('.field');
         $fields.each(function (index, field) {
-            $(field).val(data[field.name]);
+            // $(field).val(data[field.name]);
+            $(field).val(data[field.name] === true|| data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
         });
     };
 
@@ -504,6 +505,9 @@
         // 定义节点选中的联动行为，p影响父节点，s影响子节点
         setting.check.chkboxType.Y = params.Y;
         setting.check.chkboxType.N = params.N;
+        //radio为单选，checkbox为多选
+        setting.check.chkStyle = params.chkStyle ? params.chkStyle : 'checkbox';
+        setting.check.radioType = params.radioType ? params.radioType : 'level';
         setting.data.simpleData.idKey = this.idKey = params.idKey ? params.idKey : 'id';
         setting.data.simpleData.pIdKey = this.pIdKey = params.pIdKey ? params.pIdKey : 'pId';
         setting.data.key.name = this.nameKey = params.name ? params.name : 'name';
@@ -576,7 +580,7 @@
         var nodes = _this.getAllNodes();
         var result = null;
         nodes.forEach(function (node) {
-            if (node[_this.nameKey] === name) {
+            if (node[_this.nameKey] == name) {
                 result = node;
             }
         });
@@ -716,7 +720,11 @@
         var parent = params.parent;
         var $parent = this.$parent = $(params.parent).eq(0);
         var $dom = this.$dom = $('<div class="tree-combobox"></div>').appendTo($parent);
+        var random = parseInt(Math.random()*1000000000);
+        random = 'lucia_' + random + '_lucia';
+        console.log(random);
         var $input = this.$input = $('<input/>').appendTo($dom);
+        $input.addClass(random);
         if (params.clazz) {
             $input.addClass(params.clazz)
         }
@@ -763,6 +771,7 @@
         });
 
         this.$panelDom.on('checkNode', function () {
+        	console.log(_this, this);
             var nodes = _this.tree.getCheckedNodes();
             var nameKey = _this.tree.getNameKey();
             var value = [];
@@ -771,6 +780,7 @@
             });
             var val = _this.data = value.join();
             _this.$input.val(val);
+            $('[name="permParentId"]').val(val);
             _this.$input.trigger('change');
         });
 

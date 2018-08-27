@@ -142,7 +142,7 @@
     </update>
     <delete id="deleteByRoleId" parameterType="list">
         DELETE FROM sys_role_perm
-        WHERE role_id = #{roleId,jdbcType=INTEGER}
+        WHERE role_id 
         <foreach collection="roleIds" item="roleId" open="in (" close=")" separator=",">
             #{roleId,jdbcType=INTEGER}
         </foreach>
@@ -152,7 +152,7 @@
         sys_role_perm (role_id, perm_id, create_time, create_by, update_time, update_by)
         VALUES
         <foreach collection="rolePermList" item="rolePerm" separator=",">
-            (#{rolePerm.roleId,jdbcType=INTEGER}, #{rolePerm.permId,jdbcType=INTEGER}, NOW(), #{rolePerm.create_time,jdbcType=INTEGER}, NOW(),
+            (#{rolePerm.roleId,jdbcType=INTEGER}, #{rolePerm.permId,jdbcType=INTEGER}, NOW(), #{rolePerm.createBy,jdbcType=INTEGER}, NOW(),
             #{rolePerm.updateBy,jdbcType=INTEGER})
         </foreach>
     </insert>

@@ -6,7 +6,9 @@
             <idArg column="perm_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="perm_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="perm_caption" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="menu_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="perm_href" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="perm_parent_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="is_button" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -16,7 +18,7 @@
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
-        perm_id, perm_name, perm_caption, menu_id, create_time, create_by, update_time, update_by,
+        perm_id, perm_name, perm_caption, perm_href, perm_parent_id, is_button, create_time, create_by, update_time, update_by,
         usable, remarks
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -30,12 +32,12 @@
         where perm_id = #{permId,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.ems.entity.SysPermission" useGeneratedKeys="true" keyProperty="permId" >
-     insert into sys_permission (perm_name, perm_caption,
-        menu_id, create_time, create_by,
+     insert into sys_permission (perm_name, perm_caption,perm_href,
+        perm_parent_id,is_button ,create_time, create_by,
         update_time, update_by,
         remarks)
-        values (#{permName,jdbcType=VARCHAR}, #{permCaption,jdbcType=VARCHAR},
-        #{menuId,jdbcType=INTEGER}, NOW(), #{createBy,jdbcType=INTEGER}, NOW(),
+        values (#{permName,jdbcType=VARCHAR}, #{permCaption,jdbcType=VARCHAR},#{permHref,jdbcType=VARCHAR},
+        #{permParentId,jdbcType=INTEGER}, #{isButton,jdbcType=BIT}, NOW(), #{createBy,jdbcType=INTEGER}, NOW(),
         #{updateBy,jdbcType=INTEGER},#{remarks,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.ems.entity.SysPermission">
@@ -50,8 +52,14 @@
             <if test="permCaption != null">
                 perm_caption,
             </if>
-            <if test="menuId != null">
-                menu_id,
+            <if test="permHref != null">
+                perm_href,
+            </if>
+            <if test="permParentId != null">
+                perm_parent_id,
+            </if>
+            <if test="isButton != null">
+                is_button,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -82,8 +90,14 @@
             <if test="permCaption != null">
                 #{permCaption,jdbcType=VARCHAR},
             </if>
-            <if test="menuId != null">
-                #{menuId,jdbcType=INTEGER},
+            <if test="permHref != null">
+                #{permHref,jdbcType=VARCHAR},
+            </if>
+            <if test="permParentId != null">
+                #{permParentId,jdbcType=INTEGER},
+            </if>
+            <if test="isButton != null">
+                #{isButton,jdbcType=INTEGER},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
@@ -114,8 +128,14 @@
             <if test="permCaption != null">
                 perm_caption = #{permCaption,jdbcType=VARCHAR},
             </if>
-            <if test="menuId != null">
-                menu_id = #{menuId,jdbcType=INTEGER},
+            <if test="permHref != null">
+                perm_href = #{permHref,jdbcType=VARCHAR},
+            </if>
+            <if test="permParentId != null">
+                perm_parent_id = #{permParentId,jdbcType=INTEGER},
+            </if>
+            <if test="isButton != null">
+                is_button = #{isButton,jdbcType=INTEGER},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -142,7 +162,9 @@
         update sys_permission
         set perm_name = #{permName,jdbcType=VARCHAR},
         perm_caption = #{permCaption,jdbcType=VARCHAR},
-        menu_id = #{menuId,jdbcType=INTEGER},
+        perm_href = #{permHref,jdbcType=VARCHAR},
+        perm_parent_id = #{permParentId,jdbcType=INTEGER},
+        is_button = #{isButton,jdbcType=BIT},
         create_time = #{createTime,jdbcType=TIMESTAMP},
         create_by = #{createBy,jdbcType=INTEGER},
         update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -156,20 +178,9 @@
         <include refid="Base_Column_List"/>
         from
         sys_permission
-        where usable = 1
+        where perm_parent_id IS NOT NULL and usable = 1
     </select>
-    <update id="update" parameterType="com.ems.entity.SysPermission">
-        update sys_permission
-        set
-        perm_name = #{permName,jdbcType=VARCHAR},
-        perm_caption = #{permCaption,jdbcType=VARCHAR},
-        menu_id = #{menuId,jdbcType=INTEGER},
-        update_time = NOW(),
-        update_by = #{updateBy,jdbcType=INTEGER},
-        remarks = #{remarks,jdbcType=VARCHAR}
-        where perm_id = #{permId,jdbcType=INTEGER}
-    </update>
-    <update id="deleteByPermId" parameterType="map">
+  <update id="deleteByPermId" parameterType="map">
         update sys_permission
         set
         update_time = NOW(),
@@ -212,20 +223,20 @@
     </update>
     <select id="select" parameterType="map" resultType="com.ems.entity.SysPermission">
         SELECT
-        a.perm_id as permId,a.perm_name as permName,a.perm_caption as permCaption,b.menu_name as menuName,a.create_time as createTime,a.create_by as createBy,a.update_time as updateTime,a.update_by as updateBy
+        spa.perm_id as permId,spa.perm_name as permName,spa.perm_caption as permCaption,
+        spa.perm_parent_id as permParentId,spb.perm_caption AS permParentCaption,spa.is_button as isButton
         FROM
-        sys_permission a LEFT JOIN sys_menu b
-        ON a.menu_id = b.menu_id
-        WHERE a.usable = 1
+        sys_permission spa JOIN sys_permission spb ON spa.perm_parent_id = spb.perm_id
+        WHERE spa.perm_parent_id IS NOT NULL and spa.usable = 1
         <if test="permCaption != null and permCaption != ''">
-            AND perm_caption = #{permCaption,jdbcType=VARCHAR}
+            AND spa.perm_caption = #{permCaption,jdbcType=VARCHAR}
         </if>
         <if test="permName != null and permName != ''">
-            AND perm_name LIKE CONCAT('%', #{permName,jdbcType=VARCHAR}, '%')
+            AND spa.perm_name LIKE CONCAT('%', #{permName,jdbcType=VARCHAR}, '%')
         </if>
         <if test="menuName != null and menuName != ''">
-            AND menu_name LIKE CONCAT('%', #{menuName,jdbcType=VARCHAR}, '%')
+            AND spb.perm_caption LIKE CONCAT('%', #{permParentCaption,jdbcType=VARCHAR}, '%')
         </if>
-        ORDER BY a.perm_id
+        ORDER BY spa.perm_id
     </select>
 </mapper>

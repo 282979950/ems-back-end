@@ -5,6 +5,7 @@ import com.ems.common.Const;
 import com.ems.common.JsonData;
 import com.ems.entity.SysPermission;
 import com.ems.entity.SysRole;
+import com.ems.entity.SysRolePerm;
 import com.ems.entity.mapper.SysRoleMapper;
 import com.ems.exception.ParameterException;
 import com.ems.param.SysRoleParam;
@@ -42,7 +43,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     @PostConstruct
     private void initializeSysRole() {
-        sysRoleList = roleMapper.selectAll();
+        sysRoleList = roleMapper.selectAll(); 
     }
 
     @Override
@@ -59,9 +60,10 @@ public class SysRoleServiceImpl implements ISysRoleService {
         role.setRoleOrgs(StringUtils.join(roleParam.getOrgIdList(), Const.DEFAULT_SEPARATOR));
         role.setRemarks(roleParam.getRemarks());
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        role.setUsable(true);
         role.setCreateBy(currentEmpId);
         role.setUpdateBy(currentEmpId);
-        int resultCount = roleMapper.insertSelective(role);
+        int resultCount = roleMapper.insert(role);
         if (resultCount == 0) {
             return JsonData.fail("创建角色失败");
         }
@@ -159,10 +161,19 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     @Override
     public JsonData selectRole(String roleName) {
-        List<SysRole> roleList = Lists.newArrayList();
+        List<SysRoleParam> roleList = Lists.newArrayList();
         for (SysRole sysRole : sysRoleList) {
             if (sysRole.getRoleName().contains(roleName)) {
-                roleList.add(sysRole);
+            	SysRoleParam  sysRoleParam = new SysRoleParam();
+            	sysRoleParam.setRoleId(sysRole.getRoleId());
+            	sysRoleParam.setRoleName(sysRole.getRoleName());
+            	sysRole.setRoleDistList();
+            	sysRoleParam.setDistIdList(sysRole.getRoleDistList());
+            	sysRole.setRoleOrgList();
+            	sysRoleParam.setOrgIdList(sysRole.getRoleOrgList());
+            	sysRole.setRolePermList();
+            	sysRoleParam.setPermIdList(sysRole.getRolePermList());
+                roleList.add(sysRoleParam);
             }
         }
         if (roleList.size() == 0) {

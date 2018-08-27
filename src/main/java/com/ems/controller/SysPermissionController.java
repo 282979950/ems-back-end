@@ -68,7 +68,7 @@ public class SysPermissionController {
     /**
      * 获取特定权限权限
      */
-    @RequiresPermissions("sys:perm:visit")
+    @RequiresPermissions("sys:perm:retrieve")
     @RequestMapping("search.do")
     @ResponseBody
     public JsonData selectPermission(String permName, String permCaption, String menuName) {
@@ -82,6 +82,15 @@ public class SysPermissionController {
     @ResponseBody
     public JsonData listAllMenus() {
         return sysPermissionService.listAllMenus();
+    }
+
+    /**
+     * 获取菜单列表与权限列表关系
+     */
+    @RequestMapping("listAllMenusAndPerms.do")
+    @ResponseBody
+    public JsonData listAllMenusAndPerms() {
+        return sysPermissionService.listAllMenusAndPerms();
     }
 
 

@@ -409,7 +409,7 @@
         SELECT
         e.emp_id, e.emp_number, e.emp_name, e.emp_org_id, e.emp_district_id, e.emp_login_name, e.emp_password, e.emp_email, e.emp_phone, e.emp_mobile,
         e.emp_address, e.emp_type, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e.emp_login_flag, e.create_time, e.create_by, e.update_time,
-        e.update_by, e.usable, e.remarks, r.role_id, r.role_name, p.perm_id, p.perm_name, p.perm_caption, p.menu_id
+        e.update_by, e.usable, e.remarks, r.role_id, r.role_name, p.perm_id, p.perm_name, p.perm_caption
         FROM employee e
         LEFT JOIN employee_role er on er.emp_id = e.emp_id
         LEFT JOIN sys_role r on r.role_id = er.role_id

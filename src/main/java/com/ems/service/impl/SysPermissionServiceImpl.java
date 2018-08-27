@@ -2,11 +2,8 @@ package com.ems.service.impl;
 
 import com.ems.common.BeanValidator;
 import com.ems.common.JsonData;
-import com.ems.entity.Employee;
-import com.ems.entity.SysMenu;
 import com.ems.entity.SysPermission;
 import com.ems.entity.SysRolePerm;
-import com.ems.entity.mapper.SysMenuMapper;
 import com.ems.entity.mapper.SysPermissionMapper;
 import com.ems.entity.mapper.SysRolePermMapper;
 import com.ems.exception.ParameterException;
@@ -34,9 +31,6 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
 
     @Autowired
     private SysRolePermMapper sysRolePermMapper;
-
-    @Autowired
-    private SysMenuMapper sysMenuMapper;
 
     private static List<SysPermission> permissionList;
 
@@ -73,6 +67,7 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         permission.setCreateBy(currentEmpId);
         permission.setUpdateBy(currentEmpId);
+        permission.setUsable(true);
         int resultCount = permissionMapper.insert(permission);
         if (resultCount == 0) {
             return JsonData.fail("新建权限失败");
@@ -90,11 +85,14 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
             throw new ParameterException("原权限不存在");
         }
         oldPermission.setPermName(permission.getPermName());
-        oldPermission.setMenuId(permission.getMenuId());
         oldPermission.setPermCaption(permission.getPermCaption());
+        oldPermission.setPermHref(permission.getPermHref());
+        oldPermission.setPermParentId(permission.getPermParentId());
+        oldPermission.setIsButton(permission.getIsButton());
+        oldPermission.setUsable(permission.getUsable());
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         oldPermission.setUpdateBy(currentEmpId);
-        int resultCount = permissionMapper.update(oldPermission);
+        int resultCount = permissionMapper.updateByPrimaryKeySelective(oldPermission);
         if (resultCount == 0) {
             return JsonData.fail("更新权限失败");
         } else {
@@ -152,12 +150,28 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
 
     @Override
     public JsonData listAllMenus() {
-        List<SysMenu> menus = sysMenuMapper.selectAll();
-        if (menus == null || menus.size()==0) {
+        List<SysPermission> permissions =  new ArrayList<SysPermission>();
+        for(SysPermission perm : permissionList) {
+        	if(!perm.getIsButton()) {
+        		permissions.add(perm);
+        	}
+        }
+        if (permissions == null || permissions.size()==0) {
             return JsonData.successMsg("查询结果为空");
         }
         else {
-            return JsonData.successData(menus);
+            return JsonData.successData(permissions);
+        }
+    }
+
+    @Override
+    public JsonData listAllMenusAndPerms() {
+        List<SysPermission> permissions = permissionList;
+        if (permissions == null || permissions.size()==0) {
+            return JsonData.successMsg("查询结果为空");
+        }
+        else {
+            return JsonData.successData(permissions);
         }
     }
 }

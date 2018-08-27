@@ -23,29 +23,42 @@ public class SysPermission extends BaseEntity {
      * 权限名称
      */
     @NotNull
-    @Length(max = 20, message = "权限名称不能超过20个字")
+    @Length(max = 50, message = "权限名称不能超过50个字")
     private String permName;
 
     /**
      * 权限标题
      */
+    @NotNull
     private String permCaption;
 
     /**
-     * 目录ID
+     * 权限路径
+     */
+    private String permHref;
+
+    /**
+     * 权限父级ID
+     */
+    private Integer permParentId;
+
+    /**
+     * 是否按钮
      */
     @NotNull
-    private Integer menuId;
+    private Boolean isButton;
 
-    private String menuName;
+    private String permParentCaption;
 
-    public SysPermission(Integer permId, String permName, String permCaption, Integer menuId, Date createTime, Integer createBy, Date updateTime, Integer
+    public SysPermission(Integer permId, String permName, String permCaption, String permHref, Integer permParentId, Boolean isButton, Date createTime, Integer createBy, Date updateTime, Integer
             updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.permId = permId;
         this.permName = permName;
         this.permCaption = permCaption;
-        this.menuId = menuId;
+        this.permHref = permHref;
+        this.permParentId = permParentId;
+        this.isButton = isButton;
     }
 
     public SysPermission() {
