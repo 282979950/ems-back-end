@@ -25,7 +25,7 @@
         select
         <include refid="Base_Column_List"/>
         from sys_district
-        where dist_id = #{distId,jdbcType=INTEGER}
+        where dist_id = #{distId,jdbcType=INTEGER} and usable = 1
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from sys_district

@@ -16,6 +16,7 @@ app.initIndex = function () {
                 var name = eventSrc.classList[eventSrc.classList.length - 1];
                 if (!app.currentPageName || app.currentPageName !== name) {
                     // 切换页面将table和toolbar信息清除
+                    app.removeEvent();
                     app.table = null;
                     app.toolbar = null;
                     app.currentPageName = name;
@@ -28,6 +29,8 @@ app.initIndex = function () {
                         pane: mainElement,
                         url: name + '/listData.do'
                     });
+
+                    app.removeEvent();
                     app.initEvent();
                 }
             }
@@ -48,9 +51,10 @@ app.initEvent = function () {
     var main = $('.container-main');
     var table = app.table;
     var fields = table.getFields();
-    main.on('add', function () {
+    main.on('add', function (event) {
+        console.log(event);
         var dialog = mdui.dialog({
-            title: 'title',
+            title: '新增',
             content: ' ',
             buttons: [{
                 text: '确认',
@@ -95,7 +99,7 @@ app.initEvent = function () {
             return;
         }
         var dialog = mdui.dialog({
-            title: 'title',
+            title: '编辑',
             content: ' ',
             buttons: [{
                 text: '确认',
@@ -140,7 +144,7 @@ app.initEvent = function () {
             return;
         }
         mdui.dialog({
-            title: 'title',
+            title: '删除',
             content: '确认删除选中数据？',
             buttons: [{
                 text: '确认',
@@ -189,6 +193,11 @@ app.initEvent = function () {
         });
     });
 };
+
+app.removeEvent = function () {
+    $('.container-main').off();
+};
+
 /*
 * table fields
 */
@@ -349,7 +358,7 @@ app.addFormfields = {
     }],
     entry: [{
         name: 'meterCode',
-        caption: '表具编码'
+        caption: '表具编号'
     }, {
         name: 'meterStopCode',
         caption: '表止码'

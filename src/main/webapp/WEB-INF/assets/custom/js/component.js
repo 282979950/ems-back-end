@@ -383,7 +383,7 @@
         var $toolbar = _this.$dom = $(baseDom).prependTo(parent);
 
         var fields = _this.fields = params.fields;
-        fields == null ? '' :fields.forEach(function (field) {
+        fields == null ? '' : fields.forEach(function (field) {
             _this._initItemDom($toolbar, field);
         });
     };
@@ -415,7 +415,7 @@
         var fields = _this.fields = $('.field');
         fields.each(function (index, field) {
             var $field = $(field);
-            $field.on('click', function () {
+            $field.on('click', function (event) {
                 var name = $field.attr('name');
                 switch (name) {
                     case 'add':

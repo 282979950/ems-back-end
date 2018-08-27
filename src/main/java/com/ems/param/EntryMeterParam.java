@@ -1,9 +1,11 @@
 package com.ems.param;
 
 import com.ems.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -19,6 +21,11 @@ import java.util.Date;
 public class EntryMeterParam extends BaseEntity {
 
     /**
+     * 表具ID
+     */
+    private Integer meterId;
+
+    /**
      * 表具编号
      */
     @NotNull
@@ -29,11 +36,6 @@ public class EntryMeterParam extends BaseEntity {
      * 表具止码
      */
     private BigDecimal meterStopCode;
-
-    /**
-     * 表具型号ID
-     */
-    private Integer meterTypeId;
 
     /**
      * 表具类别
@@ -56,10 +58,30 @@ public class EntryMeterParam extends BaseEntity {
     /**
      * 表具生产日期
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date meterProdDate;
 
     /**
      * 表具入库日期
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date meterEntryDate;
+
+    public EntryMeterParam(Integer meterId, String meterCode, BigDecimal meterStopCode, String meterCategory, String meterType, Boolean meterDirection, Date
+            meterProdDate, Date meterEntryDate, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+        super(createTime, createBy, updateTime, updateBy, usable, remarks);
+        this.meterId = meterId;
+        this.meterCode = meterCode;
+        this.meterStopCode = meterStopCode;
+        this.meterCategory = meterCategory;
+        this.meterType = meterType;
+        this.meterDirection = meterDirection;
+        this.meterProdDate = meterProdDate;
+        this.meterEntryDate = meterEntryDate;
+    }
+
+    public EntryMeterParam() {
+    }
 }
