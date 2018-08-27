@@ -52,4 +52,8 @@ public class SysDictionaryService {
 
 		return sysDictionaryMapper.findListByDict(sdy);
 	}
+	public String dictCategoryByTypeService(String dictKey,String dictCategory){
+
+		return sysDictionaryMapper.dictCategoryByType(dictKey,dictCategory);
+	}
 }

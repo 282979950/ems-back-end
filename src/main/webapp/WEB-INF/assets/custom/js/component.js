@@ -260,6 +260,7 @@
      * @private
      */
     Form.prototype._initDom = function (params) {
+
         var _this = this;
         // 表单控件基础dom
         var baseDom = '<form class="form"><div class="form-title col s12"></div><div class="form-body col s12 form-fields"></div></form>';
@@ -655,7 +656,9 @@
         var options = this.options = params.options;
         if (options) {
             options.forEach(function (option) {
+
                 $('<option value="' + option.value + '">' + option.key + '</option>').appendTo($dom);
+
             });
         }
     };

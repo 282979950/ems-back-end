@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class SysDictionaryController {
 
     @Resource
     private SysDictionaryService sysDictionaryService;
-    @RequiresPermissions("sys:dic:retrieve")
+    @RequiresPermissions("sys:dic:visit")
     @RequestMapping(value = {"/listData.do"})
     @ResponseBody
     //获取字典数据列(List)
@@ -114,15 +115,21 @@ public class SysDictionaryController {
     @RequiresPermissions("sys:dic:retrieve")
     @RequestMapping(value = {"/dictByType.do"})
     @ResponseBody
-    public JsonData selectDictByType(SysDictionary sdy,HttpServletRequest request, HttpServletResponse respose) {
-        //获取类型时查看是否为空
-        if (StringUtils.isNotBlank(sdy.getDictCategory())) {
+    public JsonData selectDictByType(String orgCategory ,HttpServletRequest request, HttpServletResponse respose) {
 
-            List<SysDictionary> list = sysDictionaryService.findListByTypeOnPc(sdy.getDictCategory());
+        //获取类型时查看是否为空
+        if (StringUtils.isNotBlank(orgCategory)) {
+
+            List<SysDictionary> list = sysDictionaryService.findListByTypeOnPc(orgCategory);
+            if(list.size()<=0){
+
+                return JsonData.fail("该字段没有对应数据字典值");
+            }
+
             return JsonData.successData(list);
         }
 
-        return JsonData.successMsg("未获取到数据或联系管理员");
+        return JsonData.fail("未获取到数据");
     }
     //依据条件查询对应数据
     @RequiresPermissions("sys:dic:retrieve")

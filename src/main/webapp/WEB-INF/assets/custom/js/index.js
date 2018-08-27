@@ -285,6 +285,96 @@ app.tableFields = {
     }]
 };
 /*
+ *数据字典
+ */
+dictionary = function(formNames){
+    var datas;
+    if(formNames=='org'){
+
+        $.ajax({
+            async:false,
+            type: 'POST',
+            url: 'dic/dictByType.do',
+            contentType: 'application/x-www-form-urlencoded',
+            data: { orgCategory: "org_type"},
+            success: function (list) {
+                console.log(list);
+                if(list.data!= null){
+                     datas = list.data;
+                    for(var i=0;i<datas.length;i++){
+                       // dictionaryList= dictionaryList+'{'+"key"+":"+list.data[i].dictKey+","+"value"+":"+list.data[i].dictValue+'},';
+                        datas[i].key = datas[i].dictKey;
+                        datas[i].value = datas[i].dictValue;
+
+                    }
+                }
+            }
+        });
+
+    }
+    return datas;
+};
+/*
+ *数据字典页面编辑时调用
+ */
+editFormDictionary = function(formNames){
+    var datas;
+    if(formNames=='org'){
+
+        $.ajax({
+            async:false,
+            type: 'POST',
+            url: 'dic/dictByType.do',
+            contentType: 'application/x-www-form-urlencoded',
+            data: { orgCategory: "org_type"},
+            success: function (list) {
+                console.log(list);
+                if(list.data!= null){
+                    datas = list.data;
+                    for(var i=0;i<datas.length;i++){
+                        // dictionaryList= dictionaryList+'{'+"key"+":"+list.data[i].dictKey+","+"value"+":"+list.data[i].dictValue+'},';
+                        datas[i].key = datas[i].dictKey;
+                        datas[i].value = datas[i].dictKey;
+
+                    }
+                }
+            }
+        });
+
+    }
+    return datas;
+};
+/*
+ *数据字典
+ */
+dictionaryTable = function(tableData){
+console.log("加载table时数据字典请求中...")
+        $.ajax({
+            async:false,
+            type: 'POST',
+            url: 'dic/dictByType.do',
+            contentType: 'application/x-www-form-urlencoded',
+            data: { orgCategory: "org_type"},
+            success: function (list) {
+
+                if(list.data!= null){
+                    datas = list.data;
+                   for(var i=0;i<tableData.length;i++){
+                       for(var j=0;j<datas.length;j++){
+                           if((tableData && datas) && tableData[i].orgCategory == datas[j].dictValue){
+
+                               tableData[i].orgCategory =  datas[j].dictKey
+
+                           }
+                       }
+                   }
+                }
+            }
+        });
+    console.log("数据请求完毕...")
+    return tableData;
+};
+/*
  *新增时弹出框,列显示
  */
 
@@ -313,7 +403,9 @@ app.addFormfields = {
         caption: '机构编码'
     }, {
         name: 'orgCategory',
-        caption: '机构类别'
+        caption: '机构类别',
+        type : 'listcombobox',
+        options: dictionary("org")
     }, {
         name: 'orgParentId',
         caption: '父级机构ID'
@@ -474,7 +566,9 @@ app.editFormFields = {
         caption: '机构编码'
     }, {
         name: 'orgCategory',
-        caption: '机构类别'
+        caption: '机构类别',
+        type : 'listcombobox',
+        options: editFormDictionary("org")
     }, {
         name: 'orgParentId',
         caption: '父级机构ID'

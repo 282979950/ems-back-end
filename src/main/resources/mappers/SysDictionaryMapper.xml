@@ -210,7 +210,7 @@
       </foreach>
     </if>
   </update>
-  <!-- 依据条件查看对应数据List -->
+  <!-- 页面头部筛，选依据条件查看对应数据List -->
   <select id="findListByDict" resultMap="BaseResultMap" parameterType="com.ems.entity.SysDictionary"  >
     select
     <include refid="Base_Column_List" />
@@ -222,6 +222,11 @@
       <if test="dictCategory != null and dictCategory!=''" >
           AND locate (#{dictCategory} ,dict_category) > 0
       </if>
+
+  </select>
+  <!--根据字典类型和key获取对应字典值-->
+  <select id="dictCategoryByType" resultType="java.lang.String" parameterType="java.lang.String">
+    SELECT dict_value FROM sys_dictionary WHERE dict_key=#{dictKey} AND dict_category=#{dictCategory}
 
   </select>
 </mapper>
