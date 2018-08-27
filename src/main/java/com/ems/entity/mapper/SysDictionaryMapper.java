@@ -2,6 +2,7 @@ package com.ems.entity.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ems.entity.SysDictionary;
@@ -28,4 +29,8 @@ public interface SysDictionaryMapper {
     int deleteSysDictionary(SysDictionary record);
     //依据条件查看对应数据
     List<SysDictionary>findListByDict(SysDictionary record);
+    /*
+     *根据字典类型和key获取对应字典值
+     */
+    String dictCategoryByType(@Param("dictKey") String dictKey,@Param("dictCategory") String dictCategory);
 }
