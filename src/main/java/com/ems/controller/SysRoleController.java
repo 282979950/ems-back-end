@@ -72,7 +72,6 @@ public class SysRoleController {
     @RequestMapping("search.do")
     @ResponseBody
     public JsonData selectRole(String roleName) {
-//        return sysRoleService
-        return null;
+       return sysRoleService.selectRole(roleName);
     }
 }

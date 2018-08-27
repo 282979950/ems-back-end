@@ -179,7 +179,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
         if (roleList.size() == 0) {
             return JsonData.successMsg("查询结果为空");
         } else {
-            return JsonData.successData(roleList);
+            return JsonData.success(roleList,"查询成功");
         }
     }
 
