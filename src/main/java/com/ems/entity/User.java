@@ -75,13 +75,18 @@ public class User extends BaseEntity {
     private String iccardPassword;
 
     /**
+     * 用户状态
+     */
+    private Integer userStatus;
+
+    /**
      * 用户是否锁定
      */
     private Boolean userLocked;
 
     public User(Integer userId, String userName, String userPhone, String userIdcard, String userDeed, Integer userDistId, String userAddress, Integer
-            userType, Integer userGasType, Integer iccardId, String iccardIdentifier, String iccardPassword, Boolean userLocked, Date createTime, Integer
-            createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+            userType, Integer userGasType, Integer iccardId, String iccardIdentifier, String iccardPassword, Integer userStatus, Boolean userLocked, Date
+            createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.userId = userId;
         this.userName = userName;
@@ -95,6 +100,7 @@ public class User extends BaseEntity {
         this.iccardId = iccardId;
         this.iccardIdentifier = iccardIdentifier;
         this.iccardPassword = iccardPassword;
+        this.userStatus = userStatus;
         this.userLocked = userLocked;
     }
 

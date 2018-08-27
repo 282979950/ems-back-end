@@ -3,8 +3,12 @@ package com.ems.entity.mapper;
 import com.ems.entity.User;
 import com.ems.param.CreateAccountParam;
 import com.ems.param.CreateArchiveParam;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UserMapper {
+
     int deleteByPrimaryKey(Integer userId);
 
     int insert(User record);
@@ -17,11 +21,22 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    int createArchive(CreateArchiveParam param);
+    List<CreateArchiveParam> getAllArchives();
+
+    int addArchive(CreateArchiveParam param);
+
+    int editArchive(CreateArchiveParam param);
+
+    int deleteArchive(List<User> users);
+
+    List<CreateArchiveParam> searchArchive(@Param("userId") Integer userId, @Param("distName") String distName, @Param("userAddress") String userAddress, @Param
+            ("userType") Integer userType, @Param("userGasType") Integer userGasType, @Param("userStatus") Integer userStatus);
 
     int createAccount(CreateAccountParam param);
 
     int getAllCount();
 
-    User getUserByIccardId(Integer iccardId);
+    User getUserByIccardId(@Param("iccardId") Integer iccardId);
+
+    User getUserById(@Param("userId") Integer userId);
 }

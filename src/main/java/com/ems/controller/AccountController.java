@@ -2,7 +2,6 @@ package com.ems.controller;
 
 import com.ems.common.JsonData;
 import com.ems.param.CreateAccountParam;
-import com.ems.param.CreateArchiveParam;
 import com.ems.service.IMeterService;
 import com.ems.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +34,6 @@ public class AccountController {
     @ResponseBody
     public JsonData selectAll() {
         return meterService.selectAll();
-    }
-
-    /**
-     * 用户建档
-     *
-     * @return
-     */
-    @RequestMapping(value = "/createArchive", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonData createArchive(CreateArchiveParam param) {
-        return userService.createArchive(param);
     }
 
     /**

@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户服务实现类
@@ -47,16 +49,59 @@ public class UserServiceImpl implements IUserService {
     private IMeterService meterService;
 
     @Override
+    public JsonData getAllArchives() {
+        List<CreateArchiveParam> archives = userMapper.getAllArchives();
+        return archives == null || archives.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(archives, "查询成功");
+    }
+
+    @Override
     @Transactional
-    public JsonData createArchive(CreateArchiveParam param) {
+    public JsonData addArchive(CreateArchiveParam param) {
         BeanValidator.check(param);
         //建档时默认将用户锁定
         param.setUserLocked(true);
-        int resultCount = userMapper.createArchive(param);
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        param.setCreateBy(currentEmpId);
+        param.setUpdateBy(currentEmpId);
+        int resultCount = userMapper.addArchive(param);
         if (resultCount == 0) {
-            return JsonData.fail("用户建档失败，用户信息：" + param.toString());
+            return JsonData.fail("建档失败");
         }
-        return JsonData.successMsg("用户建档成功");
+        return JsonData.successMsg("建档成功");
+    }
+
+    @Override
+    @Transactional
+    public JsonData editArchive(CreateArchiveParam param) {
+        BeanValidator.check(param);
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        param.setUpdateBy(currentEmpId);
+        int resultCount = userMapper.editArchive(param);
+        if (resultCount == 0) {
+            return JsonData.fail("更新失败");
+        }
+        return JsonData.successMsg("更新成功");
+    }
+
+    @Override
+    @Transactional
+    public JsonData deleteArchive(List<Integer> ids) {
+        List<User> users = new ArrayList<>();
+        for (Integer id : ids) {
+            users.add(userMapper.getUserById(id));
+        }
+        // TODO: 2018/8/27 已开户的档案不允许删除
+        int resultCount = userMapper.deleteArchive(users);
+        if (resultCount < users.size()) {
+            return JsonData.fail("删除失败");
+        }
+        return JsonData.successMsg("删除成功");
+    }
+
+    @Override
+    public JsonData searchArchive(Integer userId, String distName, String userAddress, Integer userType, Integer userGasType, Integer userStatus) {
+        List<CreateArchiveParam> archives = userMapper.searchArchive(userId, distName, userAddress, userType, userGasType, userStatus);
+        return archives == null || archives.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(archives, "查询成功");
     }
 
     @Override

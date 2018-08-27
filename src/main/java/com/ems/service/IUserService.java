@@ -5,6 +5,8 @@ import com.ems.param.CreateAccountParam;
 import com.ems.param.CreateArchiveParam;
 import com.ems.param.InstallMeterParam;
 
+import java.util.List;
+
 /**
  * 用户服务接口
  *
@@ -13,12 +15,48 @@ import com.ems.param.InstallMeterParam;
 public interface IUserService {
 
     /**
-     * 用户建档
+     * 查询所有档案
+     *
+     * @return
+     */
+    JsonData getAllArchives();
+
+    /**
+     * 新增档案
      *
      * @param param
      * @return
      */
-    JsonData createArchive(CreateArchiveParam param);
+    JsonData addArchive(CreateArchiveParam param);
+
+    /**
+     * 编辑档案
+     *
+     * @param param
+     * @return
+     */
+    JsonData editArchive(CreateArchiveParam param);
+
+    /**
+     * 删除档案
+     *
+     * @param ids
+     * @return
+     */
+    JsonData deleteArchive(List<Integer> ids);
+
+    /**
+     * 查询档案
+     *
+     * @param userId
+     * @param distName
+     * @param userAddress
+     * @param userType
+     * @param userGasType
+     * @param userStatus
+     * @return
+     */
+    JsonData searchArchive(Integer userId, String distName, String userAddress, Integer userType, Integer userGasType, Integer userStatus);
 
     /**
      * 挂表

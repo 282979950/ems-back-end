@@ -36,11 +36,6 @@ app.initIndex = function () {
         $(document).click(function(){
             $(".tree-combobox-panel").hide();
         });
-        // mdui.snackbar("系统异常", {
-        //     timeout: 4000,
-        //     buttonColor: 'blue',
-        //     position: 'top'
-        // })
     });
 };
 
@@ -79,7 +74,7 @@ app.initEvent = function () {
                 text: '取消'
             }]
         });
-        $('.mdui-dialog-content').html("");
+        $(".tree-combobox-panel").remove();
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields:app.addFormfields[formNames]
@@ -125,6 +120,7 @@ app.initEvent = function () {
                 text: '取消'
             }]
         });
+        $(".tree-combobox-panel").remove();
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields: app.editFormFields[formNames],
@@ -282,6 +278,25 @@ app.tableFields = {
     }, {
         name: 'meterEntryDate',
         caption: '表具入库时间'
+    }],
+    createArchive: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'distName',
+        caption: '用户区域'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userType',
+        caption: '用户类型'
+    }, {
+        name: 'userGasType',
+        caption: '用气类型'
+    }, {
+        name: 'userStatus',
+        caption: '用户状态'
     }]
 };
 /*
@@ -518,6 +533,22 @@ app.addFormfields = {
     }, {
         name: 'meterEntryDate',
         caption: '表具入库时间'
+    }],
+    createArchive: [{
+        name: 'distName',
+        caption: '用户区域'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userType',
+        caption: '用户类型'
+    }, {
+        name: 'userGasType',
+        caption: '用气类型'
+    }, {
+        name: 'userStatus',
+        caption: '用户状态'
     }]
 };
 
@@ -682,6 +713,22 @@ app.editFormFields = {
     }, {
         name: 'meterEntryDate',
         caption: '表具入库时间'
+    }],
+    createArchive: [{
+        name: 'distName',
+        caption: '用户区域'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userType',
+        caption: '用户类型'
+    }, {
+        name: 'userGasType',
+        caption: '用气类型'
+    }, {
+        name: 'userStatus',
+        caption: '用户状态'
     }]
 };
 
@@ -830,6 +877,43 @@ app.headScreening = {
     }, {
         name: 'search',
         caption: '搜索'
+    }],
+    createArchive: [{
+        name: 'add',
+        caption: '新增'
+    }, {
+        name: 'edit',
+        caption: '编辑'
+    }, {
+        name: 'delete',
+        caption: '删除'
+    }, {
+        name: 'userId',
+        caption: '用户编号',
+        type: 'input'
+    }, {
+        name: 'distName',
+        caption: '用户区域',
+        type: 'input'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址',
+        type: 'input'
+    }, {
+        name: 'userType',
+        caption: '用户类型',
+        type: 'input'
+    }, {
+        name: 'userGasType',
+        caption: '用气类型',
+        type: 'input'
+    }, {
+        name: 'userStatus',
+        caption: '用户状态',
+        type: 'input'
+    }, {
+        name: 'search',
+        caption: '搜索'
     }]
 };
 
@@ -839,5 +923,6 @@ app.deleteNames = {
     'role': 'roleId',
     'dic': 'dictId',
     'dist': 'distId',
-    'entry': 'meterId'
+    'entry': 'meterId',
+    'createArchive': 'userId'
 };

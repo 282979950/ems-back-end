@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * 用户建档参数
@@ -19,10 +20,15 @@ import javax.validation.constraints.NotNull;
 public class CreateArchiveParam extends BaseEntity {
 
     /**
-     * 用户所在区域ID
+     * 用户编号
      */
-    @NotNull(message = "用户所在区域不能为空")
-    private Integer userDistId;
+    private Integer userId;
+
+    /**
+     * 用户区域ID
+     */
+    @NotNull(message = "用户区域不能为空")
+    private String distName;
 
     /**
      * 用户地址
@@ -44,7 +50,28 @@ public class CreateArchiveParam extends BaseEntity {
     private Integer userGasType;
 
     /**
+     * 用户状态
+     */
+    private Integer userStatus;
+
+    /**
      * 用户是否锁定
      */
     private Boolean userLocked;
+
+    public CreateArchiveParam(Integer userId, String distName, String userAddress, Integer userType, Integer userGasType, Integer userStatus, Boolean
+            userLocked, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+        super(createTime, createBy, updateTime, updateBy, usable, remarks);
+        this.userId = userId;
+        this.distName = distName;
+        this.userAddress = userAddress;
+        this.userType = userType;
+        this.userGasType = userGasType;
+        this.userStatus = userStatus;
+        this.userLocked = userLocked;
+    }
+
+    public CreateArchiveParam() {
+        super();
+    }
 }

@@ -15,6 +15,7 @@
             <arg column="iccard_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="iccard_identifier" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="iccard_password" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="user_locked" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
@@ -26,7 +27,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         user_id, user_name, user_phone, user_idcard, user_deed, user_dist_id, user_address,
-        user_type, user_gas_type, iccard_id, iccard_identifier, iccard_password, user_locked,
+        user_type, user_gas_type, iccard_id, iccard_identifier, iccard_password, user_status, user_locked,
         create_time, create_by, update_time, update_by, usable, remarks
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -44,7 +45,7 @@
         user_idcard, user_deed, user_dist_id,
         user_address, user_type, user_gas_type,
         iccard_id, iccard_identifier, iccard_password,
-        user_locked, create_time, create_by,
+        user_status, user_locked, create_time, create_by,
         update_time, update_by, usable,
         remarks)
         values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPhone,jdbcType=VARCHAR},
@@ -93,6 +94,9 @@
             </if>
             <if test="iccardPassword != null">
                 iccard_password,
+            </if>
+            <if test="user_status != null">
+                user_status,
             </if>
             <if test="userLocked != null">
                 user_locked,
@@ -212,6 +216,9 @@
             <if test="iccardPassword != null">
                 iccard_password = #{iccardPassword,jdbcType=VARCHAR},
             </if>
+            <if test="user_status != null">
+                user_status = #{userStatus,jdbcType=INTEGER},
+            </if>
             <if test="userLocked != null">
                 user_locked = #{userLocked,jdbcType=BIT},
             </if>
@@ -249,6 +256,7 @@
         iccard_id = #{iccardId,jdbcType=INTEGER},
         iccard_identifier = #{iccardIdentifier,jdbcType=VARCHAR},
         iccard_password = #{iccardPassword,jdbcType=VARCHAR},
+        user_status = #{userStatus,jdbcType=INTEGER},
         user_locked = #{userLocked,jdbcType=BIT},
         create_time = #{createTime,jdbcType=TIMESTAMP},
         create_by = #{createBy,jdbcType=INTEGER},
@@ -258,14 +266,104 @@
         remarks = #{remarks,jdbcType=VARCHAR}
         where user_id = #{userId,jdbcType=INTEGER}
     </update>
-    <insert id="createArchive" parameterType="com.ems.param.CreateArchiveParam">
+    <resultMap id="CreateArchiveParam" type="com.ems.param.CreateArchiveParam">
+        <constructor>
+            <idArg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_gas_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_locked" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <select id="getAllArchives" resultMap="CreateArchiveParam">
+        select
+        u.user_id, dist.dist_name, u.user_address, u.user_type, u.user_gas_type, u.user_status, u.user_locked, u.create_time, u.create_by, u.update_time,
+        u.update_by, u.usable, u.remarks
+        from user u left join sys_district dist on u.user_dist_id = dist.dist_id
+        where u.usable = 1
+    </select>
+    <insert id="addArchive" parameterType="com.ems.param.CreateArchiveParam">
         insert into user (user_dist_id, user_address, user_type,
         user_gas_type, user_locked, create_time, create_by,
-        update_time, update_by,remarks)
-        values (#{userDistId,jdbcType=INTEGER}, #{userAddress,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER},
-        #{userGasType,jdbcType=INTEGER}, #{userLocked,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
-        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
+        update_time, update_by, remarks)
+        values ((select dist_id from sys_district where dist_name = #{distName,jdbcType=VARCHAR}), #{userAddress,jdbcType=VARCHAR},
+        #{userType,jdbcType=INTEGER}, #{userGasType,jdbcType=INTEGER}, #{userLocked,jdbcType=BIT}, NOW(), #{createBy,jdbcType=INTEGER},
+        NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
     </insert>
+    <update id="editArchive">
+        update user
+        set
+        user_dist_id = (select dist_id from sys_district where dist_name = #{distName,jdbcType=VARCHAR}),
+        user_address = #{userAddress,jdbcType=VARCHAR},
+        user_type = #{userType,jdbcType=INTEGER},
+        user_gas_type = #{userGasType,jdbcType=INTEGER},
+        update_time = NOW(),
+        update_by = #{updateBy,jdbcType=INTEGER}
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <update id="deleteArchive" parameterType="list">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_by = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateBy != null">
+                        when user_id = #{i.userId} then #{i.updateBy}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateTime != null">
+                        when user_id = #{i.userId} then NOW()
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="usable =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.usable != null">
+                        when user_id =#{i.userId} then 0
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index">
+            user_id =#{i.userId}
+        </foreach>
+    </update>
+    <select id="searchArchive" parameterType="map" resultMap="CreateArchiveParam">
+        select
+        u.user_id, dist.dist_name, u.user_address, u.user_type, u.user_gas_type, u.user_status, u.user_locked, u.create_time, u.create_by, u.update_time,
+        u.update_by, u.usable, u.remarks
+        from user u left join sys_district dist on u.user_dist_id = dist.dist_id
+        where u.usable = 1
+        <if test="userId != null and userId != ''">
+            AND u.user_id LIKE CONCAT('%', #{userId,jdbcType=INTEGER}, '%')
+        </if>
+        <if test="distName != null and distName != ''">
+            AND dist.dist_name = #{distName,jdbcType=INTEGER}
+        </if>
+        <if test="userAddress != null and userAddress != ''">
+            AND u.user_address LIKE CONCAT('%', #{userAddress,jdbcType=INTEGER}, '%')
+        </if>
+        <if test="userType != null and userType != ''">
+            AND u.user_type = #{userType,jdbcType=INTEGER}
+        </if>
+        <if test="userGasType != null and userGasType != ''">
+            AND u.user_gas_type = #{userGasType,jdbcType=INTEGER}
+        </if>
+        <if test="userStatus != null and userStatus != ''">
+            AND u.user_status = #{userStatus,jdbcType=VARCHAR}
+        </if>
+    </select>
     <update id="createAccount" parameterType="com.ems.param.CreateAccountParam">
         update user
         set user_name = #{userName,jdbcType=VARCHAR},
@@ -275,6 +373,7 @@
         iccard_id = #{iccardId,jdbcType=INTEGER},
         iccard_identifier = #{iccardIdentifier,jdbcType=VARCHAR},
         iccard_password = #{iccardPassword,jdbcType=VARCHAR},
+        user_status = #{userStatus,jdbcType=INTEGER},
         user_locked = #{userLocked,jdbcType=BIT},
         update_time = NOW(),
         update_by = #{updateBy,jdbcType=INTEGER},
@@ -290,5 +389,11 @@
         <include refid="Base_Column_List"/>
         from user
         where iccard_id = #{iccardId,jdbcType=INTEGER} and usable = 1
+    </select>
+    <select id="getUserById" parameterType="integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where user_id = #{userId,jdbcType=INTEGER} and usable = 1
     </select>
 </mapper>

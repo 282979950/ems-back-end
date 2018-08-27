@@ -102,6 +102,7 @@ var app = {
     permTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     roleTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     entryTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
+    createArchiveTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     getPaneContent: function (name) {
         var paneContent = '';
         switch (name) {
@@ -136,7 +137,8 @@ var app = {
             case 'entry':
                 paneContent = this.entryTemplate;
                 break;
-            case 'file':
+            case 'createArchive':
+                paneContent = this.createArchiveTemplate;
                 break;
             case 'install':
                 break;

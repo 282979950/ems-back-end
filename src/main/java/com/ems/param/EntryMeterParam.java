@@ -83,5 +83,6 @@ public class EntryMeterParam extends BaseEntity {
     }
 
     public EntryMeterParam() {
+        super();
     }
 }
