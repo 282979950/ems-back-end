@@ -79,7 +79,7 @@ app.initEvent = function () {
                 text: '取消'
             }]
         });
-        $('.mdui-dialog-content').html("");
+        $(".tree-combobox-panel").remove();
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields:app.addFormfields[formNames]
@@ -125,6 +125,7 @@ app.initEvent = function () {
                 text: '取消'
             }]
         });
+        $(".tree-combobox-panel").remove();
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields: app.editFormFields[formNames],
