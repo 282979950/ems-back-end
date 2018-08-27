@@ -392,7 +392,7 @@ INSERT INTO `sys_organization` VALUES ('1018', '形象部test', null, '部门', 
 -- ----------------------------
 -- Table structure for `sys_permission`
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_permission`;
+/*DROP TABLE IF EXISTS `sys_permission`;
 CREATE TABLE `sys_permission` (
   `perm_id` int(4) unsigned NOT NULL AUTO_INCREMENT COMMENT '权限ID',
   `perm_name` varchar(50) NOT NULL DEFAULT '' COMMENT '权限名称',
@@ -469,7 +469,7 @@ INSERT INTO `sys_permission` VALUES ('1052', 'sys:notice:update', '', '1009', '2
 INSERT INTO `sys_permission` VALUES ('1053', 'sys:notice:retrieve', '', '1009', '2018-08-02 21:10:20', '1000000001', '2018-08-02 21:12:22', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1054', 'sys:notice:import', '', '1009', '2018-08-03 03:13:47', '1000000001', '2018-08-03 03:16:13', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1055', 'sys:notice:export', '', '1009', '2018-08-03 09:17:16', '1000000001', '2018-08-03 09:20:05', '1000000001', '1', '');
-
+*/
 -- ----------------------------
 -- Table structure for `sys_role`
 -- ----------------------------
@@ -497,7 +497,7 @@ INSERT INTO `sys_role` VALUES ('1001', 'admin', '', '', '2018-08-01 15:33:09', '
 -- ----------------------------
 -- Table structure for `sys_role_perm`
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_role_perm`;
+/*DROP TABLE IF EXISTS `sys_role_perm`;
 CREATE TABLE `sys_role_perm` (
   `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `role_id` int(4) unsigned NOT NULL COMMENT '角色ID',
@@ -574,7 +574,7 @@ INSERT INTO `sys_role_perm` VALUES ('53', '1001', '1052', '2020-07-15 12:35:32',
 INSERT INTO `sys_role_perm` VALUES ('54', '1001', '1053', '2020-07-29 12:31:05', '1000000000', '2020-07-29 12:37:16', '1000000000', '1', '');
 INSERT INTO `sys_role_perm` VALUES ('55', '1001', '1054', '2020-08-12 12:26:38', '1000000000', '2020-08-12 12:32:55', '1000000000', '1', '');
 INSERT INTO `sys_role_perm` VALUES ('56', '1001', '1055', '2020-08-26 12:22:11', '1000000000', '2020-08-26 12:28:35', '1000000000', '1', '');
-
+*/
 -- ----------------------------
 -- Table structure for `user`
 -- ----------------------------
