@@ -332,7 +332,7 @@ CREATE TABLE `sys_permission` (
 `perm_id`  int(4) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '权限ID' ,
 `perm_name`  varchar(50) NOT NULL DEFAULT '' COMMENT '权限名称' ,
 `perm_caption`  varchar(20) NOT NULL DEFAULT '' COMMENT '权限标题' ,
-`perm_herf`  varchar(50) DEFAULT NULL COMMENT '权限路径' ,
+`perm_href`  varchar(50) DEFAULT NULL COMMENT '权限路径' ,
 `perm_parent_id`  int(4) unsigned DEFAULT NULL COMMENT '权限父级ID' ,
 `is_button`  tinyint(1)  UNSIGNED NOT NULL DEFAULT 1 COMMENT  '是否按钮',
 `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
