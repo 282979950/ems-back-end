@@ -720,11 +720,7 @@
         var parent = params.parent;
         var $parent = this.$parent = $(params.parent).eq(0);
         var $dom = this.$dom = $('<div class="tree-combobox"></div>').appendTo($parent);
-        var random = parseInt(Math.random()*1000000000);
-        random = 'lucia_' + random + '_lucia';
-        console.log(random);
         var $input = this.$input = $('<input/>').appendTo($dom);
-        $input.addClass(random);
         if (params.clazz) {
             $input.addClass(params.clazz)
         }

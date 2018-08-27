@@ -178,7 +178,7 @@
         <include refid="Base_Column_List"/>
         from
         sys_permission
-        where perm_parent_id IS NOT NULL and usable = 1
+        where usable = 1
     </select>
   <update id="deleteByPermId" parameterType="map">
         update sys_permission
