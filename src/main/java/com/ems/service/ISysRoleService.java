@@ -3,6 +3,8 @@ package com.ems.service;
 import com.ems.common.JsonData;
 import com.ems.param.SysRoleParam;
 
+import java.util.List;
+
 /**
  * 系统角色服务接口
  * @author litairan on 2018/7/18.
@@ -23,10 +25,10 @@ public interface ISysRoleService {
 
     /**
      * 删除角色
-     * @param roleId
+     * @param ids
      * @return
      */
-    JsonData deleteRole(Integer roleId);
+    JsonData deleteRole(List<Integer> ids);
 
     /**
      * 查询角色

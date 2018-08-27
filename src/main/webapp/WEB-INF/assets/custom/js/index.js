@@ -29,8 +29,6 @@ app.initIndex = function () {
                         pane: mainElement,
                         url: name + '/listData.do'
                     });
-
-                    app.removeEvent();
                     app.initEvent();
                 }
             }
@@ -51,8 +49,7 @@ app.initEvent = function () {
     var main = $('.container-main');
     var table = app.table;
     var fields = table.getFields();
-    main.on('add', function (event) {
-        console.log(event);
+    main.on('add', function () {
         var dialog = mdui.dialog({
             title: '新增',
             content: ' ',
@@ -257,7 +254,7 @@ app.tableFields = {
         name: 'permCaption',
         caption: '权限标题'
     }, {
-        name: 'menuName',
+        name: 'permParentCaption',
         caption: '菜单名称'
     }],
     role: [{
@@ -290,6 +287,7 @@ app.tableFields = {
 /*
  *新增时弹出框,列显示
  */
+
 app.addFormfields = {
     dist: [{
         name: 'distName',
@@ -343,18 +341,69 @@ app.addFormfields = {
         name: 'permCaption',
         caption: '权限标题'
     }, {
-        name: 'menuId',
-        caption: '菜单名称'
-        /*,type:'selectTree',url:'permission/listAllMenus.do', id:'menuId', text:'menuName', parentId:'menuParentId'*/
+        name: 'permParentId',
+        caption: '菜单名称' ,
+        type:'treecombobox' ,
+        options: {
+            idKey: 'permId',
+            pIdKey: 'permParentId',
+            name: 'permId',
+            N : '',
+            Y : '',
+            chkStyle: 'radio',
+            radioType: "all",
+            nodes : ajaxTreeCombobox('permission/listAllMenus.do')
+        }
+     }, {
+        name: 'isButton',
+        caption: '是否按钮',
+        type : 'listcombobox',
+        options: [{
+            key: '是',
+            value: 'true'
+        }, {
+            key: '否',
+            value: 'false'
+        }]
+    }, {
+        name: 'remarks',
+        caption: '备注'
     }],
     role: [{
         name: 'roleName', caption: '角色名称'
     }, {
-        name: 'distIdList', caption: '角色所属地区'
+        name: 'distIdList', caption: '角色所属地区',
+        type:'treecombobox' ,
+        options: {
+            idKey: 'distId',
+            pIdKey: 'distParentId',
+            name: 'distId',
+            N : 's',
+            Y : 'p',
+            nodes : ajaxTreeCombobox('dist/listData.do')
+        }
     }, {
-        name: 'orgIdList', caption: '角色所属机构'
+        name: 'orgIdList', caption: '角色所属机构',
+        type:'treecombobox' ,
+        options: {
+            idKey: 'orgId',
+            pIdKey: 'orgParentId',
+            name: 'orgId',
+            N : 's',
+            Y : 'p',
+            nodes : ajaxTreeCombobox('org/listData.do')
+        }
     }, {
-        name: 'permIdList', caption: '角色拥有权限'
+        name: 'permIdList', caption: '角色拥有权限',
+        type:'treecombobox' ,
+        options: {
+            idKey: 'permId',
+            pIdKey: 'permParentId',
+            name: 'permId',
+            N : 's',
+            Y : 'p',
+            nodes : ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
+        }
     }],
     entry: [{
         name: 'meterCode',
@@ -379,9 +428,27 @@ app.addFormfields = {
         caption: '表具入库时间'
     }]
 };
+
+function ajaxTreeCombobox(url){
+    var data = null;
+    $.ajax({
+        async: false,
+        type: 'POST',
+                url: url,
+                contentType: 'application/json;charset=utf-8',
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (response) {
+                     data = response.data;
+                }
+            });
+    return data;
+}
 /*
  *修改时弹出框,列显示
  */
+
 app.editFormFields = {
     dist: [{
         name: 'distName',
@@ -432,23 +499,73 @@ app.editFormFields = {
         name: 'permCaption',
         caption: '权限标题'
     }, {
-        name: 'menuId',
-        caption: '菜单名称'
-        /*,type:'selectTree',url:'permission/listAllMenus.do', id:'menuId', text:'menuName', parentId:'menuParentId'*/
+        name: 'permParentId',
+        caption: '菜单名称',
+        type:'treecombobox' ,
+        options: {
+            idKey: 'permId',
+            pIdKey: 'permParentId',
+            name: 'permId',
+            N : '',
+            Y : '',
+            chkStyle: 'radio',
+            radioType: "all",
+            nodes : ajaxTreeCombobox('permission/listAllMenus.do')
+        }
+    }, {
+        name: 'isButton',
+        caption: '是否按钮',
+        type : 'listcombobox',
+        options: [{
+            key: '是',
+            value: 'true'
+        }, {
+            key: '否',
+            value: 'false'
+        }]
+    }, {
+        name: 'remarks',
+        caption: '备注'
     }],
     role: [{
         name: 'roleName',
         caption: '角色名称'
     }, {
         name: 'distIdList',
-        caption: '角色所属地区'
+        caption: '角色所属地区',
+        type:'treecombobox' ,
+        options: {
+            idKey: 'distId',
+            pIdKey: 'distParentId',
+            name: 'distId',
+            N : 's',
+            Y : 'p',
+            nodes : ajaxTreeCombobox('dist/listData.do')
+        }
     }, {
         name: 'orgIdList',
-        caption: '角色所属机构'
-        /*,type:'selectTree',url:'permission/listAllMenus.do', id:'menuId', text:'menuName', parentId:'menuParentId'*/
+        caption: '角色所属机构',
+        type:'treecombobox' ,
+        options: {
+            idKey: 'orgId',
+            pIdKey: 'orgParentId',
+            name: 'orgId',
+            N : 's',
+            Y : 'p',
+            nodes : ajaxTreeCombobox('org/listData.do')
+        }
     }, {
         name: 'permIdList',
-        caption: '角色拥有权限'
+        caption: '角色拥有权限',
+        type:'treecombobox' ,
+        options: {
+            idKey: 'permId',
+            pIdKey: 'permParentId',
+            name: 'permId',
+            N : 's',
+            Y : 'p',
+            nodes : ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
+        }
     }],
     entry: [{
         name: 'meterCode',

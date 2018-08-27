@@ -415,7 +415,7 @@
         var fields = _this.fields = $('.field');
         fields.each(function (index, field) {
             var $field = $(field);
-            $field.on('click', function (event) {
+            $field.on('click', function () {
                 var name = $field.attr('name');
                 switch (name) {
                     case 'add':
@@ -480,8 +480,7 @@
             }
         },
         view: {
-            showIcon: false,
-            showTitle: true
+            showIcon: false
         }
     };
 
@@ -504,14 +503,15 @@
         // 定义节点选中的联动行为，p影响父节点，s影响子节点
         setting.check.chkboxType.Y = params.Y;
         setting.check.chkboxType.N = params.N;
+        //radio为单选，checkbox为多选
         setting.check.chkStyle = params.chkStyle ? params.chkStyle : 'checkbox';
+        setting.check.radioType = params.radioType ? params.radioType : 'level';
         setting.data.simpleData.idKey = this.idKey = params.idKey ? params.idKey : 'id';
         setting.data.simpleData.pIdKey = this.pIdKey = params.pIdKey ? params.pIdKey : 'pId';
         setting.data.key.name = this.nameKey = params.name ? params.name : 'name';
-        setting.data.key.title = this.titleKey = params.title ? params.title : '';
         this._initEvents();
         var $parent = $(params.parent);
-        var ztree = this.ztree = $.fn.zTree.initz($parent, setting, params.nodes);
+        var ztree = this.ztree = $.fn.zTree.init($parent, setting, params.nodes);
         this.$dom = $($parent.children()[0]);
         ztree.expandAll(true);
     };
@@ -578,7 +578,7 @@
         var nodes = _this.getAllNodes();
         var result = null;
         nodes.forEach(function (node) {
-            if (node[_this.nameKey] === name) {
+            if (node[_this.nameKey] == name) {
                 result = node;
             }
         });

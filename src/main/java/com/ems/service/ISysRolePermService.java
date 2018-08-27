@@ -12,5 +12,5 @@ import java.util.List;
 public interface ISysRolePermService {
     JsonData changeRolePerms(Integer roleId, List<Integer> permList);
 
-    int deleteRolePerms(Integer roleId);
+    int deleteRolePerms(List<Integer> roleIds);
 }

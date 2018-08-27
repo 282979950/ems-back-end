@@ -52,4 +52,10 @@ public interface ISysPermissionService {
      * @return
      */
     JsonData listAllMenus();
+
+    /**
+     * 获取所有菜单列表与权限列表关系
+     * @return
+     */
+    JsonData listAllMenusAndPerms();
 }

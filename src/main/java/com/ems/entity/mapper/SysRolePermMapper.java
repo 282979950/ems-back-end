@@ -18,7 +18,7 @@ public interface SysRolePermMapper {
 
     int updateByPrimaryKey(SysRolePerm record);
 
-    int deleteByRoleId(Integer roleId);
+    int deleteByRoleId(@Param("roleIds") List<Integer> roleIds);
 
     int batchInsert(@Param("rolePermList") List<SysRolePerm> rolePermList);
 

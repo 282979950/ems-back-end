@@ -20,8 +20,6 @@ public interface SysPermissionMapper {
 
     List<SysPermission> selectAll();
 
-    int update(SysPermission record);
-
     int deleteByPermId(@Param("permIds") String[] permIds ,@Param("updateBy")  Integer currentEmpId);
 
     List<SysPermission> select(@Param("permName") String permName, @Param("permCaption") String permCaption, @Param("menuName") String menuName);
