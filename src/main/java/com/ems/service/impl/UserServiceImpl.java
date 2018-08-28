@@ -184,4 +184,17 @@ public class UserServiceImpl implements IUserService {
     private User getUserByIccardId(Integer iccardId) {
         return userMapper.getUserByIccardId(iccardId);
     }
+
+    @Override
+    public JsonData getAllNotAccountArchive() {
+        List<CreateArchiveParam> archives = userMapper.searchArchive(null,null,null,null,null,2);
+        return archives == null || archives.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(archives, "查询成功");
+
+    }
+
+    @Override
+    public JsonData searchAllNotAccountArchive(Integer userId, String distName, String userAddress, Integer userType, Integer userGasType) {
+        List<CreateArchiveParam> archives = userMapper.searchArchive(userId, distName, userAddress, userType, userGasType,2);
+        return archives == null || archives.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(archives, "查询成功");
+    }
 }

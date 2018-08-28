@@ -275,6 +275,7 @@
             <arg column="user_gas_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="user_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="user_locked" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="meter_category" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -285,9 +286,13 @@
     </resultMap>
     <select id="getAllArchives" resultMap="CreateArchiveParam">
         select
-        u.user_id, dist.dist_name, u.user_address, u.user_type, u.user_gas_type, u.user_status, u.user_locked, u.create_time, u.create_by, u.update_time,
+        u.user_id, dist.dist_name, u.user_address, u.user_type, u.user_gas_type, u.user_status, u.user_locked, mt.meter_category, u.create_time, u.create_by, u.update_time,
         u.update_by, u.usable, u.remarks
-        from user u left join sys_district dist on u.user_dist_id = dist.dist_id
+        from user u
+        LEFT JOIN user_meters um ON u.user_id=um.user_id
+        LEFT JOIN meter m ON um.meter_id=m.meter_id
+        LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
+        left join sys_district dist on u.user_dist_id = dist.dist_id
         where u.usable = 1
     </select>
     <insert id="addArchive" parameterType="com.ems.param.CreateArchiveParam">
@@ -342,9 +347,13 @@
     </update>
     <select id="searchArchive" parameterType="map" resultMap="CreateArchiveParam">
         select
-        u.user_id, dist.dist_name, u.user_address, u.user_type, u.user_gas_type, u.user_status, u.user_locked, u.create_time, u.create_by, u.update_time,
+        u.user_id, dist.dist_name, u.user_address, u.user_type, u.user_gas_type, u.user_status, u.user_locked, mt.meter_category, u.create_time, u.create_by, u.update_time,
         u.update_by, u.usable, u.remarks
-        from user u left join sys_district dist on u.user_dist_id = dist.dist_id
+        from user u
+        LEFT JOIN user_meters um ON u.user_id=um.user_id
+        LEFT JOIN meter m ON um.meter_id=m.meter_id
+        LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
+        left join sys_district dist on u.user_dist_id = dist.dist_id
         where u.usable = 1
         <if test="userId != null and userId != ''">
             AND u.user_id LIKE CONCAT('%', #{userId,jdbcType=INTEGER}, '%')

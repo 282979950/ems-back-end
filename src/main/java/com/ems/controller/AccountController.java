@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author litairan on 2018/8/8.
  */
 @Controller
-@RequestMapping("/account")
+@RequestMapping("/account/")
 public class AccountController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class AccountController {
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData getAllNotAccountArchives() {
-        return userService.searchArchive(null, null, null, null, null,  2);
+        return userService.getAllNotAccountArchive();
     }
 
     /**
@@ -54,7 +54,7 @@ public class AccountController {
      * @param param
      * @return
      */
-    @RequestMapping(value = "/createAccount", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit.do")
     @ResponseBody
     public JsonData createAccount(CreateAccountParam param) {
         return userService.createAccount(param);
@@ -69,6 +69,6 @@ public class AccountController {
     @ResponseBody
     public JsonData searchArchive(@Param("userId") Integer userId, @Param("distName") String distName, @Param("userAddress") String userAddress, @Param
             ("userType") Integer userType, @Param("userGasType") Integer userGasType) {
-        return userService.searchArchive(userId, distName, userAddress, userType, userGasType, 2);
+        return userService.searchAllNotAccountArchive(userId, distName, userAddress, userType, userGasType);
     }
 }

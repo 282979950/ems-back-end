@@ -73,4 +73,22 @@ public interface IUserService {
      * @return
      */
     JsonData createAccount(CreateAccountParam param);
+
+
+    /**
+     * 查询所有未开户的信息
+     * @return
+     */
+    JsonData getAllNotAccountArchive();
+
+    /**
+     * 条件查询已开户的信息
+     * @param userId
+     * @param distName
+     * @param userAddress
+     * @param userType
+     * @param userGasType
+     * @return
+     */
+    JsonData searchAllNotAccountArchive(Integer userId, String distName, String userAddress, Integer userType, Integer userGasType);
 }

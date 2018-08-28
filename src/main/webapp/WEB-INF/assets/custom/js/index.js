@@ -74,7 +74,7 @@ app.initEvent = function () {
                 text: '取消'
             }]
         });
-        $(".tree-combobox-panel").remove();
+        // $(".tree-combobox-panel").remove();
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields:app.addFormfields[formNames]
@@ -120,7 +120,7 @@ app.initEvent = function () {
                 text: '取消'
             }]
         });
-        $(".tree-combobox-panel").remove();
+        // $(".tree-combobox-panel").remove();
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields: app.editFormFields[formNames],
@@ -727,6 +727,28 @@ app.editFormFields = {
     }, {
         name: 'userStatus',
         caption: '用户状态'
+    }],
+    account:[{
+        name: 'userName',
+        caption: '客户姓名'
+    },{
+        name: 'userPhone',
+        caption: '电话'
+    },{
+        name: 'iccardIdentifier',
+        caption:'IC卡识别号'
+    },{
+        name: 'userIdcard',
+        caption: '身份证号'
+    },{
+        name: 'userDeed',
+        caption: '房产证号'
+    },{
+        name: 'orderPayment',
+        caption: '充值金额'
+    },{
+        name: 'orderGas',
+        caption: '充值气量'
     }]
 };
 

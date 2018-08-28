@@ -59,8 +59,13 @@ public class CreateArchiveParam extends BaseEntity {
      */
     private Boolean userLocked;
 
+    /**
+     * 用户表具类型
+     */
+    private String meterCategory;
+
     public CreateArchiveParam(Integer userId, String distName, String userAddress, Integer userType, Integer userGasType, Integer userStatus, Boolean
-            userLocked, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+            userLocked, String meterCategory, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.userId = userId;
         this.distName = distName;
@@ -69,6 +74,7 @@ public class CreateArchiveParam extends BaseEntity {
         this.userGasType = userGasType;
         this.userStatus = userStatus;
         this.userLocked = userLocked;
+        this.meterCategory = meterCategory;
     }
 
     public CreateArchiveParam() {
