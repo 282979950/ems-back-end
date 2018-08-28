@@ -256,6 +256,12 @@ app.tableFields = {
     role: [{
         name: 'roleName',
         caption: '角色名称'
+    },{
+        name: 'createTime',
+        caption: '创建时间'
+    },{
+        name: 'remarks',
+        caption: '备注'
     }],
     entry: [{
         name: 'meterCode',
