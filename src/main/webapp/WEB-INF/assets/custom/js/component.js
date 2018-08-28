@@ -734,7 +734,7 @@
             display: 'none',
             position: 'absolute'
         }).appendTo($('body'));
-        options.parent = options.parent ? options.parent : $panelDom;
+        options.parent = $panelDom;
         this.tree = app.createTree(options);
     };
 
