@@ -188,6 +188,12 @@
         from sys_district
         where dist_name = #{distName} and usable = 1
     </select>
+    <select id="checkIdAndName" parameterType="map" resultType="boolean">
+        select
+        COUNT(1)
+        from sys_district
+        where dist_name = #{distName,jdbcType=VARCHAR} and dist_id != #{distId,jdbcType=INTEGER} and usable = 1
+    </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

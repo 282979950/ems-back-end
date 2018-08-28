@@ -27,6 +27,14 @@ public interface ISysDistrictService {
     boolean checkUsable(String distName);
 
     /**
+     * 检查编辑时名称是否重名
+     *
+     * @param distName
+     * @return
+     */
+    boolean checkIdAndName(Integer distId, String distName);
+
+    /**
      * 新增区域
      * district中distName,distParentId不能为空
      *

@@ -37,6 +37,11 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
     }
 
     @Override
+    public boolean checkIdAndName(Integer distId, String distName) {
+        return districtMapper.checkIdAndName(distId, distName);
+    }
+
+    @Override
     @Transactional(readOnly = false)
     public JsonData createDistrict(SysDistrict district) {
         BeanValidator.check(district);
@@ -66,8 +71,9 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
     public JsonData updateSysDistrict(SysDistrict district) {
         BeanValidator.check(district);
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        Integer distId = district.getDistId();
         String distName = district.getDistName();
-        if (checkUsable(distName)) {
+        if (checkIdAndName(distId, distName)) {
             throw new ParameterException("区域名称:" + distName + "已存在");
         }
         district.setUpdateBy(currentEmpId);

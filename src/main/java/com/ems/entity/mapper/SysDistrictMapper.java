@@ -22,6 +22,8 @@ public interface SysDistrictMapper {
 
     boolean checkUsable(String distName);
 
+    boolean checkIdAndName(@Param("distId") Integer distId, @Param("distName") String distName);
+
     List<SysDistrict> selectAll();
 
     int getCountWithUnusable();
