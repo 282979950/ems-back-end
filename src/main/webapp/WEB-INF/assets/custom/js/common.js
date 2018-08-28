@@ -305,9 +305,6 @@ var app = {
                      *使用数据模板Getfields中可定义对应数据模板内容
                      */
                     var names = app.currentPageName;
-                    if(names=='org'){
-                     dictionaryTable(data);
-                    }
                     app.table = context.table = app.createTable({
                         parent: '.mdui-table-fluid',
                         fields:app.tableFields[names],

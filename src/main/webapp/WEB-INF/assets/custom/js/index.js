@@ -359,36 +359,7 @@ editFormDictionary = function(formNames){
     }
     return datas;
 };
-/*
- *数据字典
- */
-dictionaryTable = function(tableData){
-console.log("加载table时数据字典请求中...")
-        $.ajax({
-            async:false,
-            type: 'POST',
-            url: 'dic/dictByType.do',
-            contentType: 'application/x-www-form-urlencoded',
-            data: { orgCategory: "org_type"},
-            success: function (list) {
 
-                if(list.data!= null){
-                    datas = list.data;
-                   for(var i=0;i<tableData.length;i++){
-                       for(var j=0;j<datas.length;j++){
-                           if((tableData && datas) && tableData[i].orgCategory == datas[j].dictValue){
-
-                               tableData[i].orgCategory =  datas[j].dictKey
-
-                           }
-                       }
-                   }
-                }
-            }
-        });
-    console.log("数据请求完毕...")
-    return tableData;
-};
 /*
  *新增时弹出框,列显示
  */
