@@ -305,6 +305,7 @@
         user_address = #{userAddress,jdbcType=VARCHAR},
         user_type = #{userType,jdbcType=INTEGER},
         user_gas_type = #{userGasType,jdbcType=INTEGER},
+        user_status = #{userStatus,jdbcType=INTEGER},
         update_time = NOW(),
         update_by = #{updateBy,jdbcType=INTEGER}
         where user_id = #{userId,jdbcType=INTEGER}
