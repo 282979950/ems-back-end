@@ -125,7 +125,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.23</version>
+            <version>5.1.46</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
@@ -351,7 +351,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.23</version>
+            <version>5.1.46</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
