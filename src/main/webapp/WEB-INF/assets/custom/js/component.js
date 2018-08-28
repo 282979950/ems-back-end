@@ -730,11 +730,11 @@
         }
         var $span = this.$span = $('<span><i class="mdui-icon material-icons">arrow_drop_down</i></span>').appendTo($dom);
         var options = params.options;
-        options.parent = options.parent ? options.parent : '.tree-combobox-panel';
         var $panelDom = this.$panelDom = $('<div class="tree-combobox-panel ztree mdui-shadow-2"></div>').css({
             display: 'none',
             position: 'absolute'
         }).appendTo($('body'));
+        options.parent = options.parent ? options.parent : $panelDom;
         this.tree = app.createTree(options);
     };
 
