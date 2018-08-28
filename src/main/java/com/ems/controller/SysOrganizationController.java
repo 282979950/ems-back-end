@@ -9,8 +9,10 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.registry.infomodel.Organization;
 
 import com.ems.common.Const;
+import com.ems.entity.SysDictionary;
 import com.ems.service.SysDictionaryService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -43,7 +45,24 @@ public class SysOrganizationController {
 	@ResponseBody
 	public JsonData selectFindListOnPc(){
 
-		return JsonData.successData(sysOrganizationService.findListOrganizationOnPc());
+		List<SysOrganization> list =sysOrganizationService.findListOrganizationOnPc();
+		//获取字典值
+        List<SysDictionary> dictList = sysDictionaryService.findListByTypeOnPc("org_type");
+
+        if(dictList.size()<=0){
+           String  msg ="未获取到对应数据字典，请检查字典项";
+            return JsonData.fail(msg);
+        }
+        for(int i=0;i<list.size();i++){
+            for(int j=0;j<dictList.size();j++){
+
+                if(list.get(i).getOrgCategory().equals(dictList.get(j).getDictValue())){
+                    list.get(i).setOrgCategory(dictList.get(j).getDictKey());
+                    break;
+                }
+            }
+        }
+		return JsonData.successData(list);
 
 	}
 	//机构新增
@@ -264,8 +283,24 @@ public class SysOrganizationController {
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData selectFindListByOrg(SysOrganization sysz,HttpServletRequest request,HttpServletResponse response){
-            String msg="查询成功";
-        return JsonData.success(sysOrganizationService.findListOrganizationService(sysz),msg);
+	    String msg="查询成功";
+        List<SysOrganization> list = sysOrganizationService.findListOrganizationService(sysz);
+        //获取字典值
+        List<SysDictionary> dictList = sysDictionaryService.findListByTypeOnPc("org_type");
+
+        if(dictList.size()<=0){
+            msg ="未获取到对应数据字典，请检查字典项";
+        }
+        for(int i=0;i<list.size();i++){
+            for(int j=0;j<dictList.size();j++){
+
+                if(list.get(i).getOrgCategory().equals(dictList.get(j).getDictValue())){
+                    list.get(i).setOrgCategory(dictList.get(j).getDictKey());
+                    break;
+                }
+            }
+        }
+        return JsonData.success(list,msg);
 
     }
 }
