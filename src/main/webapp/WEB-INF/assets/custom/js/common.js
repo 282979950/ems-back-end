@@ -103,6 +103,7 @@ var app = {
     roleTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     entryTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     createArchiveTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
+    accountTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     getPaneContent: function (name) {
         var paneContent = '';
         switch (name) {
@@ -143,6 +144,7 @@ var app = {
             case 'install':
                 break;
             case 'account':
+                paneContent = this.accountTemplate;
                 break;
             case 'alter':
                 break;

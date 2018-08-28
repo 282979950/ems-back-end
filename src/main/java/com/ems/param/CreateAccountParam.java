@@ -73,4 +73,9 @@ public class CreateAccountParam extends BaseEntity {
      * 支付金额
      */
     private BigDecimal orderPayment;
+
+    /**
+     * 支付气量
+     */
+    private BigDecimal orderGas;
 }

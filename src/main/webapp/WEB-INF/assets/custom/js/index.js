@@ -303,7 +303,28 @@ app.tableFields = {
     }, {
         name: 'userStatus',
         caption: '用户状态'
-    }]
+    }],
+    account: [
+        {
+            name: 'userId',
+            caption: '用户编号'
+        }, {
+            name: 'distName',
+            caption: '用户区域'
+        }, {
+            name: 'userAddress',
+            caption: '用户地址'
+        }, {
+            name: 'userType',
+            caption: '用户类型'
+        }, {
+            name: 'userGasType',
+            caption: '用气类型'
+        }, {
+            name: 'userStatus',
+            caption: '用户状态'
+        }
+    ]
 };
 /*
  *数据字典
@@ -889,6 +910,29 @@ app.headScreening = {
         caption: '用户状态',
         type: 'input'
     }, {
+        name: 'search',
+        caption: '搜索'
+    }],
+    account : [{
+        name: 'edit',
+        caption: '开户'
+    }, {
+        name: 'distName',
+        caption: '用户区域',
+        type: 'input'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址',
+        type: 'input'
+    }, {
+        name: 'userType',
+        caption: '用户类型',
+        type: 'input'
+    }, {
+        name: 'userGasType',
+        caption: '用气类型',
+        type: 'input'
+    },{
         name: 'search',
         caption: '搜索'
     }]
