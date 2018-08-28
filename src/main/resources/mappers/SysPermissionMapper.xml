@@ -229,13 +229,13 @@
         sys_permission spa JOIN sys_permission spb ON spa.perm_parent_id = spb.perm_id
         WHERE spa.perm_parent_id IS NOT NULL and spa.usable = 1
         <if test="permCaption != null and permCaption != ''">
-            AND spa.perm_caption = #{permCaption,jdbcType=VARCHAR}
+            AND spa.perm_caption LIKE CONCAT('%',#{permCaption,jdbcType=VARCHAR}, '%')
         </if>
         <if test="permName != null and permName != ''">
             AND spa.perm_name LIKE CONCAT('%', #{permName,jdbcType=VARCHAR}, '%')
         </if>
         <if test="menuName != null and menuName != ''">
-            AND spb.perm_caption LIKE CONCAT('%', #{permParentCaption,jdbcType=VARCHAR}, '%')
+            AND spb.perm_caption LIKE CONCAT('%', #{menuName,jdbcType=VARCHAR}, '%')
         </if>
         ORDER BY spa.perm_id
     </select>
