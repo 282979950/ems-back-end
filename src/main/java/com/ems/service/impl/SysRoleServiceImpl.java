@@ -173,6 +173,8 @@ public class SysRoleServiceImpl implements ISysRoleService {
             	sysRoleParam.setOrgIdList(sysRole.getRoleOrgList());
             	sysRole.setRolePermList();
             	sysRoleParam.setPermIdList(sysRole.getRolePermList());
+                sysRoleParam.setCreateTime(sysRole.getCreateTime());
+                sysRoleParam.setRemarks(sysRole.getRemarks());
                 roleList.add(sysRoleParam);
             }
         }

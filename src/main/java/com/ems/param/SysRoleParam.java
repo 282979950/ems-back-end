@@ -1,10 +1,12 @@
 package com.ems.param;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +44,12 @@ public class SysRoleParam {
      * 组织ID列表
      */
     private List<Integer> orgIdList;
+
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date createTime;
 
     /**
      * 备注
