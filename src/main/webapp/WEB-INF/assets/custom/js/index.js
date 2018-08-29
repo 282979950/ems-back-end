@@ -54,7 +54,7 @@ app.initIndex = function () {
                     response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                     if(response.status){
                         // $("input[name='orderPayment']").val(response.data);
-                       
+
                     }
                 }
             });
@@ -62,6 +62,7 @@ app.initIndex = function () {
 
     });
 };
+
 app.initEvent = function () {
     var formNames =app.currentPageName
     var main = $('.container-main');
@@ -332,6 +333,22 @@ app.tableFields = {
     }, {
         name: 'userStatus',
         caption: '用户状态'
+    }],
+    installMeter: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'distName',
+        caption: '用户区域'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userStatus',
+        caption: '用户状态'
+    }, {
+        name: 'meterCode',
+        caption: '表具编号'
     }],
     account: [
         {
@@ -757,6 +774,22 @@ app.editFormFields = {
         name: 'userStatus',
         caption: '用户状态'
     }],
+    installMeter: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'distName',
+        caption: '用户区域'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userStatus',
+        caption: '用户状态'
+    }, {
+        name: 'meterCode',
+        caption: '表具编号'
+    }],
     accountIC:[{
         name: 'userName',
         caption: '客户姓名'
@@ -983,6 +1016,25 @@ app.headScreening = {
         name: 'search',
         caption: '搜索'
     }],
+    installMeter: [{
+        name: 'edit',
+        caption: '编辑'
+    }, {
+        name: 'userId',
+        caption: '用户编号',
+        type: 'input'
+    }, {
+        name: 'distName',
+        caption: '用户区域',
+        type: 'input'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址',
+        type: 'input'
+    }, {
+        name: 'search',
+        caption: '搜索'
+    }],
     account : [{
         name: 'edit',
         caption: '开户'
@@ -1006,6 +1058,7 @@ app.headScreening = {
         name: 'search',
         caption: '搜索'
     }]
+
 };
 
 app.deleteNames = {
@@ -1017,4 +1070,3 @@ app.deleteNames = {
     'entry': 'meterId',
     'createArchive': 'userId'
 };
-

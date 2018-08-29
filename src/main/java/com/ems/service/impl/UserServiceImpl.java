@@ -104,29 +104,101 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData installMeter(InstallMeterParam param) {
+    public JsonData getAllInstallMeters() {
+        List<InstallMeterParam> meters = userMapper.getAllInstallMeters();
+        return meters == null || meters.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(meters, "查询成功");
+    }
+
+    @Override
+    public JsonData addInstallMeter(InstallMeterParam param) {
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public JsonData editInstallMeter(InstallMeterParam param) {
         BeanValidator.check(param);
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         Integer meterId = meterService.getMeterIdByMeterCode(param.getMeterCode());
         //更新表具安装时间
         Meter meter = new Meter();
         meter.setMeterId(meterId);
         meter.setMeterInstallTime(new Date());
+        meter.setUpdateBy(currentEmpId);
         int resultCount = meterService.updateMeter(meter);
         if (resultCount == 0) {
             return JsonData.fail("更新表具安装时间失败");
         }
         //更新用户表具信息
         UserMeters userMeters = new UserMeters();
-        userMeters.setUserId(param.getUserId());
-        userMeters.setMeterId(meterId);
-        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        userMeters.setCreateBy(currentEmpId);
-        userMeters.setUpdateBy(currentEmpId);
-        int resultCount2 = userMetersMapper.installMeter(userMeters);
-        if (resultCount2 == 0) {
-            return JsonData.fail("更新用户表具信息失败");
+        // 判断当前用户的状态
+        Integer userStatus = param.getUserStatus();
+        if (userStatus.equals(1)) {
+            Integer userId = param.getUserId();
+            User user = getUserById(userId);
+            user.setUpdateBy(currentEmpId);
+            user.setUserStatus(2);
+            List<User> users = new ArrayList<>();
+            users.add(user);
+            int resultCount2 = userMapper.updateUserStatus(users);
+            if (resultCount2 == 0) {
+                return JsonData.fail("更新用户表具信息失败");
+            }
+            userMeters.setUserId(param.getUserId());
+            userMeters.setMeterId(meterId);
+            userMeters.setCreateBy(currentEmpId);
+            userMeters.setUpdateBy(currentEmpId);
+            int resultCount3 = userMetersMapper.installMeter(userMeters);
+            if (resultCount3 == 0) {
+                return JsonData.fail("更新用户表具信息失败");
+            }
+            return JsonData.successMsg("更新挂表信息成功");
+        } else {
+            userMeters.setUserId(param.getUserId());
+            userMeters.setMeterId(meterId);
+            userMeters.setUpdateBy(currentEmpId);
+            int resultCount4 =userMetersMapper.updateMeter(userMeters);
+            if (resultCount4 == 0) {
+                return JsonData.fail("更新用户表具信息失败");
+            }
+            return JsonData.successMsg("更新挂表信息成功");
         }
-        return JsonData.successMsg("更新挂表信息成功");
+    }
+
+    @Override
+    @Transactional
+    public JsonData deleteInstallMeter(List<Integer> ids) {
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        List<User> users = new ArrayList<>();
+        for (Integer id : ids) {
+            User user = getUserById(id);
+            if (user.getUserStatus() == 1) {
+                return JsonData.fail("存在未挂表的用户");
+            }
+            user.setUpdateBy(currentEmpId);
+            users.add(getUserById(id));
+        }
+        int resultCount = userMapper.updateUserStatus(users);
+        if (resultCount < users.size()) {
+            return JsonData.fail("删除用户表具信息失败");
+        }
+        List<UserMeters> userMeters = new ArrayList<>();
+        for (Integer id : ids) {
+            UserMeters userMeter = userMetersMapper.getUserMeterById(id);
+            userMeter.setUpdateBy(currentEmpId);
+            userMeters.add(userMeter);
+        }
+        int resultCount2 = userMetersMapper.deleteInstallMeter(userMeters);
+        if (resultCount2 < users.size()) {
+            return JsonData.fail("删除用户表具信息失败");
+        }
+        return JsonData.successMsg("删除用户表具信息成功");
+    }
+
+    @Override
+    public JsonData searchInstallMeter(Integer userId, String distName, String userAddress) {
+        List<InstallMeterParam> meters = userMapper.searchInstallMeter(userId, distName, userAddress);
+        return meters == null || meters.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(meters, "查询成功");
     }
 
     @Override
@@ -179,6 +251,12 @@ public class UserServiceImpl implements IUserService {
         return userMapper.getAllCount();
     }
 
+    /**
+     *
+     */
+    private User getUserById(Integer userId) {
+        return userMapper.getUserById(userId);
+    }
 
     /**
      * 依据IC卡卡号获取用户

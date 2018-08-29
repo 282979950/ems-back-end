@@ -74,7 +74,7 @@
             <div class="mdui-collapse-item-body mdui-list" style="">
                 <div class="mdui-list-item mdui-ripple nav-item entry">表具入库</div>
                 <div class="mdui-list-item mdui-ripple nav-item createArchive">用户建档</div>
-                <div class="mdui-list-item mdui-ripple nav-item install">挂表</div>
+                <div class="mdui-list-item mdui-ripple nav-item installMeter">挂表</div>
                 <div class="mdui-list-item mdui-ripple nav-item account">开户</div>
                 <div class="mdui-list-item mdui-ripple nav-item alter">账户变更</div>
             </div>

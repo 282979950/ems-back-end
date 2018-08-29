@@ -324,7 +324,7 @@
             var $field = $(field);
             $field.on('change', function () {
                 _this.data[field.name] = $field.val();
-            })
+            });
         });
     };
 
@@ -342,6 +342,19 @@
      */
     Form.prototype.getDom = function () {
         return this.$dom;
+    };
+
+    /**
+     * 设置field的value
+     */
+    Form.prototype.setValue = function(name, value) {
+        this.data[name] =  value;
+        var _this = this;
+        _this.$fields.each(function (index, field) {
+            if(field.name === name) {
+                $(field).val(value);
+            }
+        });
     };
 
     /**
@@ -729,7 +742,7 @@
             $input.attr('name', params.name)
         }
         var $span = this.$span = $('<span><i class="mdui-icon material-icons">arrow_drop_down</i></span>').appendTo($dom);
-        var options = params.options;
+        var options = JSON.parse(JSON.stringify(params.options));
         var $panelDom = this.$panelDom = $('<div class="tree-combobox-panel ztree mdui-shadow-2"></div>').css({
             display: 'none',
             position: 'absolute'
