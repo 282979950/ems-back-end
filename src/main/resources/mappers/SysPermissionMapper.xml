@@ -224,7 +224,7 @@
     <select id="select" parameterType="map" resultType="com.ems.entity.SysPermission">
         SELECT
         spa.perm_id as permId,spa.perm_name as permName,spa.perm_caption as permCaption,
-        spa.perm_parent_id as permParentId,spb.perm_caption AS permParentCaption,spa.is_button as isButton
+        spa.perm_parent_id as permParentId,spb.perm_caption AS permParentCaption,spa.is_button as isButton,spa.remarks
         FROM
         sys_permission spa JOIN sys_permission spb ON spa.perm_parent_id = spb.perm_id
         WHERE spa.perm_parent_id IS NOT NULL and spa.usable = 1

@@ -36,6 +36,11 @@ public class UserOrders extends BaseEntity {
     private BigDecimal orderPayment;
 
     /**
+     * 支付气量
+     */
+    private BigDecimal orderGas;
+
+    /**
      * 订单状态
      */
     private Integer orderStatus;
@@ -50,13 +55,14 @@ public class UserOrders extends BaseEntity {
      */
     private Date orderCloseTime;
 
-    public UserOrders(Integer orderId, Integer userId, Integer employeeId, BigDecimal orderPayment, Integer orderStatus, Date orderCreateTime, Date
+    public UserOrders(Integer orderId, Integer userId, Integer employeeId, BigDecimal orderPayment, BigDecimal orderGas, Integer orderStatus, Date orderCreateTime, Date
             orderCloseTime, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.orderId = orderId;
         this.userId = userId;
         this.employeeId = employeeId;
         this.orderPayment = orderPayment;
+        this.orderGas = orderGas;
         this.orderStatus = orderStatus;
         this.orderCreateTime = orderCreateTime;
         this.orderCloseTime = orderCloseTime;

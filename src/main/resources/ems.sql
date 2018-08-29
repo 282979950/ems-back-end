@@ -629,7 +629,7 @@ INSERT INTO `sys_role_perm` VALUES ('91', '1001', '1090', '2020-03-25 13:11:08',
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户编号',
+  `user_id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户编号',
   `user_name` varchar(20) DEFAULT NULL COMMENT '用户名称',
   `user_phone` varchar(20) DEFAULT NULL COMMENT '用户电话',
   `user_idcard` varchar(20) DEFAULT NULL COMMENT '用户身份证号码',
@@ -664,7 +664,7 @@ CREATE TABLE `user` (
 DROP TABLE IF EXISTS `user_meters`;
 CREATE TABLE `user_meters` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `user_id` int(8) unsigned NOT NULL COMMENT '用户ID',
   `meter_id` int(10) unsigned NOT NULL COMMENT '表具ID',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
@@ -689,7 +689,7 @@ CREATE TABLE `user_meters` (
 DROP TABLE IF EXISTS `user_orders`;
 CREATE TABLE `user_orders` (
   `order_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '订单ID',
-  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `user_id` int(8) unsigned NOT NULL COMMENT '用户ID',
   `employee_id` int(10) unsigned NOT NULL COMMENT '员工ID',
   `order_payment` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '充值金额',
   `order_gas` decimal(10,2) unsigned DEFAULT NULL COMMENT '充值气量',

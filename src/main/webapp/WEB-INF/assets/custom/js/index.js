@@ -36,9 +36,32 @@ app.initIndex = function () {
         $(document).click(function(){
             $(".tree-combobox-panel").hide();
         });
+        $('body').on('keyup', '[name="orderGas"]', function(res) {
+            var val = $(this).val();
+            $.ajax({
+                async : true,
+                type: 'POST',
+                url: 'account/calAmount.do',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    "orderGas" :  val
+                },
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (response) {
+                    console.log(response);
+                    response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                    if(response.status){
+                        // $("input[name='orderPayment']").val(response.data);
+                       
+                    }
+                }
+            });
+        });
+
     });
 };
-
 app.initEvent = function () {
     var formNames =app.currentPageName
     var main = $('.container-main');
@@ -74,7 +97,7 @@ app.initEvent = function () {
                 text: '取消'
             }]
         });
-        // $(".tree-combobox-panel").remove();
+        $(".tree-combobox-panel").remove();
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields:app.addFormfields[formNames]
@@ -120,8 +143,14 @@ app.initEvent = function () {
                 text: '取消'
             }]
         });
-        // $(".tree-combobox-panel").remove();
-        var form = app.createForm({
+        $(".tree-combobox-panel").remove();
+        if(app.currentPageName == 'account'){
+            if(table.getSelectedDatas()[0]['meterCategory'] == 'IC卡表')
+                formNames = app.currentPageName + 'IC';
+            else
+                formNames = app.currentPageName + 'MessAndUnion';
+        }
+        var form = app.editForm =app.createForm({
             parent: '.mdui-dialog-content',
             fields: app.editFormFields[formNames],
             data: table.getSelectedDatas()[0]
@@ -728,7 +757,29 @@ app.editFormFields = {
         name: 'userStatus',
         caption: '用户状态'
     }],
-    account:[{
+    accountIC:[{
+        name: 'userName',
+        caption: '客户姓名'
+    },{
+        name: 'userPhone',
+        caption: '电话'
+    },{
+        name: 'iccardIdentifier',
+        caption:'IC卡识别号'
+    },{
+        name: 'userIdcard',
+        caption: '身份证号'
+    },{
+        name: 'userDeed',
+        caption: '房产证号'
+    },{
+        name: 'orderGas',
+        caption: '充值气量'
+    },{
+        name: 'orderPayment',
+        caption: '充值金额'
+    }],
+    accountMessAndUnion:[{
         name: 'userName',
         caption: '客户姓名'
     },{
@@ -746,9 +797,6 @@ app.editFormFields = {
     },{
         name: 'orderPayment',
         caption: '充值金额'
-    },{
-        name: 'orderGas',
-        caption: '充值气量'
     }]
 };
 
@@ -969,3 +1017,4 @@ app.deleteNames = {
     'entry': 'meterId',
     'createArchive': 'userId'
 };
+

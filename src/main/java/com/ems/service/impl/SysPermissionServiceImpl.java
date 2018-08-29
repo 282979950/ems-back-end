@@ -90,6 +90,7 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
         oldPermission.setPermParentId(permission.getPermParentId());
         oldPermission.setIsButton(permission.getIsButton());
         oldPermission.setUsable(permission.getUsable());
+        oldPermission.setRemarks(permission.getRemarks());
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         oldPermission.setUpdateBy(currentEmpId);
         int resultCount = permissionMapper.updateByPrimaryKeySelective(oldPermission);

@@ -16,6 +16,7 @@ import com.ems.param.InstallMeterParam;
 import com.ems.service.IMeterService;
 import com.ems.service.IUserService;
 import com.ems.shiro.utils.ShiroUtils;
+import com.ems.utils.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +34,6 @@ import java.util.List;
 @Service("iUserService")
 @Transactional(readOnly = true)
 public class UserServiceImpl implements IUserService {
-
-    private static final int DEFAULT_ICCARD_ID = 10000000;
 
     @Autowired
     private UserMapper userMapper;
@@ -134,10 +133,10 @@ public class UserServiceImpl implements IUserService {
     @Transactional
     public JsonData createAccount(CreateAccountParam param) {
         BeanValidator.check(param);
-        Integer iccardId = DEFAULT_ICCARD_ID + getAllCount();
+        Integer iccardId = param.getUserId();
         param.setIccardId(iccardId);
         // TODO: 2018/8/9 从接口中读取IC卡识别号
-        param.setIccardPassword(Const.DEFAULT_ICCARD_PASSWORD);
+        param.setIccardPassword(RandomUtils.generateHexString(6));
         //开户时将用户解锁
         param.setUserLocked(false);
         if (param.getUserDeed() == null) {
@@ -145,6 +144,7 @@ public class UserServiceImpl implements IUserService {
         }
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         param.setUpdateBy(currentEmpId);
+        param.setUserStatus(3);
         int resultCount = userMapper.createAccount(param);
         if (resultCount == 0) {
             return JsonData.fail("用户开户失败");
@@ -154,13 +154,18 @@ public class UserServiceImpl implements IUserService {
         UserOrders userOrders = new UserOrders();
         userOrders.setUserId(user.getUserId());
         userOrders.setEmployeeId(currentEmpId);
+        BigDecimal gas = param.getOrderGas();
+        userOrders.setOrderGas(gas);
+        BigDecimal payment = param.getOrderPayment();
+        userOrders.setOrderPayment(payment);
+        userOrders.setCreateBy(currentEmpId);
+        userOrders.setUpdateBy(currentEmpId);
+        userOrders.setUsable(true);
         // TODO: 2018/8/10 完善订单流程
         int resultCount2 = userOrdersMapper.insert(userOrders);
         if (resultCount2 == 0) {
             return JsonData.fail("初始订单生成失败");
         }
-        BigDecimal payment = param.getOrderPayment();
-        userOrders.setOrderPayment(payment);
         return JsonData.successMsg("用户开户成功");
     }
 

@@ -8,6 +8,7 @@ public class RandomUtils {
     public static final String ALLCHAR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final String LETTERCHAR = "abcdefghijkllmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final String NUMBERCHAR = "0123456789";
+    public static final String HEXCHAR = "0123456789ABCDEF";
 
     /**
      * 返回一个定长的随机字符串(只包含大小写字母、数字)
@@ -121,6 +122,21 @@ public class RandomUtils {
      */
     public static String getUUID() {
         return UUID.randomUUID().toString().replace("-", "");
+    }
+
+    /**
+     * 生成一个定长的16进制字符串
+     *
+     * @param length 字符串长度
+     * @return 纯0字符串
+     */
+    public static String generateHexString(int length) {
+        StringBuffer sb = new StringBuffer();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            sb.append(HEXCHAR.charAt(random.nextInt(HEXCHAR.length())));
+        }
+        return sb.toString();
     }
 
     public static void main(String[] args) {

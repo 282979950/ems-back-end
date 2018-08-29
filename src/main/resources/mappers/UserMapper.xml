@@ -354,7 +354,7 @@
         LEFT JOIN meter m ON um.meter_id=m.meter_id
         LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
         left join sys_district dist on u.user_dist_id = dist.dist_id
-        where u.usable = 1
+        where u.usable = 1 and um.usable = 1 and m.usable=1
         <if test="userId != null and userId != ''">
             AND u.user_id LIKE CONCAT('%', #{userId,jdbcType=INTEGER}, '%')
         </if>
@@ -383,7 +383,7 @@
         iccard_id = #{iccardId,jdbcType=INTEGER},
         iccard_identifier = #{iccardIdentifier,jdbcType=VARCHAR},
         iccard_password = #{iccardPassword,jdbcType=VARCHAR},
-        user_status = #{userStatus,jdbcType=INTEGER},
+        user_status = 3,
         user_locked = #{userLocked,jdbcType=BIT},
         update_time = NOW(),
         update_by = #{updateBy,jdbcType=INTEGER},

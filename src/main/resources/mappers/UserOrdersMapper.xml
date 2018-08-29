@@ -7,6 +7,7 @@
       <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="employee_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="order_payment" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="order_gas" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="order_status" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="order_create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="order_close_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
@@ -19,7 +20,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    order_id, user_id, employee_id, order_payment, order_status, order_create_time, order_close_time, 
+    order_id, user_id, employee_id, order_payment, order_gas, order_status, order_create_time, order_close_time,
     create_time, create_by, update_time, update_by, usable, remarks
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -33,14 +34,14 @@
     where order_id = #{orderId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ems.entity.UserOrders" >
-    insert into user_orders (order_id, user_id, employee_id, 
-      order_payment, order_status, order_create_time, 
+    insert into user_orders (order_id, user_id, employee_id,
+      order_payment, order_gas, order_status, order_create_time,
       order_close_time, create_time, create_by, 
       update_time, update_by, usable, 
       remarks)
-    values (#{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, 
-      #{orderPayment,jdbcType=DECIMAL}, #{orderStatus,jdbcType=INTEGER}, #{orderCreateTime,jdbcType=TIMESTAMP}, 
-      #{orderCloseTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
+    values (#{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, #{orderPayment,jdbcType=DECIMAL},
+      #{orderGas,jdbcType=DECIMAL}, #{orderStatus,jdbcType=INTEGER}, #{orderCreateTime,jdbcType=TIMESTAMP},
+      #{orderCloseTime,jdbcType=TIMESTAMP}, NOW(), #{createBy,jdbcType=INTEGER},
       #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT}, 
       #{remarks,jdbcType=VARCHAR})
   </insert>
@@ -58,6 +59,9 @@
       </if>
       <if test="orderPayment != null" >
         order_payment,
+      </if>
+      <if test="orderGas != null" >
+        order_gas,
       </if>
       <if test="orderStatus != null" >
         order_status,
@@ -100,6 +104,9 @@
       <if test="orderPayment != null" >
         #{orderPayment,jdbcType=DECIMAL},
       </if>
+      <if test="orderGas != null" >
+        #{order_gas,jdbcType=DECIMAL},
+      </if>
       <if test="orderStatus != null" >
         #{orderStatus,jdbcType=INTEGER},
       </if>
@@ -141,6 +148,9 @@
       <if test="orderPayment != null" >
         order_payment = #{orderPayment,jdbcType=DECIMAL},
       </if>
+      <if test="orderGas != null" >
+        order_gas = #{orderGas,jdbcType=DECIMAL},
+      </if>
       <if test="orderStatus != null" >
         order_status = #{orderStatus,jdbcType=INTEGER},
       </if>
@@ -176,6 +186,7 @@
     set user_id = #{userId,jdbcType=INTEGER},
       employee_id = #{employeeId,jdbcType=INTEGER},
       order_payment = #{orderPayment,jdbcType=DECIMAL},
+      order_gas = #{orderGas,jdbcType=DECIMAL},
       order_status = #{orderStatus,jdbcType=INTEGER},
       order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
       order_close_time = #{orderCloseTime,jdbcType=TIMESTAMP},
@@ -189,11 +200,11 @@
   </update>
   <insert id="createFirstOrder" parameterType="com.ems.entity.UserOrders" >
     insert into user_orders (user_id, employee_id,
-      order_payment, order_status, order_create_time,
+      order_payment,order_gas, order_status, order_create_time,
       order_close_time, create_time, create_by,
       update_time, update_by, remarks)
     values (#{userId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER},
-      #{orderPayment,jdbcType=DECIMAL}, #{orderStatus,jdbcType=INTEGER}, NOW(),
+      #{orderPayment,jdbcType=DECIMAL},#{orderGas,jdbcType=DECIMAL}, #{orderStatus,jdbcType=INTEGER}, NOW(),
       #{orderCloseTime,jdbcType=TIMESTAMP}, NOW(), #{createBy,jdbcType=INTEGER},
       NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
   </insert>
