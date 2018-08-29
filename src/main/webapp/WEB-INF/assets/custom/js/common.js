@@ -105,6 +105,7 @@ var app = {
     createArchiveTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     installMeterTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     accountTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
+    alterTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     getPaneContent: function (name) {
         var paneContent = '';
         switch (name) {
@@ -149,6 +150,7 @@ var app = {
                 paneContent = this.accountTemplate;
                 break;
             case 'alter':
+                paneContent = this.alterTemplate;
                 break;
                 /*
                  * 充值缴费管理：预付费充值 补卡充值 后付费充值 发票管理

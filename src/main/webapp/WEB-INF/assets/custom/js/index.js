@@ -53,8 +53,7 @@ app.initIndex = function () {
                     console.log(response);
                     response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                     if(response.status){
-                        // $("input[name='orderPayment']").val(response.data);
-
+                        app.editForm.setValue('orderPayment',response.data);
                     }
                 }
             });
@@ -1035,9 +1034,41 @@ app.headScreening = {
         name: 'search',
         caption: '搜索'
     }],
-    account : [{
+    account: [{
         name: 'edit',
         caption: '开户'
+    }, {
+        name: 'distName',
+        caption: '用户区域',
+        type: 'input'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址',
+        type: 'input'
+    }, {
+        name: 'userType',
+        caption: '用户类型',
+        type: 'input'
+    }, {
+        name: 'userGasType',
+        caption: '用气类型',
+        type: 'input'
+    },{
+        name: 'search',
+        caption: '搜索'
+    }],
+    alter: [{
+        name: 'lock',
+        caption: '锁定'
+    }, {
+        name: 'unlock',
+        caption: '解锁'
+     }, {
+        name: 'transfer',
+        caption: '过户'
+    }, {
+        name: 'cancel',
+        caption: '销户'
     }, {
         name: 'distName',
         caption: '用户区域',
