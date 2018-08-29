@@ -324,7 +324,7 @@
             var $field = $(field);
             $field.on('change', function () {
                 _this.data[field.name] = $field.val();
-            })
+            });
         });
     };
 
@@ -342,6 +342,19 @@
      */
     Form.prototype.getDom = function () {
         return this.$dom;
+    };
+
+    /**
+     * 设置field的value
+     */
+    Form.prototype.setValue = function(name, value) {
+        this.data[name] =  value;
+        var _this = this;
+        _this.$fields.each(function (index, field) {
+            if(field.name === name) {
+                $(field).val(value);
+            }
+        });
     };
 
     /**
