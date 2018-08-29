@@ -103,6 +103,7 @@ var app = {
     roleTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     entryTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     createArchiveTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
+    installMeterTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     getPaneContent: function (name) {
         var paneContent = '';
         switch (name) {
@@ -140,7 +141,8 @@ var app = {
             case 'createArchive':
                 paneContent = this.createArchiveTemplate;
                 break;
-            case 'install':
+            case 'installMeter':
+                paneContent = this.installMeterTemplate;
                 break;
             case 'account':
                 break;

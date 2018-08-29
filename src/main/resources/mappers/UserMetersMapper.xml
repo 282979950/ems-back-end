@@ -3,7 +3,7 @@
 <mapper namespace="com.ems.entity.mapper.UserMetersMapper">
     <resultMap id="BaseResultMap" type="com.ems.entity.UserMeters">
         <constructor>
-            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="meter_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -17,22 +17,22 @@
     <sql id="Base_Column_List">
         id, user_id, meter_id, create_time, create_by, update_time, update_by, usable, remarks
     </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from user_meters
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from user_meters
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.ems.entity.UserMeters">
         insert into user_meters (id, user_id, meter_id,
         create_time, create_by, update_time,
         update_by, usable, remarks
         )
-        values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=INTEGER}, #{meterId,jdbcType=INTEGER},
+        values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{meterId,jdbcType=INTEGER},
         #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
         #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
         )
@@ -70,7 +70,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{id,jdbcType=BIGINT},
+                #{id,jdbcType=INTEGER},
             </if>
             <if test="userId != null">
                 #{userId,jdbcType=INTEGER},
@@ -126,7 +126,7 @@
                 remarks = #{remarks,jdbcType=VARCHAR},
             </if>
         </set>
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.ems.entity.UserMeters">
         update user_meters
@@ -138,7 +138,7 @@
         update_by = #{updateBy,jdbcType=INTEGER},
         usable = #{usable,jdbcType=BIT},
         remarks = #{remarks,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
     </update>
     <insert id="installMeter" parameterType="com.ems.entity.UserMeters">
         insert into user_meters (user_id, meter_id,
@@ -150,4 +150,49 @@
         #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}
         )
     </insert>
+    <update id="updateMeter" parameterType="com.ems.entity.UserMeters">
+        update user_meters
+        set
+        meter_id = #{meterId,jdbcType=INTEGER},
+        update_time = NOW(),
+        update_by = #{updateBy,jdbcType=INTEGER}
+        where user_id = #{userId,jdbcType=INTEGER} and usable = 1
+    </update>
+    <select id="getUserMeterById" parameterType="integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_meters
+        where user_id = #{userId,jdbcType=INTEGER} and usable = 1
+    </select>
+    <update id="deleteInstallMeter" parameterType="list">
+        update user_meters
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_by = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateBy != null">
+                        when id = #{i.id} then #{i.updateBy}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateTime != null">
+                        when id = #{i.id} then NOW()
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="usable =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.usable != null">
+                        when id =#{i.id} then 0
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index">
+            id = #{i.id,jdbcType=INTEGER}
+        </foreach>
+    </update>
+
 </mapper>

@@ -729,7 +729,7 @@
             $input.attr('name', params.name)
         }
         var $span = this.$span = $('<span><i class="mdui-icon material-icons">arrow_drop_down</i></span>').appendTo($dom);
-        var options = params.options;
+        var options = JSON.parse(JSON.stringify(params.options));
         var $panelDom = this.$panelDom = $('<div class="tree-combobox-panel ztree mdui-shadow-2"></div>').css({
             display: 'none',
             position: 'absolute'

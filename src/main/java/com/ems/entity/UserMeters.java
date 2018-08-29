@@ -17,7 +17,7 @@ public class UserMeters extends BaseEntity {
     /**
      * ID
      */
-    private Long id;
+    private Integer id;
 
     /**
      * 用户ID
@@ -29,7 +29,7 @@ public class UserMeters extends BaseEntity {
      */
     private Integer meterId;
 
-    public UserMeters(Long id, Integer userId, Integer meterId, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String
+    public UserMeters(Integer id, Integer userId, Integer meterId, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String
             remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.id = id;

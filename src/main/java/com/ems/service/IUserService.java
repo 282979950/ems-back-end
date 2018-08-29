@@ -59,12 +59,40 @@ public interface IUserService {
     JsonData searchArchive(Integer userId, String distName, String userAddress, Integer userType, Integer userGasType, Integer userStatus);
 
     /**
-     * 挂表
+     * @return
+     */
+    JsonData getAllInstallMeters();
+
+    /**
+     * 新增挂表
      *
      * @param param
      * @return
      */
-    JsonData installMeter(InstallMeterParam param);
+    JsonData addInstallMeter(InstallMeterParam param);
+
+    /**
+     * 编辑挂表
+     *
+     * @param param
+     * @return
+     */
+    JsonData editInstallMeter(InstallMeterParam param);
+
+    /**
+     * 删除挂表
+     *
+     * @param ids
+     * @return
+     */
+    JsonData deleteInstallMeter(List<Integer> ids);
+
+    /**
+     * 查询挂表
+     *
+     * @return
+     */
+    JsonData searchInstallMeter(Integer userId, String distName, String userAddress);
 
     /**
      * 用户开户
@@ -73,4 +101,6 @@ public interface IUserService {
      * @return
      */
     JsonData createAccount(CreateAccountParam param);
+
+
 }

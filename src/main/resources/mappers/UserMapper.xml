@@ -365,6 +365,72 @@
             AND u.user_status = #{userStatus,jdbcType=VARCHAR}
         </if>
     </select>
+    <!--用户挂表-->
+    <resultMap id="InstallMeterParam" type="com.ems.param.InstallMeterParam">
+        <constructor>
+            <idArg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <select id="getAllInstallMeters" resultMap="InstallMeterParam">
+        select
+        u.user_id, sd.dist_name, u.user_address, u.user_status, m.meter_code
+        from user u LEFT JOIN user_meters um ON u.user_id = um.user_id and um.usable = 1
+        LEFT JOIN meter m ON um.meter_id = m.meter_id
+        LEFT JOIN sys_district sd on u.user_dist_id = sd.dist_id
+        WHERE u.usable = 1 and u.user_status = 1
+    </select>
+    <select id="searchInstallMeter" parameterType="map" resultMap="InstallMeterParam">
+        select
+        u.user_id, sd.dist_name, u.user_address, u.user_status, m.meter_code
+        from user u LEFT JOIN user_meters um ON u.user_id = um.user_id and um.usable = 1
+        LEFT JOIN meter m ON um.meter_id = m.meter_id
+        LEFT JOIN sys_district sd on u.user_dist_id = sd.dist_id
+        WHERE u.usable = 1 and u.user_status = 1
+        <if test="userId != null and userId != ''">
+            AND u.user_id LIKE CONCAT('%', #{userId,jdbcType=INTEGER}, '%')
+        </if>
+        <if test="distName != null and distName != ''">
+            AND sd.dist_name = #{distName,jdbcType=INTEGER}
+        </if>
+        <if test="userAddress != null and userAddress != ''">
+            AND u.user_address LIKE CONCAT('%', #{userAddress,jdbcType=INTEGER}, '%')
+        </if>
+        ORDER BY u.user_status
+    </select>
+    <update id="updateUserStatus" parameterType="list">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_by = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateBy != null">
+                        when user_id = #{i.userId} then #{i.updateBy}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateTime != null">
+                        when user_id = #{i.userId} then NOW()
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="user_status =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.userStatus != null">
+                        when user_id =#{i.userId} then #{i.userStatus}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index">
+            user_id =#{i.userId}
+        </foreach>
+    </update>
     <update id="createAccount" parameterType="com.ems.param.CreateAccountParam">
         update user
         set user_name = #{userName,jdbcType=VARCHAR},
