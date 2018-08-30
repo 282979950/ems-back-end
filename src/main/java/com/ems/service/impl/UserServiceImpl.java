@@ -13,6 +13,7 @@ import com.ems.entity.mapper.UserOrdersMapper;
 import com.ems.param.CreateAccountParam;
 import com.ems.param.CreateArchiveParam;
 import com.ems.param.InstallMeterParam;
+import com.ems.param.LockAccountParam;
 import com.ems.service.IMeterService;
 import com.ems.service.IUserService;
 import com.ems.shiro.utils.ShiroUtils;
@@ -280,4 +281,32 @@ public class UserServiceImpl implements IUserService {
         List<CreateArchiveParam> archives = userMapper.searchArchive(userId, distName, userAddress, userType, userGasType,2);
         return archives == null || archives.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(archives, "查询成功");
     }
+
+    @Override
+    public JsonData getAllAccountArchive() {
+        List<LockAccountParam> accounts = userMapper.searchAccountArchive(null,null,null,3);
+        return accounts == null || accounts.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(accounts, "查询成功");
+
+    }
+
+    @Override
+    public JsonData searchAllAccountArchive(Integer userId,String userName,Integer iccardId) {
+        List<LockAccountParam> accounts = userMapper.searchAccountArchive(userId, userName, iccardId , 3);
+        return accounts == null || accounts.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(accounts, "查询成功");
+    }
+
+    @Override
+    public JsonData updateLockStatus(LockAccountParam param) {
+        BeanValidator.check(param);
+
+        return null;
+
+    }
+
+    @Override
+    public JsonData searchLockList(Integer userId) {
+        return null;
+    }
+
+
 }

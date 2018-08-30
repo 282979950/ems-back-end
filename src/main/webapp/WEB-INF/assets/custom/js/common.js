@@ -105,7 +105,7 @@ var app = {
     createArchiveTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     installMeterTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     accountTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
-    alterTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
+    lockAccountTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     getPaneContent: function (name) {
         var paneContent = '';
         switch (name) {
@@ -135,7 +135,7 @@ var app = {
             case 'announcement':
                 break;
                 /*
-                 * 账户管理：表具入库 用户建档 挂表 开户 账户变更
+                 * 账户管理：表具入库 用户建档 挂表 开户 账户锁定 账户变更
                  */
             case 'entry':
                 paneContent = this.entryTemplate;
@@ -149,8 +149,10 @@ var app = {
             case 'account':
                 paneContent = this.accountTemplate;
                 break;
+            case 'lockAccount':
+                paneContent = this.lockAccountTemplate;
+                break;
             case 'alter':
-                paneContent = this.alterTemplate;
                 break;
                 /*
                  * 充值缴费管理：预付费充值 补卡充值 后付费充值 发票管理

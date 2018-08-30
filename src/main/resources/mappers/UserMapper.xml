@@ -472,4 +472,37 @@
         from user
         where user_id = #{userId,jdbcType=INTEGER} and usable = 1
     </select>
+    <resultMap id="LockAccountParam" type="com.ems.param.LockAccountParam">
+        <constructor>
+            <idArg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="iccard_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="is_lock" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="lock_reason" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            </constructor>
+    </resultMap>
+    <select id="searchAccountArchive" parameterType="map" resultMap="LockAccountParam">
+        select
+        u.user_id, u.user_name,u.iccard_id, dist.dist_name, u.user_address, ul.is_lock, ul.lock_reason
+        from user u left join sys_district dist on u.user_dist_id = dist.dist_id
+        LEFT JOIN ( SELECT us.user_id, us.is_lock, us.lock_reason , us.create_time FROM user_lock us ,
+        (SELECT user_id , MAX(create_time) AS create_time FROM user_lock GROUP BY user_id) um
+        WHERE us.user_id = um.user_id AND us.create_time = um.create_time
+        ) ul ON u.user_id = ul.user_id
+        where u.usable = 1
+        <if test="userId != null and userId != ''">
+            AND u.user_id  LIKE CONCAT('%',#{userId,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="userName != null and userName != ''">
+            AND u.user_name  LIKE CONCAT('%',#{userName,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="iccardId != null and iccardId != ''">
+            AND u.iccard_id  LIKE CONCAT('%',#{iccardId,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="userStatus != null and userStatus != ''">
+            AND u.user_status = #{userStatus,jdbcType=VARCHAR}
+        </if>
+    </select>
 </mapper>

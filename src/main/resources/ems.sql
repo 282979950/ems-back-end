@@ -715,3 +715,31 @@ CREATE TABLE `user_orders` (
 -- ----------------------------
 -- Records of user_orders
 -- ----------------------------
+
+
+-- ----------------------------
+-- Table structure for `user_lock`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_lock`;
+CREATE TABLE `user_lock` (
+`user_lock_id`  int(11) NOT NULL AUTO_INCREMENT COMMENT '锁定Id' ,
+`user_id`  int(8) NULL DEFAULT NULL COMMENT '锁定用户Id' ,
+`is_lock`  tinyint(1) NULL DEFAULT NULL ,
+`lock_reason`  varchar(255)  DEFAULT NULL COMMENT '锁定原因' ,
+`create_time`  datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间' ,
+`create_by`  int(10) NULL DEFAULT NULL COMMENT '创建者' ,
+`update_time`  datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' ,
+`update_by`  int(10) NULL DEFAULT NULL COMMENT '更新者' ,
+`usable`  tinyint(1) NULL DEFAULT NULL COMMENT '是否可用' ,
+`remarks`  varchar(255)  DEFAULT NULL COMMENT '注释',
+PRIMARY KEY (`user_lock_id`),
+KEY `user_lock_id_index` (`user_lock_id`) USING BTREE,
+CONSTRAINT `user_lock_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of user_lock
+-- ----------------------------
+
+

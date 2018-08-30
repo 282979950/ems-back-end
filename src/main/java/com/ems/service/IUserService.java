@@ -4,6 +4,7 @@ import com.ems.common.JsonData;
 import com.ems.param.CreateAccountParam;
 import com.ems.param.CreateArchiveParam;
 import com.ems.param.InstallMeterParam;
+import com.ems.param.LockAccountParam;
 
 import java.util.List;
 
@@ -119,4 +120,31 @@ public interface IUserService {
      * @return
      */
     JsonData searchAllNotAccountArchive(Integer userId, String distName, String userAddress, Integer userType, Integer userGasType);
+
+    /**
+     * 查询所有可以锁定和解锁的用户信息
+     * @return
+     */
+    JsonData getAllAccountArchive();
+
+    /**
+     * 条件查询所有可以锁定和解锁的用户信息
+     * @param userId
+     * @param userName
+     * @param iccardId
+     * @return
+     */
+    JsonData searchAllAccountArchive(Integer userId,String userName,Integer iccardId);
+
+    /**
+     * 锁定/解锁用户
+     * @return
+     */
+    JsonData updateLockStatus(LockAccountParam param);
+
+    /**
+     * 根据用户查询锁定记录
+     * @param userId
+     */
+    JsonData searchLockList(Integer userId);
 }

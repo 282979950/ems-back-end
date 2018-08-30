@@ -368,8 +368,30 @@ app.tableFields = {
         }, {
             name: 'userStatus',
             caption: '用户状态'
-        }
-    ]
+        }],
+    lockAccount: [
+        {
+            name: 'userId',
+            caption: '用户编号'
+        }, {
+            name: 'userName',
+            caption: '用户名称'
+        }, {
+            name: 'distName',
+            caption: '用户区域'
+        }, {
+            name: 'userAddress',
+            caption: '用户地址'
+        }, {
+            name: 'iccardId',
+            caption: 'IC卡编号'
+        }, {
+            name: 'isLock',
+            caption: '锁定状态'
+        }, {
+            name: 'lockReason',
+            caption: '解锁/锁定原因'
+        }]
 };
 /*
  *数据字典
@@ -1057,33 +1079,19 @@ app.headScreening = {
         name: 'search',
         caption: '搜索'
     }],
-    alter: [{
+    lockAccount: [{
         name: 'lock',
-        caption: '锁定'
+        caption: '锁定/解锁'
     }, {
-        name: 'unlock',
-        caption: '解锁'
-     }, {
-        name: 'transfer',
-        caption: '过户'
+        name: 'change_history',
+        caption: '历史锁定记录'
     }, {
-        name: 'cancel',
-        caption: '销户'
-    }, {
-        name: 'distName',
-        caption: '用户区域',
+        name: 'userName',
+        caption: '用户名称',
         type: 'input'
     }, {
-        name: 'userAddress',
-        caption: '用户地址',
-        type: 'input'
-    }, {
-        name: 'userType',
-        caption: '用户类型',
-        type: 'input'
-    }, {
-        name: 'userGasType',
-        caption: '用气类型',
+        name: 'iccardId',
+        caption: 'IC卡号',
         type: 'input'
     },{
         name: 'search',

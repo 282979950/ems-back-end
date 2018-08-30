@@ -83,4 +83,5 @@ public class CreateAccountParam extends BaseEntity {
      * 用户状态
      */
     private Integer userStatus;
+
 }
