@@ -487,7 +487,7 @@
         select
         u.user_id, u.user_name,u.iccard_id, dist.dist_name, u.user_address, ul.is_lock, ul.lock_reason
         from user u left join sys_district dist on u.user_dist_id = dist.dist_id
-        LEFT JOIN ( SELECT us.user_id, us.is_lock, us.lock_reason , us.create_time FROM user_lock us ,
+        LEFT JOIN ( SELECT us.user_id, IFNULL(us.is_lock,0) is_lock, us.lock_reason , us.create_time FROM user_lock us ,
         (SELECT user_id , MAX(create_time) AS create_time FROM user_lock GROUP BY user_id) um
         WHERE us.user_id = um.user_id AND us.create_time = um.create_time
         ) ul ON u.user_id = ul.user_id

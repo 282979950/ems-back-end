@@ -3,10 +3,7 @@ package com.ems.service.impl;
 import com.ems.common.BeanValidator;
 import com.ems.common.Const;
 import com.ems.common.JsonData;
-import com.ems.entity.Meter;
-import com.ems.entity.User;
-import com.ems.entity.UserMeters;
-import com.ems.entity.UserOrders;
+import com.ems.entity.*;
 import com.ems.entity.mapper.UserMapper;
 import com.ems.entity.mapper.UserMetersMapper;
 import com.ems.entity.mapper.UserOrdersMapper;
@@ -298,6 +295,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonData updateLockStatus(LockAccountParam param) {
         BeanValidator.check(param);
+        UserLock userLock = new UserLock();
+        userLock.setUserId(param.getUserId());
+        userLock.setIsLock(param.getIsLock());
+        userLock.setLockReason(param.getLockReason());
 
         return null;
 

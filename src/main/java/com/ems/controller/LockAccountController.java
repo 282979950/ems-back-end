@@ -44,7 +44,7 @@ public class LockAccountController {
      * @param param
      * @return
      */
-    @RequestMapping(value = "/lock.do")
+    @RequestMapping(value = "/edit.do")
     @ResponseBody
     public JsonData updateLockStatus(LockAccountParam param) {
         return userService.updateLockStatus(param);

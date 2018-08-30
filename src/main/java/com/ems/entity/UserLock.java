@@ -40,4 +40,8 @@ public class UserLock extends BaseEntity{
         this.isLock = isLock;
         this.lockReason = lockReason;
     }
+
+    public UserLock(){
+
+    }
 }

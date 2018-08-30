@@ -150,6 +150,12 @@ app.initEvent = function () {
             else
                 formNames = app.currentPageName + 'MessAndUnion';
         }
+        if(app.currentPageName == 'lockAccount'){
+            if(table.getSelectedDatas()[0]['isLock'] == 'true')
+                formNames = app.currentPageName + 'UnLock';
+            else
+                formNames = app.currentPageName + 'Lock';
+        }
         var form = app.editForm =app.createForm({
             parent: '.mdui-dialog-content',
             fields: app.editFormFields[formNames],
@@ -968,6 +974,44 @@ app.editFormFields = {
     },{
         name: 'orderPayment',
         caption: '充值金额'
+    }],
+    lockAccountLock:[{
+        name: 'userName',
+        caption: '客户姓名'
+    },{
+        name: 'userPhone',
+        caption: '电话'
+    },{
+        name: 'iccardIdentifier',
+        caption:'IC卡识别号'
+    },{
+        name: 'userIdcard',
+        caption: '身份证号'
+    },{
+        name: 'userDeed',
+        caption: '房产证号'
+    },{
+        name: 'orderPayment',
+        caption: '充值金额'
+    }],
+    lockAccountUnLock:[{
+        name: 'userName',
+        caption: '客户姓名'
+    },{
+        name: 'userPhone',
+        caption: '电话'
+    },{
+        name: 'iccardIdentifier',
+        caption:'IC卡识别号'
+    },{
+        name: 'userIdcard',
+        caption: '身份证号'
+    },{
+        name: 'userDeed',
+        caption: '房产证号'
+    },{
+        name: 'orderPayment',
+        caption: '充值金额'
     }]
 };
 
@@ -1245,7 +1289,7 @@ app.headScreening = {
         name: 'lock',
         caption: '锁定/解锁'
     }, {
-        name: 'change_history',
+        name: 'history',
         caption: '历史锁定记录'
     }, {
         name: 'userName',
