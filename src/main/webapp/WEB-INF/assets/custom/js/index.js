@@ -256,6 +256,43 @@ app.tableFields = {
         name: 'orgParentId',
         caption: '父级机构ID'
     }],
+    emp: [{
+        name: 'empNumber',
+        caption: '员工工号'
+    }, {
+        name: 'empName',
+        caption: '员工名称'
+    }, {
+        name: 'orgName',
+        caption: '所属机构'
+    }, {
+        name: 'distName',
+        caption: '所属区域'
+    }, {
+        name: 'empLoginName',
+        caption: '登录名'
+    }, {
+        name: 'empEmail',
+        caption: '邮箱'
+    }, {
+        name: 'empPhone',
+        caption: '电话'
+    }, {
+        name: 'empMobile',
+        caption: '手机'
+    }, {
+        name: 'empAddress',
+        caption: '地址'
+    }, {
+        name: 'empType',
+        caption: '员工类型'
+    }, {
+        name: 'empManagementDistId',
+        caption: '负责片区'
+    }, {
+        name: 'empLoginFlag',
+        caption: '员工登录标记'
+    }],
     dic: [{
         name: 'dictId',
         caption: 'ID'
@@ -471,6 +508,46 @@ app.addFormfields = {
         name: 'remarks',
         caption: '备注信息'
     }],
+    emp: [{
+        name: 'empNumber',
+        caption: '员工工号'
+    }, {
+        name: 'empName',
+        caption: '员工名称'
+    }, {
+        name: 'orgName',
+        caption: '所属机构'
+    }, {
+        name: 'distName',
+        caption: '所属区域'
+    }, {
+        name: 'empLoginName',
+        caption: '登录名'
+    }, {
+        name: 'empPassword',
+        caption: '登录密码'
+    }, {
+        name: 'empEmail',
+        caption: '邮箱'
+    }, {
+        name: 'empPhone',
+        caption: '电话'
+    }, {
+        name: 'empMobile',
+        caption: '手机'
+    }, {
+        name: 'empAddress',
+        caption: '地址'
+    }, {
+        name: 'empType',
+        caption: '员工类型'
+    }, {
+        name: 'empManagementDistId',
+        caption: '负责片区'
+    }, {
+        name: 'empLoginFlag',
+        caption: '员工登录标记'
+    }],
     dic: [{
         name: 'dictKey',
         caption: '字典键'
@@ -646,6 +723,46 @@ app.editFormFields = {
     }, {
         name: 'orgParentId',
         caption: '父级机构ID'
+    }],
+    emp: [{
+        name: 'empNumber',
+        caption: '员工工号'
+    }, {
+        name: 'empName',
+        caption: '员工名称'
+    }, {
+        name: 'orgName',
+        caption: '所属机构'
+    }, {
+        name: 'distName',
+        caption: '所属区域'
+    }, {
+        name: 'empLoginName',
+        caption: '登录名'
+    }, {
+        name: 'empPassword',
+        caption: '登录密码'
+    }, {
+        name: 'empEmail',
+        caption: '邮箱'
+    }, {
+        name: 'empPhone',
+        caption: '电话'
+    }, {
+        name: 'empMobile',
+        caption: '手机'
+    }, {
+        name: 'empAddress',
+        caption: '地址'
+    }, {
+        name: 'empType',
+        caption: '员工类型'
+    }, {
+        name: 'empManagementDistId',
+        caption: '负责片区'
+    }, {
+        name: 'empLoginFlag',
+        caption: '员工登录标记'
     }],
     dic: [{
         name: 'dictKey',
@@ -882,6 +999,51 @@ app.headScreening = {
         name: 'search',
         caption: '搜索'
     }],
+    emp: [{
+        name: 'add',
+        caption: '新增'
+    }, {
+        name: 'edit',
+        caption: '编辑'
+    }, {
+        name: 'delete',
+        caption: '删除'
+    }, {
+        name: 'empNumber',
+        caption: '员工工号',
+        type: 'input'
+    }, {
+        name: 'empName',
+        caption: '员工名称',
+        type: 'input'
+    }, {
+        name: 'orgName',
+        caption: '所属机构',
+        type: 'input'
+    }, {
+        name: 'distName',
+        caption: '所属区域',
+        type: 'input'
+    }, {
+        name: 'empLoginName',
+        caption: '登录名',
+        type: 'input'
+    }, {
+        name: 'empPhone',
+        caption: '电话',
+        type: 'input'
+    }, {
+        name: 'empMobile',
+        caption: '手机',
+        type: 'input'
+    }, {
+        name: 'empType',
+        caption: '员工类型',
+        type: 'input'
+    }, {
+        name: 'search',
+        caption: '搜索'
+    }],
     dic: [{
         name: 'add',
         caption: '新增'
@@ -1099,5 +1261,6 @@ app.deleteNames = {
     'dic': 'dictId',
     'dist': 'distId',
     'entry': 'meterId',
-    'createArchive': 'userId'
+    'createArchive': 'userId',
+    'emp': 'empId'
 };

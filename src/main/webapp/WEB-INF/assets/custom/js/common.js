@@ -98,6 +98,7 @@ var app = {
             </div>',
     distTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     orgTemplate :'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
+    empTemplate :'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     dictionaryTemplate :'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     permTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     roleTemplate:'<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
@@ -118,8 +119,8 @@ var app = {
             case 'org':
                 paneContent = this.orgTemplate;
                 break;
-            case 'user':
-                paneContent = this.template;
+            case 'emp':
+                paneContent = this.empTemplate;
                 break;
             case 'role':
                 paneContent = this.roleTemplate;

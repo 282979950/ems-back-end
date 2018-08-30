@@ -1,6 +1,7 @@
 package com.ems.entity.mapper;
 
 import com.ems.entity.Employee;
+import com.ems.param.EmployeeParam;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -36,4 +37,18 @@ public interface EmployeeMapper {
     Employee selectByEmpId(@Param("empId") Integer empId);
 
     Employee getEmpByLoginName(@Param("empLoginName") String empLoginName);
+
+    List<EmployeeParam> getAllEmployees();
+
+    int addEmployee(EmployeeParam employee);
+
+    int editEmployee(EmployeeParam employee);
+
+    int deleteEmployee(List<EmployeeParam> employees);
+
+    List<Employee> searchEmployee(@Param("empNumber") String empNumber, @Param("empName") String empName, @Param("orgName") String orgName, @Param
+            ("distName") String distName, @Param("empLoginName") String empLoginName, @Param("empPhone") String empPhone, @Param("empMobile") String
+            empMobile, @Param("empType") String empType);
+
+    EmployeeParam getEmpById(Integer empId);
 }

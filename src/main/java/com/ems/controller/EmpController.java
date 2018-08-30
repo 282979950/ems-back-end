@@ -1,17 +1,16 @@
 package com.ems.controller;
 
-import com.ems.common.Const;
 import com.ems.common.JsonData;
-import com.ems.entity.Employee;
+import com.ems.param.EmployeeParam;
 import com.ems.service.IEmployeeService;
-import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author litairan on 2018/7/2.
@@ -24,59 +23,54 @@ public class EmpController {
     private IEmployeeService employeeService;
 
     /**
+     * 获取所有员工信息
+     */
+    @RequiresPermissions("sys:emp:visit")
+    @RequestMapping(value = "listData.do")
+    @ResponseBody
+    public JsonData listData() {
+        return employeeService.getAllEmployees();
+    }
+
+    /**
      * 新建员工
      */
-    @RequiresRoles("sys:emp:create")
-    @RequestMapping(value = "create.do", method = RequestMethod.GET)
+    @RequiresPermissions("sys:emp:create")
+    @RequestMapping(value = "add.do")
     @ResponseBody
-    public JsonData create(Employee employee, HttpSession session) {
-        Employee currentEmp = (Employee) session.getAttribute(Const.CURRENT_EMPLOYEE);
-        if (currentEmp == null) {
-            return JsonData.fail(Const.EMP_LOGIN_NOTLOGIN);
-        }
-        return employeeService.create(employee, currentEmp);
+    public JsonData addEmployee(EmployeeParam employee) {
+        return employeeService.addEmployee(employee);
     }
 
     /**
      * 删除员工（假删除）
      */
-    @RequiresRoles("sys:emp:delete")
-    @RequestMapping(value = "delete.do", method = RequestMethod.GET)
+    @RequiresPermissions("sys:emp:delete")
+    @RequestMapping(value = "delete.do")
     @ResponseBody
-    public JsonData delete(Integer empId, HttpSession session) {
-        Employee currentEmp = (Employee) session.getAttribute(Const.CURRENT_EMPLOYEE);
-        if (currentEmp == null) {
-            return JsonData.fail(Const.EMP_LOGIN_NOTLOGIN);
-        }
-        return employeeService.delete(empId, currentEmp);
+    public JsonData delete(@RequestParam(value = "ids[]") List<Integer> ids) {
+        return employeeService.deleteEmployee(ids);
     }
 
     /**
      * 更新员工
      */
-    @RequiresRoles("sys:emp:update")
-    @RequestMapping(value = "update.do", method = RequestMethod.GET)
+    @RequiresPermissions("sys:emp:update")
+    @RequestMapping(value = "edit.do")
     @ResponseBody
-    public JsonData update(Employee employee, HttpSession session) {
-        Employee currentEmp = (Employee) session.getAttribute(Const.CURRENT_EMPLOYEE);
-        if (currentEmp == null) {
-            return JsonData.fail(Const.EMP_LOGIN_NOTLOGIN);
-        }
-        return employeeService.update(employee, currentEmp);
+    public JsonData update(EmployeeParam employee) {
+        return employeeService.editEmployee(employee);
     }
 
     /**
      * 查询员工
      */
-    @RequiresRoles("sys:emp:retrieve")
-    @RequestMapping(value = "select.do", method = RequestMethod.GET)
+    @RequiresPermissions("sys:emp:retrieve")
+    @RequestMapping(value = "search.do")
     @ResponseBody
-    public JsonData select(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String
-            empPhone, String empMobile, String empType, HttpSession session) {
-        Employee currentEmp = (Employee) session.getAttribute(Const.CURRENT_EMPLOYEE);
-        if (currentEmp == null) {
-            return JsonData.fail(Const.EMP_LOGIN_NOTLOGIN);
-        }
-        return employeeService.select(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
+    public JsonData searchEmployee(@RequestParam("empNumber") String empNumber, @RequestParam("empName") String empName, @RequestParam("orgName") String
+            orgName, @RequestParam("distName") String distName, @RequestParam("empLoginName") String empLoginName, @RequestParam("empPhone") String empPhone,
+                                   @RequestParam("empMobile") String empMobile, @RequestParam("empType") String empType) {
+        return employeeService.searchEmployee(empNumber, empName, orgName, distName, empLoginName, empPhone, empMobile, empType);
     }
 }

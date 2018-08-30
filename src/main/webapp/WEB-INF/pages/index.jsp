@@ -47,7 +47,7 @@
 </header>
 <div class="mdui-drawer">
     <div class="mdui-list" mdui-collapse="{accordion: true}">
-        <div class="mdui-collapse-item">
+        <div class="mdui-collapse-item mdui-collapse-item-open">
             <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
                 <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">home</i>
                 <div class="mdui-list-item-content mdui-text-color-blue">系统管理</div>
@@ -56,7 +56,7 @@
             <div class="mdui-collapse-item-body mdui-list" style="">
                 <div class="mdui-list-item mdui-ripple nav-item dist">区域管理</div>
                 <div class="mdui-list-item mdui-ripple nav-item org">机构管理</div>
-                <div class="mdui-list-item mdui-ripple nav-item user">用户管理</div>
+                <div class="mdui-list-item mdui-ripple nav-item emp">用户管理</div>
                 <div class="mdui-list-item mdui-ripple nav-item role">角色管理</div>
                 <div class="mdui-list-item mdui-ripple nav-item permission">权限管理</div>
                 <div class="mdui-list-item mdui-ripple nav-item dic">字典管理</div>

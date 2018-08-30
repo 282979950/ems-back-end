@@ -2,6 +2,9 @@ package com.ems.service;
 
 import com.ems.common.JsonData;
 import com.ems.entity.Employee;
+import com.ems.param.EmployeeParam;
+
+import java.util.List;
 
 /**
  * @author litairan on 2018/7/2.
@@ -43,21 +46,20 @@ public interface IEmployeeService {
 
 
     /**
+     * 获取所有员工信息
+     *
+     * @return
+     */
+    JsonData getAllEmployees();
+
+    /**
      * 新建员工
      * employee中必须含有empNumber,empName,empOrgId,empLoginName,empPassword,empType,empManagementDistId,empRoleId
      *
      * @param employee
      * @return
      */
-    JsonData create(Employee employee, Employee currentEmp);
-
-    /**
-     * 删除员工
-     *
-     * @param employeeId
-     * @return
-     */
-    JsonData delete(Integer employeeId, Employee currentEmp);
+    JsonData addEmployee(EmployeeParam employee);
 
     /**
      * 更新员工
@@ -66,7 +68,15 @@ public interface IEmployeeService {
      * @param employee
      * @return
      */
-    JsonData update(Employee employee, Employee currentEmp);
+    JsonData editEmployee(EmployeeParam employee);
+
+    /**
+     * 删除员工
+     *
+     * @param ids
+     * @return
+     */
+    JsonData deleteEmployee(List<Integer> ids);
 
     /**
      * 获取所有的员工信息
@@ -80,14 +90,14 @@ public interface IEmployeeService {
      *
      * @param empNumber
      * @param empName
-     * @param empOrgId
-     * @param empDistrictId
+     * @param orgName
+     * @param distName
      * @param empLoginName
      * @param empPhone
      * @param empMobile
      * @param empType
      * @return
      */
-    JsonData select(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone, String empMobile,
-                    String empType);
+    JsonData searchEmployee(String empNumber, String empName, String orgName, String distName, String empLoginName, String empPhone, String
+            empMobile, String empType);
 }
