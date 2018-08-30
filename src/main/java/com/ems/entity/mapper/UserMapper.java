@@ -1,6 +1,7 @@
 package com.ems.entity.mapper;
 
 import com.ems.entity.User;
+import com.ems.entity.UserLock;
 import com.ems.param.CreateAccountParam;
 import com.ems.param.CreateArchiveParam;
 import com.ems.param.InstallMeterParam;
@@ -49,4 +50,6 @@ public interface UserMapper {
     List<InstallMeterParam> searchInstallMeter(@Param("userId")Integer userId, @Param("distName") String distName, @Param("userAddress")String userAddress);
 
     List<LockAccountParam> searchAccountArchive(@Param("userId")Integer userId, @Param("userName") String userName, @Param("iccardId")Integer iccardId ,@Param("userStatus") Integer userStatus);
+
+    int insertUserLock(UserLock userLock);
 }

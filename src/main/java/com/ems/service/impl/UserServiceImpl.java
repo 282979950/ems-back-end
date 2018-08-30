@@ -297,10 +297,13 @@ public class UserServiceImpl implements IUserService {
         BeanValidator.check(param);
         UserLock userLock = new UserLock();
         userLock.setUserId(param.getUserId());
-        userLock.setIsLock(param.getIsLock());
+        userLock.setIsLock(!param.getIsLock());
         userLock.setLockReason(param.getLockReason());
-
-        return null;
+        int resultCount = userMapper.insertUserLock(userLock);
+        if (resultCount == 0) {
+            return JsonData.fail("锁定/解锁失败");
+        }
+        return JsonData.successMsg("锁定/解锁成功");
 
     }
 
