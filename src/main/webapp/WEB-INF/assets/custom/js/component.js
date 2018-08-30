@@ -222,8 +222,8 @@
         data == null ? '' : data.forEach(function (item) {
             var tdRow = $('<tr></tr>').appendTo(tbody);
             _this.fields.forEach(function (field) {
-                $('<td>' + (item[field.name] ? item[field.name] : '') + '</td>').appendTo(tdRow);
-            });
+                $('<td>' + (item[field.name] != undefined ? item[field.name] : '') + '</td>').appendTo(tdRow);
+              });
         });
         _this.init();
     };
@@ -446,6 +446,10 @@
                         break;
                     case 'lock':
                         $field.trigger('lock');
+                        break;
+                    case 'history' :
+                        $field.trigger('history');
+                        break;
                     default:
                         break;
                 }

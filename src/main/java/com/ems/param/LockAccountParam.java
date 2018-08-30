@@ -50,8 +50,13 @@ public class LockAccountParam  extends BaseEntity {
      */
     private String lockReason;
 
+    /**
+     * 用户锁定原因
+     */
+    private String lastLockReason;
 
-    public LockAccountParam(Integer userId, String userName, Integer iccardId, String distName, String userAddress, Boolean isLock, String lockReason) {
+
+    public LockAccountParam(Integer userId, String userName, Integer iccardId, String distName, String userAddress, Boolean isLock, String lockReason, String lastLockReason) {
         this.userId = userId;
         this.userName = userName;
         this.iccardId = iccardId;
@@ -59,6 +64,7 @@ public class LockAccountParam  extends BaseEntity {
         this.userAddress = userAddress;
         this.isLock = isLock;
         this.lockReason = lockReason;
+        this.lastLockReason = lastLockReason;
     }
 
     public LockAccountParam(){

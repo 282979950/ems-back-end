@@ -52,4 +52,6 @@ public interface UserMapper {
     List<LockAccountParam> searchAccountArchive(@Param("userId")Integer userId, @Param("userName") String userName, @Param("iccardId")Integer iccardId ,@Param("userStatus") Integer userStatus);
 
     int insertUserLock(UserLock userLock);
+
+    List<UserLock> searchLockList(@Param("userId")Integer userId);
 }

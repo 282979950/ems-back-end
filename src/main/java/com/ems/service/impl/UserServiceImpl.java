@@ -293,12 +293,18 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @Transactional
     public JsonData updateLockStatus(LockAccountParam param) {
         BeanValidator.check(param);
         UserLock userLock = new UserLock();
         userLock.setUserId(param.getUserId());
         userLock.setIsLock(!param.getIsLock());
         userLock.setLockReason(param.getLockReason());
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        userLock.setCreateBy(currentEmpId);
+        userLock.setCreateTime(new Date());
+        userLock.setUpdateBy(currentEmpId);
+        userLock.setUpdateTime(new Date());
         int resultCount = userMapper.insertUserLock(userLock);
         if (resultCount == 0) {
             return JsonData.fail("锁定/解锁失败");
@@ -309,7 +315,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public JsonData searchLockList(Integer userId) {
-        return null;
+        List<UserLock> userLocks= userMapper.searchLockList(userId);
+        return  userLocks == null || userLocks.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(userLocks, "查询成功");
     }
 
 

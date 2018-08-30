@@ -481,11 +481,12 @@
             <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="is_lock" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="lock_reason" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="last_lock_reason" jdbcType="VARCHAR" javaType="java.lang.String"/>
             </constructor>
     </resultMap>
     <select id="searchAccountArchive" parameterType="map" resultMap="LockAccountParam">
         select
-        u.user_id, u.user_name,u.iccard_id, dist.dist_name, u.user_address, ul.is_lock, ul.lock_reason
+        u.user_id, u.user_name,u.iccard_id, dist.dist_name, u.user_address, ul.is_lock,'' as lock_reason, ul.lock_reason as last_lock_reason
         from user u left join sys_district dist on u.user_dist_id = dist.dist_id
         LEFT JOIN ( SELECT us.user_id, IFNULL(us.is_lock,0) is_lock, us.lock_reason , us.create_time FROM user_lock us ,
         (SELECT user_id , MAX(create_time) AS create_time FROM user_lock GROUP BY user_id) um
@@ -507,64 +508,13 @@
     </select>
 
     <insert id="insertUserLock" parameterType="com.ems.entity.UserLock">
-        insert into user_lock
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="userId != null">
-                user_id,
-            </if>
-            <if test="isLock != null">
-                is_lock,
-            </if>
-            <if test="lockReason != null">
-                lock_reason,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="createBy != null">
-                create_by,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
-            <if test="updateBy != null">
-                update_by,
-            </if>
-            <if test="usable != null">
-                usable,
-            </if>
-            <if test="remarks != null">
-                remarks,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="userId != null">
-                #{userId,jdbcType=INTEGER},
-            </if>
-            <if test="isLock != null">
-                #{isLock,jdbcType=BIT},
-            </if>
-            <if test="lockReason != null">
-                #{lockReason,jdbcType=VARCHAR},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="createBy != null">
-                #{createBy,jdbcType=INTEGER},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateBy != null">
-                #{updateBy,jdbcType=INTEGER},
-            </if>
-            <if test="usable != null">
-                #{usable,jdbcType=BIT},
-            </if>
-            <if test="remarks != null">
-                #{remarks,jdbcType=VARCHAR},
-            </if>
-        </trim>
-    </insert>
+        insert into user_lock (user_id, is_lock,lock_reason,create_time, create_by,update_time,update_by ,usable, remarks)
+       values (#{userId,jdbcType=INTEGER},#{isLock,jdbcType=BIT},#{lockReason,jdbcType=VARCHAR},NOW(),#{createBy,jdbcType=INTEGER},NOW(),
+        #{updateBy,jdbcType=INTEGER},#{usable,jdbcType=BIT},#{remarks,jdbcType=VARCHAR})
+       </insert>
+
+    <select id="searchLockList" parameterType="int" resultType="com.ems.entity.UserLock">
+      SELECT user_lock_id as userLockId,user_id as userId,is_lock as isLock,lock_reason as lockReason,create_time as createTime
+      FROM user_lock where user_id = #{userId,jdbcType=INTEGER}
+    </select>
 </mapper>

@@ -264,12 +264,51 @@ app.initEvent = function () {
             });
             var form =app.createForm({
                 parent: '.mdui-dialog-content',
-                fields: app.editFormFields['lockAccountLock'],
+                fields: app.editFormFields['lockAccount'],
                 data: data[0]
             });
         }
         dialog.handleUpdate();
     });
+    main.on('history', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        var userId = data[0].userId;
+        $.ajax({
+            async: true,
+            type: 'Post',
+            url: app.currentPageName+'/lockList.do',
+            data: {
+                "userId" : userId
+            },
+            contentType: 'application/x-www-form-urlencoded',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                var data = response.data;
+                var dialog = mdui.dialog({
+                    title: '历史记录',
+                    content: ' ',
+                    buttons: [{text: '关闭'}]
+                });
+                var table = app.createTable({
+                    parent: '.mdui-dialog-content',
+                    fields: app.tableFields['lockHistory'],
+                    data: data
+                });
+                dialog.handleUpdate();
+            }
+        });
+    });
+
 };
 
 app.removeEvent = function () {
@@ -442,49 +481,60 @@ app.tableFields = {
         name: 'meterCode',
         caption: '表具编号'
     }],
-    account: [
-        {
-            name: 'userId',
-            caption: '用户编号'
-        }, {
-            name: 'distName',
-            caption: '用户区域'
-        }, {
-            name: 'userAddress',
-            caption: '用户地址'
-        }, {
-            name: 'userType',
-            caption: '用户类型'
-        }, {
-            name: 'userGasType',
-            caption: '用气类型'
-        }, {
-            name: 'userStatus',
-            caption: '用户状态'
-        }],
-    lockAccount: [
-        {
-            name: 'userId',
-            caption: '用户编号'
-        }, {
-            name: 'userName',
-            caption: '用户名称'
-        }, {
-            name: 'distName',
-            caption: '用户区域'
-        }, {
-            name: 'userAddress',
-            caption: '用户地址'
-        }, {
-            name: 'iccardId',
-            caption: 'IC卡编号'
-        }, {
-            name: 'isLock',
-            caption: '锁定状态'
-        }, {
-            name: 'lockReason',
-            caption: '解锁/锁定原因'
-        }]
+    account: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'distName',
+        caption: '用户区域'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userType',
+        caption: '用户类型'
+    }, {
+        name: 'userGasType',
+        caption: '用气类型'
+    }, {
+        name: 'userStatus',
+        caption: '用户状态'
+    }],
+    lockAccount: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'userName',
+        caption: '用户名称'
+    }, {
+        name: 'distName',
+        caption: '用户区域'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'iccardId',
+        caption: 'IC卡编号'
+    }, {
+        name: 'isLock',
+        caption: '锁定状态'
+    }, {
+        name: 'lockReason',
+        caption: '解锁/锁定原因'
+    }],
+    lockHistory: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'isLock',
+        caption: '锁定状态'
+    }, {
+        name: 'lockReason',
+        caption: '解锁/锁定原因'
+    }, {
+        name: 'createTime',
+        caption: '解锁/锁定时间'
+    }]
 };
 /*
  *数据字典
@@ -1025,43 +1075,27 @@ app.editFormFields = {
         name: 'orderPayment',
         caption: '充值金额'
     }],
-    lockAccountLock:[{
+    lockAccount:[{
         name: 'userName',
         caption: '客户姓名'
     },{
-        name: 'userPhone',
-        caption: '电话'
+        name: 'iccardId',
+        caption: 'IC卡号'
     },{
-        name: 'iccardIdentifier',
-        caption:'IC卡识别号'
+        name: 'distName',
+        caption:'区域名称'
     },{
-        name: 'userIdcard',
-        caption: '身份证号'
+        name: 'userAddress',
+        caption: '用户地址'
     },{
-        name: 'userDeed',
-        caption: '房产证号'
+        name: 'isLock',
+        caption: '是否锁定'
     },{
-        name: 'orderPayment',
-        caption: '充值金额'
-    }],
-    lockAccountUnLock:[{
-        name: 'userName',
-        caption: '客户姓名'
+        name: 'lastLockReason',
+        caption: '上次锁定原因'
     },{
-        name: 'userPhone',
-        caption: '电话'
-    },{
-        name: 'iccardIdentifier',
-        caption:'IC卡识别号'
-    },{
-        name: 'userIdcard',
-        caption: '身份证号'
-    },{
-        name: 'userDeed',
-        caption: '房产证号'
-    },{
-        name: 'orderPayment',
-        caption: '充值金额'
+        name: 'lockReason',
+        caption: '锁定原因'
     }]
 };
 

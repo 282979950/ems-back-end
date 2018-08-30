@@ -44,7 +44,7 @@ public class LockAccountController {
      * @param param
      * @return
      */
-    @RequestMapping(value = "/edit.do")
+    @RequestMapping(value = "/lock.do")
     @ResponseBody
     public JsonData updateLockStatus(LockAccountParam param) {
         return userService.updateLockStatus(param);
@@ -55,7 +55,7 @@ public class LockAccountController {
      * @param userId
      * @return
      */
-    @RequestMapping(value = "/lock.do")
+    @RequestMapping(value = "/lockList.do")
     @ResponseBody
     public JsonData searchLockList(@Param("userId") Integer userId) {
         return userService.searchLockList(userId);
