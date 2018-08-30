@@ -444,6 +444,8 @@
                     case 'search':
                         $field.trigger('search');
                         break;
+                    case 'lock':
+                        $field.trigger('lock');
                     default:
                         break;
                 }

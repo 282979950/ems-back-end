@@ -63,7 +63,7 @@ app.initIndex = function () {
 };
 
 app.initEvent = function () {
-    var formNames =app.currentPageName
+    var formNames =app.currentPageName;
     var main = $('.container-main');
     var table = app.table;
     var fields = table.getFields();
@@ -219,6 +219,56 @@ app.initEvent = function () {
                 app.table.refresh(response.data)
             }
         });
+    });
+    main.on('lock', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        var isLock = data[0].isLock;
+        if (isLock === true || isLock === false) {
+            var dialog = mdui.dialog({
+                title: '锁定解锁',
+                content: ' ',
+                buttons: [{
+                    text: isLock ? '解锁':'锁定',
+                    onClick: function () {
+                        var data = form.getData();
+                        $.ajax({
+                            type: 'POST',
+                            url: app.currentPageName + '/lock.do',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: data,
+                            beforeSend: function (xhr) {
+                                xhr.withCredentials = true;
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                                if (response.status) {
+                                    app.renderWithoutPage({
+                                        url: app.currentPageName + '/listData.do'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }, {
+                    text: '取消'
+                }]
+            });
+            var form =app.createForm({
+                parent: '.mdui-dialog-content',
+                fields: app.editFormFields['lockAccountLock'],
+                data: data[0]
+            });
+        }
+        dialog.handleUpdate();
     });
 };
 
