@@ -4,6 +4,7 @@ import com.ems.common.JsonData;
 import com.ems.param.EntryMeterParam;
 import com.ems.service.IMeterService;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class EntryMeterController {
     /**
      * 查询所有入库的表具信息
      */
+    @RequiresPermissions("sys:entryMeter:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData listData() {
@@ -39,6 +41,7 @@ public class EntryMeterController {
      * @param param
      * @return
      */
+    @RequiresPermissions("sys:entryMeter:create")
     @RequestMapping(value = "/add.do")
     @ResponseBody
     public JsonData addEntryMeter(EntryMeterParam param) {
@@ -51,6 +54,7 @@ public class EntryMeterController {
      * @param param
      * @return
      */
+    @RequiresPermissions("sys:entryMeter:update")
     @RequestMapping(value = "/edit.do")
     @ResponseBody
     public JsonData editEntryMeter(EntryMeterParam param) {
@@ -63,6 +67,7 @@ public class EntryMeterController {
      * @param ids
      * @return
      */
+    @RequiresPermissions("sys:entryMeter:delete")
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     public JsonData deleteEntryMeter(@RequestParam(value = "ids[]") List<Integer> ids) {
@@ -78,6 +83,7 @@ public class EntryMeterController {
      * @param meterDirection
      * @return
      */
+    @RequiresPermissions("sys:entryMeter:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData searchEntryMeter(@Param("meterCode") String meterCode, @Param("meterCategory") String meterCategory, @Param("meterType") String

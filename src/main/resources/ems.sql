@@ -500,7 +500,35 @@ INSERT INTO `sys_permission` VALUES ('1098', 'account:lockAccount:lockList', '�
 INSERT INTO `sys_permission` VALUES ('1099', 'account:lockAccount:import', '导入', null, '1015', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1100', 'account:lockAccount:export', '导出', null, '1015', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
+-- ----------------------------
+-- Records of 表具入库
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1118', 'sys:entryMeter:create', '增加', null, '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1101', 'sys:entryMeter:update', '修改', null, '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1102', 'sys:entryMeter:delete', '删除', null, '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1103', 'sys:entryMeter:retrieve', '查询', null, '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1104', 'sys:entryMeter:import', '导入', null, '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1105', 'sys:entryMeter:export', '导出', null, '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
+-- ----------------------------
+-- Records of 用户建档
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1106', 'sys:createArchive:create', '增加', null, '1011', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1107', 'sys:createArchive:update', '修改', null, '1011', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1108', 'sys:createArchive:delete', '删除', null, '1011', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1109', 'sys:createArchive:retrieve', '查询', null, '1011', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1110', 'sys:createArchive:import', '导入', null, '1011', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1111', 'sys:createArchive:export', '导出', null, '1011', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+-- ----------------------------
+-- Records of 挂表
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1112', 'sys:installation:create', '增加', null, '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1113', 'sys:installation:update', '修改', null, '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1114', 'sys:installation:delete', '删除', null, '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1115', 'sys:installation:retrieve', '查询', null, '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1116', 'sys:installation:import', '导入', null, '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1117', 'sys:installation:export', '导出', null, '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
 -- ----------------------------
 -- Table structure for `sys_role`

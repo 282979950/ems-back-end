@@ -4,6 +4,7 @@ import com.ems.common.JsonData;
 import com.ems.param.InstallMeterParam;
 import com.ems.service.IMeterService;
 import com.ems.service.IUserService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class InstallMeterController {
     /**
      * 查询所有挂表信息
      */
+    @RequiresPermissions("sys:installation:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData listData() {
@@ -41,6 +43,7 @@ public class InstallMeterController {
      * @param param
      * @return
      */
+    @RequiresPermissions("sys:installation:create")
     @RequestMapping(value = "/add.do")
     @ResponseBody
     public JsonData addInstallMeter(InstallMeterParam param) {
@@ -53,6 +56,7 @@ public class InstallMeterController {
      * @param param
      * @return
      */
+    @RequiresPermissions("sys:installation:update")
     @RequestMapping(value = "/edit.do")
     @ResponseBody
     public JsonData editInstallMeter(InstallMeterParam param) {
@@ -65,6 +69,7 @@ public class InstallMeterController {
      * @param ids
      * @return
      */
+    @RequiresPermissions("sys:installation:delete")
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     public JsonData deleteInstallMeter(@RequestParam(value = "ids[]") List<Integer> ids) {
@@ -76,6 +81,7 @@ public class InstallMeterController {
      *
      * @return
      */
+    @RequiresPermissions("sys:installation:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData searchInstallMeter(@RequestParam("userId") Integer userId, @RequestParam("distName") String distName, @RequestParam("userAddress") String
