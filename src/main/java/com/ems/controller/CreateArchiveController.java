@@ -28,7 +28,7 @@ public class CreateArchiveController {
      *
      * @return
      */
-    @RequiresPermissions("sys:createArchive:visit")
+    @RequiresPermissions("account:createArchive:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData getAllArchives() {
@@ -40,7 +40,7 @@ public class CreateArchiveController {
      *
      * @return
      */
-    @RequiresPermissions("sys:createArchive:create")
+    @RequiresPermissions("account:createArchive:create")
     @RequestMapping(value = "/add.do")
     @ResponseBody
     public JsonData addArchive(CreateArchiveParam param) {
@@ -52,7 +52,7 @@ public class CreateArchiveController {
      *
      * @return
      */
-    @RequiresPermissions("sys:createArchive:update")
+    @RequiresPermissions("account:createArchive:update")
     @RequestMapping(value = "/edit.do")
     @ResponseBody
     public JsonData editArchive(CreateArchiveParam param) {
@@ -64,7 +64,7 @@ public class CreateArchiveController {
      *
      * @return
      */
-    @RequiresPermissions("sys:createArchive:delete")
+    @RequiresPermissions("account:createArchive:delete")
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     public JsonData deleteArchive(@RequestParam(value = "ids[]") List<Integer> ids) {
@@ -76,7 +76,7 @@ public class CreateArchiveController {
      *
      * @return
      */
-    @RequiresPermissions("sys:createArchive:retrieve")
+    @RequiresPermissions("account:createArchive:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData searchArchive(@Param("userId") Integer userId, @Param("distName") String distName, @Param("userAddress") String userAddress, @Param

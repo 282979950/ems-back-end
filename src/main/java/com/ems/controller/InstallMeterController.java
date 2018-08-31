@@ -30,7 +30,7 @@ public class InstallMeterController {
     /**
      * 查询所有挂表信息
      */
-    @RequiresPermissions("sys:installation:visit")
+    @RequiresPermissions("account:installation:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData listData() {
@@ -43,7 +43,7 @@ public class InstallMeterController {
      * @param param
      * @return
      */
-    @RequiresPermissions("sys:installation:create")
+    @RequiresPermissions("account:installation:create")
     @RequestMapping(value = "/add.do")
     @ResponseBody
     public JsonData addInstallMeter(InstallMeterParam param) {
@@ -56,7 +56,7 @@ public class InstallMeterController {
      * @param param
      * @return
      */
-    @RequiresPermissions("sys:installation:update")
+    @RequiresPermissions("account:installation:update")
     @RequestMapping(value = "/edit.do")
     @ResponseBody
     public JsonData editInstallMeter(InstallMeterParam param) {
@@ -69,7 +69,7 @@ public class InstallMeterController {
      * @param ids
      * @return
      */
-    @RequiresPermissions("sys:installation:delete")
+    @RequiresPermissions("account:installation:delete")
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     public JsonData deleteInstallMeter(@RequestParam(value = "ids[]") List<Integer> ids) {
@@ -81,7 +81,7 @@ public class InstallMeterController {
      *
      * @return
      */
-    @RequiresPermissions("sys:installation:retrieve")
+    @RequiresPermissions("account:installation:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData searchInstallMeter(@RequestParam("userId") Integer userId, @RequestParam("distName") String distName, @RequestParam("userAddress") String
