@@ -66,7 +66,7 @@ public class AccountController {
      * @param param
      * @return
      */
-    @RequiresPermissions("account:createAccount:edit")
+    @RequiresPermissions("account:createAccount:update")
     @RequestMapping(value = "/edit.do")
     @ResponseBody
     public JsonData createAccount(CreateAccountParam param) {
