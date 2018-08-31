@@ -4,6 +4,7 @@ import com.ems.common.JsonData;
 import com.ems.param.CreateArchiveParam;
 import com.ems.service.IUserService;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class CreateArchiveController {
      *
      * @return
      */
+    @RequiresPermissions("sys:createArchive:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData getAllArchives() {
@@ -38,6 +40,7 @@ public class CreateArchiveController {
      *
      * @return
      */
+    @RequiresPermissions("sys:createArchive:create")
     @RequestMapping(value = "/add.do")
     @ResponseBody
     public JsonData addArchive(CreateArchiveParam param) {
@@ -49,6 +52,7 @@ public class CreateArchiveController {
      *
      * @return
      */
+    @RequiresPermissions("sys:createArchive:update")
     @RequestMapping(value = "/edit.do")
     @ResponseBody
     public JsonData editArchive(CreateArchiveParam param) {
@@ -60,6 +64,7 @@ public class CreateArchiveController {
      *
      * @return
      */
+    @RequiresPermissions("sys:createArchive:delete")
     @RequestMapping(value = "/delete.do")
     @ResponseBody
     public JsonData deleteArchive(@RequestParam(value = "ids[]") List<Integer> ids) {
@@ -71,6 +76,7 @@ public class CreateArchiveController {
      *
      * @return
      */
+    @RequiresPermissions("sys:createArchive:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData searchArchive(@Param("userId") Integer userId, @Param("distName") String distName, @Param("userAddress") String userAddress, @Param
