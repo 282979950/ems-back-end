@@ -220,6 +220,10 @@ app.initEvent = function () {
             }
         });
     });
+    main.on('clear', function () {
+        app.toolbar.clearInputsData();
+
+    });
     main.on('lock', function () {
         var data = table.getSelectedDatas();
         if (data.length === 0) {
@@ -1120,9 +1124,6 @@ app.headScreening = {
         name: 'distCode',
         caption: '区域编码',
         type: 'input'
-    }, {
-        name: 'search',
-        caption: '搜索'
     }],
     org: [{
         name: 'add',
@@ -1145,9 +1146,6 @@ app.headScreening = {
         name: 'orgName',
         caption: '机构名称',
         type: 'input'
-    }, {
-        name: 'search',
-        caption: '搜索'
     }],
     emp: [{
         name: 'add',
@@ -1190,9 +1188,6 @@ app.headScreening = {
         name: 'empType',
         caption: '员工类型',
         type: 'input'
-    }, {
-        name: 'search',
-        caption: '搜索'
     }],
     dic: [{
         name: 'add',
@@ -1211,9 +1206,6 @@ app.headScreening = {
         name: 'dictCategory',
         caption: '字典类型',
         type: 'input'
-    }, {
-        name: 'search',
-        caption: '搜索'
     }],
     permission: [{
         name: 'add',
@@ -1236,9 +1228,6 @@ app.headScreening = {
         name: 'menuName',
         caption: '菜单名称',
         type: 'input'
-    }, {
-        name: 'search',
-        caption: '搜索'
     }],
     role: [{
         name: 'add',
@@ -1253,9 +1242,6 @@ app.headScreening = {
         name: 'roleName',
         caption: '角色名称',
         type: 'input'
-    }, {
-        name: 'search',
-        caption: '搜索'
     }],
     entry: [{
         name: 'add',
@@ -1286,9 +1272,6 @@ app.headScreening = {
         name: 'meterProdDate',
         caption: '表具生产日期',
         type: 'input'
-    }, {
-        name: 'search',
-        caption: '搜索'
     }],
     createArchive: [{
         name: 'add',
@@ -1323,9 +1306,6 @@ app.headScreening = {
         name: 'userStatus',
         caption: '用户状态',
         type: 'input'
-    }, {
-        name: 'search',
-        caption: '搜索'
     }],
     installMeter: [{
         name: 'edit',
@@ -1342,9 +1322,6 @@ app.headScreening = {
         name: 'userAddress',
         caption: '用户地址',
         type: 'input'
-    }, {
-        name: 'search',
-        caption: '搜索'
     }],
     account: [{
         name: 'edit',
@@ -1365,9 +1342,6 @@ app.headScreening = {
         name: 'userGasType',
         caption: '用气类型',
         type: 'input'
-    },{
-        name: 'search',
-        caption: '搜索'
     }],
     lockAccount: [{
         name: 'lock',
@@ -1383,9 +1357,6 @@ app.headScreening = {
         name: 'iccardId',
         caption: 'IC卡号',
         type: 'input'
-    },{
-        name: 'search',
-        caption: '搜索'
     }]
 
 };
