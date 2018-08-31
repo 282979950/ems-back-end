@@ -523,7 +523,7 @@ app.tableFields = {
         name: 'isLock',
         caption: '锁定状态'
     }, {
-        name: 'lockReason',
+        name: 'lastLockReason',
         caption: '解锁/锁定原因'
     }],
     lockHistory: [{
@@ -1096,10 +1096,10 @@ app.editFormFields = {
         caption: '是否锁定'
     },{
         name: 'lastLockReason',
-        caption: '上次锁定原因'
+        caption: '上次操作原因'
     },{
         name: 'lockReason',
-        caption: '锁定原因'
+        caption: '本次操作原因'
     }]
 };
 
