@@ -9,6 +9,7 @@ import com.ems.service.IUserService;
 import com.ems.service.SysDictionaryService;
 import com.ems.utils.CalculateUtil;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,7 @@ public class AccountController {
      * 显示已经绑定了表具的未开户的用户信息
      * @return
      */
+    @RequiresPermissions("account:createAccount:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData getAllNotAccountArchives() {
@@ -65,6 +67,7 @@ public class AccountController {
      * @param param
      * @return
      */
+    @RequiresPermissions("account:createAccount:edit")
     @RequestMapping(value = "/edit.do")
     @ResponseBody
     public JsonData createAccount(CreateAccountParam param) {
@@ -76,6 +79,7 @@ public class AccountController {
      *
      * @return
      */
+    @RequiresPermissions("account:createAccount:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData searchArchive(@Param("userId") Integer userId, @Param("distName") String distName, @Param("userAddress") String userAddress, @Param

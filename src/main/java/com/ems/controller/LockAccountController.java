@@ -4,6 +4,7 @@ import com.ems.common.JsonData;
 import com.ems.param.LockAccountParam;
 import com.ems.service.IUserService;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class LockAccountController {
      * 显示已经绑定了表具的未开户的用户信息
      * @return
      */
+    @RequiresPermissions("account:lockAccount:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData getAllAccountArchives() {
@@ -33,6 +35,7 @@ public class LockAccountController {
      * 显示已经绑定了表具的未开户的用户信息
      * @return
      */
+    @RequiresPermissions("account:lockAccount:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData searchAccountArchives(@Param("userId") Integer userId, @Param("userName") String userName, @Param("iccardId") Integer iccardId) {
@@ -44,6 +47,7 @@ public class LockAccountController {
      * @param param
      * @return
      */
+    @RequiresPermissions("account:lockAccount:lock")
     @RequestMapping(value = "/lock.do")
     @ResponseBody
     public JsonData updateLockStatus(LockAccountParam param) {
@@ -55,6 +59,7 @@ public class LockAccountController {
      * @param userId
      * @return
      */
+    @RequiresPermissions("account:lockAccount:lockList")
     @RequestMapping(value = "/lockList.do")
     @ResponseBody
     public JsonData searchLockList(@Param("userId") Integer userId) {

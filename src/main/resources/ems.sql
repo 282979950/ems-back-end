@@ -366,7 +366,8 @@ INSERT INTO `sys_permission` VALUES ('1011', 'account:createArchive:visit', '用
 INSERT INTO `sys_permission` VALUES ('1012', 'account:entryMeter:visit', '表具入库', '/account/entryMeter', '1010', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1013', 'account:installation:visit', '挂表信息', '/account/installation', '1010', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1014', 'account:createAccount:visit', '账户开户', '/account/createAccount', '1010', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1015', 'account:mgt:visit', '账户管理', '/account/mgt', '1010', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1015', 'account:lockAccount:visit', '账户锁定', '/account/lockAccount', '1010', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1091', 'account:alter:visit', '账户变更', '/account/alter', '1010', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
 INSERT INTO `sys_permission` VALUES ('1016', 'recharge:visit', '充值缴费管理', '/recharge/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1017', 'recharge:pre:visit', '预付费充值', '/recharge/pre', '1016', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
@@ -481,6 +482,23 @@ INSERT INTO `sys_permission` VALUES ('1087', 'sys:notice:delete', '删除', null
 INSERT INTO `sys_permission` VALUES ('1088', 'sys:notice:retrieve', '查询', null, '1009', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1089', 'sys:notice:import', '导入', null, '1009', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1090', 'sys:notice:export', '导出', null, '1009', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+-- ----------------------------
+-- Records of 账户开户
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1092', 'account:createAccount:update', '开户', null, '1014', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1093', 'account:createAccount:retrieve', '查询', null, '1014', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1094', 'account:createAccount:import', '导入', null, '1014', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1095', 'account:createAccount:export', '导出', null, '1014', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+-- ----------------------------
+-- Records of 账户锁定
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1096', 'account:lockAccount:retrieve', '查询', null, '1015', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1097', 'account:lockAccount:lock', '锁定解锁', null, '1015', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1098', 'account:lockAccount:lockList', '锁定记录', null, '1015', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1099', 'account:lockAccount:import', '导入', null, '1015', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1100', 'account:lockAccount:export', '导出', null, '1015', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
 
 

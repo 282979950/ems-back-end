@@ -78,6 +78,7 @@ public class SysPermissionController {
     /**
      * 获取菜单列表
      */
+    @RequiresPermissions("sys:perm:visit")
     @RequestMapping("listAllMenus.do")
     @ResponseBody
     public JsonData listAllMenus() {
@@ -87,6 +88,7 @@ public class SysPermissionController {
     /**
      * 获取菜单列表与权限列表关系
      */
+    @RequiresPermissions("sys:perm:visit")
     @RequestMapping("listAllMenusAndPerms.do")
     @ResponseBody
     public JsonData listAllMenusAndPerms() {
