@@ -1,7 +1,6 @@
 package com.ems.service.impl;
 
 import com.ems.common.BeanValidator;
-import com.ems.common.Const;
 import com.ems.common.JsonData;
 import com.ems.entity.*;
 import com.ems.entity.mapper.UserMapper;
