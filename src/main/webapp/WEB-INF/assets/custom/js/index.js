@@ -604,16 +604,21 @@ editFormDictionary = function(formNames){
 app.addFormfields = {
     dist: [{
         name: 'distName',
-        caption: '区域名称'
+        caption: '区域名称',
+        required: true,
+        maxlength: 20
     }, {
         name: 'distCode',
-        caption: '区域编码'
+        caption: '区域编码',
+        maxlength: 20
     }, {
         name: 'distCategory',
-        caption: '区域类别'
+        caption: '区域类别',
+        required: true
     }, {
         name: 'distAddress',
-        caption: '区域地址'
+        caption: '区域地址',
+        maxlength: 50
     }, {
         name: 'distParentId',
         caption: '父级区域'
@@ -638,10 +643,14 @@ app.addFormfields = {
     }],
     emp: [{
         name: 'empNumber',
-        caption: '员工工号'
+        caption: '员工工号',
+        required: true,
+        maxlength: 50
     }, {
         name: 'empName',
-        caption: '员工名称'
+        caption: '员工名称',
+        required: true,
+        maxlength: 50
     }, {
         name: 'orgName',
         caption: '所属机构'
@@ -650,22 +659,30 @@ app.addFormfields = {
         caption: '所属区域'
     }, {
         name: 'empLoginName',
-        caption: '登录名'
+        caption: '登录名',
+        required: true,
+        maxlength: 20,
+        disabled: true
     }, {
         name: 'empPassword',
-        caption: '登录密码'
+        caption: '登录密码',
+        maxlength: 12,
+        inputType: 'password'
     }, {
         name: 'empEmail',
-        caption: '邮箱'
+        caption: '邮箱',
+        inputType: 'email'
     }, {
         name: 'empPhone',
         caption: '电话'
     }, {
         name: 'empMobile',
-        caption: '手机'
+        caption: '手机',
+        inputType: 'mobile'
     }, {
         name: 'empAddress',
-        caption: '地址'
+        caption: '地址',
+        maxlength: 50
     }, {
         name: 'empType',
         caption: '员工类型'
@@ -762,19 +779,23 @@ app.addFormfields = {
     }],
     entry: [{
         name: 'meterCode',
-        caption: '表具编号'
+        caption: '表具编号',
+        required: true
     }, {
         name: 'meterStopCode',
         caption: '表止码'
     }, {
         name: 'meterCategory',
-        caption: '表具类别'
+        caption: '表具类别',
+        required: true
     }, {
         name: 'meterType',
-        caption: '表具型号'
+        caption: '表具型号',
+        required: true
     }, {
         name: 'meterDirection',
-        caption: '表向'
+        caption: '表向',
+        required: true
     }, {
         name: 'meterProdDate',
         caption: '表具生产日期'
@@ -784,19 +805,25 @@ app.addFormfields = {
     }],
     createArchive: [{
         name: 'distName',
-        caption: '用户区域'
+        caption: '用户区域',
+        required: true
     }, {
         name: 'userAddress',
-        caption: '用户地址'
+        caption: '用户地址',
+        required: true,
+        maxlength: 100
     }, {
         name: 'userType',
-        caption: '用户类型'
+        caption: '用户类型',
+        required: true
     }, {
         name: 'userGasType',
-        caption: '用气类型'
+        caption: '用气类型',
+        required: true
     }, {
         name: 'userStatus',
-        caption: '用户状态'
+        caption: '用户状态',
+        required: true
     }]
 };
 
@@ -823,16 +850,21 @@ function ajaxTreeCombobox(url){
 app.editFormFields = {
     dist: [{
         name: 'distName',
-        caption: '区域名称'
+        caption: '区域名称',
+        required: true,
+        maxlength: 20
     }, {
         name: 'distCode',
-        caption: '区域编码'
+        caption: '区域编码',
+        maxlength: 20
     }, {
         name: 'distCategory',
-        caption: '区域类别'
+        caption: '区域类别',
+        required: true
     }, {
         name: 'distAddress',
-        caption: '区域地址'
+        caption: '区域地址',
+        maxlength: 50
     }, {
         name: 'distParentId',
         caption: '父级区域'
@@ -854,10 +886,14 @@ app.editFormFields = {
     }],
     emp: [{
         name: 'empNumber',
-        caption: '员工工号'
+        caption: '员工工号',
+        required: true,
+        maxlength: 50
     }, {
         name: 'empName',
-        caption: '员工名称'
+        caption: '员工名称',
+        required: true,
+        maxlength: 50
     }, {
         name: 'orgName',
         caption: '所属机构'
@@ -866,22 +902,30 @@ app.editFormFields = {
         caption: '所属区域'
     }, {
         name: 'empLoginName',
-        caption: '登录名'
+        caption: '登录名',
+        required: true,
+        maxlength: 20,
+        disabled: true
     }, {
         name: 'empPassword',
-        caption: '登录密码'
+        caption: '登录密码',
+        maxlength: 12,
+        inputType: 'password'
     }, {
         name: 'empEmail',
-        caption: '邮箱'
+        caption: '邮箱',
+        inputType: 'email'
     }, {
         name: 'empPhone',
         caption: '电话'
     }, {
         name: 'empMobile',
-        caption: '手机'
+        caption: '手机',
+        inputType: 'mobile'
     }, {
         name: 'empAddress',
-        caption: '地址'
+        caption: '地址',
+        maxlength: 50
     }, {
         name: 'empType',
         caption: '员工类型'
@@ -982,19 +1026,23 @@ app.editFormFields = {
     }],
     entry: [{
         name: 'meterCode',
-        caption: '表具编码'
+        caption: '表具编号',
+        required: true
     }, {
         name: 'meterStopCode',
         caption: '表止码'
     }, {
         name: 'meterCategory',
-        caption: '表具类别'
+        caption: '表具类别',
+        required: true
     }, {
         name: 'meterType',
-        caption: '表具型号'
+        caption: '表具型号',
+        required: true
     }, {
         name: 'meterDirection',
-        caption: '表向'
+        caption: '表向',
+        required: true
     }, {
         name: 'meterProdDate',
         caption: '表具生产日期'
@@ -1004,35 +1052,46 @@ app.editFormFields = {
     }],
     createArchive: [{
         name: 'distName',
-        caption: '用户区域'
+        caption: '用户区域',
+        required: true
     }, {
         name: 'userAddress',
-        caption: '用户地址'
+        caption: '用户地址',
+        required: true,
+        maxlength: 100
     }, {
         name: 'userType',
-        caption: '用户类型'
+        caption: '用户类型',
+        required: true
     }, {
         name: 'userGasType',
-        caption: '用气类型'
+        caption: '用气类型',
+        required: true
     }, {
         name: 'userStatus',
-        caption: '用户状态'
+        caption: '用户状态',
+        required: true
     }],
     installMeter: [{
         name: 'userId',
-        caption: '用户编号'
+        caption: '用户编号',
+        disabled: true
     }, {
         name: 'distName',
-        caption: '用户区域'
+        caption: '用户区域',
+        disabled: true
     }, {
         name: 'userAddress',
-        caption: '用户地址'
+        caption: '用户地址',
+        disabled: true
     }, {
         name: 'userStatus',
-        caption: '用户状态'
+        caption: '用户状态',
+        disabled: true
     }, {
         name: 'meterCode',
-        caption: '表具编号'
+        caption: '表具编号',
+        required: true
     }],
     accountIC:[{
         name: 'userName',

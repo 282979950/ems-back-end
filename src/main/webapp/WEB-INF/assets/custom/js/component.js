@@ -271,10 +271,12 @@
 
         var fields = _this.fields = params.fields;
         fields.forEach(function (field) {
-            var $field = $('<div></div>').addClass('form-field').appendTo(body);
-            var $span = $('<span></span>').text(field.caption + ':').appendTo($field);
+            var $field;
+            var $span;
             switch (field.type) {
                 case 'listcombobox':
+                    $field = $('<div></div>').addClass('form-field').addClass('mdui-textfield').appendTo(body);
+                    $span = $('<span></span>').text(field.caption + ':').appendTo($field);
                     app.createListCombobox({
                         parent: $field[0],
                         clazz: 'field ',
@@ -283,6 +285,8 @@
                     });
                     break;
                 case 'treecombobox':
+                    $field = $('<div></div>').addClass('form-field').addClass('mdui-textfield').appendTo(body);
+                    $span = $('<span></span>').text(field.caption + ':').appendTo($field);
                     app.createTreeCombobox({
                         parent: $field[0],
                         clazz: 'field ',
@@ -292,8 +296,55 @@
                     });
                     break;
                 default:
-                    $span.addClass('captionClass iconstyle');
-                    $('<input type="text">').addClass('field').addClass('align-center inputHeight').addClass(field.name).attr('name', field.name).attr('placeholder', field.caption).appendTo($span);
+                    $field = $('<div></div>').addClass('mdui-textfield mdui-textfield-floating-label mdui-textfield-has-bottom form-field').appendTo(body);
+                    $('<label></label>').addClass('mdui-textfield-label').text(field.caption).appendTo($field);
+                    var $input = $('<input>').attr('type', field.inputType ? field.inputType : 'text').addClass('mdui-textfield-input field').addClass(field.name).attr('name', field.name).appendTo($field);
+                    var $error;
+                    if (field.required) {
+                        $input.attr('required', 'required');
+                        $error = $('<div></div>').addClass('mdui-textfield-error').text(field.caption + '不能为空').appendTo($field);
+                    }
+                    if (field.maxlength) {
+                        $input.attr('maxlength', field.maxlength);
+                    }
+                    if (field.disabled) {
+                        $input.attr('disabled', field.disabled);
+                    }
+                    switch (field.inputType) {
+                        case 'email':
+                            if ($error) {
+                                $error.text('邮箱格式不正确');
+                            } else {
+                                $('<div></div>').addClass('mdui-textfield-error').text('邮箱格式不正确').appendTo($field);
+                            }
+                            break;
+                        case 'password':
+                            if ($error) {
+                                $error.text('密码为4-12位字母，数字');
+                            } else {
+                                $('<div></div>').addClass('mdui-textfield-error').text('密码为4-12位字母，数字').appendTo($field);
+                            }
+                            $input.attr('pattern', '^\\w{4,12}$');
+                            break;
+                        case 'mobile':
+                            if ($error) {
+                                $error.text('手机号码不正确');
+                            } else {
+                                $('<div></div>').addClass('mdui-textfield-error').text('手机号码不正确').appendTo($field);
+                            }
+                            $input.attr('pattern', '^1(?:3\\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\\d|9\\d)\\d{8}$');
+                            break;
+                        case 'IdCard':
+                            if ($error) {
+                                $error.text('身份证号码不正确');
+                            } else {
+                                $('<div></div>').addClass('mdui-textfield-error').text('身份证号码不正确').appendTo($field);
+                            }
+                            $input.attr('pattern', '^[1-9]\\d{16}[\\dxX]$');
+                            break;
+                        default:
+                            break
+                    }
                     break;
             }
         });
@@ -312,6 +363,12 @@
         $fields.each(function (index, field) {
             $(field).val(data[field.name] === true|| data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
         });
+        // 调整dom布局
+        if ($.isEmptyObject(data)) {
+            mdui.mutation();
+        } else {
+            mdui.updateTextFields();
+        }
     };
 
     /**
