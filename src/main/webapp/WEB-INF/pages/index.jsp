@@ -40,9 +40,9 @@
         <img class="no-margin" src="../assets/custom/img/lanyan-logo.jpg">
         <span class="mdui-typo-headline no-select no-margin">蓝焰表具管理系统</span>
         <div class="mdui-toolbar-spacer"></div>
-        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '锁屏'}"><i class="mdui-icon material-icons">https</i></span>
-        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '刷新'}"><i class="mdui-icon material-icons">cached</i></span>
-        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '退出'}"><i class="mdui-icon material-icons">power_settings_new</i></span>
+        <span onclick="lockScreen()" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '锁屏'}"><i class="mdui-icon material-icons">https</i></span>
+        <span onclick="refresh()" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '刷新'}"><i class="mdui-icon material-icons">cached</i></span>
+        <span onclick="logout()" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '退出'}"><i class="mdui-icon material-icons">power_settings_new</i></span>
     </div>
 </header>
 <div class="mdui-drawer">
@@ -167,6 +167,30 @@
 </div>
 <script type="text/javascript">
      app.initIndex();
+     function logout(){
+         $.ajax({
+             async : true,
+             type: 'POST',
+             url: 'logout.action',
+             contentType: 'application/x-www-form-urlencoded',
+             beforeSend: function (xhr) {
+                 xhr.withCredentials = true;
+             },
+             success: function (response) {
+                  setTimeout(function () {
+                     window.location.href = 'login.html';
+                 }, 2000);
+             }
+         });
+     }
+     function refresh(){
+        if(app.currentPageName){
+                app.toolbar.clearInputsData();
+                app.renderWithoutPage({
+                url: app.currentPageName + '/listData.do'
+            });
+        }
+     }
 </script>
 </body>
 </html>

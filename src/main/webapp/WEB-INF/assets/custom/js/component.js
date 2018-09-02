@@ -457,6 +457,10 @@
         fields == null ? '' : fields.forEach(function (field) {
             _this._initItemDom($toolbar, field);
         });
+        var searchField = {name: 'search',caption: '搜索'};
+        _this._initItemDom($toolbar, searchField);
+        var clearField = {name: 'clear',caption: '清空'};
+        _this._initItemDom($toolbar, clearField);
     };
 
     /**
@@ -501,6 +505,9 @@
                     case 'search':
                         $field.trigger('search');
                         break;
+                    case 'clear':
+                        $field.trigger('clear');
+                        break;
                     case 'lock':
                         $field.trigger('lock');
                         break;
@@ -527,6 +534,22 @@
             })
         });
         return inputsData;
+    };
+
+    /**
+     * 清空Input中的数据
+     */
+    Toolbar.prototype.clearInputsData = function () {
+        var inputsData = [];
+        var $inputs = this.$dom.find('input');
+        $inputs.each(function (index, input) {
+            console.log(input);
+            $(input).val('');
+            inputsData.push({
+                name: $(input).attr('name'),
+                value: ''
+            })
+        });
     };
 
     /**
