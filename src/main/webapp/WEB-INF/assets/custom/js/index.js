@@ -38,25 +38,29 @@ app.initIndex = function () {
         });
         $('body').on('keyup', '[name="orderGas"]', function(res) {
             var val = $(this).val();
-            $.ajax({
-                async : true,
-                type: 'POST',
-                url: 'account/calAmount.do',
-                contentType: 'application/x-www-form-urlencoded',
-                data: {
-                    "orderGas" :  val
-                },
-                beforeSend: function (xhr) {
-                    xhr.withCredentials = true;
-                },
-                success: function (response) {
-                    console.log(response);
-                    response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
-                    if(response.status){
-                        app.editForm.setValue('orderPayment',response.data);
+            if(/^\d+(\.\d+)?$/.test(val)) {
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    url: 'account/calAmount.do',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {
+                        "orderGas": val
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.withCredentials = true;
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                        if (response.status) {
+                            app.editForm.setValue('orderPayment', response.data);
+                        }
                     }
-                }
-            });
+                });
+            }else{
+                app.editForm.setValue('orderPayment', null);
+            }
         });
 
     });
@@ -1146,7 +1150,8 @@ app.editFormFields = {
         caption: '房产证号'
     },{
         name: 'orderGas',
-        caption: '充值气量'
+        caption: '充值气量',
+        inputType: 'num'
     },{
         name: 'orderPayment',
         caption: '充值金额',
@@ -1175,7 +1180,8 @@ app.editFormFields = {
         caption: '房产证号'
     },{
         name: 'orderPayment',
-        caption: '充值金额'
+        caption: '充值金额',
+        inputType: 'num'
     }],
     lockAccount:[{
         name: 'userName',

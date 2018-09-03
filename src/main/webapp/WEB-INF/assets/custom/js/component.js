@@ -342,6 +342,14 @@
                             }
                             $input.attr('pattern', '^[1-9]\\d{16}[\\dxX]$');
                             break;
+                        case 'num':
+                            if ($error) {
+                                $error.text('该数字必须为正数');
+                            } else {
+                                $('<div></div>').addClass('mdui-textfield-error').text('该数字必须为正数').appendTo($field);
+                            }
+                            $input.attr('pattern', '^\\d+(\\.\\d+)?$');
+                            break;
                         default:
                             break
                     }
@@ -410,6 +418,7 @@
         _this.$fields.each(function (index, field) {
             if(field.name === name) {
                 $(field).val(value);
+                $(field).parent().addClass('mdui-textfield-focus');
             }
         });
     };
