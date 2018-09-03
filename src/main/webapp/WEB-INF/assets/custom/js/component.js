@@ -611,8 +611,9 @@
         setting.data.key.name = this.nameKey = params.name ? params.name : 'name';
         this._initEvents();
         var $parent = $(params.parent);
-        var ztree = this.ztree = $.fn.zTree.init($parent, setting, params.nodes);
-        this.$dom = $($parent.children()[0]);
+        var $dom = this.$dom = $('<ul id="' + M.guid() + '"></ul>').addClass('ztree').appendTo($parent);
+        var ztree = this.ztree = $.fn.zTree.init($dom, setting, params.nodes);
+
         ztree.expandAll(true);
     };
 
@@ -829,7 +830,7 @@
         }
         var $span = this.$span = $('<span><i class="mdui-icon material-icons">arrow_drop_down</i></span>').appendTo($dom);
         var options = JSON.parse(JSON.stringify(params.options));
-        var $panelDom = this.$panelDom = $('<div class="tree-combobox-panel ztree mdui-shadow-2"></div>').css({
+        var $panelDom = this.$panelDom = $('<div class="tree-combobox-panel mdui-shadow-2"></div>').css({
             display: 'none',
             position: 'absolute'
         }).appendTo($('body'));
@@ -855,6 +856,10 @@
     TreeCombobox.prototype._initEvents = function () {
         var _this = this;
         this.$span.click(function (event) {
+            if (app.isTreeComboboxPanelShow) {
+                $(".tree-combobox-panel").hide();
+                app.isTreeComboboxPanelShow = false;
+            }
             event.stopPropagation();
             _this.$panelDom.toggle();
             var $dom = _this.$dom;
@@ -864,9 +869,10 @@
                 top: offset.top + $dom.height(),
                 'min-width': $dom.width()
             });
+            app.isTreeComboboxPanelShow = true;
         });
 
-        this.$panelDom.on('checkNode', function () {
+        _this.$panelDom.on('checkNode', function () {
             var nodes = _this.tree.getCheckedNodes();
             var nameKey = _this.tree.getNameKey();
             var value = [];
@@ -878,7 +884,7 @@
             _this.$input.trigger('change');
         });
 
-        $('.tree-combobox-panel').click(function (event) {
+        _this.$panelDom.click(function (event) {
             event.stopPropagation();
         });
     };

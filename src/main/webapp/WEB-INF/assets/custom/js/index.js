@@ -35,6 +35,7 @@ app.initIndex = function () {
         };
         $(document).click(function(){
             $(".tree-combobox-panel").hide();
+            app.isTreeComboboxPanelShow = false;
         });
         $('body').on('keyup', '[name="orderGas"]', function(res) {
             var val = $(this).val();
