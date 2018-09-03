@@ -1,6 +1,10 @@
 package com.ems.utils;
 
+import com.ems.common.Global;
+
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author litairan on 2018/7/2.
@@ -38,31 +42,49 @@ public class MD5Utils {
      * @param charsetname
      * @return
      */
-    private static String MD5Encode(String origin, String charsetname) {
-        String resultString = null;
-        try {
-            resultString = new String(origin);
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            if (charsetname == null || "".equals(charsetname)) {
-                resultString = byteArrayToHexString(md.digest(resultString.getBytes()));
-            } else {
-                resultString = byteArrayToHexString(md.digest(resultString.getBytes(charsetname)));
+    public static String MD5Encode(String origin, String salt, String charsetname)  {
+        String resultString;
+        if (charsetname == null || "".equals(charsetname)) {
+            resultString = byteArrayToHexString(hash(origin.getBytes(), salt.getBytes(), 1));
+        } else {
+            try {
+                resultString = byteArrayToHexString(hash(origin.getBytes(charsetname), salt.getBytes(), 1));
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("编码格式不支持");
             }
-        } catch (Exception exception) {
         }
         return resultString.toUpperCase();
     }
 
     public static String MD5EncodeUtf8(String origin) {
-        origin = origin + DEFAULT_SALT;
-        return MD5Encode(origin, "utf-8");
+        return MD5Encode(origin, Global.DEFAULT_MD5_SALT,"utf-8");
     }
 
+    public static byte[] hash(byte[] bytes, byte[] salt, int hashIterations) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("不支持该算法");
+        }
+        if (salt != null) {
+            md.reset();
+            md.update(salt);
+        }
+        byte[] hashed = md.digest(bytes);
+        int iterations = hashIterations - 1;
+
+        for(int i = 0; i < iterations; ++i) {
+            md.reset();
+            hashed = md.digest(hashed);
+        }
+        return hashed;
+    }
 
     private static final String hexDigits[] = {"0", "1", "2", "3", "4", "5",
             "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
     public static void main(String[] args) {
-        System.out.println(MD5EncodeUtf8("0"));
+        System.out.println(MD5EncodeUtf8("0000"));
     }
 }
