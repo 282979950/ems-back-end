@@ -46,6 +46,11 @@ public class SysDictionaryController {
     public JsonData addSysDictionaryOnPc(SysDictionary sdy, HttpServletRequest request, HttpServletResponse respose) {
         String msg = "";
         msg = "新增类型为:"+sdy.getDictCategory()+"成功";
+        int count = sysDictionaryService.selectCountRecordService(sdy);
+        if(count>0){
+            msg="操作失败，该类型下存在重复的字典键或值";
+            return JsonData.fail(msg);
+        }
         //手动设置(因目前没有用户信息，所以设置固定参数)
         sdy.setUsable(true);
         sdy.setCreateTime(new Date());
@@ -65,6 +70,13 @@ public class SysDictionaryController {
     @ResponseBody
     public JsonData updateSysDictionaryOnPc(SysDictionary sdy, HttpServletRequest request, HttpServletResponse respose) {
         String msg = "";
+
+        //查看重复值
+        int countRecord = sysDictionaryService.keyCountRecordService(sdy);
+        if(countRecord>0){
+            msg="操作失败，该类型下存在重复的字典键";
+            return JsonData.fail(msg);
+        }
         //查询是否存在该条数据
         int count = sysDictionaryService.selectCountByIdOnPc(sdy);
         if (count > 0) {

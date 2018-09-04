@@ -56,4 +56,13 @@ public class SysDictionaryService {
 
 		return sysDictionaryMapper.dictCategoryByType(dictKey,dictCategory);
 	}
+	//根据类型查看是否存在重复值
+	public Integer selectCountRecordService(SysDictionary record){
+
+	     return sysDictionaryMapper.selectCountRecord(record);
+    }
+    public Integer keyCountRecordService(SysDictionary record){
+
+        return sysDictionaryMapper.keyCountRecord(record);
+    }
 }
