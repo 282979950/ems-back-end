@@ -20,9 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 系统角色服务实现类
@@ -56,22 +54,33 @@ public class SysRoleServiceImpl implements ISysRoleService {
         }
         SysRole role = new SysRole();
         role.setRoleName(roleName);
-        role.setRoleDists(StringUtils.join(roleParam.getDistIdList(), Const.DEFAULT_SEPARATOR));
-        role.setRoleOrgs(StringUtils.join(roleParam.getOrgIdList(), Const.DEFAULT_SEPARATOR));
+        role.setRoleDists(roleParam.getDistIds());
+        role.setRoleOrgs(roleParam.getOrgIds());
         role.setRemarks(roleParam.getRemarks());
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         role.setUsable(true);
         role.setCreateBy(currentEmpId);
+        role.setCreateTime(new Date());
         role.setUpdateBy(currentEmpId);
         int resultCount = roleMapper.insert(role);
         if (resultCount == 0) {
             return JsonData.fail("创建角色失败");
         }
         Integer roleId = roleMapper.getRoleIdByName(roleName);
-        JsonData data = rolePermService.changeRolePerms(roleId, roleParam.getPermIdList());
+        role.setRoleId(roleId);
+        List<Integer> permList = null;
+        if(StringUtils.isNotEmpty(roleParam.getPermIds())){
+            String[] perms = roleParam.getPermIds().split(Const.DEFAULT_SEPARATOR);
+            permList = Lists.newArrayListWithCapacity(perms.length);
+            for(int i=0;i<perms.length;i++) {
+                int perm = Integer.parseInt(perms[i]);
+                permList.add(perm);
+            }
+        }
+        JsonData data = rolePermService.changeRolePerms(roleId, permList);
         if (data.isStatus()) {
             Set<SysPermission> permissions = Sets.newHashSet();
-            List<Integer> permIds = roleParam.getPermIdList();
+            List<Integer> permIds = permList;
             List<SysPermission> permissionList= SysPermissionServiceImpl.getPermissionList();
             for(Integer permId : permIds) {
                 for(SysPermission sysPermission : permissionList){
@@ -106,18 +115,27 @@ public class SysRoleServiceImpl implements ISysRoleService {
             throw new ParameterException("角色名称已存在");
         }
         sysRole.setRoleName(roleName);
-        sysRole.setRoleDists(StringUtils.join(roleParam.getDistIdList(), Const.DEFAULT_SEPARATOR));
-        sysRole.setRoleOrgs(StringUtils.join(roleParam.getOrgIdList(), Const.DEFAULT_SEPARATOR));
+        sysRole.setRoleDists(roleParam.getDistIds());
+        sysRole.setRoleOrgs(roleParam.getOrgIds());
         sysRole.setCreateBy(1000000000);
         sysRole.setUpdateBy(1000000000);
         int resultCount = roleMapper.updateByPrimaryKey(sysRole);
         if (resultCount == 0) {
             return JsonData.fail("更新角色失败");
         }
-        JsonData data = rolePermService.changeRolePerms(roleId, roleParam.getPermIdList());
+        List<Integer> permList = null;
+        if(StringUtils.isNotEmpty(roleParam.getPermIds())){
+            String[] perms = roleParam.getPermIds().split(Const.DEFAULT_SEPARATOR);
+            permList = Lists.newArrayListWithCapacity(perms.length);
+            for(int i=0;i<perms.length;i++) {
+                int perm = Integer.parseInt(perms[i]);
+                permList.add(perm);
+            }
+        }
+        JsonData data = rolePermService.changeRolePerms(roleId, permList);
         if (data.isStatus()) {
             Set<SysPermission> permissions = Sets.newHashSet();
-            List<Integer> permIds = roleParam.getPermIdList();
+            List<Integer> permIds = permList;
             List<SysPermission> permissionList= SysPermissionServiceImpl.getPermissionList();
             for(Integer permId : permIds) {
                 for(SysPermission sysPermission : permissionList){
@@ -128,9 +146,9 @@ public class SysRoleServiceImpl implements ISysRoleService {
                 }
             }
             sysRole.setPermissions(permissions);
-            return JsonData.successMsg("创建角色成功");
+            return JsonData.successMsg("更新角色成功");
         } else {
-            return JsonData.fail("创建角色失败");
+            return JsonData.fail("更新角色失败");
         }
     }
 
@@ -156,6 +174,18 @@ public class SysRoleServiceImpl implements ISysRoleService {
             return JsonData.fail("删除角色失败");
         }
         rolePermService.deleteRolePerms(roleIds);
+        Iterator<Integer> it = roleIds.iterator();
+        while (it.hasNext()){
+            Integer roleId = it.next();
+            Iterator<SysRole> its = sysRoleList.iterator();
+            while (its.hasNext()){
+                SysRole perm = its.next();
+                if(roleId.equals(perm.getRoleId())){
+                    sysRoleList.remove(perm);
+                    break;
+                }
+            }
+        }
         return JsonData.successMsg("删除角色成功");
     }
 
@@ -167,12 +197,12 @@ public class SysRoleServiceImpl implements ISysRoleService {
             	SysRoleParam  sysRoleParam = new SysRoleParam();
             	sysRoleParam.setRoleId(sysRole.getRoleId());
             	sysRoleParam.setRoleName(sysRole.getRoleName());
-            	sysRole.setRoleDistList();
-            	sysRoleParam.setDistIdList(sysRole.getRoleDistList());
-            	sysRole.setRoleOrgList();
-            	sysRoleParam.setOrgIdList(sysRole.getRoleOrgList());
-            	sysRole.setRolePermList();
-            	sysRoleParam.setPermIdList(sysRole.getRolePermList());
+                sysRole.setRoleDistList();
+            	sysRoleParam.setDistIds(StringUtils.join(sysRole.getRoleDistList(), Const.DEFAULT_SEPARATOR));
+                sysRole.setRoleOrgList();
+           	    sysRoleParam.setOrgIds(StringUtils.join(sysRole.getRoleOrgList(),Const.DEFAULT_SEPARATOR));
+                sysRole.setRolePermList();
+            	sysRoleParam.setPermIds(StringUtils.join(sysRole.getRolePermList(),Const.DEFAULT_SEPARATOR));
                 sysRoleParam.setCreateTime(sysRole.getCreateTime());
                 sysRoleParam.setRemarks(sysRole.getRemarks());
                 roleList.add(sysRoleParam);

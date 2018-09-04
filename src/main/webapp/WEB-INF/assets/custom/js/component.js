@@ -851,7 +851,7 @@
      * 初始化data
      */
     TreeCombobox.prototype._initData = function (params) {
-        var data = this.data = params.data ? JSON.stringify(params.data) : '';
+        var data = this.data = params.data ? params.data : '';
         var dataList = data.split(',');
         var _this = this;
         dataList.forEach(function (item) {

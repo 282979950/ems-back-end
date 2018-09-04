@@ -768,7 +768,7 @@ app.addFormfields = {
         required: true,
         maxlength: 20
     }, {
-        name: 'distIdList', caption: '角色所属地区',
+        name: 'distIds', caption: '角色所属地区',
         type:'treecombobox' ,
         options: {
             idKey: 'distId',
@@ -779,7 +779,7 @@ app.addFormfields = {
             nodes : ajaxTreeCombobox('dist/listData.do')
         }
     }, {
-        name: 'orgIdList', caption: '角色所属机构',
+        name: 'orgIds', caption: '角色所属机构',
         type:'treecombobox' ,
         options: {
             idKey: 'orgId',
@@ -790,7 +790,7 @@ app.addFormfields = {
             nodes : ajaxTreeCombobox('org/listData.do')
         }
     }, {
-        name: 'permIdList', caption: '角色拥有权限',
+        name: 'permIds', caption: '角色拥有权限',
         type:'treecombobox' ,
         options: {
             idKey: 'permId',
@@ -1020,7 +1020,7 @@ app.editFormFields = {
         required: true,
         maxlength: 20
     }, {
-        name: 'distIdList',
+        name: 'distIds',
         caption: '角色所属地区',
         type:'treecombobox' ,
         options: {
@@ -1033,7 +1033,7 @@ app.editFormFields = {
         },
         required: true,
     }, {
-        name: 'orgIdList',
+        name: 'orgIds',
         caption: '角色所属机构',
         type:'treecombobox' ,
         options: {
@@ -1046,7 +1046,7 @@ app.editFormFields = {
         },
         required: true,
     }, {
-        name: 'permIdList',
+        name: 'permIds',
         caption: '角色拥有权限',
         type:'treecombobox' ,
         options: {
