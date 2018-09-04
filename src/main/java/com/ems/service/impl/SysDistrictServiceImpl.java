@@ -23,6 +23,11 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class SysDistrictServiceImpl implements ISysDistrictService {
 
+    /**
+     * 根节点ID
+     */
+    private static int ROOT_DIST_ID = 1000;
+
     @Autowired
     private SysDistrictMapper districtMapper;
 
@@ -73,6 +78,9 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         Integer distId = district.getDistId();
         String distName = district.getDistName();
+        if (distId.equals(ROOT_DIST_ID) && district.getDistParentId() != null) {
+            throw new ParameterException("根节点父级区域不能修改");
+        }
         if (checkIdAndName(distId, distName)) {
             throw new ParameterException("区域名称:" + distName + "已存在");
         }
@@ -92,6 +100,9 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         }
         List<SysDistrict> preDelete = new ArrayList<>();
         for (Integer id : ids) {
+            if (id.equals(ROOT_DIST_ID)) {
+                throw new ParameterException("根节点区域不能删除");
+            }
             SysDistrict district = getDistrictById(id);
             if (district != null){
                 List<SysDistrict> children = getChildrenDist(id);
