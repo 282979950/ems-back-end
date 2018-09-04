@@ -92,14 +92,20 @@ body {
     line-height: 48px;
     font-size: 15px;
     font-weight: 700;
-    max-width: 125px;
+    display: inline-block;
+}
+
+.mdui-toolbar .mdui-textfield span {
+    display: inline-block;
 }
 
 .mdui-toolbar .mdui-textfield input {
     margin: 0 2px;
     border-bottom: 1px solid #2196f3;
     height: 2rem;
+    width: 50px;
 }
+
 .mdui-select {
     max-width: 170px !important;
 }
