@@ -40,6 +40,7 @@ public class SysPermission extends BaseEntity {
     /**
      * 权限父级ID
      */
+    @NotNull
     private Integer permParentId;
 
     /**

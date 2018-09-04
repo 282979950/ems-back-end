@@ -39,25 +39,29 @@ app.initIndex = function () {
         });
         $('body').on('keyup', '[name="orderGas"]', function(res) {
             var val = $(this).val();
-            $.ajax({
-                async : true,
-                type: 'POST',
-                url: 'account/calAmount.do',
-                contentType: 'application/x-www-form-urlencoded',
-                data: {
-                    "orderGas" :  val
-                },
-                beforeSend: function (xhr) {
-                    xhr.withCredentials = true;
-                },
-                success: function (response) {
-                    console.log(response);
-                    response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
-                    if(response.status){
-                        app.editForm.setValue('orderPayment',response.data);
+            if(/^\d+(\.\d+)?$/.test(val)) {
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    url: 'account/calAmount.do',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {
+                        "orderGas": val
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.withCredentials = true;
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                        if (response.status) {
+                            app.editForm.setValue('orderPayment', response.data);
+                        }
                     }
-                }
-            });
+                });
+            }else{
+                app.editForm.setValue('orderPayment', null);
+            }
         });
 
     });
@@ -416,8 +420,14 @@ app.tableFields = {
         name: 'permCaption',
         caption: '权限标题'
     }, {
+        name: 'permHref',
+        caption: '权限路径'
+    }, {
         name: 'permParentCaption',
         caption: '菜单名称'
+    }, {
+        name: 'remarks',
+        caption: '备注'
     }],
     role: [{
         name: 'roleName',
@@ -713,10 +723,16 @@ app.addFormfields = {
     }],
     permission: [{
         name: 'permName',
-        caption: '权限名称'
+        caption: '权限名称',
+        required: true,
+        maxlength: 50
     }, {
         name: 'permCaption',
-        caption: '权限标题'
+        caption: '权限标题',
+        required: true
+    }, {
+        name: 'permHref',
+        caption: '权限路径'
     }, {
         name: 'permParentId',
         caption: '菜单名称' ,
@@ -747,7 +763,10 @@ app.addFormfields = {
         caption: '备注'
     }],
     role: [{
-        name: 'roleName', caption: '角色名称'
+        name: 'roleName',
+        caption: '角色名称',
+        required: true,
+        maxlength: 20
     }, {
         name: 'distIdList', caption: '角色所属地区',
         type:'treecombobox' ,
@@ -956,10 +975,15 @@ app.editFormFields = {
     }],
     permission: [{
         name: 'permName',
-        caption: '权限名称'
+        caption: '权限名称',
+        required: true,
+        maxlength: 50
     }, {
         name: 'permCaption',
         caption: '权限标题'
+    }, {
+        name: 'permHref',
+        caption: '权限路径'
     }, {
         name: 'permParentId',
         caption: '菜单名称',
@@ -984,14 +1008,17 @@ app.editFormFields = {
         }, {
             key: '否',
             value: 'false'
-        }]
+        }],
+        required: true
     }, {
         name: 'remarks',
         caption: '备注'
     }],
     role: [{
         name: 'roleName',
-        caption: '角色名称'
+        caption: '角色名称',
+        required: true,
+        maxlength: 20
     }, {
         name: 'distIdList',
         caption: '角色所属地区',
@@ -1003,7 +1030,8 @@ app.editFormFields = {
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('dist/listData.do')
-        }
+        },
+        required: true,
     }, {
         name: 'orgIdList',
         caption: '角色所属机构',
@@ -1015,7 +1043,8 @@ app.editFormFields = {
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('org/listData.do')
-        }
+        },
+        required: true,
     }, {
         name: 'permIdList',
         caption: '角色拥有权限',
@@ -1027,7 +1056,8 @@ app.editFormFields = {
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
-        }
+        },
+        required: true
     }],
     entry: [{
         name: 'meterCode',
@@ -1100,63 +1130,84 @@ app.editFormFields = {
     }],
     accountIC:[{
         name: 'userName',
-        caption: '客户姓名'
+        caption: '客户姓名',
+        required : true
     },{
         name: 'userPhone',
-        caption: '电话'
+        caption: '电话',
+        inputType: 'mobile',
+        required : true
     },{
         name: 'iccardIdentifier',
-        caption:'IC卡识别号'
+        caption:'IC卡识别号',
+        maxlength: 12
     },{
         name: 'userIdcard',
-        caption: '身份证号'
+        caption: '身份证号',
+        inputType: 'IdCard',
+        required : true
     },{
         name: 'userDeed',
         caption: '房产证号'
     },{
         name: 'orderGas',
-        caption: '充值气量'
+        caption: '充值气量',
+        inputType: 'num'
     },{
         name: 'orderPayment',
-        caption: '充值金额'
+        caption: '充值金额',
+        disabled: true
     }],
     accountMessAndUnion:[{
         name: 'userName',
-        caption: '客户姓名'
+        caption: '客户姓名',
+        required : true
     },{
         name: 'userPhone',
-        caption: '电话'
+        caption: '电话',
+        inputType: 'mobile',
+        required : true
     },{
         name: 'iccardIdentifier',
-        caption:'IC卡识别号'
+        caption:'IC卡识别号',
+        maxlength: 12
     },{
         name: 'userIdcard',
-        caption: '身份证号'
+        caption: '身份证号',
+        inputType: 'IdCard',
+        required : true
     },{
         name: 'userDeed',
         caption: '房产证号'
     },{
         name: 'orderPayment',
-        caption: '充值金额'
+        caption: '充值金额',
+        inputType: 'num'
     }],
     lockAccount:[{
         name: 'userName',
-        caption: '客户姓名'
+        caption: '客户姓名',
+        disabled: true
     },{
         name: 'iccardId',
-        caption: 'IC卡号'
+        caption: 'IC卡号',
+        disabled: true
     },{
         name: 'distName',
-        caption:'区域名称'
+        caption:'区域名称',
+        disabled: true
     },{
         name: 'userAddress',
-        caption: '用户地址'
+        caption: '用户地址',
+        disabled: true
     },{
         name: 'isLock',
-        caption: '是否锁定'
+        caption: '是否锁定',
+        disabled: true
     },{
         name: 'lastLockReason',
-        caption: '上次操作原因'
+        caption: '上次操作原因',
+        disabled: true
     },{
         name: 'lockReason',
         caption: '本次操作原因'

@@ -32,8 +32,8 @@
         where perm_id = #{permId,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.ems.entity.SysPermission" useGeneratedKeys="true" keyProperty="permId" >
-     insert into sys_permission (perm_name, perm_caption,perm_href,
-        perm_parent_id,is_button ,create_time, create_by,
+     insert into sys_permission (perm_name, perm_caption, perm_href,
+        perm_parent_id, is_button , create_time, create_by,
         update_time, update_by,
         remarks)
         values (#{permName,jdbcType=VARCHAR}, #{permCaption,jdbcType=VARCHAR},#{permHref,jdbcType=VARCHAR},
@@ -223,8 +223,8 @@
     </update>
     <select id="select" parameterType="map" resultType="com.ems.entity.SysPermission">
         SELECT
-        spa.perm_id as permId,spa.perm_name as permName,spa.perm_caption as permCaption,
-        spa.perm_parent_id as permParentId,spb.perm_caption AS permParentCaption,spa.is_button as isButton,spa.remarks
+        spa.perm_id as permId, spa.perm_name as permName, spa.perm_caption as permCaption, spa.perm_href as permHref,
+        spa.perm_parent_id as permParentId, spb.perm_caption AS permParentCaption,spa.is_button as isButton,spa.remarks
         FROM
         sys_permission spa JOIN sys_permission spb ON spa.perm_parent_id = spb.perm_id
         WHERE spa.perm_parent_id IS NOT NULL and spa.usable = 1
