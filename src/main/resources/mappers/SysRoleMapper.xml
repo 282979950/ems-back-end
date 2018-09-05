@@ -193,6 +193,7 @@
     </update>
 
     <update id="deleteBatch" parameterType="list">
+        update sys_role
         <trim prefix="set" suffixOverrides=",">
             <trim prefix="update_by = case" suffix="end,">
                 <foreach collection="list" item="i" index="index">
@@ -218,7 +219,7 @@
         </trim>
         where
         <foreach collection="list" separator="or" item="i" index="index">
-            perm_id = #{i.permId}
+            role_id = #{i.roleId}
         </foreach>
     </update>
 </mapper>

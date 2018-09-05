@@ -41,7 +41,7 @@ public class SysRoleController {
     @RequiresPermissions("sys:role:create")
     @RequestMapping(value = "add.do")
     @ResponseBody
-    public JsonData createPermission(SysRoleParam roleParam) {
+    public JsonData createRole(SysRoleParam roleParam) {
         return sysRoleService.createRole(roleParam);
     }
 
@@ -51,7 +51,7 @@ public class SysRoleController {
     @RequiresPermissions("sys:role:delete")
     @RequestMapping("delete.do")
     @ResponseBody
-    public JsonData Permission(@RequestParam(value = "ids[]")List<Integer> ids) {
+    public JsonData deleteRole(@RequestParam(value = "ids[]")List<Integer> ids) {
         return sysRoleService.deleteRole(ids);
     }
 
@@ -61,7 +61,7 @@ public class SysRoleController {
     @RequiresPermissions("sys:role:update")
     @RequestMapping("edit.do")
     @ResponseBody
-    public JsonData updatePermission(SysRoleParam roleParam) {
+    public JsonData updateRole(SysRoleParam roleParam) {
         return sysRoleService.updateRole(roleParam);
     }
 

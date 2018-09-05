@@ -851,7 +851,8 @@
      * 初始化data
      */
     TreeCombobox.prototype._initData = function (params) {
-        var data = this.data = params.data ? JSON.stringify(params.data) : '';
+        var vdata = params.data ? params.data : '';
+        var data = this.data = isNaN(vdata) ? vdata : JSON.stringify(vdata);
         var dataList = data.split(',');
         var _this = this;
         dataList.forEach(function (item) {
