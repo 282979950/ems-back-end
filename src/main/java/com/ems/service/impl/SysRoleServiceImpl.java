@@ -101,6 +101,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
     @Override
     @Transactional(readOnly = false)
     public JsonData updateRole(SysRoleParam roleParam) {
+        BeanValidator.check(roleParam);
         Integer roleId = roleParam.getRoleId();
         if (!checkRoleIdExist(roleId)) {
             throw new ParameterException("角色ID不存在");
@@ -117,6 +118,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
         sysRole.setRoleName(roleName);
         sysRole.setRoleDists(roleParam.getDistIds());
         sysRole.setRoleOrgs(roleParam.getOrgIds());
+        sysRole.setRemarks(roleParam.getRemarks());
         sysRole.setCreateBy(1000000000);
         sysRole.setUpdateBy(1000000000);
         int resultCount = roleMapper.updateByPrimaryKey(sysRole);

@@ -6,9 +6,8 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 系统角色参数类
@@ -27,22 +26,25 @@ public class SysRoleParam {
     /**
      * 角色名称
      */
-    @NotNull
+    @NotBlank(message = "角色名称不能为空")
     @Length(max = 20, message = "角色名称不能超过20个字")
     private String roleName;
 
     /**
      * 权限ID列表
      */
+    @NotBlank(message = "角色拥有权限不能为空")
     private String permIds;
 
     /**
      * 区域ID列表
      */
+    @NotBlank(message = "角色所属区域不能为空")
     private String distIds;
     /**
      * 组织ID列表
      */
+    @NotBlank(message = "角色所属机构不能为空")
     private String orgIds;
 
     /**

@@ -800,6 +800,9 @@ app.addFormfields = {
             Y : 'p',
             nodes : ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
         }
+    } ,{
+        name: 'remarks',
+        caption: '备注'
     }],
     entry: [{
         name: 'meterCode',
@@ -1030,8 +1033,7 @@ app.editFormFields = {
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('dist/listData.do')
-        },
-        required: true,
+        }
     }, {
         name: 'orgIds',
         caption: '角色所属机构',
@@ -1043,8 +1045,7 @@ app.editFormFields = {
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('org/listData.do')
-        },
-        required: true,
+        }
     }, {
         name: 'permIds',
         caption: '角色拥有权限',
@@ -1056,8 +1057,10 @@ app.editFormFields = {
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
-        },
-        required: true
+        }
+    } ,{
+        name: 'remarks',
+        caption: '备注'
     }],
     entry: [{
         name: 'meterCode',
