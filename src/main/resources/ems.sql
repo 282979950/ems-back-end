@@ -769,7 +769,7 @@ CREATE TABLE `user_orders` (
 DROP TABLE IF EXISTS `user_lock`;
 CREATE TABLE `user_lock` (
 `user_lock_id`  int(11) NOT NULL AUTO_INCREMENT COMMENT '锁定Id' ,
-`user_id`  int(8) NULL DEFAULT NULL COMMENT '锁定用户Id' ,
+`user_id`  int(8) unsigned NULL DEFAULT NULL COMMENT '锁定用户Id' ,
 `is_lock`  tinyint(1) NULL DEFAULT NULL ,
 `lock_reason`  varchar(255)  DEFAULT NULL COMMENT '锁定原因' ,
 `create_time`  datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间' ,

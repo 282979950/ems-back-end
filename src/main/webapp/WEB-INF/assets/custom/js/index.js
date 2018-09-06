@@ -1134,7 +1134,8 @@ app.editFormFields = {
     accountIC:[{
         name: 'userName',
         caption: '客户姓名',
-        required : true
+        required : true,
+        maxlength:20
     },{
         name: 'userPhone',
         caption: '电话',
@@ -1143,6 +1144,7 @@ app.editFormFields = {
     },{
         name: 'iccardIdentifier',
         caption:'IC卡识别号',
+        required : true,
         maxlength: 12
     },{
         name: 'userIdcard',
@@ -1155,7 +1157,8 @@ app.editFormFields = {
     },{
         name: 'orderGas',
         caption: '充值气量',
-        inputType: 'num'
+        inputType: 'num',
+        required : true
     },{
         name: 'orderPayment',
         caption: '充值金额',
@@ -1164,7 +1167,8 @@ app.editFormFields = {
     accountMessAndUnion:[{
         name: 'userName',
         caption: '客户姓名',
-        required : true
+        required : true,
+        maxlength:20
     },{
         name: 'userPhone',
         caption: '电话',
@@ -1173,6 +1177,7 @@ app.editFormFields = {
     },{
         name: 'iccardIdentifier',
         caption:'IC卡识别号',
+        required : true,
         maxlength: 12
     },{
         name: 'userIdcard',
@@ -1185,12 +1190,14 @@ app.editFormFields = {
     },{
         name: 'orderPayment',
         caption: '充值金额',
-        inputType: 'num'
+        inputType: 'num',
+        required : true
     }],
     lockAccount:[{
         name: 'userName',
         caption: '客户姓名',
-        disabled: true
+        disabled: true,
+        maxlength:20
     },{
         name: 'iccardId',
         caption: 'IC卡号',

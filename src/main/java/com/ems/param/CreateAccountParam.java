@@ -57,6 +57,7 @@ public class CreateAccountParam extends BaseEntity {
     /**
      * IC卡识别号
      */
+    @NotNull(message = "IC卡识别号不能为空")
     private String iccardIdentifier;
 
     /**
@@ -72,6 +73,7 @@ public class CreateAccountParam extends BaseEntity {
     /**
      * 支付金额
      */
+    @NotNull(message = "用户支付金额不能为空")
     private BigDecimal orderPayment;
 
     /**
