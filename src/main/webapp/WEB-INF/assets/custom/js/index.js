@@ -103,7 +103,7 @@ app.initEvent = function () {
             }]
         });
         $(".tree-combobox-panel").remove();
-        var form = app.createForm({
+        var form = app.addForm = app.createForm({
             parent: '.mdui-dialog-content',
             fields:app.addFormfields[formNames]
         });
@@ -161,7 +161,7 @@ app.initEvent = function () {
             else
                 formNames = app.currentPageName + 'Lock';
         }
-        var form = app.editForm =app.createForm({
+        var form = app.editForm = app.createForm({
             parent: '.mdui-dialog-content',
             fields: app.editFormFields[formNames],
             data: table.getSelectedDatas()[0]
@@ -740,7 +740,7 @@ app.addFormfields = {
         options: {
             idKey: 'permId',
             pIdKey: 'permParentId',
-            name: 'permId',
+            name: 'permCaption',
             N : '',
             Y : '',
             chkStyle: 'radio',
@@ -773,7 +773,7 @@ app.addFormfields = {
         options: {
             idKey: 'distId',
             pIdKey: 'distParentId',
-            name: 'distId',
+            name: 'distName',
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('dist/listData.do')
@@ -795,7 +795,7 @@ app.addFormfields = {
         options: {
             idKey: 'permId',
             pIdKey: 'permParentId',
-            name: 'permId',
+            name: 'permCaption',
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
@@ -994,7 +994,7 @@ app.editFormFields = {
         options: {
             idKey: 'permId',
             pIdKey: 'permParentId',
-            name: 'permId',
+            name: 'permCaption',
             N : '',
             Y : '',
             chkStyle: 'radio',
@@ -1029,7 +1029,7 @@ app.editFormFields = {
         options: {
             idKey: 'distId',
             pIdKey: 'distParentId',
-            name: 'distId',
+            name: 'distName',
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('dist/listData.do')
@@ -1041,7 +1041,7 @@ app.editFormFields = {
         options: {
             idKey: 'orgId',
             pIdKey: 'orgParentId',
-            name: 'orgId',
+            name: 'orgName',
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('org/listData.do')
@@ -1053,7 +1053,7 @@ app.editFormFields = {
         options: {
             idKey: 'permId',
             pIdKey: 'permParentId',
-            name: 'permId',
+            name: 'permCaption',
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('permission/listAllMenusAndPerms.do')

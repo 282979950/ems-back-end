@@ -268,7 +268,7 @@
         var table = _this.$dom = $(baseDom).appendTo(parent);
         var title = table.find('.form-title');
         var body = table.find('.form-body');
-
+        _this.children = {};
         var fields = _this.fields = params.fields;
         fields.forEach(function (field) {
             var $field;
@@ -287,13 +287,14 @@
                 case 'treecombobox':
                     $field = $('<div></div>').addClass('form-field').addClass('mdui-textfield').appendTo(body);
                     $span = $('<span></span>').text(field.caption + ':').appendTo($field);
-                    app.createTreeCombobox({
+                    var treeCombobox = app.createTreeCombobox({
                         parent: $field[0],
                         clazz: 'field ',
                         name: field.name,
                         options: field.options,
                         data: params.data ? params.data[field.name] : null
                     });
+                    _this.children[field.name] = treeCombobox;
                     break;
                 default:
                     $field = $('<div></div>').addClass('mdui-textfield mdui-textfield-floating-label mdui-textfield-has-bottom form-field').appendTo(body);
@@ -369,7 +370,19 @@
         var data = _this.data = params.data ? JSON.parse(JSON.stringify(params.data)) : {};
         var $fields = _this.$fields = $dom.find('.field');
         $fields.each(function (index, field) {
-            $(field).val(data[field.name] === true|| data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
+            var text = $(field).attr('text');
+            if(text){
+                 var tree = _this.children[field.name].tree;
+                 var nodes = tree.getCheckedNodes();
+                 var value = [];
+                 nodes.forEach(function (node) {
+                     value.push(node[tree.nameKey]);
+                 });
+                 var val = value.join();
+                 $(field).val(val === true || val === false ? JSON.stringify(val) : val);
+            }else {
+                 $(field).val(data[field.name] === true || data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
+            }
         });
         // 调整dom布局
         if ($.isEmptyObject(data)) {
@@ -388,7 +401,11 @@
         _this.$fields.each(function (index, field) {
             var $field = $(field);
             $field.on('change', function () {
-                _this.data[field.name] = $field.val();
+                if($field.attr('text')){
+                    _this.data[field.name] = $field.attr('text');
+                }else {
+                    _this.data[field.name] = $field.val();
+                }
             });
         });
     };
@@ -688,7 +705,7 @@
         var nodes = _this.getAllNodes();
         var result = null;
         nodes.forEach(function (node) {
-            if (node[_this.nameKey] == name) {
+            if (node[_this.idKey] == name) {
                 result = node;
             }
         });
@@ -715,6 +732,12 @@
         }
     };
 
+    /**
+     * 获取IdKey
+     */
+    Tree.prototype.getIdKey = function () {
+        return this.idKey;
+    };
     /**
      * 获取nameKey
      */
@@ -837,6 +860,7 @@
         if (params.name) {
             $input.attr('name', params.name)
         }
+        $input.attr('text', params.options.name);
         var $span = this.$span = $('<span><i class="mdui-icon material-icons">arrow_drop_down</i></span>').appendTo($dom);
         var options = JSON.parse(JSON.stringify(params.options));
         var $panelDom = this.$panelDom = $('<div class="tree-combobox-panel mdui-shadow-2"></div>').css({
@@ -851,13 +875,16 @@
      * 初始化data
      */
     TreeCombobox.prototype._initData = function (params) {
-        var vdata = params.data ? params.data : '';
-        var data = this.data = isNaN(vdata) ? vdata : JSON.stringify(vdata);
-        var dataList = data.split(',');
+        var data = this.data = params.data ? params.data : '';
         var _this = this;
-        dataList.forEach(function (item) {
-            _this.tree.checkNodeByName(item);
-        })
+        if(isNaN(data)) {
+            var dataList = data.split(',');
+            dataList.forEach(function (item) {
+                _this.tree.checkNodeByName(item);
+            })
+        }else{
+            _this.tree.checkNodeByName(data);
+        }
     };
 
     /**
@@ -885,12 +912,17 @@
         _this.$panelDom.on('checkNode', function () {
             var nodes = _this.tree.getCheckedNodes();
             var nameKey = _this.tree.getNameKey();
+            var idKey = _this.tree.getIdKey();
             var value = [];
+            var keys = [];
             nodes.forEach(function (node) {
                 value.push(node[nameKey]);
+                keys.push(node[idKey]);
             });
             var val = _this.data = value.join();
+            var ids =  _this.ids = keys.join();
             _this.$input.val(val);
+            _this.$input.attr('text',ids);
             _this.$input.trigger('change');
         });
 
