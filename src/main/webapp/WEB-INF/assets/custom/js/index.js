@@ -836,10 +836,16 @@ app.addFormfields = {
         required: true
     }, {
         name: 'meterProdDate',
-        caption: '表具生产日期'
+        caption: '表具生产日期',
+        type:'date',
+        formatter : 'yyyy-mm',
+        minView : 3
     }, {
         name: 'meterEntryDate',
-        caption: '表具入库时间'
+        caption: '表具入库时间',
+        type:'date',
+        formatter : 'yyyy-mm-dd',
+        minView : 2
     }],
     createArchive: [{
         name: 'distName',
@@ -1105,10 +1111,16 @@ app.editFormFields = {
         required: true
     }, {
         name: 'meterProdDate',
-        caption: '表具生产日期'
+        caption: '表具生产日期',
+        type:'date',
+        formatter : 'yyyy-mm',
+        minView : 3
     }, {
         name: 'meterEntryDate',
-        caption: '表具入库时间'
+        caption: '表具入库时间',
+        type:'date',
+        formatter : 'yyyy-mm-dd',
+        minView : 2
     }],
     createArchive: [{
         name: 'distName',
@@ -1414,7 +1426,9 @@ app.headScreening = {
     }, {
         name: 'meterProdDate',
         caption: '表具生产日期',
-        type: 'input'
+        type: 'date',
+        formatter : 'yyyy-mm',
+        minView : 3
     }],
     createArchive: [{
         name: 'add',

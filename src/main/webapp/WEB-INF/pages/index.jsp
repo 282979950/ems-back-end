@@ -22,6 +22,8 @@
     <link type="text/css" rel="stylesheet" href="../assets/mdui-v0.4.1/css/mdui.min.css"/>
     <link type="text/css" rel="stylesheet" href="../assets/spop/spop.min.css"/>
     <link rel="stylesheet" href="../assets/zTree-3.5.16/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <link rel="stylesheet" rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" rel="stylesheet" href="../assets/bootstrap/css/bootstrap-datetimepicker.min.css"/>
     <script type="text/javascript" src="../assets/materialize/js/jquery.min.js"></script>
     <script type="text/javascript" src="../assets/materialize/js/materialize.min.js"></script>
     <script type="text/javascript" src="../assets/custom/js/common.js"></script>
@@ -30,6 +32,8 @@
     <script type="text/javascript" src="../assets/mdui-v0.4.1/js/mdui.js"></script>
     <script type="text/javascript" src="../assets/zTree-3.5.16/js/jquery.ztree.all-3.5.js"></script>
     <script type="text/javascript" src="../assets/spop/spop.min.js"></script>
+    <script type="text/javascript" src="../assets/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="../assets/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
 </head>
 <body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue mdui-loaded">
 <header class="mdui-appbar mdui-appbar-fixed">

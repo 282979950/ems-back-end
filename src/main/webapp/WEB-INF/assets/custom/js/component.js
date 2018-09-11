@@ -296,6 +296,19 @@
                     });
                     _this.children[field.name] = treeCombobox;
                     break;
+                case 'date' :
+                    $field = $('<div></div>').addClass('form-field').addClass('mdui-textfield').appendTo(body);
+                    $span = $('<span></span>').text(field.caption + ':').appendTo($field);
+                    var $input = $('<input>').attr('type','text').attr('readonly',true).addClass('form-control').addClass('form_datetime field').addClass(field.name).attr('name', field.name).appendTo($field);
+                    $input.datetimepicker({
+                        language: 'zh-CN',
+                        format: field.formatter,
+                        autoclose: true,
+                        minView : field.minView,
+                        todayHighlight:true,
+                        todayBtn : true
+                    });
+                    break;
                 default:
                     $field = $('<div></div>').addClass('mdui-textfield mdui-textfield-floating-label mdui-textfield-has-bottom form-field').appendTo(body);
                     $('<label></label>').addClass('mdui-textfield-label').text(field.caption).appendTo($field);
@@ -499,6 +512,13 @@
                 var $field = $('<div class="mdui-textfield operator field"></div>').appendTo($toolbar);
                 $('<span class="mdui-text-color-blue">' + field.caption + ':</span>').appendTo($field);
                 $('<input type="text" class="field">').addClass(field.name).attr('name', field.name).appendTo($field);
+                break;
+            case 'date':
+                var $field = $('<div class="mdui-textfield operator field"></div>').appendTo($toolbar);
+                $('<span class="mdui-text-color-blue">' + field.caption + ':</span>').appendTo($field);
+                var $input = $('<input type="text" class="field">').addClass(field.name).attr('name', field.name);
+                $input.appendTo($field);
+                $input.datetimepicker({language: 'zh-CN',format: field.formatter,autoclose: true,minView :field.minView,todayBtn : true,bootcssVer:3});
                 break;
             default :
                 var $field = $('<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator field"></div>').attr('name', field.name).attr('mdui-tooltip', '{content:\'' + field.caption + '\'}').appendTo($toolbar);
