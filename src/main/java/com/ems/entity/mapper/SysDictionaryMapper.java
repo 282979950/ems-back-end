@@ -33,4 +33,8 @@ public interface SysDictionaryMapper {
      *根据字典类型和key获取对应字典值
      */
     String dictCategoryByType(@Param("dictKey") String dictKey,@Param("dictCategory") String dictCategory);
+    //根据条件查看是否存在该条记录
+    int selectCountRecord(SysDictionary record);
+    //修改时查看记录数
+    int keyCountRecord(SysDictionary record);
 }

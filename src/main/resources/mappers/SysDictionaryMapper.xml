@@ -229,4 +229,18 @@
     SELECT dict_value FROM sys_dictionary WHERE dict_key=#{dictKey} AND dict_category=#{dictCategory}
 
   </select>
+
+  <select id="selectCountRecord" resultType="java.lang.Integer" parameterType="com.ems.entity.SysDictionary" >
+    SELECT COUNT(0) FROM sys_dictionary  WHERE usable ="1"
+    AND dict_category=#{dictCategory} AND (dict_key=#{dictKey} OR dict_value=#{dictValue})
+
+  </select>
+    <select id="keyCountRecord" resultType="java.lang.Integer" parameterType="com.ems.entity.SysDictionary" >
+        SELECT COUNT(0) FROM sys_dictionary  WHERE usable ="1"
+        AND dict_category=#{dictCategory}
+        AND dict_id != #{dictId}
+        AND (dict_key=#{dictKey} OR dict_value=#{dictValue})
+
+
+    </select>
 </mapper>
