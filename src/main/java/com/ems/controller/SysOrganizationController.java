@@ -46,22 +46,9 @@ public class SysOrganizationController {
 	public JsonData selectFindListOnPc(){
 
 		List<SysOrganization> list =sysOrganizationService.findListOrganizationOnPc();
-		//获取字典值
-        List<SysDictionary> dictList = sysDictionaryService.findListByTypeOnPc("org_type");
-
-        if(dictList.size()<=0){
-           String  msg ="未获取到对应数据字典，请检查字典项";
-            return JsonData.fail(msg);
-        }
-        for(int i=0;i<list.size();i++){
-            for(int j=0;j<dictList.size();j++){
-
-                if(list.get(i).getOrgCategory().equals(dictList.get(j).getDictValue())){
-                    list.get(i).setOrgCategory(dictList.get(j).getDictKey());
-                    break;
-                }
-            }
-        }
+		if (list == null || list.size()==0) {
+			return JsonData.successMsg("查询结果为空");
+		}
 		return JsonData.successData(list);
 
 	}
@@ -282,24 +269,12 @@ public class SysOrganizationController {
     @RequiresPermissions("sys:org:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData selectFindListByOrg(SysOrganization sysz,HttpServletRequest request,HttpServletResponse response){
+    public JsonData selectFindListByOrg(SysOrganization sysz){
 	    String msg="查询成功";
         List<SysOrganization> list = sysOrganizationService.findListOrganizationService(sysz);
-        //获取字典值
-        List<SysDictionary> dictList = sysDictionaryService.findListByTypeOnPc("org_type");
-
-        if(dictList.size()<=0){
-            msg ="未获取到对应数据字典，请检查字典项";
-        }
-        for(int i=0;i<list.size();i++){
-            for(int j=0;j<dictList.size();j++){
-
-                if(list.get(i).getOrgCategory().equals(dictList.get(j).getDictValue())){
-                    list.get(i).setOrgCategory(dictList.get(j).getDictKey());
-                    break;
-                }
-            }
-        }
+		if (list == null || list.size()==0) {
+			return JsonData.successMsg("查询结果为空");
+		}
         return JsonData.success(list,msg);
 
     }

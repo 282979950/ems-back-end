@@ -167,12 +167,15 @@
       remarks = #{remarks,jdbcType=VARCHAR}
     where org_id = #{orgId}
   </update>
-  <!-- 查询所有数据List -->
-  <select id="findList" resultMap="BaseResultMap" >
-    select
-    <include refid="Base_Column_List" />
-    from sys_organization
-    where usable ="1"
+ <!-- 查询所有数据List -->
+  <select id="findList" resultType="com.ems.entity.SysOrganization" >
+     select
+     org.org_id as orgId , org.org_name as orgName, org.org_code as orgCode, sd.dict_key AS orgCategory, org.org_parent_id as orgParentId,(
+  SELECT org_name FROM sys_organization WHERE org_id = org.org_parent_id) AS orgParentName,org.create_time as createTime, org.create_by as createBy,
+   org.update_time as updateTime, org.update_by as updateBy, org.usable as usable, org.remarks as remarks
+      from sys_organization org
+  LEFT JOIN sys_dictionary sd ON org.org_category = sd.dict_value
+      where org.usable =1 AND sd.dict_category='org_type'
   </select>
   <!-- 查看表中是否存在一条数据 -->
   <select id="findListByCount" resultType="java.lang.Integer">
@@ -227,11 +230,14 @@
   </if>
   </update>
   <!-- 根据条件查询所有数据List -->
-  <select id="findListOrganization" resultMap="BaseResultMap" parameterType="com.ems.entity.SysOrganization" >
+  <select id="findListOrganization" resultType="com.ems.entity.SysOrganization" parameterType="com.ems.entity.SysOrganization" >
     select
-    <include refid="Base_Column_List" />
-    from sys_organization
-    where usable ="1"
+    org.org_id as orgId , org.org_name as orgName, org.org_code as orgCode, sd.dict_key AS orgCategory, org.org_parent_id as orgParentId,(
+    SELECT org_name FROM sys_organization WHERE org_id = org.org_parent_id) AS orgParentName,org.create_time as createTime, org.create_by as createBy,
+    org.update_time as updateTime, org.update_by as updateBy, org.usable as usable, org.remarks as remarks
+    from sys_organization org
+    LEFT JOIN sys_dictionary sd ON org.org_category = sd.dict_value
+    where org.usable =1 AND sd.dict_category='org_type'
       <if test="orgName != null and orgName != ''" >
           AND locate (#{orgName} ,org_name) > 0
       </if>

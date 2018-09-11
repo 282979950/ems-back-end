@@ -35,12 +35,17 @@ public class SysOrganization extends BaseEntity{
 
     private Integer orgParentId;
     /*
+     *父级机构名称
+     */
+    private String orgParentName;
+    /*
      *临时参数
      */
     private List<Integer> ids;
 
 
-    public SysOrganization( Integer orgId, String orgName, String orgCode, String orgCategory, Integer orgParentId,  Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+    public SysOrganization( Integer orgId, String orgName, String orgCode, String orgCategory, Integer orgParentId, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+        super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.orgId = orgId;
         this.orgName = orgName;
         this.orgCode = orgCode;

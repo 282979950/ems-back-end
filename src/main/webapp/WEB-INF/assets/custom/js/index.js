@@ -357,8 +357,8 @@ app.tableFields = {
         name: 'orgCategory',
         caption: '机构类别'
     }, {
-        name: 'orgParentId',
-        caption: '父级机构ID'
+        name: 'orgParentName',
+        caption: '父级机构名称'
     }],
     emp: [{
         name: 'empNumber',
@@ -651,7 +651,18 @@ app.addFormfields = {
         options: dictionary("org")
     }, {
         name: 'orgParentId',
-        caption: '父级机构ID'
+        caption: '父级机构',
+        type:'treecombobox' ,
+        options: {
+            idKey: 'orgId',
+            pIdKey: 'orgParentId',
+            name: 'orgName',
+            N : '',
+            Y : '',
+            chkStyle: 'radio',
+            radioType: "all",
+            nodes : ajaxTreeCombobox('org/listData.do')
+        }
     }, {
         name: 'remarks',
         caption: '备注信息'
@@ -909,7 +920,18 @@ app.editFormFields = {
         options: editFormDictionary("org")
     }, {
         name: 'orgParentId',
-        caption: '父级机构ID'
+        caption: '父级机构',
+        type:'treecombobox' ,
+        options: {
+            idKey: 'orgId',
+            pIdKey: 'orgParentId',
+            name: 'orgName',
+            N : '',
+            Y : '',
+            chkStyle: 'radio',
+            radioType: "all",
+            nodes : ajaxTreeCombobox('org/listData.do')
+        }
     }],
     emp: [{
         name: 'empNumber',
