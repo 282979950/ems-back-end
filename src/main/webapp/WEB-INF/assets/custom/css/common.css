@@ -136,5 +136,11 @@ body {
 
 .mdui-toolbar .mdui-textfield .mdui-icon{
     top: -8px;
-    left: 115px;
+    left: 95px;
+}
+
+.mdui-toolbar .tree-combobox input {
+    width: 50px !important;
+    margin: 0;
+    cursor: pointer;
 }
