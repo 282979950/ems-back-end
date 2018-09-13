@@ -1,7 +1,7 @@
 package com.ems.service;
 
 import com.ems.common.JsonData;
-import com.ems.entity.SysDistrict;
+import com.ems.param.SysDistrictParam;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public interface ISysDistrictService {
      * @param district
      * @return
      */
-    JsonData createDistrict(SysDistrict district);
+    JsonData createDistrict(SysDistrictParam district);
 
     /**
      * 依据区域名称查询
@@ -58,7 +58,7 @@ public interface ISysDistrictService {
      * @param district
      * @return
      */
-    JsonData updateSysDistrict(SysDistrict district);
+    JsonData updateSysDistrict(SysDistrictParam district);
 
     /**
      * 假删除(将usable设置为false)

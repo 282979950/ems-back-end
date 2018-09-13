@@ -66,6 +66,7 @@ app.initIndex = function () {
 
     });
 };
+app.cache = {};
 
 app.initEvent = function () {
     var formNames =app.currentPageName;
@@ -91,6 +92,7 @@ app.initEvent = function () {
                         success: function (response) {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
+                                app.cache[app.currentPageName + '/add.do'] = null;
                                 app.renderWithoutPage({
                                     url: app.currentPageName + '/listData.do'
                                 });
@@ -335,13 +337,13 @@ app.tableFields = {
         name: 'distCode',
         caption: '区域编码'
     }, {
-        name: 'distCategory',
+        name: 'distCategoryName',
         caption: '区域类别'
     }, {
         name: 'distAddress',
         caption: '区域地址'
     }, {
-        name: 'distParentId',
+        name: 'distParentName',
         caption: '父级区域'
     }],
     org: [{
@@ -554,60 +556,54 @@ app.tableFields = {
 /*
  *数据字典
  */
-dictionary = function(formNames){
+app.getDictionaryByCategory = function (category) {
     var datas;
-    if(formNames=='org'){
-
-        $.ajax({
-            async:false,
-            type: 'POST',
-            url: 'dic/dictByType.do',
-            contentType: 'application/x-www-form-urlencoded',
-            data: { orgCategory: "org_type"},
-            success: function (list) {
-                console.log(list);
-                if(list.data!= null){
-                     datas = list.data;
-                    for(var i=0;i<datas.length;i++){
-                       // dictionaryList= dictionaryList+'{'+"key"+":"+list.data[i].dictKey+","+"value"+":"+list.data[i].dictValue+'},';
-                        datas[i].key = datas[i].dictKey;
-                        datas[i].value = datas[i].dictValue;
-
-                    }
+    $.ajax({
+        async: false,
+        type: 'POST',
+        url: 'dic/dictByType.do',
+        contentType: 'application/x-www-form-urlencoded',
+        data: {
+            category: category
+        },
+        success: function (list) {
+            if (list.data != null) {
+                datas = list.data;
+                for (var i = 0; i < datas.length; i++) {
+                    datas[i].key = datas[i].dictKey;
+                    datas[i].value = datas[i].dictValue;
                 }
             }
-        });
-
-    }
+        }
+    });
     return datas;
 };
+
 /*
  *数据字典页面编辑时调用
  */
-editFormDictionary = function(formNames){
+editFormDictionary = function (formNames) {
     var datas;
-    if(formNames=='org'){
-
+    if (formNames == 'org') {
         $.ajax({
-            async:false,
+            async: false,
             type: 'POST',
             url: 'dic/dictByType.do',
             contentType: 'application/x-www-form-urlencoded',
-            data: { orgCategory: "org_type"},
+            data: {
+                category: "org_type"
+            },
             success: function (list) {
                 console.log(list);
-                if(list.data!= null){
+                if (list.data != null) {
                     datas = list.data;
-                    for(var i=0;i<datas.length;i++){
-                        // dictionaryList= dictionaryList+'{'+"key"+":"+list.data[i].dictKey+","+"value"+":"+list.data[i].dictValue+'},';
+                    for (var i = 0; i < datas.length; i++) {
                         datas[i].key = datas[i].dictKey;
                         datas[i].value = datas[i].dictKey;
-
                     }
                 }
             }
         });
-
     }
     return datas;
 };
@@ -629,14 +625,26 @@ app.addFormfields = {
     }, {
         name: 'distCategory',
         caption: '区域类别',
-        required: true
+        type: 'listcombobox',
+        options: app.getDictionaryByCategory("dist_type")
     }, {
         name: 'distAddress',
         caption: '区域地址',
         maxlength: 50
     }, {
         name: 'distParentId',
-        caption: '父级区域'
+        caption: '父级区域',
+        type:'treecombobox' ,
+        options: {
+            idKey: 'distId',
+            pIdKey: 'distParentId',
+            name: 'distName',
+            chkStyle: 'radio',
+            radioType: 'all',
+            N : '',
+            Y : '',
+            nodes : ajaxTreeCombobox('dist/listData.do')
+        }
     }],
     org: [{
         name: 'orgName',
@@ -648,7 +656,7 @@ app.addFormfields = {
         name: 'orgCategory',
         caption: '机构类别',
         type : 'listcombobox',
-        options: dictionary("org")
+        options: app.getDictionaryByCategory("org_type")
     }, {
         name: 'orgParentId',
         caption: '父级机构',
@@ -904,14 +912,26 @@ app.editFormFields = {
     }, {
         name: 'distCategory',
         caption: '区域类别',
-        required: true
+        type: 'listcombobox',
+        options: app.getDictionaryByCategory("dist_type")
     }, {
         name: 'distAddress',
         caption: '区域地址',
         maxlength: 50
     }, {
         name: 'distParentId',
-        caption: '父级区域'
+        caption: '父级区域',
+        type:'treecombobox' ,
+        options: {
+            idKey: 'distId',
+            pIdKey: 'distParentId',
+            name: 'distName',
+            chkStyle: 'radio',
+            radioType: 'all',
+            N : '',
+            Y : '',
+            nodes : ajaxTreeCombobox('dist/listData.do')
+        }
     }],
     org: [{
         name: 'orgName',

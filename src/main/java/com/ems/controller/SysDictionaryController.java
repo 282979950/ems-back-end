@@ -6,7 +6,6 @@ package com.ems.controller;
 import com.ems.common.JsonData;
 import com.ems.entity.SysDictionary;
 import com.ems.service.SysDictionaryService;
-import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -18,9 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/dic")
@@ -127,12 +124,12 @@ public class SysDictionaryController {
     @RequiresPermissions("sys:dic:retrieve")
     @RequestMapping(value = {"/dictByType.do"})
     @ResponseBody
-    public JsonData selectDictByType(String orgCategory ,HttpServletRequest request, HttpServletResponse respose) {
+    public JsonData selectDictByType(String category) {
 
         //获取类型时查看是否为空
-        if (StringUtils.isNotBlank(orgCategory)) {
+        if (StringUtils.isNotBlank(category)) {
 
-            List<SysDictionary> list = sysDictionaryService.findListByTypeOnPc(orgCategory);
+            List<SysDictionary> list = sysDictionaryService.findListByTypeOnPc(category);
             if(list.size()<=0){
 
                 return JsonData.fail("该字段没有对应数据字典值");

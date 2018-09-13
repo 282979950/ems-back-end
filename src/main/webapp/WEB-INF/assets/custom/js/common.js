@@ -309,7 +309,6 @@ var app = {
                 if (app.table) {
                     app.table.refresh(data);
                 } else {
-                    contextTable=  context.table;
                     /*
                      *使用数据模板Getfields中可定义对应数据模板内容
                      */

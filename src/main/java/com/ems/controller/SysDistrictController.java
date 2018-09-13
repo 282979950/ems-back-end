@@ -1,7 +1,7 @@
 package com.ems.controller;
 
 import com.ems.common.JsonData;
-import com.ems.entity.SysDistrict;
+import com.ems.param.SysDistrictParam;
 import com.ems.service.ISysDistrictService;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -42,7 +42,7 @@ public class SysDistrictController {
     @RequiresPermissions("sys:dist:create")
     @RequestMapping(value = "add.do")
     @ResponseBody
-    public JsonData createDistrict(SysDistrict district) {
+    public JsonData createDistrict(SysDistrictParam district) {
         return sysDistrictService.createDistrict(district);
     }
 
@@ -62,7 +62,7 @@ public class SysDistrictController {
     @RequiresPermissions("sys:dist:update")
     @RequestMapping("edit.do")
     @ResponseBody
-    public JsonData updateDistrict(SysDistrict district) {
+    public JsonData updateDistrict(SysDistrictParam district) {
         return sysDistrictService.updateSysDistrict(district);
     }
 

@@ -1,21 +1,20 @@
-package com.ems.entity;
+package com.ems.param;
 
+import com.ems.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * 区域表实体
- *
- * @author litairan
+ * @author litairan on 2018/9/4.
  */
 @Getter
 @Setter
-public class SysDistrict extends BaseEntity {
-
+public class SysDistrictParam extends BaseEntity {
     /**
      * 区域ID
      */
@@ -37,8 +36,13 @@ public class SysDistrict extends BaseEntity {
     /**
      * 区域类型
      */
-    @NotBlank(message = "区域类型不能为空")
+    @NotNull(message = "区域类型不能为空")
     private Integer distCategory;
+
+    /**
+     * 区域类型
+     */
+    private String distCategoryName;
 
     /**
      * 区域地址
@@ -51,18 +55,25 @@ public class SysDistrict extends BaseEntity {
      */
     private Integer distParentId;
 
-    public SysDistrict(Integer distId, String distName, String distCode, Integer distCategory, String distAddress, Integer distParentId, Date createTime,
-                       Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+    /**
+     * 父级区域名称
+     */
+    private String distParentName;
+
+    public SysDistrictParam(Integer distId, String distName, String distCode, Integer distCategory, String distCategoryName, String distAddress, Integer
+            distParentId, String distParentName, Date  createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.distId = distId;
         this.distName = distName;
         this.distCode = distCode;
         this.distCategory = distCategory;
+        this.distCategoryName = distCategoryName;
         this.distAddress = distAddress;
         this.distParentId = distParentId;
+        this.distParentName = distParentName;
     }
 
-    public SysDistrict() {
+    public SysDistrictParam() {
         super();
     }
 }

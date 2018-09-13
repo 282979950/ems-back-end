@@ -6,7 +6,7 @@
             <idArg column="dist_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="dist_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="dist_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
-            <arg column="dist_category" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="dist_category" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="dist_address" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="dist_parent_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
@@ -38,7 +38,7 @@
         update_by, remarks
         )
         values (#{distName,jdbcType=VARCHAR}, #{distCode,jdbcType=VARCHAR},
-        #{distCategory,jdbcType=VARCHAR}, #{distAddress,jdbcType=VARCHAR}, #{distParentId,jdbcType=INTEGER},
+        #{distCategory,jdbcType=INTEGER}, #{distAddress,jdbcType=VARCHAR}, #{distParentId,jdbcType=INTEGER},
         NOW(), #{createBy,jdbcType=INTEGER}, NOW(),
         #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}
         )
@@ -94,7 +94,7 @@
                 #{distCode,jdbcType=VARCHAR},
             </if>
             <if test="distCategory != null">
-                #{distCategory,jdbcType=VARCHAR},
+                #{distCategory,jdbcType=INTEGER},
             </if>
             <if test="distAddress != null">
                 #{distAddress,jdbcType=VARCHAR},
@@ -132,7 +132,7 @@
                 dist_code = #{distCode,jdbcType=VARCHAR},
             </if>
             <if test="distCategory != null">
-                dist_category = #{distCategory,jdbcType=VARCHAR},
+                dist_category = #{distCategory,jdbcType=INTEGER},
             </if>
             <if test="distAddress != null">
                 dist_address = #{distAddress,jdbcType=VARCHAR},
@@ -165,7 +165,7 @@
         update sys_district
         set dist_name = #{distName,jdbcType=VARCHAR},
         dist_code = #{distCode,jdbcType=VARCHAR},
-        dist_category = #{distCategory,jdbcType=VARCHAR},
+        dist_category = #{distCategory,jdbcType=INTEGER},
         dist_address = #{distAddress,jdbcType=VARCHAR},
         dist_parent_id = #{distParentId,jdbcType=INTEGER},
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -241,16 +241,78 @@
             dist_id = #{i.distId}
         </foreach>
     </update>
-    <select id="selectDistrict" resultMap="BaseResultMap" parameterType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from sys_district
-        where usable = 1
+
+    <resultMap id="SysDistrictParam" type="com.ems.param.SysDistrictParam">
+        <constructor>
+            <idArg column="dist_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="dist_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="dist_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="dist_category" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="dist_category_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="dist_address" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="dist_parent_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="dist_parent_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="create_by" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="update_by" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="usable" javaType="java.lang.Boolean" jdbcType="BIT"/>
+            <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </constructor>
+    </resultMap>
+    <select id="getAllDist" resultMap="SysDistrictParam">
+        SELECT s1.dist_id, s1.dist_name, s1.dist_code,
+        s1.dist_category, sd.dict_key AS dist_category_name, s1.dist_address, s1.dist_parent_id, s2.dist_name AS dist_parent_name,
+        s1.create_time, s1.create_by, s1.update_time,
+        s1.update_by, s1.usable, s1.remarks
+        FROM sys_district s1
+        LEFT JOIN sys_district s2 ON s1.dist_parent_id = s2.dist_id
+        LEFT JOIN sys_dictionary sd on s1.dist_category = sd.dict_value and sd.dict_category = 'dist_type' and sd.usable = 1
+        WHERE s1.usable = 1
+        ORDER BY s1.dist_id
+    </select>
+    <sql id="getDictType">
+        SELECT dict_value FROM sys_dictionary WHERE dict_category = 'dist_type' AND dict_key = #{distCategory,jdbcType=VARCHAR}
+    </sql>
+    <insert id="createDistrict" parameterType="com.ems.param.SysDistrictParam">
+        insert into sys_district (dist_name, dist_code,
+        dist_category, dist_address, dist_parent_id,
+        create_time, create_by, update_time,
+        update_by, remarks
+        )
+        values (#{distName,jdbcType=VARCHAR}, #{distCode,jdbcType=VARCHAR},
+        #{distCategory,jdbcType=INTEGER}, #{distAddress,jdbcType=VARCHAR}, #{distParentId,jdbcType=INTEGER},
+        NOW(), #{createBy,jdbcType=INTEGER}, NOW(),
+        #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}
+        )
+    </insert>
+    <update id="updateDistrict" parameterType="com.ems.param.SysDistrictParam">
+        update sys_district
+        set dist_name = #{distName,jdbcType=VARCHAR},
+        dist_code = #{distCode,jdbcType=VARCHAR},
+        dist_category = #{distCategory,jdbcType=INTEGER},
+        dist_address = #{distAddress,jdbcType=VARCHAR},
+        dist_parent_id = #{distParentId,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_by = #{updateBy,jdbcType=INTEGER},
+        remarks = #{remarks,jdbcType=VARCHAR}
+        where dist_id = #{distId,jdbcType=INTEGER}
+    </update>
+    <select id="selectDistrict" resultMap="SysDistrictParam" parameterType="map">
+        SELECT s1.dist_id, s1.dist_name, s1.dist_code,
+        s1.dist_category, sd.dict_key AS dist_category_name, s1.dist_address, s1.dist_parent_id, s2.dist_name AS dist_parent_name,
+        s1.create_time, s1.create_by, s1.update_time,
+        s1.update_by, s1.usable, s1.remarks
+        FROM sys_district s1
+        LEFT JOIN sys_district s2 ON s1.dist_parent_id = s2.dist_id
+        LEFT JOIN sys_dictionary sd on s1.dist_category = sd.dict_value and sd.dict_category = 'dist_type' and sd.usable = 1
+        WHERE s1.usable = 1
         <if test="distName != null and distName != ''">
-            AND dist_name LIKE CONCAT('%', #{distName,jdbcType=VARCHAR}, '%')
+            AND s1.dist_name LIKE CONCAT('%', #{distName,jdbcType=VARCHAR}, '%')
         </if>
         <if test="distCode != null and distCode != ''">
-            AND dist_code LIKE CONCAT('%', #{distCode,jdbcType=VARCHAR}, '%')
+            AND s1.dist_code LIKE CONCAT('%', #{distCode,jdbcType=VARCHAR}, '%')
         </if>
+        ORDER BY s1.dist_id
     </select>
 </mapper>

@@ -5,6 +5,7 @@ import com.ems.common.JsonData;
 import com.ems.entity.SysDistrict;
 import com.ems.entity.mapper.SysDistrictMapper;
 import com.ems.exception.ParameterException;
+import com.ems.param.SysDistrictParam;
 import com.ems.service.ISysDistrictService;
 import com.ems.shiro.utils.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
 
     @Override
     @Transactional(readOnly = false)
-    public JsonData createDistrict(SysDistrict district) {
+    public JsonData createDistrict(SysDistrictParam district) {
         BeanValidator.check(district);
         String distName = district.getDistName();
         if (checkUsable(distName)) {
@@ -58,7 +59,7 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         district.setCreateBy(currentEmpId);
         district.setUpdateBy(currentEmpId);
-        int resultCount = districtMapper.insert(district);
+        int resultCount = districtMapper.createDistrict(district);
         if (resultCount == 0) {
             return JsonData.fail("创建区域失败");
         }
@@ -67,25 +68,25 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
 
     @Override
     public JsonData selectDistrict(String distName, String distCode) {
-        List<SysDistrict> districts = districtMapper.selectDistrict(distName, distCode);
+        List<SysDistrictParam> districts = districtMapper.selectDistrict(distName, distCode);
         return districts == null || districts.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(districts, "查询成功");
     }
 
     @Override
     @Transactional(readOnly = false)
-    public JsonData updateSysDistrict(SysDistrict district) {
+    public JsonData updateSysDistrict(SysDistrictParam district) {
         BeanValidator.check(district);
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         Integer distId = district.getDistId();
         String distName = district.getDistName();
-        if (distId.equals(ROOT_DIST_ID) && district.getDistParentId() != null) {
+        if (distId.equals(ROOT_DIST_ID) && district.getDistParentName() != null) {
             throw new ParameterException("根节点父级区域不能修改");
         }
         if (checkIdAndName(distId, distName)) {
             throw new ParameterException("区域名称:" + distName + "已存在");
         }
         district.setUpdateBy(currentEmpId);
-        int resultCount = districtMapper.updateByPrimaryKey(district);
+        int resultCount = districtMapper.updateDistrict(district);
         if (resultCount == 0) {
             return JsonData.fail("更新区域失败");
         }
@@ -130,7 +131,7 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
 
     @Override
     public JsonData listData() {
-        List<SysDistrict> districtList = districtMapper.selectAll();
+        List<SysDistrictParam> districtList = districtMapper.getAllDist();
         return districtList == null || districtList.size() == 0 ? JsonData.successMsg("区域树为空，需要新建") : JsonData.successData(districtList);
     }
 
