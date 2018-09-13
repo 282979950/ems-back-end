@@ -513,6 +513,26 @@
                 $('<span class="mdui-text-color-blue">' + field.caption + ':</span>').appendTo($field);
                 $('<input type="text" class="field">').addClass(field.name).attr('name', field.name).appendTo($field);
                 break;
+            case 'listcombobox':
+                var $field = $('<div class="mdui-textfield operator field"></div>').appendTo($toolbar);
+                $('<span class="mdui-text-color-blue">' + field.caption + ':</span>').appendTo($field);
+                app.createListCombobox({
+                    parent: $field[0],
+                    clazz: 'field ',
+                    name: field.name,
+                    options: field.options
+                });
+                break;
+            case 'treecombobox':
+                var $field = $('<div class="mdui-textfield operator field"></div>').appendTo($toolbar);
+                $('<span class="mdui-text-color-blue">' + field.caption + ':</span>').appendTo($field);
+                app.createTreeCombobox({
+                    parent: $field[0],
+                    clazz: 'field ',
+                    name: field.name,
+                    options: field.options
+                });
+                break;
             case 'date':
                 var $field = $('<div class="mdui-textfield operator field"></div>').appendTo($toolbar);
                 $('<span class="mdui-text-color-blue">' + field.caption + ':</span>').appendTo($field);
@@ -576,7 +596,14 @@
         $inputs.each(function (index, input) {
             inputsData.push({
                 name: $(input).attr('name'),
-                value: $(input).val()
+                value: $(input).attr('text')? $(input).attr('text') : $(input).val()
+            })
+        });
+        var $selects = this.$dom.find('select');
+        $selects.each(function (index, select) {
+            inputsData.push({
+                name: $(select).attr('name'),
+                value: $(select).val()
             })
         });
         return inputsData;
@@ -912,7 +939,7 @@
      */
     TreeCombobox.prototype._initEvents = function () {
         var _this = this;
-        this.$span.click(function (event) {
+        _this.$span.click(function (event) {
             if (app.isTreeComboboxPanelShow) {
                 $(".tree-combobox-panel").hide();
                 app.isTreeComboboxPanelShow = false;

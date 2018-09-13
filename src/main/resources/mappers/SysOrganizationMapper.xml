@@ -170,7 +170,7 @@
  <!-- 查询所有数据List -->
   <select id="findList" resultType="com.ems.entity.SysOrganization" >
      select
-     org.org_id as orgId , org.org_name as orgName, org.org_code as orgCode, sd.dict_key AS orgCategory, org.org_parent_id as orgParentId,(
+     org.org_id as orgId , org.org_name as orgName, org.org_code as orgCode, sd.dict_value AS orgCategory,sd.dict_key AS orgCategoryName , org.org_parent_id as orgParentId,(
   SELECT org_name FROM sys_organization WHERE org_id = org.org_parent_id) AS orgParentName,org.create_time as createTime, org.create_by as createBy,
    org.update_time as updateTime, org.update_by as updateBy, org.usable as usable, org.remarks as remarks
       from sys_organization org
@@ -232,7 +232,7 @@
   <!-- 根据条件查询所有数据List -->
   <select id="findListOrganization" resultType="com.ems.entity.SysOrganization" parameterType="com.ems.entity.SysOrganization" >
     select
-    org.org_id as orgId , org.org_name as orgName, org.org_code as orgCode, sd.dict_key AS orgCategory, org.org_parent_id as orgParentId,(
+    org.org_id as orgId , org.org_name as orgName, org.org_code as orgCode,  sd.dict_value AS orgCategory,sd.dict_key AS orgCategoryName , org.org_parent_id as orgParentId,(
     SELECT org_name FROM sys_organization WHERE org_id = org.org_parent_id) AS orgParentName,org.create_time as createTime, org.create_by as createBy,
     org.update_time as updateTime, org.update_by as updateBy, org.usable as usable, org.remarks as remarks
     from sys_organization org

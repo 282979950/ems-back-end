@@ -226,7 +226,7 @@
   </select>
   <!--根据字典类型和key获取对应字典值-->
   <select id="dictCategoryByType" resultType="java.lang.String" parameterType="java.lang.String">
-    SELECT dict_value FROM sys_dictionary WHERE dict_key=#{dictKey} AND dict_category=#{dictCategory}
+    SELECT dict_value FROM sys_dictionary WHERE dict_value=#{dictKey} AND dict_category=#{dictCategory}
 
   </select>
 

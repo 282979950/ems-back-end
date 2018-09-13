@@ -75,6 +75,7 @@ app.initEvent = function () {
     main.on('add', function () {
         var dialog = mdui.dialog({
             title: '新增',
+            modal: true,
             content: ' ',
             buttons: [{
                 text: '确认',
@@ -120,6 +121,7 @@ app.initEvent = function () {
         }
         var dialog = mdui.dialog({
             title: '编辑',
+            modal: true,
             content: ' ',
             buttons: [{
                 text: '确认',
@@ -178,6 +180,7 @@ app.initEvent = function () {
         }
         mdui.dialog({
             title: '删除',
+            modal: true,
             content: '确认删除选中数据？',
             buttons: [{
                 text: '确认',
@@ -354,7 +357,7 @@ app.tableFields = {
         name: 'orgCode',
         caption: '机构编码'
     }, {
-        name: 'orgCategory',
+        name: 'orgCategoryName',
         caption: '机构类别'
     }, {
         name: 'orgParentName',
@@ -555,63 +558,27 @@ app.tableFields = {
  *数据字典
  */
 dictionary = function(formNames){
-    var datas;
-    if(formNames=='org'){
-
+    var dataArray = new Array();
         $.ajax({
-            async:false,
+            async : false,
             type: 'POST',
             url: 'dic/dictByType.do',
             contentType: 'application/x-www-form-urlencoded',
-            data: { orgCategory: "org_type"},
-            success: function (list) {
-                console.log(list);
-                if(list.data!= null){
-                     datas = list.data;
+            data: { orgCategory: formNames},
+            success: function (response) {
+                if(response.data!= null){
+                   var datas = response.data;
                     for(var i=0;i<datas.length;i++){
-                       // dictionaryList= dictionaryList+'{'+"key"+":"+list.data[i].dictKey+","+"value"+":"+list.data[i].dictValue+'},';
-                        datas[i].key = datas[i].dictKey;
-                        datas[i].value = datas[i].dictValue;
-
+                        var dataObject = new Object();
+                        dataObject.key  = datas[i].dictKey;
+                        dataObject.value  = datas[i].dictValue;
+                        dataArray.push(dataObject);
                     }
                 }
             }
         });
-
-    }
-    return datas;
+    return dataArray;
 };
-/*
- *数据字典页面编辑时调用
- */
-editFormDictionary = function(formNames){
-    var datas;
-    if(formNames=='org'){
-
-        $.ajax({
-            async:false,
-            type: 'POST',
-            url: 'dic/dictByType.do',
-            contentType: 'application/x-www-form-urlencoded',
-            data: { orgCategory: "org_type"},
-            success: function (list) {
-                console.log(list);
-                if(list.data!= null){
-                    datas = list.data;
-                    for(var i=0;i<datas.length;i++){
-                        // dictionaryList= dictionaryList+'{'+"key"+":"+list.data[i].dictKey+","+"value"+":"+list.data[i].dictValue+'},';
-                        datas[i].key = datas[i].dictKey;
-                        datas[i].value = datas[i].dictKey;
-
-                    }
-                }
-            }
-        });
-
-    }
-    return datas;
-};
-
 /*
  *新增时弹出框,列显示
  */
@@ -648,7 +615,7 @@ app.addFormfields = {
         name: 'orgCategory',
         caption: '机构类别',
         type : 'listcombobox',
-        options: dictionary("org")
+        options: dictionary("org_type")
     }, {
         name: 'orgParentId',
         caption: '父级机构',
@@ -795,7 +762,7 @@ app.addFormfields = {
         options: {
             idKey: 'orgId',
             pIdKey: 'orgParentId',
-            name: 'orgId',
+            name: 'orgName',
             N : 's',
             Y : 'p',
             nodes : ajaxTreeCombobox('org/listData.do')
@@ -923,7 +890,7 @@ app.editFormFields = {
         name: 'orgCategory',
         caption: '机构类别',
         type : 'listcombobox',
-        options: editFormDictionary("org")
+        options: dictionary("org_type")
     }, {
         name: 'orgParentId',
         caption: '父级机构',
@@ -1322,11 +1289,31 @@ app.headScreening = {
     }, {
         name: 'orgName',
         caption: '所属机构',
-        type: 'input'
+        type:'treecombobox' ,
+        options: {
+            idKey: 'orgId',
+            pIdKey: 'orgParentId',
+            name: 'orgName',
+            N : '',
+            Y : '',
+            chkStyle: 'radio',
+            radioType: "all",
+            nodes : ajaxTreeCombobox('org/listData.do')
+        }
     }, {
         name: 'distName',
         caption: '所属区域',
-        type: 'input'
+        type:'treecombobox' ,
+        options: {
+            idKey: 'distId',
+            pIdKey: 'distParentId',
+            name: 'distName',
+            N : '',
+            Y : '',
+            chkStyle: 'radio',
+            radioType: "all",
+            nodes : ajaxTreeCombobox('dist/listData.do')
+        }
     }, {
         name: 'empLoginName',
         caption: '登录名',
@@ -1342,7 +1329,8 @@ app.headScreening = {
     }, {
         name: 'empType',
         caption: '员工类型',
-        type: 'input'
+        type: 'listcombobox',
+        options: dictionary("emp_type")
     }],
     dic: [{
         name: 'add',

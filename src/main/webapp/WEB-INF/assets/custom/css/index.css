@@ -144,3 +144,11 @@ and open the template in the editor.
     margin: 0;
     height: 2.5rem;
 }
+
+.mdui-toolbar .mdui-select {
+    -webkit-appearance: menulist;
+    -moz-appearance: menulist;
+    background-image: none;
+    padding-right: 0;
+    width: 80px;
+}

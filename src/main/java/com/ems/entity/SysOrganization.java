@@ -29,6 +29,8 @@ public class SysOrganization extends BaseEntity{
      */
 
     private String orgCategory;
+
+    private String orgCategoryName;
     /*
      *父级机构
      */
