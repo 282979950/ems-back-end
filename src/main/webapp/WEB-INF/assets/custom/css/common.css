@@ -100,7 +100,7 @@ body {
 }
 
 .mdui-toolbar .mdui-textfield input {
-    margin: 0 4px;
+    margin: 0 2px;
     border-bottom: 1px solid #2196f3;
     height: 2rem;
     width: 50px;
@@ -120,7 +120,7 @@ body {
 }
 
 .tree-combobox input {
-    width: 120px !important;
+    width: 70px !important;
     margin: 0;
     cursor: pointer;
 }
@@ -132,4 +132,15 @@ body {
     overflow: auto;
     background-color: white;
     z-index: 10000;
+}
+
+.mdui-toolbar .mdui-textfield .mdui-icon{
+    top: -8px;
+    left: 95px;
+}
+
+.mdui-toolbar .tree-combobox input {
+    width: 50px !important;
+    margin: 0;
+    cursor: pointer;
 }

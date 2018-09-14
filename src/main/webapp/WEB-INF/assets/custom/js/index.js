@@ -231,6 +231,7 @@ app.initEvent = function () {
     main.on('add', function () {
         var dialog = mdui.dialog({
             title: '新增',
+            modal: true,
             content: ' ',
             buttons: [{
                 text: '确认',
@@ -279,6 +280,7 @@ app.initEvent = function () {
         }
         var dialog = mdui.dialog({
             title: '编辑',
+            modal: true,
             content: ' ',
             buttons: [{
                 text: '确认',
@@ -339,6 +341,7 @@ app.initEvent = function () {
         }
         mdui.dialog({
             title: '删除',
+            modal: true,
             content: '确认删除选中数据？',
             buttons: [{
                 text: '确认',
@@ -519,7 +522,7 @@ app.tableFields = {
         name: 'orgCode',
         caption: '机构编码'
     }, {
-        name: 'orgCategory',
+        name: 'orgCategoryName',
         caption: '机构类别'
     }, {
         name: 'orgParentName',
@@ -720,7 +723,7 @@ app.tableFields = {
  *数据字典
  */
 app.getDictionaryByCategory = function (category) {
-    var datas;
+    var dataArray = [];
     $.ajax({
         async: false,
         type: 'POST',
@@ -729,17 +732,19 @@ app.getDictionaryByCategory = function (category) {
         data: {
             category: category
         },
-        success: function (list) {
-            if (list.data != null) {
-                datas = list.data;
+        success: function (response) {
+            if (response.data != null) {
+                var datas = response.data;
                 for (var i = 0; i < datas.length; i++) {
-                    datas[i].key = datas[i].dictKey;
-                    datas[i].value = datas[i].dictValue;
+                    dataArray.push({
+                        key: datas[i].dictKey,
+                        value: datas[i].dictValue
+                    });
                 }
             }
         }
     });
-    return datas;
+    return dataArray;
 };
 
 /*
@@ -1511,11 +1516,31 @@ app.getToolbarFields = function (name) {
             }, {
                 name: 'orgName',
                 caption: '所属机构',
-                type: 'input'
+                type:'treecombobox' ,
+                options: {
+                    idKey: 'orgId',
+                    pIdKey: 'orgParentId',
+                    name: 'orgName',
+                    N : '',
+                    Y : '',
+                    chkStyle: 'radio',
+                    radioType: "all",
+                    nodes : ajaxTreeCombobox('org/listData.do')
+                }
             }, {
                 name: 'distName',
                 caption: '所属区域',
-                type: 'input'
+                type:'treecombobox' ,
+                options: {
+                    idKey: 'distId',
+                    pIdKey: 'distParentId',
+                    name: 'distName',
+                    N : '',
+                    Y : '',
+                    chkStyle: 'radio',
+                    radioType: "all",
+                    nodes : ajaxTreeCombobox('dist/listData.do')
+                }
             }, {
                 name: 'empLoginName',
                 caption: '登录名',
@@ -1531,7 +1556,8 @@ app.getToolbarFields = function (name) {
             }, {
                 name: 'empType',
                 caption: '员工类型',
-                type: 'input'
+                type: 'listcombobox',
+                options: dictionary("emp_type")
             }];
         case 'dic':
             return [{
