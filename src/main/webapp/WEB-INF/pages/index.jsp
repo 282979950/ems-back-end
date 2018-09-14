@@ -26,7 +26,6 @@
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap-datetimepicker.min.css"/>
     <script type="text/javascript" src="../assets/materialize/js/jquery.min.js"></script>
     <script type="text/javascript" src="../assets/materialize/js/materialize.min.js"></script>
-    <script type="text/javascript" src="../assets/custom/js/common.js"></script>
     <script type="text/javascript" src="../assets/custom/js/index.js"></script>
     <script type="text/javascript" src="../assets/custom/js/component.js"></script>
     <script type="text/javascript" src="../assets/mdui-v0.4.1/js/mdui.js"></script>

@@ -22,8 +22,6 @@
         <link type="text/css" rel="stylesheet" href="../assets/custom/css/login.css"/>
         <script type="text/javascript" src="../assets/materialize/js/jquery.min.js"></script>
         <script type="text/javascript" src="../assets/materialize/js/materialize.min.js"></script>
-        <script type="text/javascript" src="../assets/custom/js/common.js"></script>
-        <script type="text/javascript" src="../assets/custom/js/login.js"></script>
     </head>
     <body>
         <%--
