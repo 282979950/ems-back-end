@@ -1,8 +1,15 @@
 /* global app, M */
 var app = $.extend({
     DEFAULT_TEMPLATE: '<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
-    cache: {}
+    dataCache: {}
 });
+
+app.getDataCache = function (name) {
+    return this.dataCache[name] ? JSON.parse(JSON.stringify(this.dataCache[name])) : null;
+};
+app.setDataCache = function (name, value) {
+    this.dataCache[name] = JSON.parse(JSON.stringify(value));
+};
 
 app.getPanelContent = function (name) {
     var panelContent = '';
@@ -77,10 +84,10 @@ app.getPanelContent = function (name) {
 };
 
 app.initIndex = function () {
-    document.addEventListener('DOMContentLoaded', function () {
-        var elems = document.querySelectorAll('.mdui-drawer .mdui-list');
-        var containerElement = document.querySelector('.mdui-container');
-        elems[0].onclick = function (event) {
+    $(document).ready(function () {
+        var $menuList = $('.mdui-drawer .mdui-list');
+        var $container = $('.mdui-container');
+        $menuList.on('click', function (event) {
             var eventSrc = event.target;
             if (eventSrc.classList.contains('nav-item')) {
                 var name = eventSrc.classList[eventSrc.classList.length - 1];
@@ -91,8 +98,8 @@ app.initIndex = function () {
                     app.toolbar = null;
                     app.currentPageName = name;
                     var text = eventSrc.innerText;
-                    var titleElement = containerElement.children[0];
-                    var mainElement = containerElement.children[1];
+                    var titleElement = $container.children()[0];
+                    var mainElement = $container.children()[1];
                     titleElement.innerHTML = text;
                     mainElement.innerHTML = app.getPanelContent(name);
                     app.initPane({
@@ -102,7 +109,7 @@ app.initIndex = function () {
                     app.initEvent();
                 }
             }
-        };
+        });
         $(document).click(function () {
             $(".tree-combobox-panel").hide();
             app.isTreeComboboxPanelShow = false;
@@ -133,15 +140,27 @@ app.initIndex = function () {
                 app.editForm.setValue('orderPayment', null);
             }
         });
-
     });
+};
+
+app.lockScreen = function() {
+    // todo
+};
+
+app.refresh= function () {
+    if(app.currentPageName){
+        app.toolbar.clearInputsData();
+        app.render({
+            url: app.currentPageName + '/listData.do'
+        });
+    }
 };
 
 app.logout = function () {
     $.ajax({
         async: true,
         type: 'POST',
-        url: 'logout.action',
+        url: 'logout',
         contentType: 'application/x-www-form-urlencoded',
         beforeSend: function (xhr) {
             xhr.withCredentials = true;
@@ -154,41 +173,42 @@ app.logout = function () {
     });
 };
 
-app.refresh= function () {
-    if(app.currentPageName){
-        app.toolbar.clearInputsData();
-        app.render({
-            url: app.currentPageName + '/listData.do'
+app.render = function (context) {
+    // 从缓存中读取数据
+    var data = app.getDataCache(context.url);
+    if (data) {
+        console.log("依据缓存渲染页面");
+        _render(data);
+    } else {
+        console.log("通过ajax获取数据");
+        $.ajax({
+            async: false,
+            type: 'GET',
+            url: context.url,
+            contentType: 'application/json;charset=utf-8',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                var data = response.data;
+                app.setDataCache(context.url, data);
+                console.log("更新" + context.url + "缓存");
+                _render(data);
+            }
         });
     }
-};
-
-app.render = function (context) {
-    $.ajax({
-        async: false,
-        type: 'GET',
-        url: context.url,
-        contentType: 'application/json;charset=utf-8',
-        beforeSend: function (xhr) {
-            xhr.withCredentials = true;
-        },
-        success: function (response) {
-            var data = response.data;
-            if (app.table) {
-                app.table.refresh(data);
-            } else {
-                /*
-                 *使用数据模板Getfields中可定义对应数据模板内容
-                 */
-                var names = app.currentPageName;
-                app.table = context.table = app.createTable({
-                    parent: '.mdui-table-fluid',
-                    fields: app.tableFields[names],
-                    data: data
-                });
-            }
+    function _render(data) {
+        if (app.table) {
+            app.table.refresh(data);
+        } else {
+            var names = app.currentPageName;
+            app.table = context.table = app.createTable({
+                parent: '.mdui-table-fluid',
+                fields: app.tableFields[names],
+                data: data
+            });
         }
-    });
+    }
 };
 
 app.initPane = function (context) {
@@ -227,9 +247,11 @@ app.initEvent = function () {
                         success: function (response) {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
-                                app.cache[app.currentPageName + '/add.do'] = null;
+                                var url = app.currentPageName + '/listData.do';
+                                app.setDataCache(url, null);
+                                console.log("清理" + url + "缓存");
                                 app.render({
-                                    url: app.currentPageName + '/listData.do'
+                                    url: url
                                 });
                             }
                         }
@@ -271,11 +293,13 @@ app.initEvent = function () {
                             xhr.withCredentials = true;
                         },
                         success: function (response) {
-                            console.log(response);
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
+                                var url = app.currentPageName + '/listData.do';
+                                app.setDataCache(url, null);
+                                console.log("清理" + url + "缓存");
                                 app.render({
-                                    url: app.currentPageName + '/listData.do'
+                                    url: url
                                 });
                             }
                         }
@@ -330,11 +354,13 @@ app.initEvent = function () {
                             xhr.withCredentials = true;
                         },
                         success: function (response) {
-                            console.log(response);
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
+                                var url = app.currentPageName + '/listData.do';
+                                app.setDataCache(url, null);
+                                console.log("清理" + url + "缓存");
                                 app.render({
-                                    url: app.currentPageName + '/listData.do'
+                                    url: url
                                 });
                             }
                         }
@@ -394,11 +420,13 @@ app.initEvent = function () {
                                 xhr.withCredentials = true;
                             },
                             success: function (response) {
-                                console.log(response);
                                 response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                                 if (response.status) {
+                                    var url = app.currentPageName + '/listData.do';
+                                    app.setDataCache(url, null);
+                                    console.log("清理" + url + "缓存");
                                     app.render({
-                                        url: app.currentPageName + '/listData.do'
+                                        url: url
                                     });
                                 }
                             }
@@ -750,7 +778,7 @@ app.getAddFormFields  = function (name) {
                     radioType: 'all',
                     N: '',
                     Y: '',
-                    nodes: ajaxTreeCombobox('dist/listData.do')
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
                 }
             }];
         case 'org':
@@ -777,7 +805,7 @@ app.getAddFormFields  = function (name) {
                     Y: '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes: ajaxTreeCombobox('org/listData.do')
+                    nodes: app.getTreeComboboxNodes('org/listData.do')
                 }
             }, {
                 name: 'remarks',
@@ -875,7 +903,7 @@ app.getAddFormFields  = function (name) {
                     Y: '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes: ajaxTreeCombobox('permission/listAllMenus.do')
+                    nodes: app.getTreeComboboxNodes('permission/listAllMenus.do')
                 }
             }, {
                 name: 'isButton',
@@ -907,7 +935,7 @@ app.getAddFormFields  = function (name) {
                     name: 'distName',
                     N: 's',
                     Y: 'p',
-                    nodes: ajaxTreeCombobox('dist/listData.do')
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
                 }
             }, {
                 name: 'orgIds', caption: '角色所属机构',
@@ -918,7 +946,7 @@ app.getAddFormFields  = function (name) {
                     name: 'orgId',
                     N: 's',
                     Y: 'p',
-                    nodes: ajaxTreeCombobox('org/listData.do')
+                    nodes: app.getTreeComboboxNodes('org/listData.do')
                 }
             }, {
                 name: 'permIds', caption: '角色拥有权限',
@@ -929,7 +957,7 @@ app.getAddFormFields  = function (name) {
                     name: 'permCaption',
                     N: 's',
                     Y: 'p',
-                    nodes: ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
+                    nodes: app.getTreeComboboxNodes('permission/listAllMenusAndPerms.do')
                 }
             }, {
                 name: 'remarks',
@@ -994,22 +1022,29 @@ app.getAddFormFields  = function (name) {
     }
 };
 
-function ajaxTreeCombobox(url) {
-    var data = null;
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: url,
-        contentType: 'application/json;charset=utf-8',
-        beforeSend: function (xhr) {
-            xhr.withCredentials = true;
-        },
-        success: function (response) {
-            data = response.data;
-        }
-    });
-    return data;
-}
+app.getTreeComboboxNodes = function (url) {
+    var data = this.getDataCache(url);
+    if (data) {
+        console.log("从缓存中获取数据");
+        return data;
+    } else {
+        $.ajax({
+            async: false,
+            type: 'POST',
+            url: url,
+            contentType: 'application/json;charset=utf-8',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                data = response.data;
+                app.setDataCache(url, data);
+                console.log("更新"+ url+ "缓存");
+            }
+        });
+        return data;
+    }
+};
 
 /*
  *修改时弹出框,列显示
@@ -1048,7 +1083,7 @@ app.getEditFormFields = function (name) {
                     radioType: 'all',
                     N: '',
                     Y: '',
-                    nodes: ajaxTreeCombobox('dist/listData.do')
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
                 }
             }];
         case 'org':
@@ -1075,7 +1110,7 @@ app.getEditFormFields = function (name) {
                     Y: '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes: ajaxTreeCombobox('org/listData.do')
+                    nodes: app.getTreeComboboxNodes('org/listData.do')
                 }
             }];
         case 'emp':
@@ -1169,7 +1204,7 @@ app.getEditFormFields = function (name) {
                     Y: '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes: ajaxTreeCombobox('permission/listAllMenus.do')
+                    nodes: app.getTreeComboboxNodes('permission/listAllMenus.do')
                 }
             }, {
                 name: 'isButton',
@@ -1203,7 +1238,7 @@ app.getEditFormFields = function (name) {
                     name: 'distName',
                     N: 's',
                     Y: 'p',
-                    nodes: ajaxTreeCombobox('dist/listData.do')
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
                 }
             }, {
                 name: 'orgIds',
@@ -1215,7 +1250,7 @@ app.getEditFormFields = function (name) {
                     name: 'orgName',
                     N: 's',
                     Y: 'p',
-                    nodes: ajaxTreeCombobox('org/listData.do')
+                    nodes: app.getTreeComboboxNodes('org/listData.do')
                 }
             }, {
                 name: 'permIds',
@@ -1227,7 +1262,7 @@ app.getEditFormFields = function (name) {
                     name: 'permCaption',
                     N: 's',
                     Y: 'p',
-                    nodes: ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
+                    nodes: app.getTreeComboboxNodes('permission/listAllMenusAndPerms.do')
                 }
             }, {
                 name: 'remarks',
