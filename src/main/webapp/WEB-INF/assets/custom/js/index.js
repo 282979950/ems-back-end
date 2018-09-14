@@ -1,14 +1,84 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /* global app, M */
+var app = $.extend({
+    DEFAULT_TEMPLATE: '<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
+    cache: {}
+});
+
+app.getPanelContent = function (name) {
+    var panelContent = '';
+    switch (name) {
+        /*
+         * 系统管理：区域管理 机构管理 用户管理 角色管理 权限管理 字典管理 日志管理 公告管理
+         */
+        case 'dist':
+        case 'org':
+        case 'emp':
+        case 'role':
+        case 'permission':
+        case 'dic':
+            panelContent = this.DEFAULT_TEMPLATE;
+            break;
+        case 'log':
+        case 'announcement':
+            break;
+        /*
+         * 账户管理：表具入库 用户建档 挂表 开户 账户锁定 账户变更
+         */
+        case 'entry':
+        case 'createArchive':
+        case 'installMeter':
+        case 'account':
+        case 'lockAccount':
+            panelContent = this.DEFAULT_TEMPLATE;
+            break;
+        case 'alter':
+            break;
+        /*
+         * 充值缴费管理：预付费充值 补卡充值 后付费充值 发票管理
+         */
+        case 'prePayment':
+        case 'replaceCard':
+        case 'postPayment':
+        case 'invoice':
+            break;
+        /*
+         * 维修补气管理: 维修单录入 维修补气 补缴结算 IC卡初始化
+         */
+        case 'input':
+        case 'fillGas':
+        case 'balance':
+        case 'initCard':
+            break;
+        /*
+         * 账务处理：预冲账 冲账
+         */
+        case 'preStrike':
+        case 'strike':
+            break;
+        /*
+         * 表具运行管理：抄表 阀门控制 异常情况
+         */
+        case 'record':
+        case 'control':
+        case 'exception':
+            break;
+        /*
+         * 查询统计：IC卡查询 开户信息查询 用户信息查询 异常用户查询 营业数据查询 营业报表查询
+         */
+        case 'cardQuery':
+        case 'accountQuery':
+        case 'userQuery':
+        case 'exceptionQuery':
+        case 'businessDataQuery':
+        case 'businessReportQuery':
+            break;
+    }
+    return panelContent;
+};
 
 app.initIndex = function () {
     document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.mdui-drawer .mdui-list');
-        M.Collapsible.init(elems, {});
         var containerElement = document.querySelector('.mdui-container');
         elems[0].onclick = function (event) {
             var eventSrc = event.target;
@@ -24,7 +94,7 @@ app.initIndex = function () {
                     var titleElement = containerElement.children[0];
                     var mainElement = containerElement.children[1];
                     titleElement.innerHTML = text;
-                    mainElement.innerHTML = app.getPaneContent(name);
+                    mainElement.innerHTML = app.getPanelContent(name);
                     app.initPane({
                         pane: mainElement,
                         url: name + '/listData.do'
@@ -33,13 +103,13 @@ app.initIndex = function () {
                 }
             }
         };
-        $(document).click(function(){
+        $(document).click(function () {
             $(".tree-combobox-panel").hide();
             app.isTreeComboboxPanelShow = false;
         });
-        $('body').on('keyup', '[name="orderGas"]', function(res) {
+        $('body').on('keyup', '[name="orderGas"]', function (res) {
             var val = $(this).val();
-            if(/^\d+(\.\d+)?$/.test(val)) {
+            if (/^\d+(\.\d+)?$/.test(val)) {
                 $.ajax({
                     async: true,
                     type: 'POST',
@@ -59,17 +129,82 @@ app.initIndex = function () {
                         }
                     }
                 });
-            }else{
+            } else {
                 app.editForm.setValue('orderPayment', null);
             }
         });
 
     });
 };
-app.cache = {};
+
+app.logout = function () {
+    $.ajax({
+        async: true,
+        type: 'POST',
+        url: 'logout.action',
+        contentType: 'application/x-www-form-urlencoded',
+        beforeSend: function (xhr) {
+            xhr.withCredentials = true;
+        },
+        success: function (response) {
+            setTimeout(function () {
+                window.location.href = 'login.html';
+            }, 2000);
+        }
+    });
+};
+
+app.refresh= function () {
+    if(app.currentPageName){
+        app.toolbar.clearInputsData();
+        app.render({
+            url: app.currentPageName + '/listData.do'
+        });
+    }
+};
+
+app.render = function (context) {
+    $.ajax({
+        async: false,
+        type: 'GET',
+        url: context.url,
+        contentType: 'application/json;charset=utf-8',
+        beforeSend: function (xhr) {
+            xhr.withCredentials = true;
+        },
+        success: function (response) {
+            var data = response.data;
+            if (app.table) {
+                app.table.refresh(data);
+            } else {
+                /*
+                 *使用数据模板Getfields中可定义对应数据模板内容
+                 */
+                var names = app.currentPageName;
+                app.table = context.table = app.createTable({
+                    parent: '.mdui-table-fluid',
+                    fields: app.tableFields[names],
+                    data: data
+                });
+            }
+        }
+    });
+};
+
+app.initPane = function (context) {
+    var self = this;
+    app.toolbar = app.createToolbar({
+        parent: '.container-main',
+        fields: app.headScreening[app.currentPageName]
+    });
+    self.render({
+        url: context.url,
+        pane: context.pane
+    });
+};
 
 app.initEvent = function () {
-    var formNames =app.currentPageName;
+    var formNames = app.currentPageName;
     var main = $('.container-main');
     var table = app.table;
     var fields = table.getFields();
@@ -93,7 +228,7 @@ app.initEvent = function () {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
                                 app.cache[app.currentPageName + '/add.do'] = null;
-                                app.renderWithoutPage({
+                                app.render({
                                     url: app.currentPageName + '/listData.do'
                                 });
                             }
@@ -107,7 +242,7 @@ app.initEvent = function () {
         $(".tree-combobox-panel").remove();
         var form = app.addForm = app.createForm({
             parent: '.mdui-dialog-content',
-            fields:app.addFormfields[formNames]
+            fields: app.addFormfields[formNames]
         });
         dialog.handleUpdate();
     });
@@ -139,7 +274,7 @@ app.initEvent = function () {
                             console.log(response);
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
-                                app.renderWithoutPage({
+                                app.render({
                                     url: app.currentPageName + '/listData.do'
                                 });
                             }
@@ -151,14 +286,14 @@ app.initEvent = function () {
             }]
         });
         $(".tree-combobox-panel").remove();
-        if(app.currentPageName == 'account'){
-            if(table.getSelectedDatas()[0]['meterCategory'] == 'IC卡表')
+        if (app.currentPageName == 'account') {
+            if (table.getSelectedDatas()[0]['meterCategory'] == 'IC卡表')
                 formNames = app.currentPageName + 'IC';
             else
                 formNames = app.currentPageName + 'MessAndUnion';
         }
-        if(app.currentPageName == 'lockAccount'){
-            if(table.getSelectedDatas()[0]['isLock'] == 'true')
+        if (app.currentPageName == 'lockAccount') {
+            if (table.getSelectedDatas()[0]['isLock'] == 'true')
                 formNames = app.currentPageName + 'UnLock';
             else
                 formNames = app.currentPageName + 'Lock';
@@ -184,13 +319,13 @@ app.initEvent = function () {
             buttons: [{
                 text: '确认',
                 onClick: function () {
-                    var names= app.currentPageName;
+                    var names = app.currentPageName;
                     var deleteName = app.deleteNames[names];
                     var data = app.table.getSelectedIds(deleteName);
                     $.ajax({
                         type: 'POST',
                         url: app.currentPageName + '/delete.do',
-                        data:  {ids: data},
+                        data: {ids: data},
                         beforeSend: function (xhr) {
                             xhr.withCredentials = true;
                         },
@@ -198,7 +333,7 @@ app.initEvent = function () {
                             console.log(response);
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
-                                app.renderWithoutPage({
+                                app.render({
                                     url: app.currentPageName + '/listData.do'
                                 });
                             }
@@ -247,7 +382,7 @@ app.initEvent = function () {
                 title: '锁定解锁',
                 content: ' ',
                 buttons: [{
-                    text: isLock ? '解锁':'锁定',
+                    text: isLock ? '解锁' : '锁定',
                     onClick: function () {
                         var data = form.getData();
                         $.ajax({
@@ -262,7 +397,7 @@ app.initEvent = function () {
                                 console.log(response);
                                 response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                                 if (response.status) {
-                                    app.renderWithoutPage({
+                                    app.render({
                                         url: app.currentPageName + '/listData.do'
                                     });
                                 }
@@ -273,7 +408,7 @@ app.initEvent = function () {
                     text: '取消'
                 }]
             });
-            var form =app.createForm({
+            var form = app.createForm({
                 parent: '.mdui-dialog-content',
                 fields: app.editFormFields['lockAccount'],
                 data: data[0]
@@ -295,9 +430,9 @@ app.initEvent = function () {
         $.ajax({
             async: true,
             type: 'Post',
-            url: app.currentPageName+'/lockList.do',
+            url: app.currentPageName + '/lockList.do',
             data: {
-                "userId" : userId
+                "userId": userId
             },
             contentType: 'application/x-www-form-urlencoded',
             beforeSend: function (xhr) {
@@ -434,10 +569,10 @@ app.tableFields = {
     role: [{
         name: 'roleName',
         caption: '角色名称'
-    },{
+    }, {
         name: 'createTime',
         caption: '创建时间'
-    },{
+    }, {
         name: 'remarks',
         caption: '备注'
     }],
@@ -580,35 +715,6 @@ app.getDictionaryByCategory = function (category) {
 };
 
 /*
- *数据字典页面编辑时调用
- */
-editFormDictionary = function (formNames) {
-    var datas;
-    if (formNames == 'org') {
-        $.ajax({
-            async: false,
-            type: 'POST',
-            url: 'dic/dictByType.do',
-            contentType: 'application/x-www-form-urlencoded',
-            data: {
-                category: "org_type"
-            },
-            success: function (list) {
-                console.log(list);
-                if (list.data != null) {
-                    datas = list.data;
-                    for (var i = 0; i < datas.length; i++) {
-                        datas[i].key = datas[i].dictKey;
-                        datas[i].value = datas[i].dictKey;
-                    }
-                }
-            }
-        });
-    }
-    return datas;
-};
-
-/*
  *新增时弹出框,列显示
  */
 
@@ -634,16 +740,16 @@ app.addFormfields = {
     }, {
         name: 'distParentId',
         caption: '父级区域',
-        type:'treecombobox' ,
+        type: 'treecombobox',
         options: {
             idKey: 'distId',
             pIdKey: 'distParentId',
             name: 'distName',
             chkStyle: 'radio',
             radioType: 'all',
-            N : '',
-            Y : '',
-            nodes : ajaxTreeCombobox('dist/listData.do')
+            N: '',
+            Y: '',
+            nodes: ajaxTreeCombobox('dist/listData.do')
         }
     }],
     org: [{
@@ -655,21 +761,21 @@ app.addFormfields = {
     }, {
         name: 'orgCategory',
         caption: '机构类别',
-        type : 'listcombobox',
+        type: 'listcombobox',
         options: app.getDictionaryByCategory("org_type")
     }, {
         name: 'orgParentId',
         caption: '父级机构',
-        type:'treecombobox' ,
+        type: 'treecombobox',
         options: {
             idKey: 'orgId',
             pIdKey: 'orgParentId',
             name: 'orgName',
-            N : '',
-            Y : '',
+            N: '',
+            Y: '',
             chkStyle: 'radio',
             radioType: "all",
-            nodes : ajaxTreeCombobox('org/listData.do')
+            nodes: ajaxTreeCombobox('org/listData.do')
         }
     }, {
         name: 'remarks',
@@ -754,22 +860,22 @@ app.addFormfields = {
         caption: '权限路径'
     }, {
         name: 'permParentId',
-        caption: '菜单名称' ,
-        type:'treecombobox' ,
+        caption: '菜单名称',
+        type: 'treecombobox',
         options: {
             idKey: 'permId',
             pIdKey: 'permParentId',
             name: 'permCaption',
-            N : '',
-            Y : '',
+            N: '',
+            Y: '',
             chkStyle: 'radio',
             radioType: "all",
-            nodes : ajaxTreeCombobox('permission/listAllMenus.do')
+            nodes: ajaxTreeCombobox('permission/listAllMenus.do')
         }
-     }, {
+    }, {
         name: 'isButton',
         caption: '是否按钮',
-        type : 'listcombobox',
+        type: 'listcombobox',
         options: [{
             key: '是',
             value: 'true'
@@ -788,38 +894,38 @@ app.addFormfields = {
         maxlength: 20
     }, {
         name: 'distIds', caption: '角色所属地区',
-        type:'treecombobox' ,
+        type: 'treecombobox',
         options: {
             idKey: 'distId',
             pIdKey: 'distParentId',
             name: 'distName',
-            N : 's',
-            Y : 'p',
-            nodes : ajaxTreeCombobox('dist/listData.do')
+            N: 's',
+            Y: 'p',
+            nodes: ajaxTreeCombobox('dist/listData.do')
         }
     }, {
         name: 'orgIds', caption: '角色所属机构',
-        type:'treecombobox' ,
+        type: 'treecombobox',
         options: {
             idKey: 'orgId',
             pIdKey: 'orgParentId',
             name: 'orgId',
-            N : 's',
-            Y : 'p',
-            nodes : ajaxTreeCombobox('org/listData.do')
+            N: 's',
+            Y: 'p',
+            nodes: ajaxTreeCombobox('org/listData.do')
         }
     }, {
         name: 'permIds', caption: '角色拥有权限',
-        type:'treecombobox' ,
+        type: 'treecombobox',
         options: {
             idKey: 'permId',
             pIdKey: 'permParentId',
             name: 'permCaption',
-            N : 's',
-            Y : 'p',
-            nodes : ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
+            N: 's',
+            Y: 'p',
+            nodes: ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
         }
-    } ,{
+    }, {
         name: 'remarks',
         caption: '备注'
     }],
@@ -845,15 +951,15 @@ app.addFormfields = {
     }, {
         name: 'meterProdDate',
         caption: '表具生产日期',
-        type:'date',
-        formatter : 'yyyy-mm',
-        minView : 3
+        type: 'date',
+        formatter: 'yyyy-mm',
+        minView: 3
     }, {
         name: 'meterEntryDate',
         caption: '表具入库时间',
-        type:'date',
-        formatter : 'yyyy-mm-dd',
-        minView : 2
+        type: 'date',
+        formatter: 'yyyy-mm-dd',
+        minView: 2
     }],
     createArchive: [{
         name: 'distName',
@@ -879,22 +985,23 @@ app.addFormfields = {
     }]
 };
 
-function ajaxTreeCombobox(url){
+function ajaxTreeCombobox(url) {
     var data = null;
     $.ajax({
         async: false,
         type: 'POST',
-                url: url,
-                contentType: 'application/json;charset=utf-8',
-                beforeSend: function (xhr) {
-                    xhr.withCredentials = true;
-                },
-                success: function (response) {
-                     data = response.data;
-                }
-            });
+        url: url,
+        contentType: 'application/json;charset=utf-8',
+        beforeSend: function (xhr) {
+            xhr.withCredentials = true;
+        },
+        success: function (response) {
+            data = response.data;
+        }
+    });
     return data;
 }
+
 /*
  *修改时弹出框,列显示
  */
@@ -921,16 +1028,16 @@ app.editFormFields = {
     }, {
         name: 'distParentId',
         caption: '父级区域',
-        type:'treecombobox' ,
+        type: 'treecombobox',
         options: {
             idKey: 'distId',
             pIdKey: 'distParentId',
             name: 'distName',
             chkStyle: 'radio',
             radioType: 'all',
-            N : '',
-            Y : '',
-            nodes : ajaxTreeCombobox('dist/listData.do')
+            N: '',
+            Y: '',
+            nodes: ajaxTreeCombobox('dist/listData.do')
         }
     }],
     org: [{
@@ -942,21 +1049,21 @@ app.editFormFields = {
     }, {
         name: 'orgCategory',
         caption: '机构类别',
-        type : 'listcombobox',
-        options: editFormDictionary("org")
+        type: 'listcombobox',
+        options: app.getDictionaryByCategory("org_type")
     }, {
         name: 'orgParentId',
         caption: '父级机构',
-        type:'treecombobox' ,
+        type: 'treecombobox',
         options: {
             idKey: 'orgId',
             pIdKey: 'orgParentId',
             name: 'orgName',
-            N : '',
-            Y : '',
+            N: '',
+            Y: '',
             chkStyle: 'radio',
             radioType: "all",
-            nodes : ajaxTreeCombobox('org/listData.do')
+            nodes: ajaxTreeCombobox('org/listData.do')
         }
     }],
     emp: [{
@@ -1038,21 +1145,21 @@ app.editFormFields = {
     }, {
         name: 'permParentId',
         caption: '菜单名称',
-        type:'treecombobox' ,
+        type: 'treecombobox',
         options: {
             idKey: 'permId',
             pIdKey: 'permParentId',
             name: 'permCaption',
-            N : '',
-            Y : '',
+            N: '',
+            Y: '',
             chkStyle: 'radio',
             radioType: "all",
-            nodes : ajaxTreeCombobox('permission/listAllMenus.do')
+            nodes: ajaxTreeCombobox('permission/listAllMenus.do')
         }
     }, {
         name: 'isButton',
         caption: '是否按钮',
-        type : 'listcombobox',
+        type: 'listcombobox',
         options: [{
             key: '是',
             value: 'true'
@@ -1073,40 +1180,40 @@ app.editFormFields = {
     }, {
         name: 'distIds',
         caption: '角色所属地区',
-        type:'treecombobox' ,
+        type: 'treecombobox',
         options: {
             idKey: 'distId',
             pIdKey: 'distParentId',
             name: 'distName',
-            N : 's',
-            Y : 'p',
-            nodes : ajaxTreeCombobox('dist/listData.do')
+            N: 's',
+            Y: 'p',
+            nodes: ajaxTreeCombobox('dist/listData.do')
         }
     }, {
         name: 'orgIds',
         caption: '角色所属机构',
-        type:'treecombobox' ,
+        type: 'treecombobox',
         options: {
             idKey: 'orgId',
             pIdKey: 'orgParentId',
             name: 'orgName',
-            N : 's',
-            Y : 'p',
-            nodes : ajaxTreeCombobox('org/listData.do')
+            N: 's',
+            Y: 'p',
+            nodes: ajaxTreeCombobox('org/listData.do')
         }
     }, {
         name: 'permIds',
         caption: '角色拥有权限',
-        type:'treecombobox' ,
+        type: 'treecombobox',
         options: {
             idKey: 'permId',
             pIdKey: 'permParentId',
             name: 'permCaption',
-            N : 's',
-            Y : 'p',
-            nodes : ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
+            N: 's',
+            Y: 'p',
+            nodes: ajaxTreeCombobox('permission/listAllMenusAndPerms.do')
         }
-    } ,{
+    }, {
         name: 'remarks',
         caption: '备注'
     }],
@@ -1132,15 +1239,15 @@ app.editFormFields = {
     }, {
         name: 'meterProdDate',
         caption: '表具生产日期',
-        type:'date',
-        formatter : 'yyyy-mm',
-        minView : 3
+        type: 'date',
+        formatter: 'yyyy-mm',
+        minView: 3
     }, {
         name: 'meterEntryDate',
         caption: '表具入库时间',
-        type:'date',
-        formatter : 'yyyy-mm-dd',
-        minView : 2
+        type: 'date',
+        formatter: 'yyyy-mm-dd',
+        minView: 2
     }],
     createArchive: [{
         name: 'distName',
@@ -1185,94 +1292,94 @@ app.editFormFields = {
         caption: '表具编号',
         required: true
     }],
-    accountIC:[{
+    accountIC: [{
         name: 'userName',
         caption: '客户姓名',
-        required : true,
-        maxlength:20
-    },{
+        required: true,
+        maxlength: 20
+    }, {
         name: 'userPhone',
         caption: '电话',
         inputType: 'mobile',
-        required : true
-    },{
+        required: true
+    }, {
         name: 'iccardIdentifier',
-        caption:'IC卡识别号',
-        required : true,
+        caption: 'IC卡识别号',
+        required: true,
         maxlength: 12
-    },{
+    }, {
         name: 'userIdcard',
         caption: '身份证号',
         inputType: 'IdCard',
-        required : true
-    },{
+        required: true
+    }, {
         name: 'userDeed',
         caption: '房产证号'
-    },{
+    }, {
         name: 'orderGas',
         caption: '充值气量',
         inputType: 'num',
-        required : true
-    },{
+        required: true
+    }, {
         name: 'orderPayment',
         caption: '充值金额',
         disabled: true
     }],
-    accountMessAndUnion:[{
+    accountMessAndUnion: [{
         name: 'userName',
         caption: '客户姓名',
-        required : true,
-        maxlength:20
-    },{
+        required: true,
+        maxlength: 20
+    }, {
         name: 'userPhone',
         caption: '电话',
         inputType: 'mobile',
-        required : true
-    },{
+        required: true
+    }, {
         name: 'iccardIdentifier',
-        caption:'IC卡识别号',
-        required : true,
+        caption: 'IC卡识别号',
+        required: true,
         maxlength: 12
-    },{
+    }, {
         name: 'userIdcard',
         caption: '身份证号',
         inputType: 'IdCard',
-        required : true
-    },{
+        required: true
+    }, {
         name: 'userDeed',
         caption: '房产证号'
-    },{
+    }, {
         name: 'orderPayment',
         caption: '充值金额',
         inputType: 'num',
-        required : true
+        required: true
     }],
-    lockAccount:[{
+    lockAccount: [{
         name: 'userName',
         caption: '客户姓名',
         disabled: true,
-        maxlength:20
-    },{
+        maxlength: 20
+    }, {
         name: 'iccardId',
         caption: 'IC卡号',
         disabled: true
-    },{
+    }, {
         name: 'distName',
-        caption:'区域名称',
+        caption: '区域名称',
         disabled: true
-    },{
+    }, {
         name: 'userAddress',
         caption: '用户地址',
         disabled: true
-    },{
+    }, {
         name: 'isLock',
         caption: '是否锁定',
         disabled: true
-    },{
+    }, {
         name: 'lastLockReason',
         caption: '上次操作原因',
         disabled: true
-    },{
+    }, {
         name: 'lockReason',
         caption: '本次操作原因'
     }]
@@ -1447,8 +1554,8 @@ app.headScreening = {
         name: 'meterProdDate',
         caption: '表具生产日期',
         type: 'date',
-        formatter : 'yyyy-mm',
-        minView : 3
+        formatter: 'yyyy-mm',
+        minView: 3
     }],
     createArchive: [{
         name: 'add',
