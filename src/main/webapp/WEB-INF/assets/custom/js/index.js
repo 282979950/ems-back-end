@@ -1,8 +1,8 @@
 /* global app, M */
-var app = $.extend({
+var app = {
     DEFAULT_TEMPLATE: '<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
     dataCache: {}
-});
+};
 
 app.getDataCache = function (name) {
     return this.dataCache[name] ? JSON.parse(JSON.stringify(this.dataCache[name])) : null;
@@ -837,8 +837,7 @@ app.getAddFormFields  = function (name) {
                 name: 'empLoginName',
                 caption: '登录名',
                 required: true,
-                maxlength: 20,
-                disabled: true
+                maxlength: 20
             }, {
                 name: 'empPassword',
                 caption: '登录密码',
@@ -1139,8 +1138,7 @@ app.getEditFormFields = function (name) {
                 name: 'empLoginName',
                 caption: '登录名',
                 required: true,
-                maxlength: 20,
-                disabled: true
+                maxlength: 20
             }, {
                 name: 'empPassword',
                 caption: '登录密码',
