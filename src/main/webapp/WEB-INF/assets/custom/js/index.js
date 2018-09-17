@@ -1525,7 +1525,7 @@ app.getToolbarFields = function (name) {
                     Y : '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes : ajaxTreeCombobox('org/listData.do')
+                    nodes : app.getTreeComboboxNodes('org/listData.do')
                 }
             }, {
                 name: 'distName',
@@ -1539,7 +1539,7 @@ app.getToolbarFields = function (name) {
                     Y : '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes : ajaxTreeCombobox('dist/listData.do')
+                    nodes : app.getTreeComboboxNodes('dist/listData.do')
                 }
             }, {
                 name: 'empLoginName',
@@ -1557,7 +1557,7 @@ app.getToolbarFields = function (name) {
                 name: 'empType',
                 caption: '员工类型',
                 type: 'listcombobox',
-                options: dictionary("emp_type")
+                options: app.getDictionaryByCategory("emp_type")
             }];
         case 'dic':
             return [{
