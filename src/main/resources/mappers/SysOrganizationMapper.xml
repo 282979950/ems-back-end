@@ -244,9 +244,5 @@
       <if test="orgCode != null and orgCode!=''" >
           AND locate (#{orgCode} ,org_code) > 0
       </if>
-      <if test="orgId != null and orgId!=''" >
-          AND locate (#{orgId} ,org_id) > 0
-      </if>
-
   </select>
 </mapper>
