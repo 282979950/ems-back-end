@@ -32,7 +32,7 @@ public interface UserMapper {
 
     int deleteArchive(List<User> users);
 
-    List<CreateArchiveParam> searchArchive(@Param("userId") Integer userId, @Param("distName") String distName, @Param("userAddress") String userAddress, @Param
+    List<CreateArchiveParam> searchArchive(@Param("userId") Integer userId, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress, @Param
             ("userType") Integer userType, @Param("userGasType") Integer userGasType, @Param("userStatus") Integer userStatus);
 
     List<InstallMeterParam> getAllInstallMeters();

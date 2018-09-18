@@ -79,8 +79,8 @@ public class CreateArchiveController {
     @RequiresPermissions("account:createArchive:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData searchArchive(@Param("userId") Integer userId, @Param("distName") String distName, @Param("userAddress") String userAddress, @Param
+    public JsonData searchArchive(@Param("userId") Integer userId, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress, @Param
             ("userType") Integer userType, @Param("userGasType") Integer userGasType, @Param("userStatus") Integer userStatus) {
-        return userService.searchArchive(userId, distName, userAddress, userType, userGasType, userStatus);
+        return userService.searchArchive(userId, userDistId, userAddress, userType, userGasType, userStatus);
     }
 }

@@ -633,19 +633,19 @@ app.tableFields = {
         name: 'userId',
         caption: '用户编号'
     }, {
-        name: 'distName',
+        name: 'userDistName',
         caption: '用户区域'
     }, {
         name: 'userAddress',
         caption: '用户地址'
     }, {
-        name: 'userType',
+        name: 'userTypeName',
         caption: '用户类型'
     }, {
-        name: 'userGasType',
+        name: 'userGasTypeName',
         caption: '用气类型'
     }, {
-        name: 'userStatus',
+        name: 'userStatusName',
         caption: '用户状态'
     }],
     installMeter: [{
@@ -1055,9 +1055,19 @@ app.getAddFormFields  = function (name) {
             }];
         case 'createArchive':
             return [{
-                name: 'distName',
+                name: 'userDistId',
                 caption: '用户区域',
-                required: true
+                type: 'treecombobox',
+                options: {
+                    idKey: 'distId',
+                    pIdKey: 'distParentId',
+                    name: 'distName',
+                    chkStyle: 'radio',
+                    radioType: 'all',
+                    N: 's',
+                    Y: 'p',
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
+                }
             }, {
                 name: 'userAddress',
                 caption: '用户地址',
@@ -1066,15 +1076,13 @@ app.getAddFormFields  = function (name) {
             }, {
                 name: 'userType',
                 caption: '用户类型',
-                required: true
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("user_type")
             }, {
                 name: 'userGasType',
                 caption: '用气类型',
-                required: true
-            }, {
-                name: 'userStatus',
-                caption: '用户状态',
-                required: true
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("user_gas_type")
             }];
     }
 };
@@ -1450,9 +1458,19 @@ app.getEditFormFields = function (name) {
             }];
         case 'createArchive':
             return [{
-                name: 'distName',
+                name: 'userDistId',
                 caption: '用户区域',
-                required: true
+                type: 'treecombobox',
+                options: {
+                    idKey: 'distId',
+                    pIdKey: 'distParentId',
+                    name: 'distName',
+                    chkStyle: 'radio',
+                    radioType: 'all',
+                    N: 's',
+                    Y: 'p',
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
+                }
             }, {
                 name: 'userAddress',
                 caption: '用户地址',
@@ -1461,15 +1479,13 @@ app.getEditFormFields = function (name) {
             }, {
                 name: 'userType',
                 caption: '用户类型',
-                required: true
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("user_type")
             }, {
                 name: 'userGasType',
                 caption: '用气类型',
-                required: true
-            }, {
-                name: 'userStatus',
-                caption: '用户状态',
-                required: true
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("user_gas_type")
             }];
         case 'installMeter':
             return [{
@@ -1818,9 +1834,19 @@ app.getToolbarFields = function (name) {
                 caption: '用户编号',
                 type: 'input'
             }, {
-                name: 'distName',
+                name: 'userDistId',
                 caption: '用户区域',
-                type: 'input'
+                type: 'treecombobox',
+                options: {
+                    idKey: 'distId',
+                    pIdKey: 'distParentId',
+                    name: 'distName',
+                    chkStyle: 'radio',
+                    radioType: 'all',
+                    N: 's',
+                    Y: 'p',
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
+                }
             }, {
                 name: 'userAddress',
                 caption: '用户地址',
@@ -1828,15 +1854,18 @@ app.getToolbarFields = function (name) {
             }, {
                 name: 'userType',
                 caption: '用户类型',
-                type: 'input'
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory('user_type')
             }, {
                 name: 'userGasType',
                 caption: '用气类型',
-                type: 'input'
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory('user_gas_type')
             }, {
                 name: 'userStatus',
                 caption: '用户状态',
-                type: 'input'
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory('user_status')
             }];
         case 'installMeter':
             return [{

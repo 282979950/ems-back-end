@@ -50,14 +50,14 @@ public interface IUserService {
      * 查询档案
      *
      * @param userId
-     * @param distName
+     * @param userDistId
      * @param userAddress
      * @param userType
      * @param userGasType
      * @param userStatus
      * @return
      */
-    JsonData searchArchive(Integer userId, String distName, String userAddress, Integer userType, Integer userGasType, Integer userStatus);
+    JsonData searchArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType, Integer userStatus);
 
     /**
      * @return
@@ -113,13 +113,13 @@ public interface IUserService {
     /**
      * 条件查询已开户的信息
      * @param userId
-     * @param distName
+     * @param userDistId
      * @param userAddress
      * @param userType
      * @param userGasType
      * @return
      */
-    JsonData searchAllNotAccountArchive(Integer userId, String distName, String userAddress, Integer userType, Integer userGasType);
+    JsonData searchAllNotAccountArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType);
 
     /**
      * 查询所有可以锁定和解锁的用户信息

@@ -28,7 +28,12 @@ public class CreateArchiveParam extends BaseEntity {
      * 用户区域ID
      */
     @NotNull(message = "用户区域不能为空")
-    private String distName;
+    private Integer userDistId;
+
+    /**
+     * 用户区域名称
+     */
+    private String userDistName;
 
     /**
      * 用户地址
@@ -44,15 +49,30 @@ public class CreateArchiveParam extends BaseEntity {
     private Integer userType;
 
     /**
+     * 用户类型
+     */
+    private String userTypeName;
+
+    /**
      * 用户用气类型
      */
     @NotNull(message = "用户用气类型不能为空")
     private Integer userGasType;
 
     /**
+     * 用户用气类型
+     */
+    private String userGasTypeName;
+
+    /**
      * 用户状态
      */
     private Integer userStatus;
+
+    /**
+     * 用户状态
+     */
+    private String userStatusName;
 
     /**
      * 用户是否锁定
@@ -64,15 +84,20 @@ public class CreateArchiveParam extends BaseEntity {
      */
     private String meterCategory;
 
-    public CreateArchiveParam(Integer userId, String distName, String userAddress, Integer userType, Integer userGasType, Integer userStatus, Boolean
-            userLocked, String meterCategory, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+    public CreateArchiveParam(Integer userId, Integer userDistId, String userDistName, String userAddress, Integer  userType, String userTypeName, Integer
+            userGasType, String userGasTypeName, Integer userStatus, String userStatusName, Boolean userLocked, String meterCategory, Date createTime,
+            Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.userId = userId;
-        this.distName = distName;
+        this.userDistId = userDistId;
+        this.userDistName = userDistName;
         this.userAddress = userAddress;
         this.userType = userType;
+        this.userTypeName = userTypeName;
         this.userGasType = userGasType;
+        this.userGasTypeName = userGasTypeName;
         this.userStatus = userStatus;
+        this.userStatusName = userStatusName;
         this.userLocked = userLocked;
         this.meterCategory = meterCategory;
     }

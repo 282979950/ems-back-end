@@ -269,11 +269,15 @@
     <resultMap id="CreateArchiveParam" type="com.ems.param.CreateArchiveParam">
         <constructor>
             <idArg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <idArg column="user_dist_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_gas_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_gas_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_status_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_locked" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="meter_category" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -286,27 +290,32 @@
     </resultMap>
     <select id="getAllArchives" resultMap="CreateArchiveParam">
         select
-        u.user_id, dist.dist_name, u.user_address, u.user_type, u.user_gas_type, u.user_status, u.user_locked, mt.meter_category, u.create_time, u.create_by, u.update_time,
-        u.update_by, u.usable, u.remarks
+        u.user_id, u.user_dist_id, dist.dist_name as user_dist_name, u.user_address, u.user_type, sd.dict_key as user_type_name, u.user_gas_type,
+        sd2.dict_key as  user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
+        u.update_time, u.update_by, u.usable, u.remarks
         from user u
-        LEFT JOIN user_meters um ON u.user_id=um.user_id
-        LEFT JOIN meter m ON um.meter_id=m.meter_id
+        LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
+        LEFT JOIN meter m ON um.meter_id=m.meter_id and m.usable=1
         LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
         left join sys_district dist on u.user_dist_id = dist.dist_id
-        where u.usable = 1 and um.usable = 1 and m.usable=1
+        LEFT JOIN sys_dictionary sd on u.user_type = sd.dict_value and sd.dict_category = 'user_type' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd2 on u.user_gas_type = sd2.dict_value and sd2.dict_category = 'user_gas_type' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd3 on u.user_status = sd3.dict_value and sd3.dict_category = 'user_status' and sd.usable = 1
+        where u.usable = 1
+        order by u.user_id
     </select>
     <insert id="addArchive" parameterType="com.ems.param.CreateArchiveParam">
         insert into user (user_dist_id, user_address, user_type,
         user_gas_type, user_locked, create_time, create_by,
         update_time, update_by, remarks)
-        values ((select dist_id from sys_district where dist_name = #{distName,jdbcType=VARCHAR}), #{userAddress,jdbcType=VARCHAR},
+        values (#{userDistId,jdbcType=INTEGER}, #{userAddress,jdbcType=VARCHAR},
         #{userType,jdbcType=INTEGER}, #{userGasType,jdbcType=INTEGER}, #{userLocked,jdbcType=BIT}, NOW(), #{createBy,jdbcType=INTEGER},
         NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
     </insert>
     <update id="editArchive">
         update user
         set
-        user_dist_id = (select dist_id from sys_district where dist_name = #{distName,jdbcType=VARCHAR}),
+        user_dist_id = #{userDistId,jdbcType=INTEGER},
         user_address = #{userAddress,jdbcType=VARCHAR},
         user_type = #{userType,jdbcType=INTEGER},
         user_gas_type = #{userGasType,jdbcType=INTEGER},
@@ -347,19 +356,23 @@
     </update>
     <select id="searchArchive" parameterType="map" resultMap="CreateArchiveParam">
         select
-        u.user_id, dist.dist_name, u.user_address, u.user_type, u.user_gas_type, u.user_status, u.user_locked, mt.meter_category, u.create_time, u.create_by, u.update_time,
-        u.update_by, u.usable, u.remarks
+        u.user_id, u.user_dist_id, dist.dist_name as user_dist_name, u.user_address, u.user_type, sd.dict_key as user_type_name, u.user_gas_type,
+        sd2.dict_key as  user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
+        u.update_time, u.update_by, u.usable, u.remarks
         from user u
-        LEFT JOIN user_meters um ON u.user_id=um.user_id
-        LEFT JOIN meter m ON um.meter_id=m.meter_id
+        LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
+        LEFT JOIN meter m ON um.meter_id=m.meter_id and m.usable=1
         LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
         left join sys_district dist on u.user_dist_id = dist.dist_id
-        where u.usable = 1 and um.usable = 1 and m.usable=1
+        LEFT JOIN sys_dictionary sd on u.user_type = sd.dict_value and sd.dict_category = 'user_type' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd2 on u.user_gas_type = sd2.dict_value and sd2.dict_category = 'user_gas_type' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd3 on u.user_status = sd3.dict_value and sd3.dict_category = 'user_status' and sd.usable = 1
+        where u.usable = 1
         <if test="userId != null and userId != ''">
             AND u.user_id LIKE CONCAT('%', #{userId,jdbcType=INTEGER}, '%')
         </if>
-        <if test="distName != null and distName != ''">
-            AND dist.dist_name = #{distName,jdbcType=INTEGER}
+        <if test="userDistId != null and userDistId != ''">
+            AND u.user_dist_id = #{userDistId,jdbcType=INTEGER}
         </if>
         <if test="userAddress != null and userAddress != ''">
             AND u.user_address LIKE CONCAT('%', #{userAddress,jdbcType=INTEGER}, '%')
@@ -371,8 +384,9 @@
             AND u.user_gas_type = #{userGasType,jdbcType=INTEGER}
         </if>
         <if test="userStatus != null and userStatus != ''">
-            AND u.user_status = #{userStatus,jdbcType=VARCHAR}
+            AND u.user_status = #{userStatus,jdbcType=INTEGER}
         </if>
+        order by u.user_id
     </select>
     <!--用户挂表-->
     <resultMap id="InstallMeterParam" type="com.ems.param.InstallMeterParam">
