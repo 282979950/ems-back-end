@@ -668,19 +668,19 @@ app.tableFields = {
         name: 'userId',
         caption: '用户编号'
     }, {
-        name: 'distName',
+        name: 'userDistName',
         caption: '用户区域'
     }, {
         name: 'userAddress',
         caption: '用户地址'
     }, {
-        name: 'userType',
+        name: 'userTypeName',
         caption: '用户类型'
     }, {
-        name: 'userGasType',
+        name: 'userGasTypeName',
         caption: '用气类型'
     }, {
-        name: 'userStatus',
+        name: 'userStatusName',
         caption: '用户状态'
     }],
     lockAccount: [{
@@ -1641,10 +1641,6 @@ app.getToolbarFields = function (name) {
                 name: 'delete',
                 caption: '删除'
             }, {
-                name: 'orgId',
-                caption: '机构ID',
-                type: 'input'
-            }, {
                 name: 'orgCode',
                 caption: '机构编码',
                 type: 'input'
@@ -1727,10 +1723,6 @@ app.getToolbarFields = function (name) {
             }, {
                 name: 'delete',
                 caption: '删除'
-            }, {
-                name: 'dictId',
-                caption: '字典ID',
-                type: 'input'
             }, {
                 name: 'dictCategory',
                 caption: '字典类型',
@@ -1899,9 +1891,20 @@ app.getToolbarFields = function (name) {
                 name: 'edit',
                 caption: '开户'
             }, {
-                name: 'distName',
+                name: 'userDistId',
                 caption: '用户区域',
-                type: 'input'
+                type: 'input',
+                type: 'treecombobox',
+                options: {
+                    idKey: 'distId',
+                    pIdKey: 'distParentId',
+                    name: 'distName',
+                    chkStyle: 'radio',
+                    radioType: 'all',
+                    N: 's',
+                    Y: 'p',
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
+                }
             }, {
                 name: 'userAddress',
                 caption: '用户地址',
@@ -1909,11 +1912,13 @@ app.getToolbarFields = function (name) {
             }, {
                 name: 'userType',
                 caption: '用户类型',
-                type: 'input'
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory('user_type')
             }, {
                 name: 'userGasType',
                 caption: '用气类型',
-                type: 'input'
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory('user_gas_type')
             }];
         case 'lockAccount':
             return [{

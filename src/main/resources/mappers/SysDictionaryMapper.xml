@@ -216,9 +216,6 @@
     <include refid="Base_Column_List" />
     from sys_dictionary
     where usable ="1"
-      <if test="dictId != null" >
-          AND locate (#{dictId} ,dict_id) > 0
-      </if>
       <if test="dictCategory != null and dictCategory!=''" >
           AND locate (#{dictCategory} ,dict_category) > 0
       </if>

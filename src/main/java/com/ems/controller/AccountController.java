@@ -81,7 +81,7 @@ public class AccountController {
     @RequiresPermissions("account:createAccount:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData searchArchive(@Param("userId") Integer userId, @Param("distName") Integer userDistId, @Param("userAddress") String userAddress, @Param
+    public JsonData searchArchive(@Param("userId") Integer userId, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress, @Param
             ("userType") Integer userType, @Param("userGasType") Integer userGasType) {
         return userService.searchAllNotAccountArchive(userId, userDistId, userAddress, userType, userGasType);
     }

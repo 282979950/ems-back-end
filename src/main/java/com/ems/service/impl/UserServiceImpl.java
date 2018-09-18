@@ -273,8 +273,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData searchAllNotAccountArchive(Integer userId, Integer distName, String userAddress, Integer userType, Integer userGasType) {
-        List<CreateArchiveParam> archives = userMapper.searchArchive(userId, distName, userAddress, userType, userGasType,2);
+    public JsonData searchAllNotAccountArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType) {
+        List<CreateArchiveParam> archives = userMapper.searchArchive(userId, userDistId, userAddress, userType, userGasType,2);
         return archives == null || archives.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(archives, "查询成功");
     }
 
