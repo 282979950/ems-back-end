@@ -4,6 +4,7 @@ import com.ems.entity.Meter;
 import com.ems.param.EntryMeterParam;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface MeterMapper {
@@ -27,7 +28,7 @@ public interface MeterMapper {
     int deleteEntryMeter(List<Meter> meters);
 
     List<EntryMeterParam> searchEntryMeter(@Param("meterCode") String meterCode, @Param("meterCategory") String meterCategory, @Param("meterType") String
-            meterType, @Param("meterDirection") Boolean meterDirection);
+            meterType, @Param("meterDirection") Boolean meterDirection, @Param("meterProdDate") Date meterProdDate);
 
     boolean checkMeterExist(@Param("meterCode") String meterCode);
 

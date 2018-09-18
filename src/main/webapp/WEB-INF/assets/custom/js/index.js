@@ -620,7 +620,7 @@ app.tableFields = {
         name: 'meterType',
         caption: '表具型号'
     }, {
-        name: 'meterDirection',
+        name: 'meterDirectionName',
         caption: '表向'
     }, {
         name: 'meterProdDate',
@@ -1019,15 +1019,27 @@ app.getAddFormFields  = function (name) {
             }, {
                 name: 'meterCategory',
                 caption: '表具类别',
-                required: true
+                type: 'listcombobox',
+                options: [{
+                    key: 'IC卡表',
+                    value: 'IC卡表'
+                }]
             }, {
                 name: 'meterType',
                 caption: '表具型号',
-                required: true
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('entry/getAllMeterTypes.do', 'meterType', 'meterType')
             }, {
                 name: 'meterDirection',
                 caption: '表向',
-                required: true
+                type: 'listcombobox',
+                options: [{
+                    key: '左',
+                    value: true
+                },{
+                    key: '右',
+                    value: false
+                }]
             }, {
                 name: 'meterProdDate',
                 caption: '表具生产日期',
@@ -1089,6 +1101,44 @@ app.getTreeComboboxNodes = function (url) {
         });
         return data;
     }
+};
+
+app.getListComboboxOptions = function(url, k, v) {
+    var result = [];
+    var data = this.getDataCache(url);
+    if (data) {
+        console.log("从缓存中获取数据");
+        for (var i = 0; i < data.length; i++) {
+            result.push({
+                key: data[i][k],
+                value: data[i][v]
+            });
+        }
+    } else {
+        $.ajax({
+            async: false,
+            type: 'POST',
+            url: url,
+            contentType: 'application/json;charset=utf-8',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                data = response.data;
+                app.setDataCache(url, data);
+                console.log("更新"+ url+ "缓存");
+                if (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        result.push({
+                            key: data[i][k],
+                            value: data[i][v]
+                        });
+                    }
+                }
+            }
+        });
+    }
+    return result;
 };
 
 /*
@@ -1364,15 +1414,27 @@ app.getEditFormFields = function (name) {
             }, {
                 name: 'meterCategory',
                 caption: '表具类别',
-                required: true
+                type: 'listcombobox',
+                options: [{
+                    key: 'IC卡表',
+                    value: 'IC卡表'
+                }]
             }, {
                 name: 'meterType',
                 caption: '表具型号',
-                required: true
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('entry/getAllMeterTypes.do', 'meterType', 'meterType')
             }, {
                 name: 'meterDirection',
                 caption: '表向',
-                required: true
+                type: 'listcombobox',
+                options: [{
+                    key: '左',
+                    value: true
+                },{
+                    key: '右',
+                    value: false
+                }]
             }, {
                 name: 'meterProdDate',
                 caption: '表具生产日期',
@@ -1713,15 +1775,27 @@ app.getToolbarFields = function (name) {
             }, {
                 name: 'meterCategory',
                 caption: '表具类别',
-                type: 'input'
+                type: 'listcombobox',
+                options: [{
+                    key: 'IC卡表',
+                    value: 'IC卡表'
+                }]
             }, {
                 name: 'meterType',
                 caption: '表具型号',
-                type: 'input'
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('entry/getAllMeterTypes.do', 'meterType', 'meterType')
             }, {
                 name: 'meterDirection',
                 caption: '表向',
-                type: 'input'
+                type: 'listcombobox',
+                options: [{
+                    key: '左',
+                    value: true
+                },{
+                    key: '右',
+                    value: false
+                }]
             }, {
                 name: 'meterProdDate',
                 caption: '表具生产日期',

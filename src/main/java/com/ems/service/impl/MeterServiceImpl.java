@@ -3,6 +3,7 @@ package com.ems.service.impl;
 import com.ems.common.BeanValidator;
 import com.ems.common.JsonData;
 import com.ems.entity.Meter;
+import com.ems.entity.MeterType;
 import com.ems.entity.mapper.MeterMapper;
 import com.ems.entity.mapper.MeterTypeMapper;
 import com.ems.param.EntryMeterParam;
@@ -39,6 +40,15 @@ public class MeterServiceImpl implements IMeterService {
             return JsonData.successMsg("未查询到表具信息");
         }
         return JsonData.success(meters, "查询表具成功");
+    }
+
+    @Override
+    public JsonData getAllMeterTypes() {
+        List<MeterType> meterTypes = meterTypeMapper.getAllMeterTypes();
+        if (meterTypes == null || meterTypes.size() == 0) {
+            return JsonData.successMsg("未查询到表具信息");
+        }
+        return JsonData.success(meterTypes, "查询表具成功");
     }
 
     @Override
@@ -109,8 +119,8 @@ public class MeterServiceImpl implements IMeterService {
     }
 
     @Override
-    public JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection) {
-        List<EntryMeterParam> meters = meterMapper.searchEntryMeter(meterCode,meterCategory,meterType,meterDirection);
+    public JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection, Date meterProdDate) {
+        List<EntryMeterParam> meters = meterMapper.searchEntryMeter(meterCode, meterCategory, meterType, meterDirection, meterProdDate);
         return meters == null || meters.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(meters, "查询成功");
     }
 

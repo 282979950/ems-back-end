@@ -6,11 +6,13 @@ import com.ems.service.IMeterService;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,6 +35,16 @@ public class EntryMeterController {
     @ResponseBody
     public JsonData listData() {
         return meterService.getAllEntryMeters();
+    }
+
+    /**
+     * 获取所有表具类型
+     */
+    @RequiresPermissions("account:entryMeter:visit")
+    @RequestMapping(value = "/getAllMeterTypes.do")
+    @ResponseBody
+    public JsonData getAllMeterTypes() {
+        return meterService.getAllMeterTypes();
     }
 
     /**
@@ -81,13 +93,14 @@ public class EntryMeterController {
      * @param meterCategory
      * @param meterType
      * @param meterDirection
+     * @param meterProdDate
      * @return
      */
     @RequiresPermissions("account:entryMeter:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData searchEntryMeter(@Param("meterCode") String meterCode, @Param("meterCategory") String meterCategory, @Param("meterType") String
-            meterType, @Param("meterDirection") Boolean meterDirection) {
-        return meterService.searchEntryMeter(meterCode, meterCategory, meterType, meterDirection);
+            meterType, @Param("meterDirection") Boolean meterDirection, @Param("meterProdDate") @DateTimeFormat(pattern="yyyy-MM") Date meterProdDate) {
+        return meterService.searchEntryMeter(meterCode, meterCategory, meterType, meterDirection, meterProdDate);
     }
 }

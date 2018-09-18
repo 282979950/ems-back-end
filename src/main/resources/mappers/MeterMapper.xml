@@ -264,6 +264,7 @@
             <arg column="meter_category" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="meter_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="meter_direction" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="meter_direction_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="meter_prod_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="meter_entry_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -276,10 +277,12 @@
     </resultMap>
     <select id="getAllEntryMeters" parameterType="map" resultMap="EntryMeterParam">
         select
-        m.meter_id, m.meter_code, m.meter_stop_code, mt.meter_category, mt.meter_type, m.meter_direction, m.meter_prod_date,
-        m.meter_entry_date, m.create_time, m.create_by, m.update_time, m.update_by, m.usable, m.remarks
+        m.meter_id, m.meter_code, m.meter_stop_code, mt.meter_category, mt.meter_type, m.meter_direction, sd.dict_key as meter_direction_name,
+        m.meter_prod_date, m.meter_entry_date, m.create_time, m.create_by, m.update_time, m.update_by, m.usable, m.remarks
         from meter m left join meter_type mt on m.meter_type_id = mt.meter_type_id
+        LEFT JOIN sys_dictionary sd on m.meter_direction = sd.dict_value and sd.dict_category = 'meter_direction' and sd.usable = 1
         where m.usable = 1
+        order by m.meter_id
     </select>
     <insert id="addEntryMeter" parameterType="com.ems.param.EntryMeterParam">
         insert into meter (meter_code, meter_stop_code,
@@ -353,9 +356,10 @@
     </update>
     <select id="searchEntryMeter" parameterType="map" resultMap="EntryMeterParam">
         select
-        m.meter_id, m.meter_code, m.meter_stop_code, mt.meter_category, mt.meter_type, m.meter_direction, m.meter_prod_date,
-        m.meter_entry_date, m.create_time, m.create_by, m.update_time, m.update_by, m.usable, m.remarks
+        m.meter_id, m.meter_code, m.meter_stop_code, mt.meter_category, mt.meter_type, m.meter_direction, sd.dict_key as meter_direction_name,
+        m.meter_prod_date, m.meter_entry_date, m.create_time, m.create_by, m.update_time, m.update_by, m.usable, m.remarks
         from meter m left join meter_type mt on m.meter_type_id = mt.meter_type_id
+        LEFT JOIN sys_dictionary sd on m.meter_direction = sd.dict_value and sd.dict_category = 'meter_direction' and sd.usable = 1
         where m.usable = 1
         <if test="meterCode != null and meterCode != ''">
             AND m.meter_code LIKE CONCAT('%', #{meterCode,jdbcType=VARCHAR}, '%')
@@ -369,6 +373,10 @@
         <if test="meterDirection != null and meterDirection != ''">
             AND m.meter_direction = #{meterDirection,jdbcType=VARCHAR}
         </if>
+        <if test="meterProdDate != null">
+            AND m.meter_prod_date = DATE_FORMAT(#{meterProdDate,jdbcType=TIMESTAMP}, '%Y-%m-%d %H:%i:%S')
+        </if>
+        order by m.meter_id
     </select>
     <select id="checkMeterExist" parameterType="string" resultType="boolean">
         select

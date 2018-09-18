@@ -143,4 +143,10 @@
         from meter_type
         where meter_category = #{meterCategory,jdbcType=VARCHAR} and meter_type = #{meterType,jdbcType=VARCHAR} and usable = 1
     </select>
+    <select id="getAllMeterTypes" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from meter_type
+        where usable = 1
+    </select>
 </mapper>

@@ -4,6 +4,7 @@ import com.ems.common.JsonData;
 import com.ems.entity.Meter;
 import com.ems.param.EntryMeterParam;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +20,13 @@ public interface IMeterService {
      * @return
      */
     JsonData getAllEntryMeters();
+
+    /**
+     * 获取所有表具类型
+     *
+     * @return
+     */
+    JsonData getAllMeterTypes();
 
     /**
      * 获取所有的表具信息
@@ -74,7 +82,8 @@ public interface IMeterService {
      * @param meterCategory
      * @param meterType
      * @param meterDirection
+     * @param meterProdDate
      * @return
      */
-    JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection);
+    JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection, Date meterProdDate);
 }
