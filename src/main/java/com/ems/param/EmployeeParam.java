@@ -38,7 +38,17 @@ public class EmployeeParam extends BaseEntity {
      * 员工所属机构
      */
     @NotNull
+    private Integer empOrgId;
+
+    /**
+     * 员工所属机构
+     */
     private String orgName;
+
+    /**
+     * 员工所属区域
+     */
+    private Integer empDistrictId;
 
     /**
      * 员工所属区域
@@ -82,7 +92,12 @@ public class EmployeeParam extends BaseEntity {
      * 员工类型
      */
     @NotNull
-    private String empType;
+    private Integer empType;
+
+    /**
+     * 员工类型名称
+     */
+    private String empTypeName;
 
     /**
      * 员工负责片区
@@ -105,14 +120,22 @@ public class EmployeeParam extends BaseEntity {
      */
     private Boolean empLoginFlag;
 
-    public EmployeeParam(Integer empId, String empNumber, String empName, String orgName, String distName, String empLoginName, String empPassword, String
-            empEmail, String empPhone, String empMobile, String empAddress, String empType, String empManagementDistId, String empLoginIp, Date empLoginDate,
-                         Boolean empLoginFlag, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+    /**
+     * 员工登录标记名称
+     */
+    private String empLoginFlagName;
+
+    public EmployeeParam(Integer empId, String empNumber, String empName, Integer empOrgId, String orgName, Integer empDistrictId, String distName, String
+            empLoginName, String empPassword, String empEmail, String empPhone, String empMobile, String empAddress, Integer empType, String empTypeName,
+                         String empManagementDistId, String empLoginIp, Date empLoginDate, Boolean empLoginFlag, String empLoginFlagName, Date createTime,
+                         Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.empId = empId;
         this.empNumber = empNumber;
         this.empName = empName;
+        this.empOrgId = empOrgId;
         this.orgName = orgName;
+        this.empDistrictId = empDistrictId;
         this.distName = distName;
         this.empLoginName = empLoginName;
         this.empPassword = empPassword;
@@ -121,10 +144,12 @@ public class EmployeeParam extends BaseEntity {
         this.empMobile = empMobile;
         this.empAddress = empAddress;
         this.empType = empType;
+        this.empTypeName = empTypeName;
         this.empManagementDistId = empManagementDistId;
         this.empLoginIp = empLoginIp;
         this.empLoginDate = empLoginDate;
         this.empLoginFlag = empLoginFlag;
+        this.empLoginFlagName = empLoginFlagName;
     }
 
     public EmployeeParam() {

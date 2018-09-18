@@ -162,7 +162,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public JsonData searchEmployee(String empNumber, String empName, String orgName, String distName, String empLoginName, String empPhone, String
+    public JsonData searchEmployee(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone, String
             empMobile, String empType) {
 //        PageHelper.startPage(1, 10);
 //        List<Employee> employeeList = employeeMapper.select(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
@@ -180,7 +180,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 //        result.put("pageSize", pageInfo.getPageSize());
 //        result.put("empList", employeeList);
 //        return JsonData.successData(result);
-        List<Employee> employees = employeeMapper.searchEmployee(empNumber, empName, orgName, distName, empLoginName, empPhone, empMobile, empType);
+        List<Employee> employees = employeeMapper.searchEmployee(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
         return employees == null || employees.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.success(employees, "查询成功");
     }
 }

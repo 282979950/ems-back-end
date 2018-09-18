@@ -556,13 +556,13 @@ app.tableFields = {
         name: 'empAddress',
         caption: '地址'
     }, {
-        name: 'empType',
+        name: 'empTypeName',
         caption: '员工类型'
     }, {
         name: 'empManagementDistId',
         caption: '负责片区'
     }, {
-        name: 'empLoginFlag',
+        name: 'empLoginFlagName',
         caption: '员工登录标记'
     }],
     dic: [{
@@ -828,11 +828,33 @@ app.getAddFormFields  = function (name) {
                 required: true,
                 maxlength: 50
             }, {
-                name: 'orgName',
-                caption: '所属机构'
+                name: 'empOrgId',
+                caption: '所属机构',
+                type:'treecombobox' ,
+                options: {
+                    idKey: 'orgId',
+                    pIdKey: 'orgParentId',
+                    name: 'orgName',
+                    N : '',
+                    Y : '',
+                    chkStyle: 'radio',
+                    radioType: "all",
+                    nodes : app.getTreeComboboxNodes('org/listData.do')
+                }
             }, {
-                name: 'distName',
-                caption: '所属区域'
+                name: 'empDistrictId',
+                caption: '所属区域',
+                type:'treecombobox' ,
+                options: {
+                    idKey: 'distId',
+                    pIdKey: 'distParentId',
+                    name: 'distName',
+                    N : '',
+                    Y : '',
+                    chkStyle: 'radio',
+                    radioType: "all",
+                    nodes : app.getTreeComboboxNodes('dist/listData.do')
+                }
             }, {
                 name: 'empLoginName',
                 caption: '登录名',
@@ -860,13 +882,32 @@ app.getAddFormFields  = function (name) {
                 maxlength: 50
             }, {
                 name: 'empType',
-                caption: '员工类型'
+                caption: '员工类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("emp_type")
             }, {
                 name: 'empManagementDistId',
-                caption: '负责片区'
+                caption: '负责片区',
+                type: 'treecombobox',
+                options: {
+                    idKey: 'distName',
+                    pIdKey: 'distParentName',
+                    name: 'distName',
+                    N: 's',
+                    Y: 'p',
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
+                }
             }, {
                 name: 'empLoginFlag',
-                caption: '员工登录标记'
+                caption: '员工登录标记',
+                type: 'listcombobox',
+                options: [{
+                    key: '是',
+                    value: 'true'
+                }, {
+                    key: '否',
+                    value: 'false'
+                }]
             }];
         case 'dic':
             return [{
@@ -1129,11 +1170,33 @@ app.getEditFormFields = function (name) {
                 required: true,
                 maxlength: 50
             }, {
-                name: 'orgName',
-                caption: '所属机构'
+                name: 'empOrgId',
+                caption: '所属机构',
+                type:'treecombobox' ,
+                options: {
+                    idKey: 'orgId',
+                    pIdKey: 'orgParentId',
+                    name: 'orgName',
+                    N : '',
+                    Y : '',
+                    chkStyle: 'radio',
+                    radioType: "all",
+                    nodes : app.getTreeComboboxNodes('org/listData.do')
+                }
             }, {
-                name: 'distName',
-                caption: '所属区域'
+                name: 'empDistrictId',
+                caption: '所属区域',
+                type:'treecombobox' ,
+                options: {
+                    idKey: 'distId',
+                    pIdKey: 'distParentId',
+                    name: 'distName',
+                    N : '',
+                    Y : '',
+                    chkStyle: 'radio',
+                    radioType: "all",
+                    nodes : app.getTreeComboboxNodes('dist/listData.do')
+                }
             }, {
                 name: 'empLoginName',
                 caption: '登录名',
@@ -1161,13 +1224,32 @@ app.getEditFormFields = function (name) {
                 maxlength: 50
             }, {
                 name: 'empType',
-                caption: '员工类型'
+                caption: '员工类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("emp_type")
             }, {
                 name: 'empManagementDistId',
-                caption: '负责片区'
+                caption: '负责片区',
+                type: 'treecombobox',
+                options: {
+                    idKey: 'distName',
+                    pIdKey: 'distParentName',
+                    name: 'distName',
+                    N: 's',
+                    Y: 'p',
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
+                }
             }, {
                 name: 'empLoginFlag',
-                caption: '员工登录标记'
+                caption: '员工登录标记',
+                type: 'listcombobox',
+                options: [{
+                    key: '是',
+                    value: 'true'
+                }, {
+                    key: '否',
+                    value: 'false'
+                }]
             }];
         case 'dic':
             return [{
@@ -1512,7 +1594,7 @@ app.getToolbarFields = function (name) {
                 caption: '员工名称',
                 type: 'input'
             }, {
-                name: 'orgName',
+                name: 'empOrgId',
                 caption: '所属机构',
                 type:'treecombobox' ,
                 options: {
@@ -1526,7 +1608,7 @@ app.getToolbarFields = function (name) {
                     nodes : app.getTreeComboboxNodes('org/listData.do')
                 }
             }, {
-                name: 'distName',
+                name: 'empDistrictId',
                 caption: '所属区域',
                 type:'treecombobox' ,
                 options: {

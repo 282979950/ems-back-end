@@ -14,7 +14,7 @@
             <arg column="emp_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="emp_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="emp_management_dist_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_login_ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_login_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -234,7 +234,7 @@
                 emp_address = #{empAddress,jdbcType=VARCHAR},
             </if>
             <if test="empType != null">
-                emp_type = #{empType,jdbcType=VARCHAR},
+                emp_type = #{empType,jdbcType=INTEGER},
             </if>
             <if test="empManagementDistId != null">
                 emp_management_dist_id = #{empManagementDistId,jdbcType=VARCHAR},
@@ -282,7 +282,7 @@
         emp_phone = #{empPhone,jdbcType=VARCHAR},
         emp_mobile = #{empMobile,jdbcType=VARCHAR},
         emp_address = #{empAddress,jdbcType=VARCHAR},
-        emp_type = #{empType,jdbcType=VARCHAR},
+        emp_type = #{empType,jdbcType=INTEGER},
         emp_management_dist_id = #{empManagementDistId,jdbcType=VARCHAR},
         emp_login_ip = #{empLoginIp,jdbcType=VARCHAR},
         emp_login_date = #{empLoginDate,jdbcType=TIMESTAMP},
@@ -346,7 +346,7 @@
             AND emp_mobile LIKE CONCAT('%', #{empMobile,jdbcType=VARCHAR}, '%')
         </if>
         <if test="empType != null and empType != ''">
-            AND emp_type LIKE CONCAT('%', #{empType,jdbcType=VARCHAR}, '%')
+            AND emp_type LIKE CONCAT('%', #{empType,jdbcType=INTEGER}, '%')
         </if>
         ORDER BY emp_id
     </select>
@@ -383,7 +383,7 @@
         <result property="empPhone" column="emp_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="empMobile" column="emp_mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="empAddress" column="emp_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
-        <result property="empType" column="emp_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="empType" column="emp_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
         <result property="empManagementDistId" column="emp_management_dist_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="empLoginIp" column="emp_login_ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="empLoginDate" column="emp_login_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -422,7 +422,9 @@
             <idArg column="emp_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="emp_number" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_org_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="org_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_district_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_login_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_password" jdbcType="VARCHAR" javaType="java.lang.String"/>
@@ -430,11 +432,13 @@
             <arg column="emp_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="emp_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="emp_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_management_dist_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_login_ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_login_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="emp_login_flag" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="emp_login_flag_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -445,12 +449,14 @@
     </resultMap>
     <select id="getAllEmployees" resultMap="EmployeeParam">
         select
-        e.emp_id, e.emp_number, e.emp_name, o.org_name, sd.dist_name, e.emp_login_name, e.emp_password, e.emp_email, e.emp_phone, e.emp_mobile,
-        e.emp_address, e.emp_type, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e.emp_login_flag, e.create_time, e.create_by, e.update_time,
-        e.update_by, e.usable, e.remarks
+        e.emp_id, e.emp_number, e.emp_name, e.emp_org_id, o.org_name, e.emp_district_id, sd.dist_name, e.emp_login_name, e.emp_password, e.emp_email,
+        e.emp_phone, e.emp_mobile, e.emp_address, e.emp_type , sd2.dict_key AS emp_type_name, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e
+        .emp_login_flag, sd3.dict_key AS emp_login_flag_name, e.create_time, e .create_by, e.update_time, e.update_by, e.usable, e.remarks
         from
         employee e left join sys_district sd on e.emp_district_id = sd.dist_id
         left join sys_organization o on e.emp_org_id = o.org_id
+        LEFT JOIN sys_dictionary sd2 on e.emp_type = sd2.dict_value and sd2.dict_category = 'emp_type' and sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 on e.emp_login_flag = sd3.dict_value and sd3.dict_category = 'emp_login_flag' and sd3.usable = 1
         where e.usable = 1
     </select>
     <insert id="addEmployee" parameterType="com.ems.param.EmployeeParam">
@@ -462,7 +468,7 @@
         emp_login_flag, create_time, create_by,
         update_time, update_by, remarks)
         values (#{empNumber,jdbcType=VARCHAR}, #{empName,jdbcType=VARCHAR},
-        (select org_id from sys_organization o where o.org_name = #{orgName,jdbcType=VARCHAR}), (select dist_id from sys_district sd where sd.dist_name = #{distName,jdbcType=VARCHAR}), #{empLoginName,jdbcType=VARCHAR},
+        #{empOrgId,jdbcType=INTEGER}, #{empDistrictId,jdbcType=INTEGER}, #{empLoginName,jdbcType=VARCHAR},
         #{empPassword,jdbcType=VARCHAR}, #{empEmail,jdbcType=VARCHAR}, #{empPhone,jdbcType=VARCHAR},
         #{empMobile,jdbcType=VARCHAR}, #{empAddress,jdbcType=VARCHAR}, #{empType,jdbcType=VARCHAR},
         #{empManagementDistId,jdbcType=VARCHAR}, #{empLoginIp,jdbcType=VARCHAR}, #{empLoginDate,jdbcType=TIMESTAMP},
@@ -474,8 +480,8 @@
         <set>
             emp_number = #{empNumber,jdbcType=VARCHAR},
             emp_name = #{empName,jdbcType=VARCHAR},
-            emp_org_id = (select org_id from sys_organization o where o.org_name = #{orgName,jdbcType=VARCHAR}),
-            emp_district_id = (select dist_id from sys_district sd where sd.dist_name = #{distName,jdbcType=VARCHAR}),
+            emp_org_id = #{empOrgId,jdbcType=INTEGER},
+            emp_district_id = #{empDistrictId,jdbcType=INTEGER},
             emp_login_name = #{empLoginName,jdbcType=VARCHAR},
             <if test="empPassword != null">
                 emp_password = #{empPassword,jdbcType=VARCHAR},
@@ -484,7 +490,7 @@
             emp_phone = #{empPhone,jdbcType=VARCHAR},
             emp_mobile = #{empMobile,jdbcType=VARCHAR},
             emp_address = #{empAddress,jdbcType=VARCHAR},
-            emp_type = #{empType,jdbcType=VARCHAR},
+            emp_type = #{empType,jdbcType=INTEGER},
             emp_management_dist_id = #{empManagementDistId,jdbcType=VARCHAR},
             emp_login_ip = #{empLoginIp,jdbcType=VARCHAR},
             emp_login_date = #{empLoginDate,jdbcType=TIMESTAMP},
@@ -526,12 +532,14 @@
     </update>
     <select id="searchEmployee" parameterType="map" resultMap="EmployeeParam">
         select
-        e.emp_id, e.emp_number, e.emp_name, o.org_name, sd.dist_name, e.emp_login_name, e.emp_password, e.emp_email, e.emp_phone, e.emp_mobile,
-        e.emp_address, e.emp_type, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e.emp_login_flag, e.create_time, e.create_by, e.update_time,
-        e.update_by, e.usable, e.remarks
+        e.emp_id, e.emp_number, e.emp_name, e.emp_org_id, o.org_name, e.emp_district_id, sd.dist_name, e.emp_login_name, e.emp_password, e.emp_email,
+        e.emp_phone, e.emp_mobile, e.emp_address, e.emp_type , sd2.dict_key AS emp_type_name, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e
+        .emp_login_flag, sd3.dict_key AS emp_login_flag_name, e.create_time, e .create_by, e.update_time, e.update_by, e.usable, e.remarks
         from
         employee e left join sys_district sd on e.emp_district_id = sd.dist_id
         left join sys_organization o on e.emp_org_id = o.org_id
+        LEFT JOIN sys_dictionary sd2 on e.emp_type = sd2.dict_value and sd2.dict_category = 'emp_type' and sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 on e.emp_login_flag = sd3.dict_value and sd3.dict_category = 'emp_login_flag' and sd3.usable = 1
         where e.usable = 1
         <if test="empNumber != null and empNumber != ''">
             AND emp_number LIKE CONCAT('%', #{empNumber,jdbcType=VARCHAR}, '%')
@@ -539,11 +547,11 @@
         <if test="empName != null and empName != ''">
             AND emp_name LIKE CONCAT('%', #{empName,jdbcType=VARCHAR}, '%')
         </if>
-        <if test="orgName != null and orgName != ''">
-            AND emp_org_id = (select org_id from sys_organization o where o.org_name = #{orgName,jdbcType=VARCHAR})
+        <if test="empOrgId != null and empOrgId != ''">
+            AND emp_org_id = #{empOrgId,jdbcType=INTEGER}
         </if>
-        <if test="distName != null and distName != ''">
-            AND emp_district_id = (select dist_id from sys_district sd where sd.dist_name = #{distName,jdbcType=VARCHAR})
+        <if test="empDistrictId != null and empDistrictId != ''">
+            AND emp_district_id = #{empDistrictId,jdbcType=INTEGER}
         </if>
         <if test="empLoginName != null and empLoginName != ''">
             AND emp_login_name LIKE CONCAT('%', #{empLoginName,jdbcType=VARCHAR}, '%')
@@ -560,12 +568,14 @@
     </select>
     <select id="getEmpById" parameterType="integer" resultMap="EmployeeParam">
         select
-        e.emp_id, e.emp_number, e.emp_name, o.org_name, sd.dist_name, e.emp_login_name, e.emp_password, e.emp_email, e.emp_phone, e.emp_mobile,
-        e.emp_address, e.emp_type, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e.emp_login_flag, e.create_time, e.create_by, e.update_time,
-        e.update_by, e.usable, e.remarks
+        e.emp_id, e.emp_number, e.emp_name, e.emp_org_id, o.org_name, e.emp_district_id, sd.dist_name, e.emp_login_name, e.emp_password, e.emp_email,
+        e.emp_phone, e.emp_mobile, e.emp_address, e.emp_type , sd2.dict_key AS emp_type_name, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e
+        .emp_login_flag, sd3.dict_key AS emp_login_flag_name, e.create_time, e .create_by, e.update_time, e.update_by, e.usable, e.remarks
         from
         employee e left join sys_district sd on e.emp_district_id = sd.dist_id
         left join sys_organization o on e.emp_org_id = o.org_id
+        LEFT JOIN sys_dictionary sd2 on e.emp_type = sd2.dict_value and sd2.dict_category = 'emp_type' and sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 on e.emp_login_flag = sd3.dict_value and sd3.dict_category = 'emp_login_flag' and sd3.usable = 1
         where e.usable = 1 and e.emp_id = #{empId,jdbcType=INTEGER}
     </select>
 </mapper>

@@ -83,7 +83,7 @@ public class Employee extends BaseEntity {
      * 员工类型
      */
     @NotNull
-    private String empType;
+    private Integer empType;
 
     /**
      * 员工负责片区
@@ -112,7 +112,7 @@ public class Employee extends BaseEntity {
     private Set<SysRole> roles;
 
     public Employee(Integer empId, String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPassword, String
-            empEmail, String empPhone, String empMobile, String empAddress, String empType, String empManagementDistId, String empLoginIp, Date empLoginDate,
+            empEmail, String empPhone, String empMobile, String empAddress, Integer empType, String empManagementDistId, String empLoginIp, Date empLoginDate,
                     Boolean empLoginFlag, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.empId = empId;

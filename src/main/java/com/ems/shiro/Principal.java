@@ -32,7 +32,7 @@ public class Principal implements Serializable {
 
     private Integer distId;
 
-    private String userType;
+    private Integer userType;
 
     public Principal(Employee employee) {
         this.id = employee.getEmpId();

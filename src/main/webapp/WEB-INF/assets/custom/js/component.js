@@ -613,15 +613,14 @@
      * 清空Input中的数据
      */
     Toolbar.prototype.clearInputsData = function () {
-        var inputsData = [];
         var $inputs = this.$dom.find('input');
         $inputs.each(function (index, input) {
-            console.log(input);
-            $(input).val('');
-            inputsData.push({
-                name: $(input).attr('name'),
-                value: ''
-            })
+            $(input).attr('text', '');
+            $(input).val('')
+        });
+        var $selects = this.$dom.find('select');
+        $selects.each(function (index, select) {
+            $(select).val('');
         });
     };
 
@@ -907,7 +906,7 @@
         if (params.name) {
             $input.attr('name', params.name)
         }
-        $input.attr('text', params.options.name);
+        $input.attr('text', '');
         var $span = this.$span = $('<span><i class="mdui-icon material-icons">arrow_drop_down</i></span>').appendTo($dom);
         var options = JSON.parse(JSON.stringify(params.options));
         var $panelDom = this.$panelDom = $('<div class="tree-combobox-panel mdui-shadow-2"></div>').css({
