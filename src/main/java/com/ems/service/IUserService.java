@@ -93,7 +93,7 @@ public interface IUserService {
      *
      * @return
      */
-    JsonData searchInstallMeter(Integer userId, String distName, String userAddress);
+    JsonData searchInstallMeter(Integer userId, Integer userDistId, String userAddress);
 
     /**
      * 用户开户

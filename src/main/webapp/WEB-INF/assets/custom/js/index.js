@@ -652,13 +652,13 @@ app.tableFields = {
         name: 'userId',
         caption: '用户编号'
     }, {
-        name: 'distName',
+        name: 'userDistName',
         caption: '用户区域'
     }, {
         name: 'userAddress',
         caption: '用户地址'
     }, {
-        name: 'userStatus',
+        name: 'userStatusName',
         caption: '用户状态'
     }, {
         name: 'meterCode',
@@ -1493,7 +1493,7 @@ app.getEditFormFields = function (name) {
                 caption: '用户编号',
                 disabled: true
             }, {
-                name: 'distName',
+                name: 'userDistName',
                 caption: '用户区域',
                 disabled: true
             }, {
@@ -1876,9 +1876,19 @@ app.getToolbarFields = function (name) {
                 caption: '用户编号',
                 type: 'input'
             }, {
-                name: 'distName',
+                name: 'userDistId',
                 caption: '用户区域',
-                type: 'input'
+                type: 'treecombobox',
+                options: {
+                    idKey: 'distId',
+                    pIdKey: 'distParentId',
+                    name: 'distName',
+                    chkStyle: 'radio',
+                    radioType: 'all',
+                    N: 's',
+                    Y: 'p',
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
+                }
             }, {
                 name: 'userAddress',
                 caption: '用户地址',

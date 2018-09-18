@@ -47,7 +47,7 @@ public interface UserMapper {
 
     User getUserById(@Param("userId") Integer userId);
 
-    List<InstallMeterParam> searchInstallMeter(@Param("userId")Integer userId, @Param("distName") String distName, @Param("userAddress")String userAddress);
+    List<InstallMeterParam> searchInstallMeter(@Param("userId")Integer userId, @Param("userDistId") Integer userDistId, @Param("userAddress")String userAddress);
 
     List<LockAccountParam> searchAccountArchive(@Param("userId")Integer userId, @Param("userName") String userName, @Param("iccardId")Integer iccardId ,@Param("userStatus") Integer userStatus);
 

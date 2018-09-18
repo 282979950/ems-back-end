@@ -29,7 +29,12 @@ public class InstallMeterParam {
      * 用户区域ID
      */
     @NotNull(message = "用户区域不能为空")
-    private String distName;
+    private Integer userDistId;
+
+    /**
+     * 用户区域
+     */
+    private String userDistName;
 
     /**
      * 用户地址
@@ -45,16 +50,13 @@ public class InstallMeterParam {
     private Integer userStatus;
 
     /**
+     * 用户状态
+     */
+    private String userStatusName;
+
+    /**
      * 表具编号
      */
     @NotNull(message = "表具编号不能为空")
     private String meterCode;
-
-    public InstallMeterParam(Integer userId, String distName, String userAddress, Integer userStatus) {
-        this.userId = userId;
-        this.distName = distName;
-        this.userAddress = userAddress;
-        this.userStatus = userStatus;
-        this.meterCode = null;
-    }
 }

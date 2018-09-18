@@ -193,8 +193,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData searchInstallMeter(Integer userId, String distName, String userAddress) {
-        List<InstallMeterParam> meters = userMapper.searchInstallMeter(userId, distName, userAddress);
+    public JsonData searchInstallMeter(Integer userId, Integer userDistId, String userAddress) {
+        List<InstallMeterParam> meters = userMapper.searchInstallMeter(userId, userDistId, userAddress);
         return meters == null || meters.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(meters, "查询成功");
     }
 

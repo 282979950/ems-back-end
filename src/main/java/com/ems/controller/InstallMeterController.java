@@ -84,8 +84,8 @@ public class InstallMeterController {
     @RequiresPermissions("account:installation:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData searchInstallMeter(@RequestParam("userId") Integer userId, @RequestParam("distName") String distName, @RequestParam("userAddress") String
+    public JsonData searchInstallMeter(@RequestParam("userId") Integer userId, @RequestParam("userDistId") Integer userDistId, @RequestParam("userAddress") String
             userAddress) {
-        return userService.searchInstallMeter(userId, distName, userAddress);
+        return userService.searchInstallMeter(userId, userDistId, userAddress);
     }
 }
