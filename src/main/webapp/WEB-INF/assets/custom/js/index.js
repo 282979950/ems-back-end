@@ -1614,13 +1614,16 @@ app.getToolbarFields = function (name) {
         case 'dist':
             return [{
                 name: 'add',
-                caption: '新增'
+                caption: '新增',
+                perm:'sys:dist:create'
             }, {
                 name: 'edit',
-                caption: '编辑'
+                caption: '编辑',
+                perm:'sys:dist:update'
             }, {
                 name: 'delete',
-                caption: '删除'
+                caption: '删除',
+                perm:'sys:dist:delete'
             }, {
                 name: 'distName',
                 caption: '区域名称',
@@ -1633,13 +1636,16 @@ app.getToolbarFields = function (name) {
         case 'org':
             return [{
                 name: 'add',
-                caption: '新增'
+                caption: '新增',
+                perm:'sys:org:create'
             }, {
                 name: 'edit',
-                caption: '编辑'
+                caption: '编辑',
+                perm:'sys:org:update'
             }, {
                 name: 'delete',
-                caption: '删除'
+                caption: '删除',
+                perm:'sys:org:delete'
             }, {
                 name: 'orgCode',
                 caption: '机构编码',
@@ -1652,13 +1658,16 @@ app.getToolbarFields = function (name) {
         case 'emp':
             return [{
                 name: 'add',
-                caption: '新增'
+                caption: '新增',
+                perm:'sys:emp:create'
             }, {
                 name: 'edit',
-                caption: '编辑'
+                caption: '编辑',
+                perm:'sys:emp:update'
             }, {
                 name: 'delete',
-                caption: '删除'
+                caption: '删除',
+                perm:'sys:emp:delete'
             }, {
                 name: 'empNumber',
                 caption: '员工工号',
@@ -1716,13 +1725,16 @@ app.getToolbarFields = function (name) {
         case 'dic':
             return [{
                 name: 'add',
-                caption: '新增'
+                caption: '新增',
+                perm:'sys:dic:create'
             }, {
                 name: 'edit',
-                caption: '编辑'
+                caption: '编辑',
+                perm:'sys:dic:update'
             }, {
                 name: 'delete',
-                caption: '删除'
+                caption: '删除',
+                perm:'sys:dic:delete'
             }, {
                 name: 'dictCategory',
                 caption: '字典类型',
@@ -1731,13 +1743,16 @@ app.getToolbarFields = function (name) {
         case 'permission':
             return [{
                 name: 'add',
-                caption: '新增'
+                caption: '新增',
+                perm:'sys:perm:create'
             }, {
                 name: 'edit',
-                caption: '编辑'
+                caption: '编辑',
+                perm:'sys:perm:update'
             }, {
                 name: 'delete',
-                caption: '删除'
+                caption: '删除',
+                perm:'sys:perm:delete'
             }, {
                 name: 'permName',
                 caption: '权限名称',
@@ -1754,13 +1769,16 @@ app.getToolbarFields = function (name) {
         case 'role':
             return [{
                 name: 'add',
-                caption: '新增'
+                caption: '新增',
+                perm:'sys:role:create'
             }, {
                 name: 'edit',
-                caption: '编辑'
+                caption: '编辑',
+                perm:'sys:role:update'
             }, {
                 name: 'delete',
-                caption: '删除'
+                caption: '删除',
+                perm:'sys:role:delete'
             }, {
                 name: 'roleName',
                 caption: '角色名称',
@@ -1769,13 +1787,16 @@ app.getToolbarFields = function (name) {
         case 'entry':
             return [{
                 name: 'add',
-                caption: '新增'
+                caption: '新增',
+                perm:'account:entryMeter:create'
             }, {
                 name: 'edit',
-                caption: '编辑'
+                caption: '编辑',
+                perm:'account:entryMeter:update'
             }, {
                 name: 'delete',
-                caption: '删除'
+                caption: '删除',
+                perm:'account:entryMeter:delete'
             }, {
                 name: 'meterCode',
                 caption: '表具编码',
@@ -1814,13 +1835,16 @@ app.getToolbarFields = function (name) {
         case 'createArchive':
             return [{
                 name: 'add',
-                caption: '新增'
+                caption: '新增',
+                perm:'account:createArchive:create'
             }, {
                 name: 'edit',
-                caption: '编辑'
+                caption: '编辑',
+                perm:'account:createArchive:update'
             }, {
                 name: 'delete',
-                caption: '删除'
+                caption: '删除',
+                perm:'account:createArchive:delete'
             }, {
                 name: 'userId',
                 caption: '用户编号',
@@ -1862,7 +1886,8 @@ app.getToolbarFields = function (name) {
         case 'installMeter':
             return [{
                 name: 'edit',
-                caption: '编辑'
+                caption: '编辑',
+                perm:'account:installation:update'
             }, {
                 name: 'userId',
                 caption: '用户编号',
@@ -1889,7 +1914,8 @@ app.getToolbarFields = function (name) {
         case 'account':
             return [{
                 name: 'edit',
-                caption: '开户'
+                caption: '开户',
+                perm:'account:createAccount:update'
             }, {
                 name: 'userDistId',
                 caption: '用户区域',
@@ -1923,10 +1949,12 @@ app.getToolbarFields = function (name) {
         case 'lockAccount':
             return [{
                 name: 'lock',
-                caption: '锁定/解锁'
+                caption: '锁定/解锁',
+                perm:'account:lockAccount:lock'
             }, {
                 name: 'history',
-                caption: '历史锁定记录'
+                caption: '历史锁定记录',
+                perm:'account:lockAccount:lockList'
             }, {
                 name: 'userName',
                 caption: '用户名称',

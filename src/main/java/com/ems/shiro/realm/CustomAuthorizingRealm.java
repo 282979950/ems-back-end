@@ -134,6 +134,7 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
                 info.addStringPermission(permission.getPermName());
             }
         }
+        session.setAttribute("permissions",info.getStringPermissions());
         info.addRole("user");
         authorizationInfoCache.put(principal, info);
         // TODO: 2018/8/1 更新登录IP和时间

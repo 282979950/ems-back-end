@@ -541,8 +541,11 @@
                 $input.datetimepicker({language: 'zh-CN',format: field.formatter,autoclose: true,minView :field.minView,todayBtn : true,bootcssVer:3});
                 break;
             default :
-                var $field = $('<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator field"></div>').attr('name', field.name).attr('mdui-tooltip', '{content:\'' + field.caption + '\'}').appendTo($toolbar);
-                $('<i class="mdui-icon material-icons mdui-text-color-blue">' + field.name + '</i>').appendTo($field);
+                var perm = field.perm;
+                if((field.name==='search'||field.name=='clear')||(perm && app.getShiro(perm))){
+                   var $field = $('<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator field"></div>').attr('name', field.name).attr('mdui-tooltip', '{content:\'' + field.caption + '\'}').appendTo($toolbar);
+                         $('<i class="mdui-icon material-icons mdui-text-color-blue">' + field.name + '</i>').appendTo($field);
+                }
                 break;
         }
     };
