@@ -43,7 +43,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     @PostConstruct
     private void initializeSysRole() {
-//        sysRoleList = roleMapper.selectAll();
+        sysRoleList = roleMapper.selectAll();
     }
 
     @Override

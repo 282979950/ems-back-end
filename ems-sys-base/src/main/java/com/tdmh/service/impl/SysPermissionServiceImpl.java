@@ -39,7 +39,7 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
      */
     @PostConstruct
     private void initializeSysAuthorization() {
-//        permissionList = permissionMapper.selectAll();
+        permissionList = permissionMapper.selectAll();
     }
 
     public static List<SysPermission> getPermissionList(){

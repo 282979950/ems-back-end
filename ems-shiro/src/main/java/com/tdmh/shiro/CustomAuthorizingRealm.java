@@ -118,9 +118,11 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
             info.addRole(role.getRoleName());
             if(("admin").equals(role.getRoleName())){
                 List<SysPermission> permissions = SysPermissionServiceImpl.getPermissionList();
-                for (SysPermission permission : permissions) {
-                    info.addStringPermission(permission.getPermName());
-                }
+               if(null!= permissions) {
+                   for (SysPermission permission : permissions) {
+                       info.addStringPermission(permission.getPermName());
+                   }
+               }
                 break;
             }
             Set<SysPermission> permissions = role.getPermissions();

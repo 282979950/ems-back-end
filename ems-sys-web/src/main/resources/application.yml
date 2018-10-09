@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 80
   servlet:
     context-path: /
 spring:
@@ -14,4 +14,4 @@ spring:
       suffix: .jsp
 mybatis:
   typeAliasesPackage: com.tdmh.entity
-  mapperLocations: classpath:mapper/*.xml
+  mapperLocations: classpath:mappers/*Mapper.xml
