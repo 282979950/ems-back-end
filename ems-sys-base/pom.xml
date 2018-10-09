@@ -4,37 +4,28 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.tdmh.ems</groupId>
-    <artifactId>ems-shiro</artifactId>
+    <artifactId>ems-sys-base</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>ems-shiro</name>
+    <name>ems-sys-base</name>
     <parent>
         <groupId>com.tdmh.ems</groupId>
         <artifactId>ems</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <properties>
+   <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.tdmh.ems</groupId>
-            <artifactId>ems-sys-base</artifactId>
+            <artifactId>ems-common-base</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
-
+     </dependencies>
     <build>
         <plugins>
             <plugin>
@@ -43,12 +34,10 @@
                 <version>3.1.0</version>
                 <configuration>
                     <excludes>
-                        <exclude>com.tdmh.emsshiro.EmsShiroApplication</exclude>
+                        <exclude>com.tdmh.emssysbase.EmsSysBaseApplication</exclude>
                     </excludes>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-
 </project>

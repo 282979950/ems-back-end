@@ -4,38 +4,46 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.tdmh.ems</groupId>
-    <artifactId>ems-shiro</artifactId>
+    <artifactId>ems-sys-web</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
-    <name>ems-shiro</name>
+    <name>ems-sys-web</name>
+    <description>sys-web</description>
+
     <parent>
         <groupId>com.tdmh.ems</groupId>
         <artifactId>ems</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
+       <dependency>
+           <groupId>com.tdmh.ems</groupId>
+            <artifactId>ems-shiro</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.tdmh.ems</groupId>
             <artifactId>ems-sys-base</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
-
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
-
     <build>
+        <finalName>ems</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -43,12 +51,10 @@
                 <version>3.1.0</version>
                 <configuration>
                     <excludes>
-                        <exclude>com.tdmh.emsshiro.EmsShiroApplication</exclude>
+                        <exclude>com.tdmh.emssysweb.EmsSysWebApplication</exclude>
                     </excludes>
                 </configuration>
-            </plugin>
+             </plugin>
         </plugins>
     </build>
-
-
 </project>

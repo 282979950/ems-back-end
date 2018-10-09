@@ -1,9 +1,0 @@
-#spring:
-#  datasource:
-#    type: com.alibaba.druid.pool.DruidDataSource
-#    driver-class-name: com.mysql.jdbc.Driver
-#    sql-script-encoding: utf-8
-#    url: jdbc:mysql://192.168.0.20:3306/ems?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
-#    username: root
-#    password: root
-#    name: MySQL

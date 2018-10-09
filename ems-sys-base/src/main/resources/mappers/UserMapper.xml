@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.tdmh.entity.User">
+        <constructor>
+            <idArg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_idcard" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_deed" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_dist_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_gas_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="iccard_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="iccard_identifier" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="iccard_password" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_locked" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        user_id, user_name, user_phone, user_idcard, user_deed, user_dist_id, user_address,
+        user_type, user_gas_type, iccard_id, iccard_identifier, iccard_password, user_status, user_locked,
+        create_time, create_by, update_time, update_by, usable, remarks
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from user
+        where user_id = #{userId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.tdmh.entity.User">
+        insert into user (user_id, user_name, user_phone,
+        user_idcard, user_deed, user_dist_id,
+        user_address, user_type, user_gas_type,
+        iccard_id, iccard_identifier, iccard_password,
+        user_status, user_locked, create_time, create_by,
+        update_time, update_by, usable,
+        remarks)
+        values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPhone,jdbcType=VARCHAR},
+        #{userIdcard,jdbcType=VARCHAR}, #{userDeed,jdbcType=VARCHAR}, #{userDistId,jdbcType=INTEGER},
+        #{userAddress,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{userGasType,jdbcType=INTEGER},
+        #{iccardId,jdbcType=INTEGER}, #{iccardIdentifier,jdbcType=VARCHAR}, #{iccardPassword,jdbcType=VARCHAR},
+        #{userLocked,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
+        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},
+        #{remarks,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.tdmh.entity.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="userPhone != null">
+                user_phone,
+            </if>
+            <if test="userIdcard != null">
+                user_idcard,
+            </if>
+            <if test="userDeed != null">
+                user_deed,
+            </if>
+            <if test="userDistId != null">
+                user_dist_id,
+            </if>
+            <if test="userAddress != null">
+                user_address,
+            </if>
+            <if test="userType != null">
+                user_type,
+            </if>
+            <if test="userGasType != null">
+                user_gas_type,
+            </if>
+            <if test="iccardId != null">
+                iccard_id,
+            </if>
+            <if test="iccardIdentifier != null">
+                iccard_identifier,
+            </if>
+            <if test="iccardPassword != null">
+                iccard_password,
+            </if>
+            <if test="user_status != null">
+                user_status,
+            </if>
+            <if test="userLocked != null">
+                user_locked,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="usable != null">
+                usable,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="userIdcard != null">
+                #{userIdcard,jdbcType=VARCHAR},
+            </if>
+            <if test="userDeed != null">
+                #{userDeed,jdbcType=VARCHAR},
+            </if>
+            <if test="userDistId != null">
+                #{userDistId,jdbcType=INTEGER},
+            </if>
+            <if test="userAddress != null">
+                #{userAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="userType != null">
+                #{userType,jdbcType=INTEGER},
+            </if>
+            <if test="userGasType != null">
+                #{userGasType,jdbcType=INTEGER},
+            </if>
+            <if test="iccardId != null">
+                #{iccardId,jdbcType=INTEGER},
+            </if>
+            <if test="iccardIdentifier != null">
+                #{iccardIdentifier,jdbcType=VARCHAR},
+            </if>
+            <if test="iccardPassword != null">
+                #{iccardPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="userLocked != null">
+                #{userLocked,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="usable != null">
+                #{usable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tdmh.entity.User">
+        update user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                user_phone = #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="userIdcard != null">
+                user_idcard = #{userIdcard,jdbcType=VARCHAR},
+            </if>
+            <if test="userDeed != null">
+                user_deed = #{userDeed,jdbcType=VARCHAR},
+            </if>
+            <if test="userDistId != null">
+                user_dist_id = #{userDistId,jdbcType=INTEGER},
+            </if>
+            <if test="userAddress != null">
+                user_address = #{userAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="userType != null">
+                user_type = #{userType,jdbcType=INTEGER},
+            </if>
+            <if test="userGasType != null">
+                user_gas_type = #{userGasType,jdbcType=INTEGER},
+            </if>
+            <if test="iccardId != null">
+                iccard_id = #{iccardId,jdbcType=INTEGER},
+            </if>
+            <if test="iccardIdentifier != null">
+                iccard_identifier = #{iccardIdentifier,jdbcType=VARCHAR},
+            </if>
+            <if test="iccardPassword != null">
+                iccard_password = #{iccardPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="user_status != null">
+                user_status = #{userStatus,jdbcType=INTEGER},
+            </if>
+            <if test="userLocked != null">
+                user_locked = #{userLocked,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="usable != null">
+                usable = #{usable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tdmh.entity.User">
+        update user
+        set user_name = #{userName,jdbcType=VARCHAR},
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+        user_idcard = #{userIdcard,jdbcType=VARCHAR},
+        user_deed = #{userDeed,jdbcType=VARCHAR},
+        user_dist_id = #{userDistId,jdbcType=INTEGER},
+        user_address = #{userAddress,jdbcType=VARCHAR},
+        user_type = #{userType,jdbcType=INTEGER},
+        user_gas_type = #{userGasType,jdbcType=INTEGER},
+        iccard_id = #{iccardId,jdbcType=INTEGER},
+        iccard_identifier = #{iccardIdentifier,jdbcType=VARCHAR},
+        iccard_password = #{iccardPassword,jdbcType=VARCHAR},
+        user_status = #{userStatus,jdbcType=INTEGER},
+        user_locked = #{userLocked,jdbcType=BIT},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_by = #{updateBy,jdbcType=INTEGER},
+        usable = #{usable,jdbcType=BIT},
+        remarks = #{remarks,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <resultMap id="CreateArchiveParam" type="com.tdmh.param.CreateArchiveParam">
+        <constructor>
+            <idArg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <idArg column="user_dist_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_gas_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_gas_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_status_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_locked" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="meter_category" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <select id="getAllArchives" resultMap="CreateArchiveParam">
+        select
+        u.user_id, u.user_dist_id, dist.dist_name as user_dist_name, u.user_address, u.user_type, sd.dict_key as user_type_name, u.user_gas_type,
+        sd2.dict_key as  user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
+        u.update_time, u.update_by, u.usable, u.remarks
+        from user u
+        LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
+        LEFT JOIN meter m ON um.meter_id=m.meter_id and m.usable=1
+        LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
+        left join sys_district dist on u.user_dist_id = dist.dist_id
+        LEFT JOIN sys_dictionary sd on u.user_type = sd.dict_value and sd.dict_category = 'user_type' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd2 on u.user_gas_type = sd2.dict_value and sd2.dict_category = 'user_gas_type' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd3 on u.user_status = sd3.dict_value and sd3.dict_category = 'user_status' and sd.usable = 1
+        where u.usable = 1
+        order by u.user_id
+    </select>
+    <insert id="addArchive" parameterType="com.tdmh.param.CreateArchiveParam">
+        insert into user (user_dist_id, user_address, user_type,
+        user_gas_type, user_locked, create_time, create_by,
+        update_time, update_by, remarks)
+        values (#{userDistId,jdbcType=INTEGER}, #{userAddress,jdbcType=VARCHAR},
+        #{userType,jdbcType=INTEGER}, #{userGasType,jdbcType=INTEGER}, #{userLocked,jdbcType=BIT}, NOW(), #{createBy,jdbcType=INTEGER},
+        NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
+    </insert>
+    <update id="editArchive">
+        update user
+        set
+        user_dist_id = #{userDistId,jdbcType=INTEGER},
+        user_address = #{userAddress,jdbcType=VARCHAR},
+        user_type = #{userType,jdbcType=INTEGER},
+        user_gas_type = #{userGasType,jdbcType=INTEGER},
+        user_status = #{userStatus,jdbcType=INTEGER},
+        update_time = NOW(),
+        update_by = #{updateBy,jdbcType=INTEGER}
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <update id="deleteArchive" parameterType="list">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_by = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateBy != null">
+                        when user_id = #{i.userId} then #{i.updateBy}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateTime != null">
+                        when user_id = #{i.userId} then NOW()
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="usable =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.usable != null">
+                        when user_id =#{i.userId} then 0
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index">
+            user_id =#{i.userId}
+        </foreach>
+    </update>
+    <select id="searchArchive" parameterType="map" resultMap="CreateArchiveParam">
+        select
+        u.user_id, u.user_dist_id, dist.dist_name as user_dist_name, u.user_address, u.user_type, sd.dict_key as user_type_name, u.user_gas_type,
+        sd2.dict_key as  user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
+        u.update_time, u.update_by, u.usable, u.remarks
+        from user u
+        LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
+        LEFT JOIN meter m ON um.meter_id=m.meter_id and m.usable=1
+        LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
+        left join sys_district dist on u.user_dist_id = dist.dist_id
+        LEFT JOIN sys_dictionary sd on u.user_type = sd.dict_value and sd.dict_category = 'user_type' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd2 on u.user_gas_type = sd2.dict_value and sd2.dict_category = 'user_gas_type' and sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 on u.user_status = sd3.dict_value and sd3.dict_category = 'user_status' and sd3.usable = 1
+        where u.usable = 1
+        <if test="userId != null and userId != ''">
+            AND u.user_id LIKE CONCAT('%', #{userId,jdbcType=INTEGER}, '%')
+        </if>
+        <if test="userDistId != null and userDistId != ''">
+            AND u.user_dist_id = #{userDistId,jdbcType=INTEGER}
+        </if>
+        <if test="userAddress != null and userAddress != ''">
+            AND u.user_address LIKE CONCAT('%', #{userAddress,jdbcType=INTEGER}, '%')
+        </if>
+        <if test="userType != null and userType != ''">
+            AND u.user_type = #{userType,jdbcType=INTEGER}
+        </if>
+        <if test="userGasType != null and userGasType != ''">
+            AND u.user_gas_type = #{userGasType,jdbcType=INTEGER}
+        </if>
+        <if test="userStatus != null and userStatus != ''">
+            AND u.user_status = #{userStatus,jdbcType=INTEGER}
+        </if>
+        order by u.user_id
+    </select>
+    <!--用户挂表-->
+    <resultMap id="InstallMeterParam" type="com.tdmh.param.InstallMeterParam">
+        <constructor>
+            <idArg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <idArg column="user_dist_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_status_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <select id="getAllInstallMeters" resultMap="InstallMeterParam">
+        select
+        u.user_id, u.user_dist_id, sd.dist_name as user_dist_name, u.user_address, u.user_status, sd2.dict_key as user_status_name , m.meter_code
+        from user u LEFT JOIN user_meters um ON u.user_id = um.user_id and um.usable = 1
+        LEFT JOIN meter m ON um.meter_id = m.meter_id
+        LEFT JOIN sys_district sd on u.user_dist_id = sd.dist_id
+        LEFT JOIN sys_dictionary sd2 on u.user_status = sd2.dict_value and sd2.dict_category = 'user_status' and sd2.usable = 1
+        WHERE u.usable = 1 and u.user_status = 1
+        ORDER BY u.user_id
+    </select>
+    <select id="searchInstallMeter" parameterType="map" resultMap="InstallMeterParam">
+        select
+        u.user_id, u.user_dist_id, sd.dist_name as user_dist_name, u.user_address, u.user_status, sd2.dict_key as user_status_name , m.meter_code
+        from user u LEFT JOIN user_meters um ON u.user_id = um.user_id and um.usable = 1
+        LEFT JOIN meter m ON um.meter_id = m.meter_id
+        LEFT JOIN sys_district sd on u.user_dist_id = sd.dist_id
+        LEFT JOIN sys_dictionary sd2 on u.user_status = sd2.dict_value and sd2.dict_category = 'user_status' and sd2.usable = 1
+        WHERE u.usable = 1 and u.user_status = 1
+        <if test="userId != null and userId != ''">
+            AND u.user_id LIKE CONCAT('%', #{userId,jdbcType=INTEGER}, '%')
+        </if>
+        <if test="userDistId != null and userDistId != ''">
+            AND u.user_dist_id = #{userDistId,jdbcType=INTEGER}
+        </if>
+        <if test="userAddress != null and userAddress != ''">
+            AND u.user_address LIKE CONCAT('%', #{userAddress,jdbcType=INTEGER}, '%')
+        </if>
+        ORDER BY u.user_id
+    </select>
+    <update id="updateUserStatus" parameterType="list">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_by = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateBy != null">
+                        when user_id = #{i.userId} then #{i.updateBy}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateTime != null">
+                        when user_id = #{i.userId} then NOW()
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="user_status =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.userStatus != null">
+                        when user_id =#{i.userId} then #{i.userStatus}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index">
+            user_id =#{i.userId}
+        </foreach>
+    </update>
+    <update id="createAccount" parameterType="com.tdmh.param.CreateAccountParam">
+        update user
+        set user_name = #{userName,jdbcType=VARCHAR},
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+        user_idcard = #{userIdcard,jdbcType=VARCHAR},
+        user_deed = #{userDeed,jdbcType=VARCHAR},
+        iccard_id = #{iccardId,jdbcType=INTEGER},
+        iccard_identifier = #{iccardIdentifier,jdbcType=VARCHAR},
+        iccard_password = #{iccardPassword,jdbcType=VARCHAR},
+        user_status = 3,
+        user_locked = #{userLocked,jdbcType=BIT},
+        update_time = NOW(),
+        update_by = #{updateBy,jdbcType=INTEGER},
+        usable = #{usable,jdbcType=BIT},
+        remarks = #{remarks,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <select id="getAllCount" resultType="int">
+        select count (1) from user
+    </select>
+    <select id="getUserByIccardId" parameterType="integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where iccard_id = #{iccardId,jdbcType=INTEGER} and usable = 1
+    </select>
+    <select id="getUserById" parameterType="integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where user_id = #{userId,jdbcType=INTEGER} and usable = 1
+    </select>
+    <resultMap id="LockAccountParam" type="com.tdmh.param.LockAccountParam">
+        <constructor>
+            <idArg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="iccard_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="is_lock" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="lock_reason" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="last_lock_reason" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            </constructor>
+    </resultMap>
+    <select id="searchAccountArchive" parameterType="map" resultMap="LockAccountParam">
+        select
+        u.user_id, u.user_name,u.iccard_id, dist.dist_name, u.user_address, IFNULL(ul.is_lock,0) as is_lock,'' as lock_reason, ul.lock_reason as last_lock_reason
+        from user u left join sys_district dist on u.user_dist_id = dist.dist_id
+        LEFT JOIN ( SELECT us.user_id, IFNULL(us.is_lock,0) is_lock, us.lock_reason , us.create_time FROM user_lock us ,
+        (SELECT user_id , MAX(create_time) AS create_time FROM user_lock GROUP BY user_id) um
+        WHERE us.user_id = um.user_id AND us.create_time = um.create_time
+        ) ul ON u.user_id = ul.user_id
+        where u.usable = 1
+        <if test="userId != null and userId != ''">
+            AND u.user_id  LIKE CONCAT('%',#{userId,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="userName != null and userName != ''">
+            AND u.user_name  LIKE CONCAT('%',#{userName,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="iccardId != null and iccardId != ''">
+            AND u.iccard_id  LIKE CONCAT('%',#{iccardId,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="userStatus != null and userStatus != ''">
+            AND u.user_status = #{userStatus,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <insert id="insertUserLock" parameterType="com.tdmh.entity.UserLock">
+        insert into user_lock (user_id, is_lock,lock_reason,create_time, create_by,update_time,update_by ,usable, remarks)
+       values (#{userId,jdbcType=INTEGER},#{isLock,jdbcType=BIT},#{lockReason,jdbcType=VARCHAR},NOW(),#{createBy,jdbcType=INTEGER},NOW(),
+        #{updateBy,jdbcType=INTEGER},#{usable,jdbcType=BIT},#{remarks,jdbcType=VARCHAR})
+       </insert>
+
+    <select id="searchLockList" parameterType="int" resultType="com.tdmh.entity.UserLock">
+      SELECT user_lock_id as userLockId,user_id as userId,is_lock as isLock,lock_reason as lockReason,create_time as createTime
+      FROM user_lock where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+</mapper>

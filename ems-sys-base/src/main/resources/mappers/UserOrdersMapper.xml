@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.UserOrdersMapper" >
+  <resultMap id="BaseResultMap" type="com.tdmh.entity.UserOrders" >
+    <constructor >
+      <idArg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="employee_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_payment" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="order_gas" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="order_status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="order_close_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_id, user_id, employee_id, order_payment, order_gas, order_status, order_create_time, order_close_time,
+    create_time, create_by, update_time, update_by, usable, remarks
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_orders
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_orders
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tdmh.entity.UserOrders" >
+    insert into user_orders (order_id, user_id, employee_id,
+      order_payment, order_gas, order_status, order_create_time,
+      order_close_time, create_time, create_by, 
+      update_time, update_by, usable, 
+      remarks)
+    values (#{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, #{orderPayment,jdbcType=DECIMAL},
+      #{orderGas,jdbcType=DECIMAL}, #{orderStatus,jdbcType=INTEGER}, #{orderCreateTime,jdbcType=TIMESTAMP},
+      #{orderCloseTime,jdbcType=TIMESTAMP}, NOW(), #{createBy,jdbcType=INTEGER},
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT}, 
+      #{remarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tdmh.entity.UserOrders" >
+    insert into user_orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="orderPayment != null" >
+        order_payment,
+      </if>
+      <if test="orderGas != null" >
+        order_gas,
+      </if>
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+      <if test="orderCreateTime != null" >
+        order_create_time,
+      </if>
+      <if test="orderCloseTime != null" >
+        order_close_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="usable != null" >
+        usable,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="orderPayment != null" >
+        #{orderPayment,jdbcType=DECIMAL},
+      </if>
+      <if test="orderGas != null" >
+        #{order_gas,jdbcType=DECIMAL},
+      </if>
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderCreateTime != null" >
+        #{orderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCloseTime != null" >
+        #{orderCloseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="usable != null" >
+        #{usable,jdbcType=BIT},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tdmh.entity.UserOrders" >
+    update user_orders
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="orderPayment != null" >
+        order_payment = #{orderPayment,jdbcType=DECIMAL},
+      </if>
+      <if test="orderGas != null" >
+        order_gas = #{orderGas,jdbcType=DECIMAL},
+      </if>
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderCreateTime != null" >
+        order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCloseTime != null" >
+        order_close_time = #{orderCloseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="usable != null" >
+        usable = #{usable,jdbcType=BIT},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tdmh.entity.UserOrders" >
+    update user_orders
+    set user_id = #{userId,jdbcType=INTEGER},
+      employee_id = #{employeeId,jdbcType=INTEGER},
+      order_payment = #{orderPayment,jdbcType=DECIMAL},
+      order_gas = #{orderGas,jdbcType=DECIMAL},
+      order_status = #{orderStatus,jdbcType=INTEGER},
+      order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
+      order_close_time = #{orderCloseTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      usable = #{usable,jdbcType=BIT},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <insert id="createFirstOrder" parameterType="com.tdmh.entity.UserOrders" >
+    insert into user_orders (user_id, employee_id,
+      order_payment,order_gas, order_status, order_create_time,
+      order_close_time, create_time, create_by,
+      update_time, update_by, remarks)
+    values (#{userId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER},
+      #{orderPayment,jdbcType=DECIMAL},#{orderGas,jdbcType=DECIMAL}, #{orderStatus,jdbcType=INTEGER}, NOW(),
+      #{orderCloseTime,jdbcType=TIMESTAMP}, NOW(), #{createBy,jdbcType=INTEGER},
+      NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
+  </insert>
+</mapper>

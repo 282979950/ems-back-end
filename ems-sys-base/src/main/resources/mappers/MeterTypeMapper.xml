@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.MeterTypeMapper">
+    <resultMap id="BaseResultMap" type="com.tdmh.entity.MeterType">
+        <constructor>
+            <idArg column="meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="meter_category" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="meter_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        meter_type_id, meter_category, meter_type, create_time, create_by, update_time, update_by,
+        usable, remarks
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from meter_type
+        where meter_type_id = #{meterTypeId,jdbcType=INTEGER}
+    </select>
+    <insert id="insert" parameterType="com.tdmh.entity.MeterType">
+        insert into meter_type (meter_type_id, meter_category, meter_type,
+        create_time, create_by, update_time,
+        update_by, usable, remarks
+        )
+        values (#{meterTypeId,jdbcType=INTEGER}, #{meterCategory,jdbcType=VARCHAR}, #{meterType,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
+        #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.tdmh.entity.MeterType">
+        insert into meter_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="meterTypeId != null">
+                meter_type_id,
+            </if>
+            <if test="meterCategory != null">
+                meter_category,
+            </if>
+            <if test="meterType != null">
+                meter_type,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="usable != null">
+                usable,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="meterTypeId != null">
+                #{meterTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="meterCategory != null">
+                #{meterCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="meterType != null">
+                #{meterType,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="usable != null">
+                #{usable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tdmh.entity.MeterType">
+        update meter_type
+        <set>
+            <if test="meterCategory != null">
+                meter_category = #{meterCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="meterType != null">
+                meter_type = #{meterType,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="usable != null">
+                usable = #{usable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where meter_type_id = #{meterTypeId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tdmh.entity.MeterType">
+        update meter_type
+        set meter_category = #{meterCategory,jdbcType=VARCHAR},
+        meter_type = #{meterType,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_by = #{updateBy,jdbcType=INTEGER},
+        usable = #{usable,jdbcType=BIT},
+        remarks = #{remarks,jdbcType=VARCHAR}
+        where meter_type_id = #{meterTypeId,jdbcType=INTEGER}
+    </update>
+    <select id="getMeterTypeId" parameterType="map" resultType="integer">
+        select
+        meter_type_id
+        from meter_type
+        where meter_category = #{meterCategory,jdbcType=VARCHAR} and meter_type = #{meterType,jdbcType=VARCHAR} and usable = 1
+    </select>
+    <select id="getAllMeterTypes" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from meter_type
+        where usable = 1
+    </select>
+</mapper>
