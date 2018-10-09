@@ -3,6 +3,7 @@ package com.tdmh.shiro;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -33,7 +34,7 @@ public class ShiroConfig {
     public SessionManager sessionManager()
     {
         ShiroSessionManager manager = new ShiroSessionManager();
-        manager.setSessionDAO(new CacheSessionDAO());
+        manager.setSessionDAO(cacheSessionDAO());
         SessionListener sessionListener = new SessionListener();
         Collection<org.apache.shiro.session.SessionListener> sessionListenerList = new ArrayList<org.apache.shiro.session.SessionListener>();
         sessionListenerList.add(sessionListener);
@@ -43,6 +44,16 @@ public class ShiroConfig {
         manager.setGlobalSessionTimeout(720000);
         return manager;
     }
+
+    @Bean
+    public CacheSessionDAO cacheSessionDAO() {
+        CacheSessionDAO cacheSessionDAO = new CacheSessionDAO();
+        cacheSessionDAO.setSessionIdGenerator(new JavaUuidSessionIdGenerator());
+        cacheSessionDAO.setActiveSessionsCacheName("shiro-activeSessionCache");
+        cacheSessionDAO.setCacheManager(ehCacheManager());
+        return cacheSessionDAO;
+    }
+
     /**
      *
      * @Title: createMyRealm

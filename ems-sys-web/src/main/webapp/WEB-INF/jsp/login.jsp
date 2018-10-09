@@ -14,14 +14,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <title>表具管理系统</title>
-        <link rel="shortcut icon" href="<%=request.getContextPath()%>/custom/img/lanyan-log.ico" type="image/x-icon"/>
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/materialize/fonts/material-icons.min.css"/>
-        <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/materialize/css/materialize.min.css" media="screen"/>
-        <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/fonts/ionicons.min.css"/>
-        <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/custom/css/common.css"/>
-        <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/custom/css/login.css"/>
-        <script type="text/javascript" src="<%=request.getContextPath()%>/materialize/js/jquery.min.js"></script>
-        <script type="text/javascript" src="<%=request.getContextPath()%>/materialize/js/materialize.min.js"></script>
+        <link rel="shortcut icon" href="../../static/custom/img/lanyan-log.ico" type="image/x-icon"/>
+        <link rel="stylesheet" href="../../static/materialize/fonts/material-icons.min.css"/>
+        <link type="text/css" rel="stylesheet" href="../../static/materialize/css/materialize.min.css" media="screen"/>
+        <link type="text/css" rel="stylesheet" href="../../static/fonts/ionicons.min.css"/>
+        <link type="text/css" rel="stylesheet" href="../../static/custom/css/common.css"/>
+        <link type="text/css" rel="stylesheet" href="../../static/custom/css/login.css"/>
+        <script type="text/javascript" src="../../static/materialize/js/jquery.min.js"></script>
+        <script type="text/javascript" src="../../static/materialize/js/materialize.min.js"></script>
     </head>
     <body>
         <%--
@@ -36,7 +36,7 @@
             <!--<h1 class="login-title">登录</h1>-->
             <div class="illustration">
                 <%--<i class="ion-ios-navigate"></i>--%>
-               <img  src="<%=request.getContextPath()%>/custom/img/lanyan-login.png">
+               <img  src="../../static/custom/img/lanyan-login.png">
             </div>
             <div class="row">
                 <div class="input-field col s12">
