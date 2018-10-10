@@ -1,9 +1,10 @@
 package com.tdmh.entity.mapper;
 
 import com.tdmh.entity.UserOrders;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
-@Repository
+@Mapper @Component
 public interface UserOrdersMapper {
     int deleteByPrimaryKey(Integer orderId);
 

@@ -4,10 +4,10 @@ import com.tdmh.entity.SysDistrict;
 import com.tdmh.param.SysDistrictParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-@Repository
+@Mapper @Component
 public interface SysDistrictMapper {
     int deleteByPrimaryKey(Integer distId);
 

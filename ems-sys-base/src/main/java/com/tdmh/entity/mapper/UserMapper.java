@@ -7,11 +7,12 @@ import com.tdmh.param.CreateAccountParam;
 import com.tdmh.param.CreateArchiveParam;
 import com.tdmh.param.InstallMeterParam;
 import com.tdmh.param.LockAccountParam;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-@Repository
+@Mapper @Component
 public interface UserMapper {
 
     int deleteByPrimaryKey(Integer userId);

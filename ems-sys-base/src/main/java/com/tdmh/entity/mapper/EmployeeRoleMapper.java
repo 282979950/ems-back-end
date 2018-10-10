@@ -4,11 +4,11 @@ package com.tdmh.entity.mapper;
 import com.tdmh.entity.EmployeeRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import javax.management.relation.Role;
 import java.util.List;
-@Repository
+@Mapper @Component
 public interface EmployeeRoleMapper {
     int deleteByPrimaryKey(Integer id);
 
