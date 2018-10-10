@@ -909,7 +909,9 @@
         if (params.name) {
             $input.attr('name', params.name)
         }
-        $input.attr('text', '');
+        if (params.data) {
+            $input.attr('text', params.data);
+        }
         var $span = this.$span = $('<span><i class="mdui-icon material-icons">arrow_drop_down</i></span>').appendTo($dom);
         var options = JSON.parse(JSON.stringify(params.options));
         var $panelDom = this.$panelDom = $('<div class="tree-combobox-panel mdui-shadow-2"></div>').css({
