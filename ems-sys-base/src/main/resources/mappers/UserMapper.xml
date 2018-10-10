@@ -12,9 +12,6 @@
             <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="user_gas_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="iccard_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="iccard_identifier" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="iccard_password" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="user_locked" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -27,7 +24,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         user_id, user_name, user_phone, user_idcard, user_deed, user_dist_id, user_address,
-        user_type, user_gas_type, iccard_id, iccard_identifier, iccard_password, user_status, user_locked,
+        user_type, user_gas_type,  user_status, user_locked,
         create_time, create_by, update_time, update_by, usable, remarks
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -44,14 +41,12 @@
         insert into user (user_id, user_name, user_phone,
         user_idcard, user_deed, user_dist_id,
         user_address, user_type, user_gas_type,
-        iccard_id, iccard_identifier, iccard_password,
         user_status, user_locked, create_time, create_by,
         update_time, update_by, usable,
         remarks)
         values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPhone,jdbcType=VARCHAR},
         #{userIdcard,jdbcType=VARCHAR}, #{userDeed,jdbcType=VARCHAR}, #{userDistId,jdbcType=INTEGER},
         #{userAddress,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{userGasType,jdbcType=INTEGER},
-        #{iccardId,jdbcType=INTEGER}, #{iccardIdentifier,jdbcType=VARCHAR}, #{iccardPassword,jdbcType=VARCHAR},
         #{userLocked,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
         #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},
         #{remarks,jdbcType=VARCHAR})
@@ -85,15 +80,6 @@
             </if>
             <if test="userGasType != null">
                 user_gas_type,
-            </if>
-            <if test="iccardId != null">
-                iccard_id,
-            </if>
-            <if test="iccardIdentifier != null">
-                iccard_identifier,
-            </if>
-            <if test="iccardPassword != null">
-                iccard_password,
             </if>
             <if test="user_status != null">
                 user_status,
@@ -148,15 +134,6 @@
             <if test="userGasType != null">
                 #{userGasType,jdbcType=INTEGER},
             </if>
-            <if test="iccardId != null">
-                #{iccardId,jdbcType=INTEGER},
-            </if>
-            <if test="iccardIdentifier != null">
-                #{iccardIdentifier,jdbcType=VARCHAR},
-            </if>
-            <if test="iccardPassword != null">
-                #{iccardPassword,jdbcType=VARCHAR},
-            </if>
             <if test="userLocked != null">
                 #{userLocked,jdbcType=BIT},
             </if>
@@ -207,15 +184,6 @@
             <if test="userGasType != null">
                 user_gas_type = #{userGasType,jdbcType=INTEGER},
             </if>
-            <if test="iccardId != null">
-                iccard_id = #{iccardId,jdbcType=INTEGER},
-            </if>
-            <if test="iccardIdentifier != null">
-                iccard_identifier = #{iccardIdentifier,jdbcType=VARCHAR},
-            </if>
-            <if test="iccardPassword != null">
-                iccard_password = #{iccardPassword,jdbcType=VARCHAR},
-            </if>
             <if test="user_status != null">
                 user_status = #{userStatus,jdbcType=INTEGER},
             </if>
@@ -253,9 +221,6 @@
         user_address = #{userAddress,jdbcType=VARCHAR},
         user_type = #{userType,jdbcType=INTEGER},
         user_gas_type = #{userGasType,jdbcType=INTEGER},
-        iccard_id = #{iccardId,jdbcType=INTEGER},
-        iccard_identifier = #{iccardIdentifier,jdbcType=VARCHAR},
-        iccard_password = #{iccardPassword,jdbcType=VARCHAR},
         user_status = #{userStatus,jdbcType=INTEGER},
         user_locked = #{userLocked,jdbcType=BIT},
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -465,9 +430,6 @@
         user_phone = #{userPhone,jdbcType=VARCHAR},
         user_idcard = #{userIdcard,jdbcType=VARCHAR},
         user_deed = #{userDeed,jdbcType=VARCHAR},
-        iccard_id = #{iccardId,jdbcType=INTEGER},
-        iccard_identifier = #{iccardIdentifier,jdbcType=VARCHAR},
-        iccard_password = #{iccardPassword,jdbcType=VARCHAR},
         user_status = 3,
         user_locked = #{userLocked,jdbcType=BIT},
         update_time = NOW(),
@@ -505,8 +467,10 @@
     </resultMap>
     <select id="searchAccountArchive" parameterType="map" resultMap="LockAccountParam">
         select
-        u.user_id, u.user_name,u.iccard_id, dist.dist_name, u.user_address, IFNULL(ul.is_lock,0) as is_lock,'' as lock_reason, ul.lock_reason as last_lock_reason
-        from user u left join sys_district dist on u.user_dist_id = dist.dist_id
+        u.user_id, u.user_name,uc.card_id as iccard_id, dist.dist_name, u.user_address, IFNULL(ul.is_lock,0) as is_lock,'' as lock_reason, ul.lock_reason as last_lock_reason
+        from user u
+        left join user_card uc on u.user_id = uc.user_id
+        left join sys_district dist on u.user_dist_id = dist.dist_id
         LEFT JOIN ( SELECT us.user_id, IFNULL(us.is_lock,0) is_lock, us.lock_reason , us.create_time FROM user_lock us ,
         (SELECT user_id , MAX(create_time) AS create_time FROM user_lock GROUP BY user_id) um
         WHERE us.user_id = um.user_id AND us.create_time = um.create_time
@@ -519,7 +483,7 @@
             AND u.user_name  LIKE CONCAT('%',#{userName,jdbcType=VARCHAR}, '%')
         </if>
         <if test="iccardId != null and iccardId != ''">
-            AND u.iccard_id  LIKE CONCAT('%',#{iccardId,jdbcType=VARCHAR}, '%')
+            AND uc.card_id  LIKE CONCAT('%',#{iccardId,jdbcType=VARCHAR}, '%')
         </if>
         <if test="userStatus != null and userStatus != ''">
             AND u.user_status = #{userStatus,jdbcType=VARCHAR}

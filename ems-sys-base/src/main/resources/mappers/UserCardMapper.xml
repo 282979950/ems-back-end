@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.UserCardMapper">
+<insert id="insert">
+ insert into user_card (user_id, card_id,card_identifier,card_password, create_time, create_by,update_time,update_by ,usable)
+       values (#{userId,jdbcType=INTEGER},#{cardId,jdbcType=INTEGER},#{cardIdentifier,jdbcType=VARCHAR},#{cardPassword,jdbcType=VARCHAR},NOW(),#{createBy,jdbcType=INTEGER},NOW(),
+        #{updateBy,jdbcType=INTEGER},#{usable,jdbcType=BIT})
+</insert>
+</mapper>

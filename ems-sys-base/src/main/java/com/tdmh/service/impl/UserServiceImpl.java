@@ -4,6 +4,7 @@ package com.tdmh.service.impl;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.*;
+import com.tdmh.entity.mapper.UserCardMapper;
 import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserMetersMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
@@ -18,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +41,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserOrdersMapper userOrdersMapper;
+
+    @Autowired
+    private UserCardMapper userCardMapper;
 
     @Autowired
     private IMeterService meterService;
@@ -211,9 +214,21 @@ public class UserServiceImpl implements IUserService {
             return JsonData.fail("用户开户失败");
         }
         //依据充值金额生成第一笔订单,表具的激活需要充值
-        User user = getUserByIccardId(iccardId);
+//        User user = getUserByIccardId(iccardId);
+        UserCard userCard = new UserCard();
+        userCard.setUserId(param.getUserId());
+        userCard.setCardId(param.getIccardId());
+        userCard.setCardIdentifier(param.getIccardIdentifier());
+        userCard.setCardPassword(param.getIccardPassword());
+        userCard.setUsable(true);
+        userCard.setCreateBy(param.getUpdateBy());
+        userCard.setUpdateBy(param.getUpdateBy());
+        int resultCount1 = userCardMapper.insert(userCard);
+        if (resultCount1 == 0) {
+            return JsonData.fail("用户初始化卡失败");
+        }
         UserOrders userOrders = new UserOrders();
-        userOrders.setUserId(user.getUserId());
+        userOrders.setUserId(param.getUserId());
         userOrders.setEmployeeId(param.getUpdateBy());
         BigDecimal gas = param.getOrderGas();
         userOrders.setOrderGas(gas);
