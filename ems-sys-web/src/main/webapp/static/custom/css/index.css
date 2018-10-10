@@ -142,7 +142,7 @@ and open the template in the editor.
 
 .mdui-dialog-content form .mdui-textfield .mdui-textfield-input {
     margin: 0;
-    height: 2.5rem;
+    /*height: 2.5rem;*/
 }
 
 .mdui-toolbar .mdui-select {

@@ -323,6 +323,7 @@
                     }
                     if (field.disabled) {
                         $input.attr('disabled', field.disabled);
+                        $input.parent().addClass('mdui-textfield-not-empty');
                     }
                     switch (field.inputType) {
                         case 'email':
