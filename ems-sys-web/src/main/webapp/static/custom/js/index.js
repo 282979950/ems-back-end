@@ -15,7 +15,7 @@ app.getPanelContent = function (name) {
     var panelContent = '';
     switch (name) {
         /*
-         * 系统管理：区域管理 机构管理 用户管理 角色管理 权限管理 字典管理 日志管理 公告管理
+         * 系统管理：区域管理 机构管理 用户管理 角色管理 权限管理 字典管理 气价管理 日志管理 公告管理
          */
         case 'dist':
         case 'org':
@@ -23,6 +23,7 @@ app.getPanelContent = function (name) {
         case 'role':
         case 'permission':
         case 'dic':
+        case 'gasPrice':
             panelContent = this.DEFAULT_TEMPLATE;
             break;
         case 'log':
@@ -123,6 +124,8 @@ app.initIndex = function () {
                     url: 'account/calAmount.do',
                     contentType: 'application/x-www-form-urlencoded',
                     data: {
+                        "userType": app.editForm.data.userType,
+                        "userGasType": app.editForm.data.userGasType,
                         "orderGas": val
                     },
                     beforeSend: function (xhr) {
@@ -580,6 +583,37 @@ app.tableFields = {
     }, {
         name: 'dictSort',
         caption: '序号'
+    }],
+    gasPrice: [{
+        name: 'userTypeName',
+        caption: '用户类型'
+    }, {
+        name: 'userGasTypeName',
+        caption: '用气类型'
+    },{
+        name: 'gasRangeOne',
+        caption: '第一阶梯起始气量'
+    }, {
+        name: 'gasPriceOne',
+        caption: '第一阶梯气价'
+    },{
+        name: 'gasRangeTwo',
+        caption: '第二阶梯起始气量'
+    }, {
+        name: 'gasPriceTwo',
+        caption: '第二阶梯气价'
+    },{
+        name: 'gasRangeThree',
+        caption: '第三阶梯起始气量'
+    }, {
+        name: 'gasPriceThree',
+        caption: '第三阶梯气价'
+    },{
+        name: 'gasRangeFour',
+        caption: '第四阶梯起始气量'
+    }, {
+        name: 'gasPriceFour',
+        caption: '第四阶梯气价'
     }],
     permission: [{
         name: 'permName',
@@ -1323,6 +1357,38 @@ app.getEditFormFields = function (name) {
                 name: 'dictSort',
                 caption: '序号'
             }];
+          case 'gasPrice':
+              return [{
+                name: 'userTypeName',
+                caption: '用户类型'
+            }, {
+                name: 'userGasTypeName',
+                caption: '用气类型'
+            },{
+                name: 'gasRangeOne',
+                caption: '第一阶梯起始气量'
+            }, {
+                name: 'gasPriceOne',
+                caption: '第一阶梯气价'
+            },{
+                name: 'gasRangeTwo',
+                caption: '第二阶梯起始气量'
+            }, {
+                name: 'gasPriceTwo',
+                caption: '第二阶梯气价'
+            },{
+                name: 'gasRangeThree',
+                caption: '第三阶梯起始气量'
+            }, {
+                name: 'gasPriceThree',
+                caption: '第三阶梯气价'
+            },{
+                name: 'gasRangeFour',
+                caption: '第四阶梯起始气量'
+            }, {
+                name: 'gasPriceFour',
+                caption: '第四阶梯气价'
+            }];
         case 'permission':
             return [{
                 name: 'permName',
@@ -1739,6 +1805,12 @@ app.getToolbarFields = function (name) {
                 name: 'dictCategory',
                 caption: '字典类型',
                 type: 'input'
+            }];
+        case 'gasPrice' :
+            return [{
+                name: 'edit',
+                caption: '编辑',
+                perm:'sys:gasPrice:update'
             }];
         case 'permission':
             return [{

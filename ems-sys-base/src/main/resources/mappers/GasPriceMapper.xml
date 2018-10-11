@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.GasPriceMapper">
+    <resultMap id="BaseResultMap" type="com.tdmh.entity.GasPrice">
+        <constructor>
+            <idArg column="gas_price_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_gas_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="gas_range_one" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="gas_price_one" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="gas_range_two" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="gas_price_two" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="gas_range_three" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="gas_price_three" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="gas_range_four" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="gas_price_four" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+
+    <select id="listAllGasPrice" resultType="com.tdmh.param.GasPriceParam">
+        SELECT ap.gas_price_id as gasPriceId, a.dict_value as userType, a.dict_key as userTypeName,
+        b.dict_value as userGasType, b.dict_key as userGasTypeName,
+        ap.gas_range_one as gasRangeOne, ap.gas_price_one as gasPriceOne,
+        ap.gas_range_two as gasRangeTwo, ap.gas_price_two as gasPriceTwo,
+        ap.gas_range_three as gasRangeThree, ap.gas_price_three as gasPriceThree,
+        ap.gas_range_four as gasRangeFour, ap.gas_price_four as gasPriceFour
+        FROM sys_dictionary a JOIN sys_dictionary b
+        left JOIN gas_price ap ON a.dict_value = ap.user_type AND b.dict_value = ap.user_gas_type
+        WHERE a.dict_category = 'user_type' AND b.dict_category = 'user_gas_type';
+    </select>
+    <select id="findGasPriceByType" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        gas_price_id,user_type,user_gas_type,gas_range_one,gas_price_one,gas_range_two,gas_price_two,gas_range_three,gas_price_three,
+        gas_range_four,gas_price_four,create_time,create_by,update_time,update_by,usable,remarks FROM gas_price
+        <where>
+            <if test="userType != null">
+                and user_type = #{userType}
+            </if>
+            <if test="userGasType != null">
+                and user_gas_type = #{userGasType}
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="insert" parameterType="com.tdmh.param.GasPriceParam">
+        insert into gas_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userType != null">
+                user_type,
+            </if>
+            <if test="userGasType != null">
+                user_gas_type,
+            </if>
+            <if test="gasRangeOne != null">
+                gas_range_one,
+            </if>
+            <if test="gasPriceOne != null">
+                gas_price_one,
+            </if>
+            <if test="gasRangeTwo != null">
+                gas_range_two,
+            </if>
+            <if test="gasPriceTwo != null">
+                gas_price_two,
+            </if>
+            <if test="gasRangeThree != null">
+                gas_range_three,
+            </if>
+            <if test="gasPriceThree != null">
+                gas_price_three,
+            </if>
+            <if test="gasRangeFour != null">
+                gas_range_four,
+            </if>
+            <if test="gasPriceFour != null">
+                gas_price_four,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="usable != null">
+                usable,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userType != null">
+                #{userType},
+            </if>
+            <if test="userGasType != null">
+                #{userGasType},
+            </if>
+            <if test="gasRangeOne != null">
+                #{gasRangeOne},
+            </if>
+            <if test="gasPriceOne != null">
+                #{gasPriceOne},
+            </if>
+            <if test="gasRangeTwo != null">
+                #{gasRangeTwo},
+            </if>
+            <if test="gasPriceTwo != null">
+                #{gasPriceTwo},
+            </if>
+            <if test="gasRangeThree != null">
+                #{gasRangeThree},
+            </if>
+            <if test="gasPriceThree != null">
+                #{gasPriceThree},
+            </if>
+            <if test="gasRangeFour != null">
+                #{gasRangeFour},
+            </if>
+            <if test="gasPriceFour != null">
+                #{gasPriceFour},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="usable != null">
+                #{usable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.tdmh.param.GasPriceParam">
+        update  gas_price set
+            user_type = #{userType},
+             user_gas_type = #{userGasType},
+            gas_range_one = #{gasRangeOne},
+             gas_price_one = #{gasPriceOne},
+             gas_range_two = #{gasRangeTwo},
+            gas_price_two = #{gasPriceTwo},
+             gas_range_three = #{gasRangeThree},
+             gas_price_three = #{gasPriceThree},
+             gas_range_four = #{gasRangeFour},
+            gas_price_four = #{gasPriceFour},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+             create_by = #{createBy,jdbcType=INTEGER},
+             update_time = #{updateTime,jdbcType=TIMESTAMP},
+             update_by = #{updateBy,jdbcType=INTEGER},
+             usable = #{usable,jdbcType=BIT},
+             remarks = #{remarks,jdbcType=VARCHAR}
+             where gas_price_id = #{gasPriceId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

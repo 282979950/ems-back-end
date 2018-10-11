@@ -531,6 +531,13 @@ INSERT INTO `sys_permission` VALUES ('1116', 'account:installation:import', '导
 INSERT INTO `sys_permission` VALUES ('1117', 'account:installation:export', '导出', null, '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
 -- ----------------------------
+-- Records of 气价管理
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1118', 'sys:gasPrice:visit', '气价管理', '/sys/gasPrice', '1001', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1119', 'sys:gasPrice:update', '修改', null, '1118', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+
+-- ----------------------------
 -- Table structure for `sys_role`
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
@@ -736,7 +743,7 @@ CREATE TABLE `user_orders` (
   `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
   `employee_id` int(10) unsigned NOT NULL COMMENT '员工ID',
   `order_payment` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '充值金额',
-  `order_gas` decimal(10,2) unsigned DEFAULT NULL COMMENT '充值气量',
+  `order_gas` decimal(10,1) unsigned DEFAULT NULL COMMENT '充值气量',
   `order_status` int(4) unsigned DEFAULT NULL COMMENT '订单状态',
   `order_create_time` datetime DEFAULT NULL COMMENT '订单创建时间',
   `order_prestrike_time` datetime DEFAULT NULL COMMENT '订单预冲账时间',
@@ -804,4 +811,33 @@ CREATE TABLE `user_card` (
   PRIMARY KEY (`user_card_id`),
   UNIQUE KEY `user_card_id` (`user_card_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for `gas_price`
+-- ----------------------------
+DROP TABLE IF EXISTS `gas_price`;
+CREATE TABLE `gas_price` (
+`gas_price_id`  int(2) NOT NULL AUTO_INCREMENT ,
+`user_type`  int(4) NULL DEFAULT NULL ,
+`user_gas_type`  int(4) NULL DEFAULT NULL ,
+`gas_range_one`  decimal(10,2) NULL DEFAULT NULL ,
+`gas_price_one`  decimal(10,2) NULL DEFAULT NULL ,
+`gas_range_two`  decimal(10,2) NULL DEFAULT NULL ,
+`gas_price_two`  decimal(10,2) NULL DEFAULT NULL ,
+`gas_range_three`  decimal(10,2) NULL DEFAULT NULL ,
+`gas_price_three`  decimal(10,2) NULL DEFAULT NULL ,
+`gas_range_four`  decimal(10,2) NULL DEFAULT NULL ,
+`gas_price_four`  decimal(10,2) NULL DEFAULT NULL ,
+`create_time`  datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP ,
+`create_by`  int(10) NULL DEFAULT NULL ,
+`update_time`  datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP ,
+`usable`  tinyint(1) NULL DEFAULT NULL ,
+`update_by`  int(10) NULL DEFAULT NULL ,
+`remarks`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL ,
+PRIMARY KEY (`gas_price_id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci
+ROW_FORMAT=DYNAMIC
+;
 
