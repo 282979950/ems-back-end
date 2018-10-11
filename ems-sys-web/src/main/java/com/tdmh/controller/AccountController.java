@@ -88,11 +88,11 @@ public class AccountController {
 
     @RequestMapping(value = "/calAmount.do")
     @ResponseBody
-    public JsonData calAmount(@Param("orderGas") Integer orderGas,@Param("userType") Integer userType,@Param("userGasType") Integer userGasType) {
+    public JsonData calAmount(@Param("orderGas") BigDecimal orderGas,@Param("userType") Integer userType,@Param("userGasType") Integer userGasType) {
         BigDecimal orderPayment = null;
         GasPrice gasPrice = gasPriceService.findGasPriceByType(userType ,userGasType);
         if(gasPrice != null){
-            orderPayment = CalculateUtil.gasToPayment(BigDecimal.valueOf(orderGas) , gasPrice);
+            orderPayment = CalculateUtil.gasToPayment(orderGas, gasPrice);
             return JsonData.success(orderPayment,"查询成功");
         }
         return JsonData.successMsg("暂未配置天然气区间价格");
