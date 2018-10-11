@@ -60,21 +60,6 @@ public class User extends BaseEntity {
     private Integer userGasType;
 
     /**
-     * IC卡卡号
-     */
-    private Integer iccardId;
-
-    /**
-     * IC卡识别号
-     */
-    private String iccardIdentifier;
-
-    /**
-     * IC卡密码
-     */
-    private String iccardPassword;
-
-    /**
      * 用户状态
      */
     private Integer userStatus;
@@ -85,7 +70,7 @@ public class User extends BaseEntity {
     private Boolean userLocked;
 
     public User(Integer userId, String userName, String userPhone, String userIdcard, String userDeed, Integer userDistId, String userAddress, Integer
-            userType, Integer userGasType, Integer iccardId, String iccardIdentifier, String iccardPassword, Integer userStatus, Boolean userLocked, Date
+            userType, Integer userGasType, Integer userStatus, Boolean userLocked, Date
             createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.userId = userId;
@@ -97,9 +82,6 @@ public class User extends BaseEntity {
         this.userAddress = userAddress;
         this.userType = userType;
         this.userGasType = userGasType;
-        this.iccardId = iccardId;
-        this.iccardIdentifier = iccardIdentifier;
-        this.iccardPassword = iccardPassword;
         this.userStatus = userStatus;
         this.userLocked = userLocked;
     }

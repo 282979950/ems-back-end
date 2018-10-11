@@ -2,10 +2,10 @@ package com.tdmh.entity.mapper;
 
 import com.tdmh.entity.SysOrganization;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-@Repository
+@Mapper @Component
 public interface SysOrganizationMapper {
     int deleteByPrimaryKey(String id);
 

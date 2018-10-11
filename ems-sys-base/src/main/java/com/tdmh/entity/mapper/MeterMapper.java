@@ -4,11 +4,11 @@ import com.tdmh.entity.Meter;
 import com.tdmh.param.EntryMeterParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-@Repository
+@Mapper @Component
 public interface MeterMapper {
 
     int insert(Meter record);
