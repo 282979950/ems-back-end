@@ -1044,179 +1044,62 @@
     };
 
     /**
-     * 读写卡控件
+     * 读卡结果为长度为6的数组
+     * 0: 执行结果
+     * 1: 卡类型
+     * 2: 卡序列号
+     * 3: IC卡编号
+     * 4: 卡内气量(单位：0.1方)
+     * 5: 维修次数
+     * @result 读卡成功返回卡片信息;读卡失败返回错误信息
      * @constructor
      */
-    function RWCardComp(params) {
-        this._init(params);
-    }
-
-    /**
-     * 初始化
-     * @param params
-     * @private
-     */
-    RWCardComp.prototype._init = function (params) {
-        this._initDom(params);
-        this._initData(params);
-        this._initEvents(params);
+    app.ReadCard = function () {
+        var ocx = $('.rw-comp')[0];
+        var data = ocx.ReadCard(0, 200);
+        var result = String(data).split("~", 7);
+        return result[0] === 'S' ? result : ocx.ErrorDesc;
     };
 
     /**
-     * 初始化dom
+     * 写一般充值卡
+     * @param icCardId IC卡号
+     * @param icCardPsw IC卡密码
+     * @param gas 充值气量（单位：方）
+     * @param fc 维修次数
+     * @return string S:成功 F:失败
+     * @constructor
      */
-    RWCardComp.prototype._initDom = function (params) {
-        var $parent = $(params.parent);
-        var $dom = $('<div class="rw-comp"></div>').appendTo($parent);
-        var $ocx = $('<object id="ICRW" type="application/x-itst-activex" clsid="{6C8FD9AF-5668-45C8-8D9A-EBE02A7A2F39}"></object>').appendTo($dom);
-        this.ocx = $ocx[0];
-        var $form = $('<div class="rw-form"></div>').appendTo($dom);
-        this.form = app.createForm({
-            parent: '.rw-form',
-            fields: [{
-                name: 'com',
-                caption: '串口',
-                type: 'listcombobox',
-                options: [{
-                    key: 'COM1',
-                    value: '0'
-                }, {
-                    key: 'COM2',
-                    value: '1'
-                }, {
-                    key: 'COM3',
-                    value: '2'
-                }, {
-                    key: 'COM4',
-                    value: '3'
-                }, {
-                    key: 'COM5',
-                    value: '4'
-                }, {
-                    key: 'COM6',
-                    value: '5'
-                }, {
-                    key: 'COM7',
-                    value: '6'
-                }, {
-                    key: 'COM8',
-                    value: '7'
-                }, {
-                    key: 'COM9',
-                    value: '8'
-                }, {
-                    key: 'COM10',
-                    value: '9'
-                }]
-            }, {
-                name: 'ICCardType',
-                caption: 'IC卡类型',
-                type: 'listcombobox',
-                options: [{
-                    key: '新卡',
-                    value: '0'
-                }, {
-                    key: '密码传递卡',
-                    value: '1'
-                }, {
-                    key: '一般充值卡',
-                    value: '2'
-                }]
-            }, {
-                name: 'ICCardId',
-                caption: 'IC卡号'
-            }, {
-                name: 'ICCardIdentifier',
-                caption: 'IC卡识别号'
-            }, {
-                name: 'ICCardPsw',
-                caption: 'IC卡密码'
-            }, {
-                name: 'fc',
-                caption: '维修标识值'
-            }, {
-                name: 'gas',
-                caption: '卡内气量(单位:方)'
-            }, {
-                name: 'sum',
-                caption: '输入总量(单位:方)'
-            }],
-            data: {
-                com: 0
-            }
-        });
-        var $btns = $('<div class="rw-btns"></div>').appendTo($dom);
-        this.readBtn = $('<div class="mdui-btn rw-btn rw-btn-read">读用户卡</div>').appendTo($btns);
-        this.writeBtn = $('<div class="mdui-btn rw-btn rw-btn-write">写用户卡</div>').appendTo($btns);
+    app.WriteUCard = function (icCardId, icCardPsw, gas, fc) {
+        var ocx = $('.rw-comp')[0];
+        var result = ocx.WriteUCard(0, 200, icCardId, icCardPsw, gas * 10, fc);
+        return result === 'S' ? '写卡成功' : ('写卡失败' + ocx.ErrorDesc);
     };
 
     /**
-     * 初始化data
+     * 写密码传递卡
+     * @param icCardId IC卡号
+     * @param icCardPsw IC卡密码
+     * @param gas 充值气量（单位：方）
+     * @param fc 维修次数（单位：方）
+     * @param sum 卡输入总量
+     * @constructor
+     * @return {string}
      */
-    RWCardComp.prototype._initData = function (params) {
-
+    app.WritePCard = function (icCardId, icCardPsw, gas, fc, sum) {
+        var ocx = $('.rw-comp')[0];
+        var result = ocx.WritePCard(0, 200, icCardId, icCardPsw, gas * 10, fc, sum);
+        return result === 'S' ? '写卡成功' : ('写卡失败' + ocx.ErrorDesc);
     };
 
     /**
-     * 初始化events
+     * 初始化IC卡
+     * @param icPsw
+     * @return {*}
      */
-    RWCardComp.prototype._initEvents = function () {
-        var _this = this;
-        var form = this.form;
-        var ocx = this.ocx;
-        this.readBtn.on('click', function () {
-            var str = ocx.ReadCard(_this.form.getData()['com'], 3);
-            var result = String(str).split("~", 7);
-            if (result[0] === 'S') {
-                app.successMessage("读卡成功");
-                form.setValue('ICCardType', result[1]);
-                form.setValue('ICCardIdentifier', result[2]);
-                form.setValue('ICCardId', result[3]);
-                // todo 获取IC卡密码
-                form.setValue('gas', result[4]/10);
-                form.setValue('fc', result[5]);
-            } else {
-                app.errorMessage("读卡失败" + ocx.ErrorDesc);
-            }
-        });
-        this.writeBtn.on('click', function () {
-            var data = form.getData();
-            var isNormal = data['ICCardType'] === '2';
-            var port = data['com'];
-            var icCardId = data['ICCardId'];
-            var icCardPsw = data['ICCardPsw'];
-            var gas = data['gas'] * 10;
-            var fc = data['fc'];
-            var sum = data['sum'];
-            var result;
-            if (isNormal) {
-                result = ocx.WriteUCard(port, 200, icCardId, icCardPsw, gas, fc);
-            } else {
-                // todo 将用户设置的IC卡密码保存到数据库中
-                result = ocx.WritePCard(port, 200, icCardId, icCardPsw, gas, fc, sum);
-            }
-            if (result === 'S') {
-                app.successMessage("写卡成功");
-            } else {
-                app.errorMessage("写卡失败" + ocx.ErrorDesc);
-            }
-        });
-    };
-
-    /**
-     * 设置value
-     */
-    RWCardComp.prototype.setValue = function (value) {
-    };
-
-    /**
-     * 获取value
-     */
-    RWCardComp.prototype.getValue = function () {
-
-    };
-
-    app.createRWCardComp = function (params) {
-        return new RWCardComp(params);
+    app.initCard = function (icPsw) {
+        var ocx = $('.rw-comp')[0];
+        var result = ocx.InitCard(0, 200, icPsw);
+        return result === 'S' ? result : ocx.ErrorDesc;
     };
 })();
