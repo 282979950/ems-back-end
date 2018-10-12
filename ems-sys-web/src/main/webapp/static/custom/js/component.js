@@ -1058,6 +1058,7 @@
         var ocx = $('.rw-comp')[0];
         var data = ocx.ReadCard(0, 200);
         var result = String(data).split("~", 7);
+        result[4] = result[4]/10;
         return result[0] === 'S' ? result : ocx.ErrorDesc;
     };
 

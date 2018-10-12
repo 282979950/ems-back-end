@@ -214,8 +214,8 @@ public class UserServiceImpl implements IUserService {
             return JsonData.fail("用户开户失败");
         }
         //依据充值金额生成第一笔订单,表具的激活需要充值
-//        User user = getUserByIccardId(iccardId);
-        UserCard userCard = new UserCard();
+        UserCard userCard = userCardMapper.getUserCardByUserIdAndCardId(param.getUserId(),param.getIccardId());
+        if(userCard == null ) userCard = new UserCard();
         userCard.setUserId(param.getUserId());
         userCard.setCardId(param.getIccardId());
         userCard.setCardIdentifier(param.getIccardIdentifier());
@@ -223,7 +223,12 @@ public class UserServiceImpl implements IUserService {
         userCard.setUsable(true);
         userCard.setCreateBy(param.getUpdateBy());
         userCard.setUpdateBy(param.getUpdateBy());
-        int resultCount1 = userCardMapper.insert(userCard);
+        int resultCount1;
+        if(userCard.getUserCardId() == null) {
+            resultCount1 = userCardMapper.insert(userCard);
+        }else{
+            resultCount1 = userCardMapper.update(userCard);
+        }
         if (resultCount1 == 0) {
             return JsonData.fail("用户初始化卡失败");
         }
@@ -242,7 +247,7 @@ public class UserServiceImpl implements IUserService {
         if (resultCount2 == 0) {
             return JsonData.fail("初始订单生成失败");
         }
-        return JsonData.successMsg("用户开户成功");
+        return JsonData.success(param,"用户开户成功");
     }
 
 

@@ -115,6 +115,14 @@ app.initIndex = function () {
             $(".tree-combobox-panel").hide();
             app.isTreeComboboxPanelShow = false;
         });
+        $('body').on('focus', '[name="iccardIdentifier"]', function (res) {
+            var result = app.ReadCard();
+            if(result instanceof Array){
+                app.editForm.setValue('iccardIdentifier', result[2]);
+            }else{
+                app.warningMessage(result);
+            }
+        });
         $('body').on('keyup', '[name="orderGas"]', function (res) {
             var val = $(this).val();
             if (/^\d+(\.\d+)?$/.test(val)) {
@@ -300,6 +308,10 @@ app.initEvent = function () {
                         success: function (response) {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
+                                if(app.currentPageName == 'account'){
+                                    var rdata = response.data;
+                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas);
+                                }
                                 var url = app.currentPageName + '/listData.do';
                                 app.setDataCache(url, null);
                                 console.log("清理" + url + "缓存");

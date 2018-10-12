@@ -9,6 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserCard extends BaseEntity {
+
+    private Integer userCardId;
+
     /**
      * 用户ID
      */
