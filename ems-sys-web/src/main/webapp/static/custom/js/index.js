@@ -45,6 +45,7 @@ app.getPanelContent = function (name) {
          * 充值缴费管理：预付费充值 补卡充值 后付费充值 发票管理
          */
         case 'prePayment':
+            panelContent = this.DEFAULT_TEMPLATE;
         case 'replaceCard':
         case 'postPayment':
         case 'invoice':
@@ -129,9 +130,10 @@ app.initIndex = function () {
                 $.ajax({
                     async: true,
                     type: 'POST',
-                    url: 'account/calAmount.do',
+                    url: 'calAmount.do',
                     contentType: 'application/x-www-form-urlencoded',
                     data: {
+                        "userId" : app.editForm.data.userId,
                         "userType": app.editForm.data.userType,
                         "userGasType": app.editForm.data.userGasType,
                         "orderGas": val
@@ -312,6 +314,10 @@ app.initEvent = function () {
                                     var rdata = response.data;
                                     app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas);
                                 }
+                                if(app.currentPageName == 'prePayment'){
+                                    var rdata = response.data;
+                                    app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes);
+                                }
                                 var url = app.currentPageName + '/listData.do';
                                 app.setDataCache(url, null);
                                 console.log("清理" + url + "缓存");
@@ -327,12 +333,13 @@ app.initEvent = function () {
             }]
         });
         $(".tree-combobox-panel").remove();
-        if (app.currentPageName == 'account') {
+        if (app.currentPageName == 'account'|| app.currentPageName == 'prePayment') {
             if (table.getSelectedDatas()[0]['meterCategory'] == 'IC卡表')
                 formNames = app.currentPageName + 'IC';
             else
                 formNames = app.currentPageName + 'MessAndUnion';
         }
+
         if (app.currentPageName == 'lockAccount') {
             if (table.getSelectedDatas()[0]['isLock'] == 'true')
                 formNames = app.currentPageName + 'UnLock';
@@ -763,6 +770,40 @@ app.tableFields = {
     }, {
         name: 'createTime',
         caption: '解锁/锁定时间'
+    }],
+    prePayment:[{
+        name: 'userId',
+        caption: '用户编号'
+    },{
+        name: 'iccardId',
+        caption: 'IC卡编号'
+    }, {
+        name: 'iccardIdentifier',
+        caption: 'IC卡识别号'
+    }, {
+        name: 'userName',
+        caption: '用户名'
+    }, {
+        name: 'userPhone',
+        caption: '用户电话'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userTypeName',
+        caption: '用户类型'
+    }, {
+        name: 'userGasTypeName',
+        caption: '用气类型'
+    }, {
+        name: 'totalOrderTimes',
+        caption: '购气次数'
+    }, {
+        name: 'totalOrderGas',
+        caption: '购气总量'
+    }, {
+        name: 'totalOrderPayment',
+        caption: '购气总额'
     }]
 };
 /*
@@ -1681,6 +1722,39 @@ app.getEditFormFields = function (name) {
                 name: 'lockReason',
                 caption: '本次操作原因'
             }];
+        case 'prePaymentIC':
+            return [{
+                name: 'userName',
+                caption: '充值用户名',
+                disabled: true
+            },{
+                name: 'iccardIdentifier',
+                caption: '充值IC卡识别号',
+                disabled: true
+            },{
+                name: 'orderGas',
+                caption: '充值气量',
+                inputType: 'num',
+                required: true
+            },{
+                name: 'orderPayment',
+                caption: '充值金额',
+                disabled: true
+            }];
+        case 'prePaymentMessAndUnion':
+            return [{
+                name: 'userName',
+                caption: '充值用户名',
+                disabled: true
+            },{
+                name: 'iccardIdentifier',
+                caption: '充值IC卡识别号',
+                disabled: true
+            },{
+                name: 'orderPayment',
+                caption: '充值金额',
+                required: true
+            }];
     }
 };
 
@@ -2039,6 +2113,20 @@ app.getToolbarFields = function (name) {
                 name: 'history',
                 caption: '历史锁定记录',
                 perm:'account:lockAccount:lockList'
+            }, {
+                name: 'userName',
+                caption: '用户名称',
+                type: 'input'
+            }, {
+                name: 'iccardId',
+                caption: 'IC卡号',
+                type: 'input'
+            }];
+        case 'prePayment':
+            return [{
+                name: 'edit',
+                caption: '预充值',
+                perm:'recharge:pre:update'
             }, {
                 name: 'userName',
                 caption: '用户名称',

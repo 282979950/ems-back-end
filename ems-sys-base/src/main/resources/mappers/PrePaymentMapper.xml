@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.PrePaymentMapper">
+    <select id="getAllOrderInformation" resultType="com.tdmh.param.PrePaymentParam">
+      SELECT u.user_id as userId,uc.card_id as iccardId ,uc.card_identifier as iccardIdentifier, u.user_name as userName,u.user_phone as userPhone,
+              u.user_address as userAddress,u.user_type as userType, sd1.dict_key AS userTypeName,u.user_gas_type as userGasType ,sd2.dict_key AS userGasTypeName,
+               mt.meter_category as meterCategory, uo.totalOrderTimes,uo.totalOrderGas,uo.totalOrderPayment
+              FROM `user` u JOIN user_card uc
+              JOIN sys_dictionary sd1 ON u.user_type = sd1.dict_value
+              JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value
+              JOIN (
+              SELECT user_id, COUNT(order_id) AS totalOrderTimes, SUM(order_gas) AS totalOrderGas,SUM(order_payment) AS totalOrderPayment FROM user_orders GROUP BY user_id
+              ) uo ON u.user_id = uo.user_id
+              LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
+              LEFT JOIN meter m ON um.meter_id=m.meter_id and m.usable=1
+              LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
+              WHERE u.user_id = uc.user_id AND sd1.dict_category='user_type' AND sd2.dict_category='user_gas_type' AND u.usable=1
+    </select>
+
+</mapper>

@@ -3,11 +3,13 @@ package com.tdmh.service.impl;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.GasPrice;
 import com.tdmh.entity.mapper.GasPriceMapper;
+import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.param.GasPriceParam;
 import com.tdmh.service.IGasPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -19,6 +21,9 @@ public class GasPriceServiceImpl implements IGasPriceService {
 
     @Autowired
     private GasPriceMapper gasPriceMapper;
+
+    @Autowired
+    private UserOrdersMapper userOrdersMapper;
 
     @Override
     public JsonData listAllGasPrice() {
@@ -43,5 +48,10 @@ public class GasPriceServiceImpl implements IGasPriceService {
             return JsonData.fail("设置阶梯气价失败");
         }
         return JsonData.successMsg("设置阶梯气价成功");
+    }
+
+    @Override
+    public BigDecimal findHasUsedGasInYear(Integer userId) {
+        return userOrdersMapper.findHasUsedGasInYear(userId);
     }
 }

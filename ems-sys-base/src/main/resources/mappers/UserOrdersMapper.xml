@@ -208,4 +208,7 @@
       #{orderCloseTime,jdbcType=TIMESTAMP}, NOW(), #{createBy,jdbcType=INTEGER},
       NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
   </insert>
+  <select id="findHasUsedGasInYear" resultType="decimal">
+        SELECT SUM(order_gas) FROM user_orders WHERE user_id = #{userId} AND create_time > MAKEDATE(YEAR(NOW()), 1);
+  </select>
 </mapper>

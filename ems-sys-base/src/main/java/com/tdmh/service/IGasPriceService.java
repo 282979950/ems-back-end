@@ -4,6 +4,7 @@ import com.tdmh.common.JsonData;
 import com.tdmh.entity.GasPrice;
 import com.tdmh.param.GasPriceParam;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -12,9 +13,11 @@ import java.util.List;
  */
 public interface IGasPriceService {
 
-    public JsonData listAllGasPrice();
+    JsonData listAllGasPrice();
 
-    public GasPrice findGasPriceByType(Integer userType,Integer userGasType);
+    GasPrice findGasPriceByType(Integer userType,Integer userGasType);
 
-    public JsonData updateGasPrice(GasPriceParam param);
+    JsonData updateGasPrice(GasPriceParam param);
+
+    BigDecimal findHasUsedGasInYear(Integer userId);
 }

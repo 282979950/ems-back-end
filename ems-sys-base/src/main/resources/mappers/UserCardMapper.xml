@@ -4,7 +4,13 @@
     <select id="getUserCardByUserIdAndCardId" parameterType="map" resultType="com.tdmh.entity.UserCard">
         select user_card_id AS userCardId, user_id as userId, card_id as cardId ,card_identifier as cardIdentifier,card_password as cardPassword,
         create_time as  createTime, create_by as createBy,update_time as updateTime,update_by as updateBy ,usable from  user_card
-        where user_id = #{userId} and card_id = #{iccardId}
+        where usable=1
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
+            </if>
+            <if test="iccardId != null and iccardId != ''">
+                and card_id = #{iccardId}
+            </if>
     </select>
 
     <insert id="insert">
