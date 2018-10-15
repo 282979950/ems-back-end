@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class CalculateUtil {
     public static BigDecimal gasToPayment(BigDecimal gas, GasPrice gasPrice) {
         BigDecimal sum = new BigDecimal(0);
-        if ( (gas.compareTo(gasPrice.getGasRangeOne()) > 0 && gasPrice.getGasRangeTwo() == null) || (gas.compareTo(gasPrice.getGasRangeOne()) > 0 && gas.compareTo(gasPrice.getGasRangeTwo()) < 0)){
+        if ( (gas.compareTo(gasPrice.getGasRangeOne()) >= 0 && gasPrice.getGasRangeTwo() == null) || (gas.compareTo(gasPrice.getGasRangeOne()) >= 0 && gas.compareTo(gasPrice.getGasRangeTwo()) < 0)){
             sum = gas.multiply(gasPrice.getGasPriceOne());
         } else if ( (gas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && gasPrice.getGasRangeThree() == null) || (gas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && gas.compareTo(gasPrice.getGasRangeThree()) < 0) ){
             sum = sum.add(gasPrice.getGasPriceOne().multiply(gasPrice.getGasRangeTwo()));

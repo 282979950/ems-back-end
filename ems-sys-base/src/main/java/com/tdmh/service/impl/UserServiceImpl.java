@@ -241,6 +241,7 @@ public class UserServiceImpl implements IUserService {
         userOrders.setOrderPayment(payment);
         userOrders.setCreateBy(param.getUpdateBy());
         userOrders.setUpdateBy(param.getUpdateBy());
+        userOrders.setOrderStatus(2);
         userOrders.setUsable(true);
         // TODO: 2018/8/10 完善订单流程
         int resultCount2 = userOrdersMapper.insert(userOrders);

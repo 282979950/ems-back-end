@@ -40,6 +40,7 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     public JsonData createUserOrder(UserOrders userOrders) {
         userOrders.setUsable(true);
         userOrders.setUpdateTime(new Date());
+        userOrders.setOrderStatus(2);
         int resultCount = userOrdersMapper.insert(userOrders);
         if (resultCount == 0) {
             return JsonData.fail("充值订单失败");

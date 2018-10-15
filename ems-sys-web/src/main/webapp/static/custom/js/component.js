@@ -584,6 +584,8 @@
                     case 'history' :
                         $field.trigger('history');
                         break;
+                    case 'record_voice_over' :
+                        $field.trigger('record_voice_over');
                     default:
                         break;
                 }
