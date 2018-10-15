@@ -520,6 +520,10 @@ app.initEvent = function () {
     });
     main.on('record_voice_over', function () {
         var result = app.ReadCard();
+        if(result[0] !== 'S') {
+            app.errorMessage(result);
+            return;
+        }
         $.ajax({
             type: 'POST',
             url: app.currentPageName + '/search.do',
