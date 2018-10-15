@@ -223,7 +223,7 @@
             var tdRow = $('<tr></tr>').appendTo(tbody);
             _this.fields.forEach(function (field) {
                 $('<td>' + (item[field.name] != undefined ? item[field.name] : '') + '</td>').appendTo(tdRow);
-              });
+            });
         });
         _this.init();
     };
@@ -386,16 +386,16 @@
         $fields.each(function (index, field) {
             var text = $(field).attr('text');
             if(text){
-                 var tree = _this.children[field.name].tree;
-                 var nodes = tree.getCheckedNodes();
-                 var value = [];
-                 nodes.forEach(function (node) {
-                     value.push(node[tree.nameKey]);
-                 });
-                 var val = value.join();
-                 $(field).val(val === true || val === false ? JSON.stringify(val) : val);
+                var tree = _this.children[field.name].tree;
+                var nodes = tree.getCheckedNodes();
+                var value = [];
+                nodes.forEach(function (node) {
+                    value.push(node[tree.nameKey]);
+                });
+                var val = value.join();
+                $(field).val(val === true || val === false ? JSON.stringify(val) : val);
             }else {
-                 $(field).val(data[field.name] === true || data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
+                $(field).val(data[field.name] === true || data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
             }
         });
         // 调整dom布局
@@ -544,8 +544,8 @@
             default :
                 var perm = field.perm;
                 if((field.name==='search'||field.name=='clear')||(perm && app.getShiro(perm))){
-                   var $field = $('<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator field"></div>').attr('name', field.name).attr('mdui-tooltip', '{content:\'' + field.caption + '\'}').appendTo($toolbar);
-                         $('<i class="mdui-icon material-icons mdui-text-color-blue">' + field.name + '</i>').appendTo($field);
+                    var $field = $('<div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white operator field"></div>').attr('name', field.name).attr('mdui-tooltip', '{content:\'' + field.caption + '\'}').appendTo($toolbar);
+                    $('<i class="mdui-icon material-icons mdui-text-color-blue">' + field.name + '</i>').appendTo($field);
                 }
                 break;
         }
@@ -583,9 +583,6 @@
                         break;
                     case 'history' :
                         $field.trigger('history');
-                        break;
-                    case 'record_voice_over' :
-                        $field.trigger('record_voice_over');
                         break;
                     case 'picture_in_picture_alt' :
                         $field.trigger('pictureinpicturealt');
@@ -1064,7 +1061,6 @@
         var ocx = $('.rw-comp')[0];
         var data = ocx.ReadCard(0, 200);
         var result = String(data).split("~", 7);
-        result[4] = result[4]/10;
         return result[0] === 'S' ? result : ocx.ErrorDesc;
     };
 
