@@ -584,6 +584,9 @@
                     case 'history' :
                         $field.trigger('history');
                         break;
+                    case 'picture_in_picture_alt' :
+                        $field.trigger('pictureinpicturealt');
+                        break;
                     default:
                         break;
                 }

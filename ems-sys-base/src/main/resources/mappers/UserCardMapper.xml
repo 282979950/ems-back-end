@@ -2,8 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tdmh.entity.mapper.UserCardMapper">
 <insert id="insert">
- insert into user_card (user_id, card_id,card_identifier,card_password, create_time, create_by,update_time,update_by ,usable)
-       values (#{userId,jdbcType=INTEGER},#{cardId,jdbcType=INTEGER},#{cardIdentifier,jdbcType=VARCHAR},#{cardPassword,jdbcType=VARCHAR},NOW(),#{createBy,jdbcType=INTEGER},NOW(),
+ insert into user_card (user_id, card_id,card_identifier,card_password,card_initialization, create_time, create_by,update_time,update_by ,usable)
+       values (#{userId,jdbcType=INTEGER},#{cardId,jdbcType=INTEGER},#{cardIdentifier,jdbcType=VARCHAR},#{cardPassword,jdbcType=VARCHAR},#{cardInitialization,jdbcType=BIT},NOW(),#{createBy,jdbcType=INTEGER},NOW(),
         #{updateBy,jdbcType=INTEGER},#{usable,jdbcType=BIT})
 </insert>
+<select id="countUserCardBycardId" parameterType="Integer" resultType="Integer">
+SELECT COUNT(0) FROM user_card  WHERE usable=1 AND card_id=#{cardId}
+
+</select>
+<update id="initCardPwdBycardId" parameterType="com.tdmh.entity.mapper.UserCardMapper">
+  UPDATE  user_card SET card_initialization=#{cardInitialization} WHERE usable=1 AND  card_id=#{cardId}
+
+</update>
+<select id="userCardPwdBycardId" parameterType="Integer" resultType="String">
+SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
+
+</select>
 </mapper>
