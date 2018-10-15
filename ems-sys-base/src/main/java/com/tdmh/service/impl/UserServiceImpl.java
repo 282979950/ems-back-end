@@ -15,6 +15,7 @@ import com.tdmh.param.LockAccountParam;
 import com.tdmh.service.IMeterService;
 import com.tdmh.service.IUserService;
 import com.tdmh.utils.RandomUtils;
+import com.tdmh.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -220,6 +221,7 @@ public class UserServiceImpl implements IUserService {
         userCard.setCardId(param.getIccardId());
         userCard.setCardIdentifier(param.getIccardIdentifier());
         userCard.setCardPassword(param.getIccardPassword());
+        userCard.setCardInitialization(true);
         userCard.setUsable(true);
         userCard.setCreateBy(param.getUpdateBy());
         userCard.setUpdateBy(param.getUpdateBy());
@@ -329,6 +331,49 @@ public class UserServiceImpl implements IUserService {
         List<UserLock> userLocks= userMapper.searchLockList(userId);
         return  userLocks == null || userLocks.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(userLocks, "查询成功");
     }
+    @Override
+   public  JsonData cardService(Integer cardId){
+        UserCard card=new UserCard();
+        if(cardId.intValue()==0){
+            return  JsonData.fail("卡号为0，请确认卡或该卡已初始化");
+        }
+        //查询是否存在该条数据
+        String pwd=null;
+        int resultCount = userCardMapper.countUserCardBycardId(cardId);
+        if(resultCount>0){
+            //查看密码(一般情况下用户在开卡时会生成卡密码)
+        pwd = userCardMapper.userCardPwdBycardId(cardId);
 
+        if(StringUtils.isBlank(pwd)){
+            return  JsonData.fail("未查询到卡相关信息");
+        }else{
+            card.setCardPassword(pwd);
+        }
+    }else{
+        return  JsonData.fail("未查询到相关数据");
+    }
+
+        return JsonData.success(card,"查询成功");
+
+    }
+    @Override
+    @Transactional
+    public JsonData cardInitService( Integer cardId,String result){
+        UserCard card=new UserCard();
+
+        if(StringUtils.isBlank(result)){
+            return  JsonData.fail("未获取到初始化结果");
+
+        }
+        if( cardId ==null || cardId.intValue()==0){
+
+            JsonData.fail("未获取到卡号码");
+        }else{
+            card.setCardId(cardId);
+            card.setCardInitialization(false);
+        }
+        userCardMapper.initCardPwdBycardId(card);
+        return null;
+    }
 
 }
