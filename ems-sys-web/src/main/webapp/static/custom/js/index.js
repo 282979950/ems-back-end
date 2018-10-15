@@ -46,6 +46,7 @@ app.getPanelContent = function (name) {
          */
         case 'prePayment':
         case 'replaceCard':
+                panelContent = this.DEFAULT_TEMPLATE;
         case 'postPayment':
         case 'invoice':
             break;
@@ -116,15 +117,27 @@ app.initIndex = function () {
             $(".tree-combobox-panel").hide();
             app.isTreeComboboxPanelShow = false;
         });
+        $('body').on('focus', 'form [name="iccardIdentifier"]', function (res) {
+            console.log(app.editForm);
+            if (app.editForm) {
+                var result = app.ReadCard();
+                if (result instanceof Array) {
+                    app.editForm.setValue('iccardIdentifier', result[2]);
+                } else {
+                    app.warningMessage(result);
+                }
+            }
+        });
         $('body').on('keyup', '[name="orderGas"]', function (res) {
             var val = $(this).val();
             if (/^\d+(\.\d+)?$/.test(val)) {
                 $.ajax({
                     async: true,
                     type: 'POST',
-                    url: 'account/calAmount.do',
+                    url: 'calAmount.do',
                     contentType: 'application/x-www-form-urlencoded',
                     data: {
+                        "userId": app.editForm.data.userId,
                         "userType": app.editForm.data.userType,
                         "userGasType": app.editForm.data.userGasType,
                         "orderGas": val
@@ -151,8 +164,8 @@ app.lockScreen = function() {
     // todo
 };
 
-app.refresh= function () {
-    if(app.currentPageName){
+app.refresh = function () {
+    if (app.currentPageName) {
         app.toolbar.clearInputsData();
         app.render({
             url: app.currentPageName + '/listData.do'
@@ -379,6 +392,17 @@ app.initEvent = function () {
             app.message('只能选择一条数据');
             return;
         }
+        if (app.currentPageName == 'account' || app.currentPageName == 'prePayment'){
+            var result = app.ReadCard();
+            if(result[0] !== 'S') {
+                app.errorMessage(result);
+                return;
+            }
+            if(result[4] != '0') {
+                app.warningMessage('卡内已有未圈存的气量，不能充值');
+                return;
+            }
+        }
         var dialog = mdui.dialog({
             title: '编辑',
             modal: true,
@@ -398,6 +422,14 @@ app.initEvent = function () {
                         success: function (response) {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
+                                if (app.currentPageName == 'account') {
+                                    var rdata = response.data;
+                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas);
+                                  }
+                                if (app.currentPageName == 'prePayment') {
+                                    var rdata = response.data;
+                                    app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes);
+                                   }
                                 var url = app.currentPageName + '/listData.do';
                                 app.setDataCache(url, null);
                                 console.log("清理" + url + "缓存");
@@ -413,7 +445,7 @@ app.initEvent = function () {
             }]
         });
         $(".tree-combobox-panel").remove();
-        if (app.currentPageName == 'account') {
+        if (app.currentPageName == 'account' || app.currentPageName == 'prePayment') {
             if (table.getSelectedDatas()[0]['meterCategory'] == 'IC卡表')
                 formNames = app.currentPageName + 'IC';
             else
@@ -589,7 +621,27 @@ app.initEvent = function () {
     main.on('pictureinpicturealt', function () {
         app.InitializationCard();
     });
-
+    main.on('record_voice_over', function () {
+        var result = app.ReadCard();
+        if(result[0] !== 'S') {
+            app.errorMessage(result);
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: app.currentPageName + '/search.do',
+            contentType: 'application/x-www-form-urlencoded',
+            data: { "iccardIdentifier" :result[2]},
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                console.log(response);
+                response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                app.table.refresh(response.data)
+            }
+        });
+    });
 };
 
 app.removeEvent = function () {
@@ -852,7 +904,42 @@ app.tableFields = {
     }, {
         name: 'createTime',
         caption: '解锁/锁定时间'
-    }]
+    }],
+    prePayment: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'iccardId',
+        caption: 'IC卡编号'
+    }, {
+        name: 'iccardIdentifier',
+        caption: 'IC卡识别号'
+    }, {
+        name: 'userName',
+        caption: '用户名'
+    }, {
+        name: 'userPhone',
+        caption: '用户电话'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userTypeName',
+        caption: '用户类型'
+    }, {
+        name: 'userGasTypeName',
+        caption: '用气类型'
+    }, {
+        name: 'totalOrderTimes',
+        caption: '购气次数'
+    }, {
+        name: 'totalOrderGas',
+        caption: '购气总量'
+    }, {
+        name: 'totalOrderPayment',
+        caption: '购气总额'
+    }],
+    replaceCard:[{}]
 };
 /*
  *数据字典
@@ -885,7 +972,7 @@ app.getDictionaryByCategory = function (category) {
 /*
  *新增时弹出框,列显示
  */
-app.getAddFormFields  = function (name) {
+app.getAddFormFields = function (name) {
     switch (name) {
         case 'dist':
             return [{
@@ -965,30 +1052,30 @@ app.getAddFormFields  = function (name) {
             }, {
                 name: 'empOrgId',
                 caption: '所属机构',
-                type:'treecombobox' ,
+                type: 'treecombobox',
                 options: {
                     idKey: 'orgId',
                     pIdKey: 'orgParentId',
                     name: 'orgName',
-                    N : '',
-                    Y : '',
+                    N: '',
+                    Y: '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes : app.getTreeComboboxNodes('org/listData.do')
+                    nodes: app.getTreeComboboxNodes('org/listData.do')
                 }
             }, {
                 name: 'empDistrictId',
                 caption: '所属区域',
-                type:'treecombobox' ,
+                type: 'treecombobox',
                 options: {
                     idKey: 'distId',
                     pIdKey: 'distParentId',
                     name: 'distName',
-                    N : '',
-                    Y : '',
+                    N: '',
+                    Y: '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes : app.getTreeComboboxNodes('dist/listData.do')
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
                 }
             }, {
                 name: 'empLoginName',
@@ -1171,7 +1258,7 @@ app.getAddFormFields  = function (name) {
                 options: [{
                     key: '左',
                     value: true
-                },{
+                }, {
                     key: '右',
                     value: false
                 }]
@@ -1239,14 +1326,14 @@ app.getTreeComboboxNodes = function (url) {
             success: function (response) {
                 data = response.data;
                 app.setDataCache(url, data);
-                console.log("更新"+ url+ "缓存");
+                console.log("更新" + url + "缓存");
             }
         });
         return data;
     }
 };
 
-app.getListComboboxOptions = function(url, k, v) {
+app.getListComboboxOptions = function (url, k, v) {
     var result = [];
     var data = this.getDataCache(url);
     if (data) {
@@ -1269,7 +1356,7 @@ app.getListComboboxOptions = function(url, k, v) {
             success: function (response) {
                 data = response.data;
                 app.setDataCache(url, data);
-                console.log("更新"+ url+ "缓存");
+                console.log("更新" + url + "缓存");
                 if (data) {
                     for (var i = 0; i < data.length; i++) {
                         result.push({
@@ -1365,30 +1452,30 @@ app.getEditFormFields = function (name) {
             }, {
                 name: 'empOrgId',
                 caption: '所属机构',
-                type:'treecombobox' ,
+                type: 'treecombobox',
                 options: {
                     idKey: 'orgId',
                     pIdKey: 'orgParentId',
                     name: 'orgName',
-                    N : '',
-                    Y : '',
+                    N: '',
+                    Y: '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes : app.getTreeComboboxNodes('org/listData.do')
+                    nodes: app.getTreeComboboxNodes('org/listData.do')
                 }
             }, {
                 name: 'empDistrictId',
                 caption: '所属区域',
-                type:'treecombobox' ,
+                type: 'treecombobox',
                 options: {
                     idKey: 'distId',
                     pIdKey: 'distParentId',
                     name: 'distName',
-                    N : '',
-                    Y : '',
+                    N: '',
+                    Y: '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes : app.getTreeComboboxNodes('dist/listData.do')
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
                 }
             }, {
                 name: 'empLoginName',
@@ -1465,25 +1552,25 @@ app.getEditFormFields = function (name) {
             }, {
                 name: 'userGasTypeName',
                 caption: '用气类型'
-            },{
+            }, {
                 name: 'gasRangeOne',
                 caption: '第一阶梯起始气量'
             }, {
                 name: 'gasPriceOne',
                 caption: '第一阶梯气价'
-            },{
+            }, {
                 name: 'gasRangeTwo',
                 caption: '第二阶梯起始气量'
             }, {
                 name: 'gasPriceTwo',
                 caption: '第二阶梯气价'
-            },{
+            }, {
                 name: 'gasRangeThree',
                 caption: '第三阶梯起始气量'
             }, {
                 name: 'gasPriceThree',
                 caption: '第三阶梯气价'
-            },{
+            }, {
                 name: 'gasRangeFour',
                 caption: '第四阶梯起始气量'
             }, {
@@ -1606,7 +1693,7 @@ app.getEditFormFields = function (name) {
                 options: [{
                     key: '左',
                     value: true
-                },{
+                }, {
                     key: '右',
                     value: false
                 }]
@@ -1770,6 +1857,39 @@ app.getEditFormFields = function (name) {
                 name: 'lockReason',
                 caption: '本次操作原因'
             }];
+        case 'prePaymentIC':
+            return [{
+                name: 'userName',
+                caption: '充值用户名',
+                disabled: true
+            }, {
+                name: 'iccardIdentifier',
+                caption: '充值IC卡识别号',
+                disabled: true
+            }, {
+                name: 'orderGas',
+                caption: '充值气量',
+                inputType: 'num',
+                required: true
+            }, {
+                name: 'orderPayment',
+                caption: '充值金额',
+                disabled: true
+            }];
+        case 'prePaymentMessAndUnion':
+            return [{
+                name: 'userName',
+                caption: '充值用户名',
+                disabled: true
+            }, {
+                name: 'iccardIdentifier',
+                caption: '充值IC卡识别号',
+                disabled: true
+            }, {
+                name: 'orderPayment',
+                caption: '充值金额',
+                required: true
+            }];
     }
 };
 
@@ -1782,15 +1902,15 @@ app.getToolbarFields = function (name) {
             return [{
                 name: 'add',
                 caption: '新增',
-                perm:'sys:dist:create'
+                perm: 'sys:dist:create'
             }, {
                 name: 'edit',
                 caption: '编辑',
-                perm:'sys:dist:update'
+                perm: 'sys:dist:update'
             }, {
                 name: 'delete',
                 caption: '删除',
-                perm:'sys:dist:delete'
+                perm: 'sys:dist:delete'
             }, {
                 name: 'distName',
                 caption: '区域名称',
@@ -1804,15 +1924,15 @@ app.getToolbarFields = function (name) {
             return [{
                 name: 'add',
                 caption: '新增',
-                perm:'sys:org:create'
+                perm: 'sys:org:create'
             }, {
                 name: 'edit',
                 caption: '编辑',
-                perm:'sys:org:update'
+                perm: 'sys:org:update'
             }, {
                 name: 'delete',
                 caption: '删除',
-                perm:'sys:org:delete'
+                perm: 'sys:org:delete'
             }, {
                 name: 'orgCode',
                 caption: '机构编码',
@@ -1826,15 +1946,15 @@ app.getToolbarFields = function (name) {
             return [{
                 name: 'add',
                 caption: '新增',
-                perm:'sys:emp:create'
+                perm: 'sys:emp:create'
             }, {
                 name: 'edit',
                 caption: '编辑',
-                perm:'sys:emp:update'
+                perm: 'sys:emp:update'
             }, {
                 name: 'delete',
                 caption: '删除',
-                perm:'sys:emp:delete'
+                perm: 'sys:emp:delete'
             }, {
                 name: 'empNumber',
                 caption: '员工工号',
@@ -1846,30 +1966,30 @@ app.getToolbarFields = function (name) {
             }, {
                 name: 'empOrgId',
                 caption: '所属机构',
-                type:'treecombobox' ,
+                type: 'treecombobox',
                 options: {
                     idKey: 'orgId',
                     pIdKey: 'orgParentId',
                     name: 'orgName',
-                    N : '',
-                    Y : '',
+                    N: '',
+                    Y: '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes : app.getTreeComboboxNodes('org/listData.do')
+                    nodes: app.getTreeComboboxNodes('org/listData.do')
                 }
             }, {
                 name: 'empDistrictId',
                 caption: '所属区域',
-                type:'treecombobox' ,
+                type: 'treecombobox',
                 options: {
                     idKey: 'distId',
                     pIdKey: 'distParentId',
                     name: 'distName',
-                    N : '',
-                    Y : '',
+                    N: '',
+                    Y: '',
                     chkStyle: 'radio',
                     radioType: "all",
-                    nodes : app.getTreeComboboxNodes('dist/listData.do')
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
                 }
             }, {
                 name: 'empLoginName',
@@ -1893,15 +2013,15 @@ app.getToolbarFields = function (name) {
             return [{
                 name: 'add',
                 caption: '新增',
-                perm:'sys:dic:create'
+                perm: 'sys:dic:create'
             }, {
                 name: 'edit',
                 caption: '编辑',
-                perm:'sys:dic:update'
+                perm: 'sys:dic:update'
             }, {
                 name: 'delete',
                 caption: '删除',
-                perm:'sys:dic:delete'
+                perm: 'sys:dic:delete'
             }, {
                 name: 'dictCategory',
                 caption: '字典类型',
@@ -1911,21 +2031,21 @@ app.getToolbarFields = function (name) {
             return [{
                 name: 'edit',
                 caption: '编辑',
-                perm:'sys:gasPrice:update'
+                perm: 'sys:gasPrice:update'
             }];
         case 'permission':
             return [{
                 name: 'add',
                 caption: '新增',
-                perm:'sys:perm:create'
+                perm: 'sys:perm:create'
             }, {
                 name: 'edit',
                 caption: '编辑',
-                perm:'sys:perm:update'
+                perm: 'sys:perm:update'
             }, {
                 name: 'delete',
                 caption: '删除',
-                perm:'sys:perm:delete'
+                perm: 'sys:perm:delete'
             }, {
                 name: 'permName',
                 caption: '权限名称',
@@ -1943,15 +2063,15 @@ app.getToolbarFields = function (name) {
             return [{
                 name: 'add',
                 caption: '新增',
-                perm:'sys:role:create'
+                perm: 'sys:role:create'
             }, {
                 name: 'edit',
                 caption: '编辑',
-                perm:'sys:role:update'
+                perm: 'sys:role:update'
             }, {
                 name: 'delete',
                 caption: '删除',
-                perm:'sys:role:delete'
+                perm: 'sys:role:delete'
             }, {
                 name: 'roleName',
                 caption: '角色名称',
@@ -1961,15 +2081,15 @@ app.getToolbarFields = function (name) {
             return [{
                 name: 'add',
                 caption: '新增',
-                perm:'account:entryMeter:create'
+                perm: 'account:entryMeter:create'
             }, {
                 name: 'edit',
                 caption: '编辑',
-                perm:'account:entryMeter:update'
+                perm: 'account:entryMeter:update'
             }, {
                 name: 'delete',
                 caption: '删除',
-                perm:'account:entryMeter:delete'
+                perm: 'account:entryMeter:delete'
             }, {
                 name: 'meterCode',
                 caption: '表具编码',
@@ -1994,7 +2114,7 @@ app.getToolbarFields = function (name) {
                 options: [{
                     key: '左',
                     value: true
-                },{
+                }, {
                     key: '右',
                     value: false
                 }]
@@ -2009,15 +2129,15 @@ app.getToolbarFields = function (name) {
             return [{
                 name: 'add',
                 caption: '新增',
-                perm:'account:createArchive:create'
+                perm: 'account:createArchive:create'
             }, {
                 name: 'edit',
                 caption: '编辑',
-                perm:'account:createArchive:update'
+                perm: 'account:createArchive:update'
             }, {
                 name: 'delete',
                 caption: '删除',
-                perm:'account:createArchive:delete'
+                perm: 'account:createArchive:delete'
             }, {
                 name: 'userId',
                 caption: '用户编号',
@@ -2060,7 +2180,7 @@ app.getToolbarFields = function (name) {
             return [{
                 name: 'edit',
                 caption: '编辑',
-                perm:'account:installation:update'
+                perm: 'account:installation:update'
             }, {
                 name: 'userId',
                 caption: '用户编号',
@@ -2088,7 +2208,7 @@ app.getToolbarFields = function (name) {
             return [{
                 name: 'edit',
                 caption: '开户',
-                perm:'account:createAccount:update'
+                perm: 'account:createAccount:update'
             }, {
                 name: 'userDistId',
                 caption: '用户区域',
@@ -2123,11 +2243,11 @@ app.getToolbarFields = function (name) {
             return [{
                 name: 'lock',
                 caption: '锁定/解锁',
-                perm:'account:lockAccount:lock'
+                perm: 'account:lockAccount:lock'
             }, {
                 name: 'history',
                 caption: '历史锁定记录',
-                perm:'account:lockAccount:lockList'
+                perm: 'account:lockAccount:lockList'
             }, {
                 name: 'userName',
                 caption: '用户名称',
@@ -2142,6 +2262,28 @@ app.getToolbarFields = function (name) {
                 name: 'picture_in_picture_alt',
                 caption: '初始化卡',
                 perm:'repairorder:iccardinit:visit'
+            }];
+        case 'prePayment':
+            return [{
+                name: 'record_voice_over',
+                caption: '识别IC卡',
+                perm: 'recharge:pre:record'
+            }, {
+                name: 'edit',
+                caption: '预充值',
+                perm: 'recharge:pre:update'
+            }, {
+                name: 'userName',
+                caption: '用户名称',
+                type: 'input'
+            }, {
+                name: 'iccardId',
+                caption: 'IC卡号',
+                type: 'input'
+            }, {
+                name: 'iccardIdentifier',
+                caption: 'IC卡识别号',
+                type: 'input'
             }];
     }
 };
