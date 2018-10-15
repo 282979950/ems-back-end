@@ -45,8 +45,8 @@ app.getPanelContent = function (name) {
          * 充值缴费管理：预付费充值 补卡充值 后付费充值 发票管理
          */
         case 'prePayment':
-            panelContent = this.DEFAULT_TEMPLATE;
         case 'replaceCard':
+                panelContent = this.DEFAULT_TEMPLATE;
         case 'postPayment':
         case 'invoice':
             break;
@@ -299,6 +299,10 @@ app.initEvent = function () {
             var result = app.ReadCard();
             if(result[0] !== 'S') {
                 app.errorMessage(result);
+                return;
+            }
+            if(result[4] !== 'undefined') {
+                app.warningMessage(result);
                 return;
             }
         }
@@ -835,7 +839,8 @@ app.tableFields = {
     }, {
         name: 'totalOrderPayment',
         caption: '购气总额'
-    }]
+    }],
+    replaceCard:[{}]
 };
 /*
  *数据字典
