@@ -301,8 +301,8 @@ app.initEvent = function () {
                 app.errorMessage(result);
                 return;
             }
-            if(result[4] !== 'undefined') {
-                app.warningMessage(result);
+            if(result[4] != '0') {
+                app.warningMessage('卡内已有未圈存的气量，不能充值');
                 return;
             }
         }
