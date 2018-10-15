@@ -2135,6 +2135,10 @@ app.getToolbarFields = function (name) {
                 name: 'iccardId',
                 caption: 'IC卡号',
                 type: 'input'
+            },{
+                name: 'iccardIdentifier',
+                caption: 'IC卡识别号',
+                type: 'input'
             }];
     }
 };

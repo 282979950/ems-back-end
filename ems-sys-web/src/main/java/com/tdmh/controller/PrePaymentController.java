@@ -2,6 +2,7 @@ package com.tdmh.controller;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserOrders;
+import com.tdmh.param.PrePaymentParam;
 import com.tdmh.service.IPrePaymentService;
 import com.tdmh.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+
 
 /**
  * @author Lucia on 2018/10/12.
@@ -35,7 +38,7 @@ public class PrePaymentController {
      * 新增订单
      *
      */
-    @RequiresPermissions("sys:dist:update")
+    @RequiresPermissions("recharge:pre:update")
     @RequestMapping(value = "edit.do")
     @ResponseBody
     public JsonData createUserOrder(UserOrders userOrders) {
@@ -45,4 +48,12 @@ public class PrePaymentController {
         userOrders.setUpdateBy(currentEmpId);
         return prePaymentService.createUserOrder(userOrders);
     }
+
+    //依据条件查询对应数据
+    @RequiresPermissions("recharge:pre:retrieve")
+    @RequestMapping(value = "/search.do")
+    @ResponseBody
+    public JsonData selectFindListByPre(PrePaymentParam param){
+        return prePaymentService.selectFindListByPre(param);
+ }
 }

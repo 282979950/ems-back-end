@@ -32,7 +32,7 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
 
     @Override
     public JsonData getAllOrderInformation() {
-        List<PrePaymentParam> list = prePaymentMapper.getAllOrderInformation();
+        List<PrePaymentParam> list = prePaymentMapper.getAllOrderInformation(null);
         return list == null || list.size() == 0 ? JsonData.successMsg("暂无可充值用户") : JsonData.successData(list);
     }
 
@@ -51,5 +51,11 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         param.setOrderGas(userOrders.getOrderGas());
         param.setServiceTimes(0);
         return JsonData.success(param, "充值订单成功");
+    }
+
+    @Override
+    public JsonData selectFindListByPre(PrePaymentParam param) {
+        List<PrePaymentParam> list = prePaymentMapper.getAllOrderInformation(param);
+        return list == null || list.size() == 0 ? JsonData.successMsg("暂无可充值用户") : JsonData.success(list,"查询成功");
     }
 }

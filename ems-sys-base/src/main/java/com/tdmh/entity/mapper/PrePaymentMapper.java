@@ -2,6 +2,7 @@ package com.tdmh.entity.mapper;
 
 import com.tdmh.param.PrePaymentParam;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,5 +13,5 @@ import java.util.List;
 
 @Mapper @Component
 public interface PrePaymentMapper {
-    public List<PrePaymentParam> getAllOrderInformation();
+     List<PrePaymentParam> getAllOrderInformation(@Param("param") PrePaymentParam param);
 }

@@ -7,3 +7,4 @@ spring:
 mybatis:
   mapper-locations: classpath:mappers/*Mapper.xml
   type-aliases-package: com.tdmh.entity
+  config-location: classpath:mybatis-config.xml
