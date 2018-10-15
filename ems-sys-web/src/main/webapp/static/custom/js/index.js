@@ -840,7 +840,25 @@ app.tableFields = {
         name: 'totalOrderPayment',
         caption: '购气总额'
     }],
-    replaceCard:[{}]
+    replaceCard:[{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'userDistName',
+        caption: '用户区域'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userTypeName',
+        caption: '用户类型'
+    }, {
+        name: 'userGasTypeName',
+        caption: '用气类型'
+    }, {
+        name: 'userStatusName',
+        caption: '用户状态'
+    }]
 };
 /*
  *数据字典
