@@ -16,4 +16,16 @@ public interface UserCardMapper {
     int insert(UserCard card);
 
     int update(UserCard card);
+    /*
+    查询记录
+     */
+    int countUserCardBycardId(int cardId);
+    /*
+    查询密码
+     */
+    String userCardPwdBycardId(int cardId);
+    /*
+    初始化卡，刷新标记
+     */
+    int initCardPwdBycardId(UserCard card);
 }

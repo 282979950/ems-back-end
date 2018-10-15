@@ -86,5 +86,37 @@ public class AccountController {
         return userService.searchAllNotAccountArchive(userId, userDistId, userAddress, userType, userGasType);
     }
 
-
+    @RequestMapping(value = "/calAmount.do")
+    @ResponseBody
+    public JsonData calAmount(@Param("orderGas") Integer orderGas,@Param("userType") Integer userType,@Param("userGasType") Integer userGasType) {
+        BigDecimal orderPayment = null;
+        GasPrice gasPrice = gasPriceService.findGasPriceByType(userType ,userGasType);
+        if(gasPrice != null){
+            orderPayment = CalculateUtil.gasToPayment(BigDecimal.valueOf(orderGas) , gasPrice);
+            return JsonData.success(orderPayment,"查询成功");
+        }
+        return JsonData.successMsg("暂未配置天然气区间价格");
+    }
+    /**
+     * 获取相关数据
+     *
+     * @return
+     */
+    @RequiresPermissions("account:createAccount:retrieve")
+    @RequestMapping(value = "redCard.do")
+    @ResponseBody
+    public JsonData redCard(@Param("cardId") Integer cardId) {
+        return userService.cardService( cardId);
+    }
+    /**
+     * 初始化卡
+     *
+     * @return
+     */
+    @RequiresPermissions("account:createAccount:update")
+    @RequestMapping(value = "initCard.do")
+    @ResponseBody
+    public JsonData initCard(@Param("cardId") Integer cardId,@Param("result") String result) {
+        return userService.cardInitService( cardId,result);
+    }
 }

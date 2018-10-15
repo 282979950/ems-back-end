@@ -147,4 +147,15 @@ public interface IUserService {
      * @param userId
      */
     JsonData searchLockList(Integer userId);
+    /**
+     * 获取需要初始化的相关数据相关数据
+     *
+     *
+     *
+     */
+    JsonData cardService( Integer cardId);
+    /**
+     初始化卡
+     */
+    JsonData cardInitService( Integer cardId,String result);
 }

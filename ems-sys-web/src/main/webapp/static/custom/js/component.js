@@ -586,6 +586,10 @@
                         break;
                     case 'record_voice_over' :
                         $field.trigger('record_voice_over');
+                        break;
+                    case 'picture_in_picture_alt' :
+                        $field.trigger('pictureinpicturealt');
+                        break;
                     default:
                         break;
                 }
