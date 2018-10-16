@@ -55,6 +55,10 @@ body {
 .mdui-table.mdui-table-selectable.mdui-table-hoverable td, .mdui-table.mdui-table-selectable.mdui-table-hoverable th {
     padding: 0;
     vertical-align: middle;
+    min-width: 150px;
+}
+.mdui-table.mdui-table-selectable.mdui-table-hoverable td.mdui-table-cell-checkbox, .mdui-table.mdui-table-selectable.mdui-table-hoverable th.mdui-table-cell-checkbox {
+    min-width: 60px;
 }
 
 .mdui-table-cell-checkbox .mdui-checkbox {

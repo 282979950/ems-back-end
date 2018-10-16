@@ -158,4 +158,11 @@ public interface IUserService {
      初始化卡
      */
     JsonData cardInitService( Integer cardId,String result);
+
+    /**
+     * 根据户号查询已开户的信息
+     * @param userId
+     * @return
+     */
+    JsonData searchAccountById(Integer userId);
 }

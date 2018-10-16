@@ -233,6 +233,14 @@
         </set>
         where meter_id = #{meterId,jdbcType=INTEGER}
     </update>
+    <update id="clearInstallInfo" parameterType="com.tdmh.entity.Meter">
+        update meter
+        set
+        meter_install_time = null,
+        update_time = NOW(),
+        update_by = #{updateBy,jdbcType=INTEGER}
+        where meter_id = #{meterId,jdbcType=INTEGER}
+    </update>
     <update id="updateByPrimaryKey" parameterType="com.tdmh.entity.Meter">
         update meter
         set meter_code = #{meterCode,jdbcType=VARCHAR},

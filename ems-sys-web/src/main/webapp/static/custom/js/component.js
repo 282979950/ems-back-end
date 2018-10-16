@@ -314,6 +314,9 @@
                     $('<label></label>').addClass('mdui-textfield-label').text(field.caption).appendTo($field);
                     var $input = $('<input>').attr('type', field.inputType ? field.inputType : 'text').addClass('mdui-textfield-input field').addClass(field.name).attr('name', field.name).appendTo($field);
                     var $error;
+                    if (field.queryField) {
+                        $input.addClass('queryField');
+                    }
                     if (field.required) {
                         $input.attr('required', 'required');
                         $error = $('<div></div>').addClass('mdui-textfield-error').text(field.caption + '不能为空').appendTo($field);
@@ -448,7 +451,7 @@
         var _this = this;
         _this.$fields.each(function (index, field) {
             if(field.name === name) {
-                $(field).val(value);
+                $(field).val(value === true || value === false ? JSON.stringify(value) : value);
                 $(field).parent().addClass('mdui-textfield-focus');
             }
         });
@@ -1061,7 +1064,7 @@
      * @result 读卡成功返回卡片信息;读卡失败返回错误信息
      * @constructor
      */
-    app.ReadCard = function () {
+    app.readCard = function () {
         var ocx = $('.rw-comp')[0];
         var data = ocx.ReadCard(0, 200);
         var result = String(data).split("~", 7);
@@ -1084,7 +1087,7 @@
         return result === 'S' ? '写卡成功' : ('写卡失败' + ocx.ErrorDesc);
     };
 
-    /**
+     /**
      * 写密码传递卡
      * @param icCardId IC卡号
      * @param icCardPsw IC卡密码

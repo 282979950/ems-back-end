@@ -19,6 +19,8 @@ public interface MeterMapper {
 
     int updateByPrimaryKeySelective(Meter record);
 
+    int clearInstallInfo(Meter record);
+
     int updateByPrimaryKey(Meter record);
 
     List<EntryMeterParam> getAllEntryMeters();
