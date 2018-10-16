@@ -1519,11 +1519,14 @@ app.getAddFormFields = function (name) {
         case 'input':
             return [{
                 name: 'repairOrderId',
-                caption: '维修单编号'
+                caption: '维修单编号',
+                required: true,
+                maxlength: 20
             }, {
                 name: 'userId',
                 caption: '户号',
-                queryField: true
+                required: true,
+                maxlength: 10
             }, {
                 name: 'userName',
                 caption: '用户名称',
@@ -1549,7 +1552,8 @@ app.getAddFormFields = function (name) {
             }, {
                 name: 'oldMeterCode',
                 caption: '旧表编号',
-                queryField: true
+                required: true,
+                maxlength: 12
             }, {
                 name: 'oldMeterTypeId',
                 caption: '旧表类型',
@@ -1568,7 +1572,9 @@ app.getAddFormFields = function (name) {
                 }]
             }, {
                 name: 'oldMeterStopCode',
-                caption: '旧表止码'
+                caption: '旧表止码',
+                required: true,
+                inputType: 'num'
             }, {
                 name: 'newMeterCode',
                 caption: '新表编号',
@@ -1591,7 +1597,8 @@ app.getAddFormFields = function (name) {
                 }]
             }, {
                 name: 'newMeterStopCode',
-                caption: '新表止码'
+                caption: '新表止码',
+                inputType: 'num'
             }, {
                 name: 'repairFaultType',
                 caption: '维修类型',
@@ -1604,8 +1611,9 @@ app.getAddFormFields = function (name) {
                 options: app.getDictionaryByCategory("repair_result_type")
             }, {
                 name: 'empNumber',
-                caption: '维修员编号',
-                queryField: 'empNumber'
+                caption: '维修员工号',
+                required: true,
+                maxlength: 50
             }, {
                 name: 'empName',
                 caption: '维修员姓名',
@@ -2214,11 +2222,15 @@ app.getEditFormFields = function (name) {
         case 'input':
             return [{
                 name: 'repairOrderId',
-                caption: '维修单编号'
+                caption: '维修单编号',
+                required: true,
+                maxlength: 20
             }, {
                 name: 'userId',
                 caption: '户号',
-                disabled: true
+                disabled: true,
+                required: true,
+                maxlength: 10
             }, {
                 name: 'userName',
                 caption: '用户名称',
@@ -2244,7 +2256,9 @@ app.getEditFormFields = function (name) {
             }, {
                 name: 'oldMeterCode',
                 caption: '旧表编号',
-                disabled: true
+                disabled: true,
+                required: true,
+                maxlength: 12
             }, {
                 name: 'oldMeterTypeId',
                 caption: '旧表类型',
@@ -2263,7 +2277,9 @@ app.getEditFormFields = function (name) {
                 }]
             }, {
                 name: 'oldMeterStopCode',
-                caption: '旧表止码'
+                caption: '旧表止码',
+                required: true,
+                inputType: 'num'
             }, {
                 name: 'newMeterCode',
                 caption: '新表编号',
@@ -2286,7 +2302,8 @@ app.getEditFormFields = function (name) {
                 }]
             }, {
                 name: 'newMeterStopCode',
-                caption: '新表止码'
+                caption: '新表止码',
+                inputType: 'num'
             }, {
                 name: 'repairFaultType',
                 caption: '维修类型',
@@ -2299,7 +2316,9 @@ app.getEditFormFields = function (name) {
                 options: app.getDictionaryByCategory("repair_result_type")
             }, {
                 name: 'empNumber',
-                caption: '维修员工号'
+                caption: '维修员工号',
+                required: true,
+                maxlength: 50
             }, {
                 name: 'empName',
                 caption: '维修员姓名',
