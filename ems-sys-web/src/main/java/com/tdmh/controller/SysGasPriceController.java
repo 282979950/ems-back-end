@@ -47,6 +47,7 @@ public class SysGasPriceController {
         GasPrice gasPrice = gasPriceService.findGasPriceByType(userType ,userGasType);
         BigDecimal hasUsedGasNum = gasPriceService.findHasUsedGasInYear(userId);
         if(gasPrice != null){
+            if(hasUsedGasNum == null) hasUsedGasNum = new BigDecimal(0);
             BigDecimal orderPayment = CalculateUtil.gasToPayment(orderGas.add(hasUsedGasNum), gasPrice);
             BigDecimal hasOrderPayment = CalculateUtil.gasToPayment(hasUsedGasNum, gasPrice);
             return JsonData.success(orderPayment.subtract(hasOrderPayment),"查询成功");
