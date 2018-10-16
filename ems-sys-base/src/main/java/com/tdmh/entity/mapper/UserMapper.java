@@ -59,4 +59,5 @@ public interface UserMapper {
     List<UserLock> searchLockList(@Param("userId") Integer userId);
 
     List<CreateArchiveParam> searchAccountById(Integer userId);
+    List<User> userChangeList(User user);
 }

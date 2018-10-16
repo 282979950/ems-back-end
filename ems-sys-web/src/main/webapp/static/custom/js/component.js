@@ -593,6 +593,9 @@
                     case 'picture_in_picture_alt' :
                         $field.trigger('pictureinpicturealt');
                         break;
+                    case 'event' :
+                        $field.trigger('event');
+                        break;
                     default:
                         break;
                 }

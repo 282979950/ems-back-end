@@ -453,7 +453,7 @@
         remarks = #{remarks,jdbcType=VARCHAR}
         where user_id = #{userId,jdbcType=INTEGER}
     </update>
-    <select id="getAllCount" resultType="int">
+    <select id="getAllCount" resultType="java.lang.Integer">
         select count (1) from user
     </select>
     <select id="getUserByIccardId" parameterType="integer" resultMap="BaseResultMap">
@@ -513,5 +513,23 @@
     <select id="searchLockList" parameterType="int" resultType="com.tdmh.entity.UserLock">
       SELECT user_lock_id as userLockId,user_id as userId,is_lock as isLock,lock_reason as lockReason,create_time as createTime
       FROM user_lock where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <select id="userChangeList" parameterType="com.tdmh.entity.User" resultType="com.tdmh.entity.User" >
+        SELECT
+        u.user_id as userId,u.user_name as userName,u.user_phone as userPhone,
+        dist.dist_name as distName,u.user_address as userAddress,
+        u.user_type as userType,sd.dict_key AS userTypeName,
+        u.user_gas_type as userGasType,sd2.dict_key AS  userGasTypeName,
+        u.user_status as userStatus,sd3.dict_key AS userStatusName
+        FROM user u
+        LEFT JOIN sys_district dist ON u.user_dist_id = dist.dist_id
+        LEFT JOIN sys_dictionary sd ON u.user_type = sd.dict_value AND sd.dict_category = 'user_type' AND sd.usable = 1
+        LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 ON u.user_status = sd3.dict_value AND sd3.dict_category = 'user_status' AND sd3.usable = 1
+
+        WHERE u.usable = 1
+        <if test="userStatus != null and userStatus != ''">
+            AND u.user_status = #{userStatus}
+        </if>
     </select>
 </mapper>

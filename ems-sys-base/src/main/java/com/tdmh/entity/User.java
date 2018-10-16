@@ -69,6 +69,26 @@ public class User extends BaseEntity {
      */
     private Boolean userLocked;
 
+    /**
+     *临时参数，区域名称
+     */
+    private String distName;
+
+    /**
+     *用户类型名称
+     */
+    private String userTypeName;
+
+    /**
+     *用气类型名称
+     */
+    private String userGasTypeName;
+
+    /**
+     *用户状态名称
+     */
+    private String userStatusName;
+
     public User(Integer userId, String userName, String userPhone, String userIdcard, String userDeed, Integer userDistId, String userAddress, Integer
             userType, Integer userGasType, Integer userStatus, Boolean userLocked, Date
             createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {

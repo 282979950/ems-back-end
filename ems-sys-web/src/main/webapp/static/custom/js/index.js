@@ -37,9 +37,8 @@ app.getPanelContent = function (name) {
         case 'installMeter':
         case 'account':
         case 'lockAccount':
-            panelContent = this.DEFAULT_TEMPLATE;
-            break;
         case 'alter':
+            panelContent = this.DEFAULT_TEMPLATE;
             break;
         /*
          * 充值缴费管理：预付费充值 补卡充值 后付费充值 发票管理
@@ -782,6 +781,18 @@ app.initEvent = function () {
             }
         });
     });
+    main.on('event', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+
+    });
 };
 
 app.removeEvent = function () {
@@ -1148,6 +1159,31 @@ app.tableFields = {
     }, {
         name: 'totalOrderPayment',
         caption: '购气总额'
+    }],
+    alter: [{
+        name: 'userId',
+        caption: '用户编号'
+    },{
+        name: 'userName',
+        caption: '用户姓名'
+    }, {
+        name: 'userPhone',
+        caption: '用户电话'
+    }, {
+        name: 'distName',
+        caption: '区域名称'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userTypeName',
+        caption: '用户类型'
+    },{
+        name: 'userGasTypeName',
+        caption: '用气类型'
+    },{
+        name: 'userStatusName',
+        caption: '用户状态'
     }],
     replaceCard:[{}]
 };
@@ -2723,6 +2759,12 @@ app.getToolbarFields = function (name) {
                 name: 'edit',
                 caption: '编辑',
                 perm:'repairorder:entry:update'
+            }];
+        case 'alter':
+            return [{
+                name: 'event',
+                caption: '账户结算',
+                perm:'account:alter:visit'
             }];
     }
 };
