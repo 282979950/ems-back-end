@@ -131,8 +131,8 @@ app.initIndex = function () {
         $('body').on('focus', 'form [name="nIcCardIdentifier"]', function (res) {
             console.log(app.editForm);
             if (app.editForm) {
-                var result = app.ReadCard();
-                if(res[1] && res[1]=='0'){
+                var res = app.ReadCard();
+                if(res[1] && res[1]!='0'){
                     $.ajax({
                         type: 'POST',
                         url: 'account'+'/redCard.do',
@@ -159,7 +159,7 @@ app.initIndex = function () {
                                             xhr.withCredentials = true;
                                         }
                                     });
-                                    app.successMessage("已成功初始化")
+
 
                                 }else if(result=='ocx.ErrorDesc'){
 
@@ -171,12 +171,12 @@ app.initIndex = function () {
                         }
                     });
                 }
-                }
-                if (result instanceof Array) {
-                    app.editForm.setValue('nIcCardIdentifier', result[2]);
+                if (res instanceof Array) {
+                    app.editForm.setValue('nIcCardIdentifier', res[2]);
                 } else {
-                    app.warningMessage(result);
+                    app.warningMessage(res);
                 }
+            }
         });
         $('body').on('keyup', '[name="orderGas"]', function (res) {
             var val = $(this).val();
@@ -444,10 +444,25 @@ app.initEvent = function () {
             app.message('只能选择一条数据');
             return;
         }
-        if (app.currentPageName == 'account' || app.currentPageName == 'prePayment'){
+        if (app.currentPageName == 'account'){
             var result = app.ReadCard();
             if(result[0] !== 'S') {
                 app.errorMessage(result);
+                return;
+            }
+            if(result[1] != '新卡') {
+                app.warningMessage('只能对新卡进行开户');
+                return;
+            }
+        }
+        if (app.currentPageName == 'prePayment'){
+            var result = app.ReadCard();
+            if(result[0] !== 'S') {
+                app.errorMessage(result);
+                return;
+            }
+            if(result[1] == '0') {
+                app.warningMessage('该卡为新卡，必须开户后再充值');
                 return;
             }
             if(result[4] != '0') {
@@ -474,13 +489,13 @@ app.initEvent = function () {
                         success: function (response) {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
-                                if (app.currentPageName == 'account') {
+                                if (app.currentPageName == 'account'||app.currentPageName == 'replaceCard') {
                                     var rdata = response.data;
-                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas);
+                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
                                   }
                                 if (app.currentPageName == 'prePayment') {
                                     var rdata = response.data;
-                                    app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes);
+                                    app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
                                    }
                                 var url = app.currentPageName + '/listData.do';
                                 app.setDataCache(url, null);
@@ -1953,6 +1968,30 @@ app.getEditFormFields = function (name) {
                 name: 'orderPayment',
                 caption: '充值金额',
                 required: true
+            }];
+        case 'replaceCard':
+            return [{
+                name: 'userName',
+                caption: '充值用户名',
+                disabled: true
+            }, {
+                name: 'iccardIdentifier',
+                caption: 'IC卡识别号',
+                disabled: true
+            },{
+                name: 'nIcCardIdentifier',
+                caption: '新IC卡识别号',
+                required: true,
+                maxlength: 12
+            }, {
+                name: 'orderGas',
+                caption: '充值气量',
+                inputType: 'num',
+                required: true
+            }, {
+                name: 'orderPayment',
+                caption: '充值金额',
+                disabled: true
             }];
     }
 };

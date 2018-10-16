@@ -14,6 +14,7 @@ import com.tdmh.param.InstallMeterParam;
 import com.tdmh.param.LockAccountParam;
 import com.tdmh.service.IMeterService;
 import com.tdmh.service.IUserService;
+import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RandomUtils;
 import com.tdmh.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -241,6 +242,7 @@ public class UserServiceImpl implements IUserService {
         userOrders.setOrderGas(gas);
         BigDecimal payment = param.getOrderPayment();
         userOrders.setOrderPayment(payment);
+        userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
         userOrders.setCreateBy(param.getUpdateBy());
         userOrders.setUpdateBy(param.getUpdateBy());
         userOrders.setOrderStatus(2);
@@ -250,6 +252,7 @@ public class UserServiceImpl implements IUserService {
         if (resultCount2 == 0) {
             return JsonData.fail("初始订单生成失败");
         }
+        param.setFlowNumber(userOrders.getFlowNumber());
         return JsonData.success(param,"用户开户成功");
     }
 

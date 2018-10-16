@@ -11,6 +11,7 @@ import com.tdmh.param.WriteCardParam;
 import com.tdmh.service.IPrePaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,7 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         return list == null || list.size() == 0 ? JsonData.successMsg("暂无可充值用户") : JsonData.successData(list);
     }
 
+    @Transactional
     @Override
     public JsonData createUserOrder(UserOrders userOrders) {
         userOrders.setUsable(true);

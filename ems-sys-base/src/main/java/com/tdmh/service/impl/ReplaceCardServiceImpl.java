@@ -5,11 +5,15 @@ import com.tdmh.entity.UserCard;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.entity.mapper.PrePaymentMapper;
 import com.tdmh.entity.mapper.UserCardMapper;
+import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.exception.ParameterException;
 import com.tdmh.param.PrePaymentParam;
+import com.tdmh.param.WriteCardParam;
 import com.tdmh.service.IReplaceCardService;
+import com.tdmh.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +29,9 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
     @Autowired
     private UserCardMapper userCardMapper;
 
+    @Autowired
+    private UserOrdersMapper userOrdersMapper;
+
     @Override
     public JsonData getAllReplaceCardInformation() {
         List<PrePaymentParam> list = prePaymentMapper.getAllOrderInformation(null);
@@ -37,13 +44,14 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         return list == null || list.size() == 0 ? JsonData.successMsg("暂无可补卡用户") : JsonData.success(list,"查询成功");
     }
 
+    @Transactional
     @Override
     public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders) {
         UserCard oldUserCard = userCardMapper.getUserCardByUserIdAndCardId(param.getUserId(),param.getIccardId());
         if(oldUserCard == null){
             return JsonData.fail("该用户没有可用卡");
         }
-        if(param.getIccardIdentifier().equals(oldUserCard.getCardIdentifier())){
+        if(!param.getIccardIdentifier().equals(oldUserCard.getCardIdentifier())){
             return JsonData.fail("该用户原卡与系统内不一致");
         }
         oldUserCard.setUsable(false);
@@ -56,6 +64,7 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         userCard.setCardId(oldUserCard.getCardId());
         userCard.setCardIdentifier(param.getNIcCardIdentifier());
         userCard.setCardPassword(oldUserCard.getCardPassword());
+        userCard.setCardInitialization(true);
         userCard.setCreateBy(userOrders.getCreateBy());
         userCard.setUpdateBy(userOrders.getUpdateBy());
         userCard.setUsable(true);
@@ -63,6 +72,20 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         if(resultCount2 == 0){
             throw new ParameterException("补卡失败");
         }
-        return JsonData.successMsg("补卡成功");
+        userOrders.setUserId(param.getUserId());
+        userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
+        userOrders.setOrderStatus(2);
+        userOrders.setUsable(true);
+        int resultCount3 = userOrdersMapper.insert(userOrders);
+        if(resultCount3 == 0){
+            throw new ParameterException("补卡首充失败");
+        }
+        WriteCardParam wparam = new WriteCardParam();
+        wparam.setIccardId(userCard.getCardId());
+        wparam.setIccardPassword(userCard.getCardPassword());
+        wparam.setOrderGas(userOrders.getOrderGas());
+        wparam.setFlowNumber(userOrders.getFlowNumber());
+        wparam.setServiceTimes(0);
+        return JsonData.success(wparam,"补卡成功");
     }
 }

@@ -36,7 +36,8 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
           card_identifier = #{cardIdentifier},
           card_password = #{cardPassword},
           update_time = NOW(),
-          update_by = #{updateBy}
+          update_by = #{updateBy},
+          usable = #{usable}
           where user_card_id = #{userCardId}
     </update>
 </mapper>
