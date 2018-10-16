@@ -230,15 +230,15 @@ app.initIndex = function () {
                                 console.log(response);
                                 if (response.status) {
                                     var data = response.data;
-                                    if (app.addForm) {
+                                    if (data && app.addForm) {
                                         app.addForm.setValue('userName', data.userName);
                                         app.addForm.setValue('userPhone', data.userPhone);
                                         app.addForm.setValue('userAddress', data.userAddress);
                                     }
-                                    if (app.editForm) {
-                                        app.addForm.setValue('userName', data.userName);
-                                        app.addForm.setValue('userPhone', data.userPhone);
-                                        app.addForm.setValue('userAddress', data.userAddress);
+                                    if (data && app.editForm) {
+                                        app.editForm.setValue('userName', data.userName);
+                                        app.editForm.setValue('userPhone', data.userPhone);
+                                        app.editForm.setValue('userAddress', data.userAddress);
                                     }
                                 }
                             }
@@ -265,10 +265,10 @@ app.initIndex = function () {
                                         app.addForm.setValue('oldMeterTypeId', data.meterTypeId);
                                         app.addForm.setValue('oldMeterDirection', data.meterDirection);
                                     }
-                                    if (app.editForm) {
-                                        app.addForm.getData().oldMeterId = data.meterId;
-                                        app.addForm.setValue('oldMeterTypeId', data.meterTypeId);
-                                        app.addForm.setValue('oldMeterDirection', data.meterDirection);
+                                    if (data && app.editForm) {
+                                        app.editForm.getData().oldMeterId = data.meterId;
+                                        app.editForm.setValue('oldMeterTypeId', data.meterTypeId);
+                                        app.editForm.setValue('oldMeterDirection', data.meterDirection);
                                     }
                                 }
                             }
@@ -290,12 +290,12 @@ app.initIndex = function () {
                                 console.log(response);
                                 if (response.status) {
                                     var data = response.data;
-                                    if (data && app.editForm) {
-                                        app.editForm.getData().newMeterId = data.meterId;
-                                        app.editForm.setValue('newMeterTypeId', data.meterTypeId);
-                                        app.editForm.setValue('newMeterDirection', data.meterDirection);
+                                    if (data && app.addForm) {
+                                        app.addForm.getData().newMeterId = data.meterId;
+                                        app.addForm.setValue('newMeterTypeId', data.meterTypeId);
+                                        app.addForm.setValue('newMeterDirection', data.meterDirection);
                                     }
-                                    if (app.editForm) {
+                                    if (data && app.editForm) {
                                         app.editForm.getData().newMeterId = data.meterId;
                                         app.editForm.setValue('newMeterTypeId', data.meterTypeId);
                                         app.editForm.setValue('newMeterDirection', data.meterDirection);
@@ -324,9 +324,9 @@ app.initIndex = function () {
                                         app.addForm.getData().empId = data.empId;
                                         app.addForm.setValue('empName', data.empName);
                                     }
-                                    if (app.editForm) {
-                                        app.addForm.getData().empId = data.empId;
-                                        app.addForm.setValue('empName', data.empName);
+                                    if (data && app.editForm) {
+                                        app.editForm.getData().empId = data.empId;
+                                        app.editForm.setValue('empName', data.empName);
                                     }
                                 }
                             }
