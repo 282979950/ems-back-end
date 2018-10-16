@@ -110,4 +110,10 @@ public class EntryMeterController {
             meterType, @Param("meterDirection") Boolean meterDirection, @Param("meterProdDate") @DateTimeFormat(pattern="yyyy-MM") Date meterProdDate) {
         return meterService.searchEntryMeter(meterCode, meterCategory, meterType, meterDirection, meterProdDate);
     }
+
+    @RequestMapping(value = "/getMeterByMeterCode.do")
+    @ResponseBody
+    public JsonData getMeterByMeterCode(@Param("meterCode") String meterCode) {
+        return meterService.getMeterByMeterCode(meterCode);
+    }
 }

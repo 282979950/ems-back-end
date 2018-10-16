@@ -31,7 +31,7 @@
         select
         <include refid="Base_Column_List"/>
         from user
-        where user_id = #{userId,jdbcType=INTEGER}
+        where user_id = #{userId,jdbcType=INTEGER} and usable = 1 and user_status = 3
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from user
@@ -353,6 +353,21 @@
         </if>
         order by u.user_id
     </select>
+    <select id="searchAccountById" resultMap="CreateArchiveParam" parameterType="map">
+        select
+        u.user_id, u.user_dist_id, dist.dist_name as user_dist_name, u.user_address, u.user_type, sd.dict_key as user_type_name, u.user_gas_type,
+        sd2.dict_key as  user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
+        u.update_time, u.update_by, u.usable, u.remarks
+        from user u
+        LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
+        LEFT JOIN meter m ON um.meter_id=m.meter_id and m.usable=1
+        LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
+        left join sys_district dist on u.user_dist_id = dist.dist_id
+        LEFT JOIN sys_dictionary sd on u.user_type = sd.dict_value and sd.dict_category = 'user_type' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd2 on u.user_gas_type = sd2.dict_value and sd2.dict_category = 'user_gas_type' and sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 on u.user_status = sd3.dict_value and sd3.dict_category = 'user_status' and sd3.usable = 1
+        where u.usable = 1 and u.user_id = #{userId,jdbcType=INTEGER} and u.user_status = 3
+    </select>
     <!--用户挂表-->
     <resultMap id="InstallMeterParam" type="com.tdmh.param.InstallMeterParam">
         <constructor>
@@ -489,7 +504,6 @@
             AND u.user_status = #{userStatus,jdbcType=VARCHAR}
         </if>
     </select>
-
     <insert id="insertUserLock" parameterType="com.tdmh.entity.UserLock">
         insert into user_lock (user_id, is_lock,lock_reason,create_time, create_by,update_time,update_by ,usable, remarks)
        values (#{userId,jdbcType=INTEGER},#{isLock,jdbcType=BIT},#{lockReason,jdbcType=VARCHAR},NOW(),#{createBy,jdbcType=INTEGER},NOW(),

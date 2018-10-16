@@ -324,5 +324,9 @@ public class UserServiceImpl implements IUserService {
         return  userLocks == null || userLocks.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(userLocks, "查询成功");
     }
 
-
+    @Override
+    public JsonData searchAccountById(Integer userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        return user == null ? JsonData.successMsg("搜索结果为空") : JsonData.success(user, "查询成功");
+    }
 }

@@ -52,6 +52,8 @@ app.getPanelContent = function (name) {
          * 维修补气管理: 维修单录入 维修补气 补缴结算 IC卡初始化
          */
         case 'input':
+            panelContent = this.DEFAULT_TEMPLATE;
+            break;
         case 'fillGas':
         case 'balance':
         case 'initCard':
@@ -140,6 +142,134 @@ app.initIndex = function () {
                 app.editForm.setValue('orderPayment', null);
             }
         });
+        $(document).on('blur', '.queryField', function (e) {
+            var queryFieldName = $(e.target).attr('name');
+            var value = e.target.value;
+            if (value) {
+                switch (queryFieldName) {
+                    case 'userId':
+                        $.ajax({
+                            async: true,
+                            type: 'POST',
+                            url: 'account/searchAccountById.do',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: {
+                                "userId": value
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.withCredentials = true;
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                if (response.status) {
+                                    var data = response.data;
+                                    if (app.addForm) {
+                                        app.addForm.setValue('userName', data.userName);
+                                        app.addForm.setValue('userPhone', data.userPhone);
+                                        app.addForm.setValue('userAddress', data.userAddress);
+                                    }
+                                    if (app.editForm) {
+                                        app.addForm.setValue('userName', data.userName);
+                                        app.addForm.setValue('userPhone', data.userPhone);
+                                        app.addForm.setValue('userAddress', data.userAddress);
+                                    }
+                                }
+                            }
+                        });
+                        break;
+                    case 'oldMeterCode':
+                        $.ajax({
+                            async: true,
+                            type: 'POST',
+                            url: 'entry/getMeterByMeterCode.do',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: {
+                                'meterCode': value
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.withCredentials = true;
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                if (response.status) {
+                                    var data = response.data;
+                                    if (data && app.addForm) {
+                                        app.addForm.getData().oldMeterId = data.meterId;
+                                        app.addForm.setValue('oldMeterTypeId', data.meterTypeId);
+                                        app.addForm.setValue('oldMeterDirection', data.meterDirection);
+                                    }
+                                    if (app.editForm) {
+                                        app.addForm.getData().oldMeterId = data.meterId;
+                                        app.addForm.setValue('oldMeterTypeId', data.meterTypeId);
+                                        app.addForm.setValue('oldMeterDirection', data.meterDirection);
+                                    }
+                                }
+                            }
+                        });
+                        break;
+                    case 'newMeterCode':
+                        $.ajax({
+                            async: true,
+                            type: 'POST',
+                            url: 'entry/getMeterByMeterCode.do',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: {
+                                'meterCode': value
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.withCredentials = true;
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                if (response.status) {
+                                    var data = response.data;
+                                    if (data && app.editForm) {
+                                        app.editForm.getData().newMeterId = data.meterId;
+                                        app.editForm.setValue('newMeterTypeId', data.meterTypeId);
+                                        app.editForm.setValue('newMeterDirection', data.meterDirection);
+                                    }
+                                    if (app.editForm) {
+                                        app.editForm.getData().newMeterId = data.meterId;
+                                        app.editForm.setValue('newMeterTypeId', data.meterTypeId);
+                                        app.editForm.setValue('newMeterDirection', data.meterDirection);
+                                    }
+                                }
+                            }
+                        });
+                        break;
+                    case 'empNumber':
+                        $.ajax({
+                            async: true,
+                            type: 'POST',
+                            url: 'emp/getEmpByEmpNumber.do',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: {
+                                'empNumber': value
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.withCredentials = true;
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                if (response.status) {
+                                    var data = response.data[0];
+                                    if (data && app.addForm) {
+                                        app.addForm.getData().empId = data.empId;
+                                        app.addForm.setValue('empName', data.empName);
+                                    }
+                                    if (app.editForm) {
+                                        app.addForm.getData().empId = data.empId;
+                                        app.addForm.setValue('empName', data.empName);
+                                    }
+                                }
+                            }
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     });
 };
 
@@ -175,7 +305,8 @@ app.logout = function () {
 
 app.render = function (context) {
     // 从缓存中读取数据
-    var data = app.getDataCache(context.url);
+    // var data = app.getDataCache(context.url);
+    var data = null;
     if (data) {
         console.log("依据缓存渲染页面");
         _render(data);
@@ -191,7 +322,7 @@ app.render = function (context) {
             },
             success: function (response) {
                 var data = response.data;
-                app.setDataCache(context.url, data);
+                // app.setDataCache(context.url, data);
                 console.log("更新" + context.url + "缓存");
                 _render(data);
             }
@@ -249,7 +380,7 @@ app.initEvent = function () {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
                                 var url = app.currentPageName + '/listData.do';
-                                app.setDataCache(url, null);
+                                // app.setDataCache(url, null);
                                 console.log("清理" + url + "缓存");
                                 app.render({
                                     url: url
@@ -257,9 +388,13 @@ app.initEvent = function () {
                             }
                         }
                     });
+                    app.addForm = null;
                 }
             }, {
-                text: '取消'
+                text: '取消',
+                onClick: function () {
+                    app.addForm = null;
+                }
             }]
         });
         $(".tree-combobox-panel").remove();
@@ -298,7 +433,7 @@ app.initEvent = function () {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
                                 var url = app.currentPageName + '/listData.do';
-                                app.setDataCache(url, null);
+                                // app.setDataCache(url, null);
                                 console.log("清理" + url + "缓存");
                                 app.render({
                                     url: url
@@ -306,9 +441,13 @@ app.initEvent = function () {
                             }
                         }
                     });
+                    app.editForm = null;
                 }
             }, {
-                text: '取消'
+                text: '取消',
+                onClick: function () {
+                    app.editForm = null;
+                }
             }]
         });
         $(".tree-combobox-panel").remove();
@@ -360,7 +499,7 @@ app.initEvent = function () {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
                                 var url = app.currentPageName + '/listData.do';
-                                app.setDataCache(url, null);
+                                // app.setDataCache(url, null);
                                 console.log("清理" + url + "缓存");
                                 app.render({
                                     url: url
@@ -426,7 +565,7 @@ app.initEvent = function () {
                                 response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                                 if (response.status) {
                                     var url = app.currentPageName + '/listData.do';
-                                    app.setDataCache(url, null);
+                                    // app.setDataCache(url, null);
                                     console.log("清理" + url + "缓存");
                                     app.render({
                                         url: url
@@ -717,6 +856,76 @@ app.tableFields = {
     }, {
         name: 'createTime',
         caption: '解锁/锁定时间'
+    }],
+    input: [{
+        name: 'repairOrderId',
+        caption: '维修单编号'
+    }, {
+        name: 'userId',
+        caption: '户号'
+    }, {
+        name: 'userName',
+        caption: '用户名称'
+    }, {
+        name: 'userPhone',
+        caption: '用户手机'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'repairTypeName',
+        caption: '维修类型'
+    }, {
+        name: 'gasEquipmentTypeName',
+        caption: '燃气设备类型'
+    }, {
+        name: 'oldMeterCode',
+        caption: '旧表编号'
+    }, {
+        name: 'oldMeterTypeName',
+        caption: '旧表类型'
+    }, {
+        name: 'oldMeterDirectionName',
+        caption: '旧表表向'
+    }, {
+        name: 'oldMeterStopCode',
+        caption: '旧表止码'
+    }, {
+        name: 'newMeterCode',
+        caption: '新表止码'
+    }, {
+        name: 'newMeterTypeName',
+        caption: '新表类型'
+    }, {
+        name: 'newMeterDirectionName',
+        caption: '新表表向'
+    }, {
+        name: 'newMeterStopCode',
+        caption: '新表止码'
+    }, {
+        name: 'repairFaultTypeName',
+        caption: '维修类型'
+    }, {
+        name: 'repairResultTypeName',
+        caption: '维修结果'
+    }, {
+        name: 'empNumber',
+        caption: '员工编号'
+    }, {
+        name: 'empName',
+        caption: '员工姓名'
+    }, {
+        name: 'repairStartTime',
+        caption: '维修开始时间'
+    }, {
+        name: 'repairEndTime',
+        caption: '维修结束时间'
+    }, {
+        name: 'newSafetyCode',
+        caption: '新安全卡编号'
+    }, {
+        name: 'oldSafetyCode',
+        caption: '旧安全卡编号'
     }]
 };
 /*
@@ -1084,11 +1293,121 @@ app.getAddFormFields  = function (name) {
                 type: 'listcombobox',
                 options: app.getDictionaryByCategory("user_gas_type")
             }];
+        case 'input':
+            return [{
+                name: 'repairOrderId',
+                caption: '维修单编号'
+            }, {
+                name: 'userId',
+                caption: '户号',
+                queryField: true
+            }, {
+                name: 'userName',
+                caption: '用户名称',
+                disabled: true
+            }, {
+                name: 'userPhone',
+                caption: '用户手机',
+                disabled: true
+            }, {
+                name: 'userAddress',
+                caption: '用户地址',
+                disabled: true
+            }, {
+                name: 'repairType',
+                caption: '维修类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("repair_type")
+            }, {
+                name: 'gasEquipmentType',
+                caption: '燃气设备类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("gas_equipment_type")
+            }, {
+                name: 'oldMeterCode',
+                caption: '旧表编号',
+                queryField: true
+            }, {
+                name: 'oldMeterTypeId',
+                caption: '旧表类型',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('entry/getAllMeterTypes.do', 'meterType', 'meterTypeId')
+            }, {
+                name: 'oldMeterDirection',
+                caption: '旧表表向',
+                type: 'listcombobox',
+                options: [{
+                    key: '左',
+                    value: true
+                },{
+                    key: '右',
+                    value: false
+                }]
+            }, {
+                name: 'oldMeterStopCode',
+                caption: '旧表止码'
+            }, {
+                name: 'newMeterCode',
+                caption: '新表编号',
+                queryField: true
+            }, {
+                name: 'newMeterTypeId',
+                caption: '新表类型',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('entry/getAllMeterTypes.do', 'meterType', 'meterTypeId')
+            }, {
+                name: 'newMeterDirection',
+                caption: '新表表向',
+                type: 'listcombobox',
+                options: [{
+                    key: '左',
+                    value: true
+                },{
+                    key: '右',
+                    value: false
+                }]
+            }, {
+                name: 'newMeterStopCode',
+                caption: '新表止码'
+            }, {
+                name: 'repairFaultType',
+                caption: '维修类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("repair_fault_type")
+            }, {
+                name: 'repairResultType',
+                caption: '维修结果',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("repair_result_type")
+            }, {
+                name: 'empNumber',
+                caption: '维修员编号',
+                queryField: 'empNumber'
+            }, {
+                name: 'empName',
+                caption: '维修员姓名',
+                disabled: true
+            }, {
+                name: 'repairStartTime',
+                caption: '维修开始时间',
+                type: 'date'
+            }, {
+                name: 'repairEndTime',
+                caption: '维修结束时间',
+                type: 'date'
+            }, {
+                name: 'newSafetyCode',
+                caption: '新安全卡编号'
+            }, {
+                name: 'oldSafetyCode',
+                caption: '旧安全卡编号'
+            }];
     }
 };
 
 app.getTreeComboboxNodes = function (url) {
-    var data = this.getDataCache(url);
+    // var data = this.getDataCache(url);
+    var data = null;
     if (data) {
         console.log("从缓存中获取数据");
         return data;
@@ -1103,7 +1422,7 @@ app.getTreeComboboxNodes = function (url) {
             },
             success: function (response) {
                 data = response.data;
-                app.setDataCache(url, data);
+                // app.setDataCache(url, data);
                 console.log("更新"+ url+ "缓存");
             }
         });
@@ -1113,7 +1432,8 @@ app.getTreeComboboxNodes = function (url) {
 
 app.getListComboboxOptions = function(url, k, v) {
     var result = [];
-    var data = this.getDataCache(url);
+    // var data = this.getDataCache(url);
+    var data = null;
     if (data) {
         console.log("从缓存中获取数据");
         for (var i = 0; i < data.length; i++) {
@@ -1133,7 +1453,7 @@ app.getListComboboxOptions = function(url, k, v) {
             },
             success: function (response) {
                 data = response.data;
-                app.setDataCache(url, data);
+                // app.setDataCache(url, data);
                 console.log("更新"+ url+ "缓存");
                 if (data) {
                     for (var i = 0; i < data.length; i++) {
@@ -1603,6 +1923,114 @@ app.getEditFormFields = function (name) {
                 name: 'lockReason',
                 caption: '本次操作原因'
             }];
+        case 'input':
+            return [{
+                name: 'repairOrderId',
+                caption: '维修单编号'
+            }, {
+                name: 'userId',
+                caption: '户号',
+                disabled: true
+            }, {
+                name: 'userName',
+                caption: '用户名称',
+                disabled: true
+            }, {
+                name: 'userPhone',
+                caption: '用户手机',
+                disabled: true
+            }, {
+                name: 'userAddress',
+                caption: '用户地址',
+                disabled: true
+            }, {
+                name: 'repairType',
+                caption: '维修类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("repair_type")
+            }, {
+                name: 'gasEquipmentType',
+                caption: '燃气设备类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("gas_equipment_type")
+            }, {
+                name: 'oldMeterCode',
+                caption: '旧表编号',
+                disabled: true
+            }, {
+                name: 'oldMeterTypeId',
+                caption: '旧表类型',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('entry/getAllMeterTypes.do', 'meterType', 'meterTypeId')
+            }, {
+                name: 'oldMeterDirection',
+                caption: '旧表表向',
+                type: 'listcombobox',
+                options: [{
+                    key: '左',
+                    value: true
+                },{
+                    key: '右',
+                    value: false
+                }]
+            }, {
+                name: 'oldMeterStopCode',
+                caption: '旧表止码'
+            }, {
+                name: 'newMeterCode',
+                caption: '新表编号',
+                queryField: true
+            }, {
+                name: 'newMeterTypeId',
+                caption: '新表类型',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('entry/getAllMeterTypes.do', 'meterType', 'meterTypeId')
+            }, {
+                name: 'newMeterDirection',
+                caption: '新表表向',
+                type: 'listcombobox',
+                options: [{
+                    key: '左',
+                    value: true
+                },{
+                    key: '右',
+                    value: false
+                }]
+            }, {
+                name: 'newMeterStopCode',
+                caption: '新表止码'
+            }, {
+                name: 'repairFaultType',
+                caption: '维修类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("repair_fault_type")
+            }, {
+                name: 'repairResultType',
+                caption: '维修结果',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("repair_result_type")
+            }, {
+                name: 'empNumber',
+                caption: '维修员工号'
+            }, {
+                name: 'empName',
+                caption: '维修员姓名',
+                disabled: true
+            }, {
+                name: 'repairStartTime',
+                caption: '维修开始时间',
+                type: 'date'
+            }, {
+                name: 'repairEndTime',
+                caption: '维修结束时间',
+                type: 'date'
+            }, {
+                name: 'newSafetyCode',
+                caption: '新安全卡编号'
+            }, {
+                name: 'oldSafetyCode',
+                caption: '旧安全卡编号'
+            }];
     }
 };
 
@@ -1964,6 +2392,16 @@ app.getToolbarFields = function (name) {
                 caption: 'IC卡号',
                 type: 'input'
             }];
+        case 'input':
+            return [{
+                name: 'add',
+                caption: '新增',
+                perm:'repairorder:entry:create'
+            }, {
+                name: 'edit',
+                caption: '编辑',
+                perm:'repairorder:entry:update'
+            }];
     }
 };
 
@@ -1975,5 +2413,6 @@ app.deleteNames = {
     'dist': 'distId',
     'entry': 'meterId',
     'createArchive': 'userId',
-    'emp': 'empId'
+    'emp': 'empId',
+    'input': 'id'
 };

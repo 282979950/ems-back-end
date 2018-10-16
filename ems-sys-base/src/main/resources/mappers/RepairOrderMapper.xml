@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.RepairOrderMapper">
+    <resultMap id="RepairOrderParam" type="com.tdmh.param.RepairOrderParam">
+        <constructor>
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="repair_order_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="repair_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="repair_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="gas_equipment_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="gas_equipment_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="old_meter_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="old_meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="old_meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="old_meter_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="old_meter_direction" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="old_meter_direction_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="old_meter_stop_code" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="new_meter_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="new_meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="new_meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="new_meter_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="new_meter_direction" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="new_meter_direction_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="new_meter_stop_code" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="repair_fault_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="repair_fault_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="repair_result_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="repair_result_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="emp_number" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="emp_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="repair_start_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="repair_end_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="new_safety_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="old_safety_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Sql">
+        select
+        ro.id, ro.repair_order_id, ro.user_id ,u.user_name, u.user_phone, u.user_address, ro.repair_type, sd1.dict_key as repair_type_name,
+        ro.gas_equipment_type, sd4.dict_key as gas_equipment_type_name,
+        ro.old_meter_id, m2.meter_code as old_meter_code, m2.meter_type_id as old_meter_type_id, mt2.meter_type as old_meter_type_name,
+        m2.meter_direction as old_meter_direction, sd6.dict_key as old_meter_direction_name, m2.meter_stop_code as old_meter_stop_code,
+        ro.new_meter_id, m1.meter_code as new_meter_code, m1.meter_type_id as new_meter_type_id, mt1.meter_type as new_meter_type_name,
+        m1.meter_direction as new_meter_direction, sd5.dict_key as new_meter_direction_name, m1.meter_stop_code as new_meter_stop_code,
+        ro.repair_fault_type, sd2.dict_key as repair_fault_type_name, ro.repair_result_type, sd3.dict_key as repair_result_type_name,
+        ro.emp_id, e.emp_number, e.emp_name,
+        ro.repair_start_time,ro.repair_end_time, ro.new_safety_code, ro.old_safety_code,
+        ro.create_time, ro.create_by, ro.update_time, ro.update_by, ro.usable, ro.remarks
+        from repair_order ro
+        left join user u on ro.user_id = u.user_id and u.usable = 1
+        left join meter m1 on ro.new_meter_id = m1.meter_id and m1.usable = 1
+        left join meter_type mt1 on m1.meter_type_id = mt1.meter_type_id and mt1.usable = 1
+        left join sys_dictionary sd5 on m1.meter_direction = sd5.dict_value and sd5.dict_category = 'meter_direction' and sd5.usable = 1
+        left join meter m2 on ro.old_meter_id = m2.meter_id
+        left join meter_type mt2 on m2.meter_type_id = mt2.meter_type_id and mt2.usable = 1
+        left join sys_dictionary sd6 on m2.meter_direction = sd6.dict_value and sd6.dict_category = 'meter_direction' and sd6.usable = 1
+        left join sys_dictionary sd1 on ro.repair_type = sd1.dict_value and sd1.dict_category = 'repair_type' and sd1.usable = 1
+        left join sys_dictionary sd2 on ro.repair_fault_type = sd2.dict_value and sd2.dict_category = 'repair_fault_type' and sd2.usable = 1
+        left join sys_dictionary sd3 on ro.repair_fault_type = sd3.dict_value and sd3.dict_category = 'repair_result_type' and sd3.usable = 1
+        left join sys_dictionary sd4 on ro.gas_equipment_type = sd4.dict_value and sd4.dict_category = 'gas_equipment_type' and sd4.usable = 1
+        left join employee e on ro.emp_id = e.emp_id and e.usable = 1
+        where ro.usable = 1
+    </sql>
+    <select id="listData" resultMap="RepairOrderParam">
+        <include refid="Base_Sql"></include>
+    </select>
+    <select id="getRepairOrderById" resultMap="RepairOrderParam" parameterType="int">
+        <include refid="Base_Sql"></include>
+        and ro.id = #{id}
+    </select>
+    <select id="checkRepairOrderExists" resultType="java.lang.Boolean" parameterType="string">
+        select
+        count(1)
+        from repair_order
+        where repair_order_id = #{repairOrderId} and usable = 1
+    </select>
+    <insert id="addRepairOrder" parameterType="com.tdmh.param.RepairOrderParam">
+        insert into repair_order(
+        repair_order_id, user_id, repair_type, gas_equipment_type, old_meter_id, new_meter_id,
+        repair_fault_type, repair_result_type, emp_id, repair_start_time, repair_end_time, new_safety_code, old_safety_code,
+        create_time, create_by, update_time, update_by, remarks
+        ) values (#{repairOrderId}, #{userId}, #{repairType}, #{gasEquipmentType}, #{oldMeterId}, #{newMeterId},
+        #{repairFaultType}, #{repairResultType}, #{empId}, #{repairStartTime}, #{repairEndTime}, #{newSafetyCode}, #{oldSafetyCode},
+        NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks})
+    </insert>
+    <update id="editRepairOrder">
+        update repair_order
+        set
+        repair_order_id = #{repairOrderId},
+        repair_type = #{repairType},
+        gas_equipment_type = #{gasEquipmentType},
+        new_meter_id = #{newMeterId},
+        repair_fault_type = #{repairFaultType},
+        repair_result_type = #{repairResultType},
+        emp_id = #{empId},
+        repair_start_time = #{repairStartTime},
+        repair_end_time = #{repairEndTime},
+        new_safety_code = #{newSafetyCode},
+        old_safety_code = #{oldSafetyCode},
+        update_time = NOW(),
+        update_by = #{updateBy}
+        where id = #{id}
+    </update>
+</mapper>

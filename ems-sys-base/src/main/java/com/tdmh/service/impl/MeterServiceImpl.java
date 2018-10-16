@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -127,6 +126,7 @@ public class MeterServiceImpl implements IMeterService {
         return JsonData.success(meters, "查询表具成功");
     }
 
+    @Override
     public Meter getMeterByMeterId(Integer meterId) {
         return meterMapper.getMeterByMeterId(meterId);
     }
@@ -137,6 +137,11 @@ public class MeterServiceImpl implements IMeterService {
     }
 
     @Override
+    public JsonData getMeterByMeterCode(String meterCode) {
+        return JsonData.successData(getMeterByMeterId(getMeterIdByMeterCode(meterCode)));
+    }
+
+    @Override
     public int updateMeter(Meter meter) {
         if (meter.getUpdateTime() == null) {
             meter.setUpdateTime(new Date());
@@ -144,6 +149,10 @@ public class MeterServiceImpl implements IMeterService {
         return meterMapper.updateByPrimaryKeySelective(meter);
     }
 
+    @Override
+    public int clearInstallInfo(Meter meter) {
+        return meterMapper.clearInstallInfo(meter);
+    }
     /**
      * 校验表具是否已经入库
      *

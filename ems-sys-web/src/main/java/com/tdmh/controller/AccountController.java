@@ -101,4 +101,16 @@ public class AccountController {
         }
         return JsonData.successMsg("暂未配置天然气区间价格");
     }
+
+    /**
+     * 依据用户户号查询用户信息
+     *
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/searchAccountById.do")
+    @ResponseBody
+    public JsonData searchAccountById(@Param("userId") Integer userId) {
+        return userService.searchAccountById(userId);
+    }
 }

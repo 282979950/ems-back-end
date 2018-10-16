@@ -80,4 +80,10 @@ public class EmpController {
             empPhone, @RequestParam("empMobile") String empMobile, @RequestParam("empType") String empType) {
         return employeeService.searchEmployee(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
     }
+
+    @RequestMapping(value = "getEmpByEmpNumber.do")
+    @ResponseBody
+    public JsonData getEmpByEmpNumber(@RequestParam("empNumber") String empNumber) {
+        return employeeService.searchEmployee(empNumber, null, null, null, null, null, null, null);
+    }
 }
