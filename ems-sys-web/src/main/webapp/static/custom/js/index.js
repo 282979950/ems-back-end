@@ -1632,6 +1632,7 @@ app.getAddFormFields = function (name) {
                 name: 'oldMeterCode',
                 caption: '旧表编号',
                 required: true,
+                queryField: true,
                 maxlength: 12
             }, {
                 name: 'oldMeterTypeId',
@@ -2422,6 +2423,7 @@ app.getEditFormFields = function (name) {
                 name: 'empNumber',
                 caption: '维修员工号',
                 required: true,
+                queryField: true,
                 maxlength: 50
             }, {
                 name: 'empName',
