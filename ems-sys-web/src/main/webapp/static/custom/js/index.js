@@ -1114,7 +1114,6 @@ app.tableFields = {
     }, {
         name: 'oldSafetyCode',
         caption: '旧安全卡编号'
-    }]
     }],
     prePayment: [{
         name: 'userId',
