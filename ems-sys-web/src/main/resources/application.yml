@@ -15,3 +15,4 @@ spring:
 mybatis:
   typeAliasesPackage: com.tdmh.entity
   mapperLocations: classpath:mappers/*Mapper.xml
+  config-location: classpath:mybatis-config.xml

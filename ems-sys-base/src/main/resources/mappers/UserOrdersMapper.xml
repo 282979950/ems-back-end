@@ -34,12 +34,15 @@
     where order_id = #{orderId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.tdmh.entity.UserOrders" >
-    insert into user_orders (order_id, user_id, employee_id,
+<selectKey keyProperty="orderId" order="AFTER" resultType="int">
+    SELECT LAST_INSERT_ID()
+</selectKey>
+    insert into user_orders (user_id, employee_id,
       order_payment, order_gas, order_status, order_create_time,
       order_close_time, create_time, create_by, 
       update_time, update_by, usable, 
       remarks)
-    values (#{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, #{orderPayment,jdbcType=DECIMAL},
+    values (#{userId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, #{orderPayment,jdbcType=DECIMAL},
       #{orderGas,jdbcType=DECIMAL}, #{orderStatus,jdbcType=INTEGER}, #{orderCreateTime,jdbcType=TIMESTAMP},
       #{orderCloseTime,jdbcType=TIMESTAMP}, NOW(), #{createBy,jdbcType=INTEGER},
       #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT}, 
@@ -208,4 +211,7 @@
       #{orderCloseTime,jdbcType=TIMESTAMP}, NOW(), #{createBy,jdbcType=INTEGER},
       NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
   </insert>
+  <select id="findHasUsedGasInYear" resultType="decimal">
+        SELECT SUM(order_gas) FROM user_orders WHERE user_id = #{userId} AND create_time > MAKEDATE(YEAR(NOW()), 1);
+  </select>
 </mapper>

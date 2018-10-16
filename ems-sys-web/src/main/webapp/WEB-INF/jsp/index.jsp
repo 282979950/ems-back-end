@@ -87,6 +87,9 @@
                     <shiro:hasPermission name="sys:dic:visit">
                         <div class="mdui-list-item mdui-ripple nav-item dic">字典管理</div>
                     </shiro:hasPermission>
+                    <shiro:hasPermission name="sys:gasPrice:visit">
+                    <div class="mdui-list-item mdui-ripple nav-item gasPrice">气价管理</div>
+                    </shiro:hasPermission>
                     <shiro:hasPermission name="sys:log:visit">
                         <div class="mdui-list-item mdui-ripple nav-item log">日志管理</div>
                     </shiro:hasPermission>

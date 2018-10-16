@@ -1,11 +1,11 @@
 package com.tdmh.controller;
 
 import com.tdmh.common.JsonData;
-import com.tdmh.entity.SysDictionary;
+import com.tdmh.entity.GasPrice;
 import com.tdmh.param.CreateAccountParam;
+import com.tdmh.service.IGasPriceService;
 import com.tdmh.service.IMeterService;
 import com.tdmh.service.IUserService;
-import com.tdmh.service.SysDictionaryService;
 import com.tdmh.util.CalculateUtil;
 import com.tdmh.util.ShiroUtils;
 import org.apache.ibatis.annotations.Param;
@@ -15,10 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * 账户管理controller
@@ -35,8 +32,8 @@ public class AccountController {
     @Autowired
     private IUserService userService;
 
-    @Resource
-    private SysDictionaryService sysDictionaryService;
+    @Autowired
+    private IGasPriceService gasPriceService;
 
 
     /**
@@ -91,15 +88,36 @@ public class AccountController {
 
     @RequestMapping(value = "/calAmount.do")
     @ResponseBody
-    public JsonData calAmount(@Param("orderGas") Integer orderGas) {
+    public JsonData calAmount(@Param("orderGas") Integer orderGas,@Param("userType") Integer userType,@Param("userGasType") Integer userGasType) {
         BigDecimal orderPayment = null;
-        List<SysDictionary> list = sysDictionaryService.findListByTypeOnPc("gas_price");
-        if(null!=list&&list.size()>0) {
-            CalculateUtil.callist = CalculateUtil.transfer(list);
-            orderPayment = CalculateUtil.gasToPayment(BigDecimal.valueOf(orderGas));
+        GasPrice gasPrice = gasPriceService.findGasPriceByType(userType ,userGasType);
+        if(gasPrice != null){
+            orderPayment = CalculateUtil.gasToPayment(BigDecimal.valueOf(orderGas) , gasPrice);
             return JsonData.success(orderPayment,"查询成功");
         }
         return JsonData.successMsg("暂未配置天然气区间价格");
+    }
+    /**
+     * 获取相关数据
+     *
+     * @return
+     */
+    @RequiresPermissions("account:createAccount:retrieve")
+    @RequestMapping(value = "redCard.do")
+    @ResponseBody
+    public JsonData redCard(@Param("cardId") Integer cardId) {
+        return userService.cardService( cardId);
+    }
+    /**
+     * 初始化卡
+     *
+     * @return
+     */
+    @RequiresPermissions("account:createAccount:update")
+    @RequestMapping(value = "initCard.do")
+    @ResponseBody
+    public JsonData initCard(@Param("cardId") Integer cardId,@Param("result") String result) {
+        return userService.cardInitService( cardId,result);
     }
 
     /**

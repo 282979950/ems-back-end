@@ -2,7 +2,11 @@ package com.tdmh.entity.mapper;
 
 import com.tdmh.entity.UserOrders;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 @Mapper @Component
 public interface UserOrdersMapper {
@@ -19,4 +23,6 @@ public interface UserOrdersMapper {
     int updateByPrimaryKey(UserOrders record);
 
     int createFirstOrder(UserOrders record);
+
+    BigDecimal findHasUsedGasInYear(@Param("userId") Integer userId);
 }

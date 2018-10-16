@@ -1,53 +1,29 @@
 package com.tdmh.util;
 
-import com.tdmh.entity.CalClass;
-import com.tdmh.entity.SysDictionary;
-
+import com.tdmh.entity.GasPrice;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Administrator on 2018/8/29.
  */
 public class CalculateUtil {
-//    private static BigDecimal sum = new BigDecimal(0);
-    public static List<CalClass> callist = new ArrayList<CalClass>();
-
-    // 气量转价格
-    public static BigDecimal gasToPayment(BigDecimal gas) {
+    public static BigDecimal gasToPayment(BigDecimal gas, GasPrice gasPrice) {
         BigDecimal sum = new BigDecimal(0);
-        boolean flag = false;
-       for (int i = 0; i < callist.size(); i++) {
-            CalClass cal = callist.get(i);
-            if( (gas.compareTo(cal.getStart())>=0 && (null == cal.getEnd()) || ( gas.compareTo(cal.getStart())>=0 && gas.compareTo(cal.getEnd())<=0)) ) {
-                sum = sum.add(cal.getMoney().multiply( gas.subtract(cal.getStart()).add(BigDecimal.ONE)));
-                gas = cal.getStart().subtract(BigDecimal.ONE);
-                flag = true;
-                break;
-            }
-        }
-        if(gas.compareTo(BigDecimal.ZERO)>0  && flag) {
-            return sum .add(gasToPayment(gas));
+        if ( (gas.compareTo(gasPrice.getGasRangeOne()) >= 0 && gasPrice.getGasRangeTwo() == null) || (gas.compareTo(gasPrice.getGasRangeOne()) >= 0 && gas.compareTo(gasPrice.getGasRangeTwo()) < 0)){
+            sum = gas.multiply(gasPrice.getGasPriceOne());
+        } else if ( (gas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && gasPrice.getGasRangeThree() == null) || (gas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && gas.compareTo(gasPrice.getGasRangeThree()) < 0) ){
+            sum = sum.add(gasPrice.getGasPriceOne().multiply(gasPrice.getGasRangeTwo()));
+            sum = sum.add(gas.subtract(gasPrice.getGasRangeTwo()).multiply(gasPrice.getGasPriceTwo()));
+        } else if ( (gas.compareTo(gasPrice.getGasRangeThree()) >= 0 && gasPrice.getGasRangeFour() == null) || (gas.compareTo(gasPrice.getGasRangeThree()) >= 0 && gas.compareTo(gasPrice.getGasRangeFour()) < 0) ){
+            sum = sum.add(gasPrice.getGasPriceOne().multiply(gasPrice.getGasRangeTwo()));
+            sum = sum.add(gasPrice.getGasPriceTwo().multiply(gasPrice.getGasRangeThree().subtract(gasPrice.getGasRangeTwo())));
+            sum = sum.add(gas.subtract(gasPrice.getGasRangeThree()).multiply(gasPrice.getGasPriceThree()));
+        } else if (gas.compareTo(gasPrice.getGasRangeFour()) >= 0) {
+            sum = sum.add(gasPrice.getGasPriceOne().multiply(gasPrice.getGasRangeTwo()));
+            sum = sum.add(gasPrice.getGasPriceTwo().multiply(gasPrice.getGasRangeThree().subtract(gasPrice.getGasRangeTwo())));
+            sum = sum.add(gasPrice.getGasPriceThree().multiply(gasPrice.getGasRangeFour().subtract(gasPrice.getGasRangeThree())));
+            sum = sum.add(gas.subtract(gasPrice.getGasRangeFour()).multiply(gasPrice.getGasPriceFour()));
         }
         return sum;
-    }
-
-    public static List<CalClass> transfer(List<SysDictionary> dicList) {
-        List<CalClass> list = new ArrayList<CalClass>();
-       for(SysDictionary dic : dicList){
-        ;   String quit = dic.getDictKey();
-            int index = quit.indexOf("-");
-            if (index != -1) {
-                BigDecimal start =new BigDecimal(quit.substring(0, index));
-                BigDecimal end = null;
-                if(index+1<quit.length())
-                    end = new BigDecimal(quit.substring(index + 1, quit.length()));
-                BigDecimal price = new BigDecimal(dic.getDictValue());
-                CalClass cal = new CalClass(start, end, price);
-                list.add(cal);
-            }
-        }
-        return list;
     }
 }

@@ -2,6 +2,7 @@ package com.tdmh.entity.mapper;
 
 import com.tdmh.entity.UserCard;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,5 +10,22 @@ import org.springframework.stereotype.Component;
  */
 @Mapper @Component
 public interface UserCardMapper {
+
+    UserCard getUserCardByUserIdAndCardId(@Param("userId") Integer userId , @Param("iccardId") Integer iccardId);
+
     int insert(UserCard card);
+
+    int update(UserCard card);
+    /*
+    查询记录
+     */
+    int countUserCardBycardId(int cardId);
+    /*
+    查询密码
+     */
+    String userCardPwdBycardId(int cardId);
+    /*
+    初始化卡，刷新标记
+     */
+    int initCardPwdBycardId(UserCard card);
 }
