@@ -57,6 +57,7 @@ app.getPanelContent = function (name) {
         case 'fillGas':
         case 'balance':
         case 'initCard':
+            panelContent = this.DEFAULT_TEMPLATE;
             break;
         /*
          * 账务处理：预冲账 冲账
@@ -127,13 +128,63 @@ app.initIndex = function () {
                 }
             }
         });
+        $('body').on('focus', 'form [name="nIcCardIdentifier"]', function (res) {
+            console.log(app.editForm);
+            if (app.editForm) {
+                var result = app.ReadCard();
+                if(res[1] && res[1]=='0'){
+                    $.ajax({
+                        type: 'POST',
+                        url: 'account'+'/redCard.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data:{
+                            cardId:res[3]
+                        } ,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            if(response.status){
+                                password =response.data.cardPassword;
+                                var result=  app.initCard(password);
+                                if(result=='S'){
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'account'+'/initCard.do',
+                                        contentType: 'application/x-www-form-urlencoded',
+                                        data:{
+                                            cardId:res[3],result:result
+                                        } ,
+                                        beforeSend: function (xhr) {
+                                            xhr.withCredentials = true;
+                                        }
+                                    });
+                                    app.successMessage("已成功初始化")
+
+                                }else if(result=='ocx.ErrorDesc'){
+
+                                    app.errorMessage("初始化失败")
+                                }
+                            }else{
+                                app.errorMessage(response.message);
+                            }
+                        }
+                    });
+                }
+                }
+                if (result instanceof Array) {
+                    app.editForm.setValue('nIcCardIdentifier', result[2]);
+                } else {
+                    app.warningMessage(result);
+                }
+        });
         $('body').on('keyup', '[name="orderGas"]', function (res) {
             var val = $(this).val();
             if (/^\d+(\.\d+)?$/.test(val)) {
                 $.ajax({
                     async: true,
                     type: 'POST',
-                    url: 'calAmount.do',
+                    url: 'gasPrice/calAmount.do',
                     contentType: 'application/x-www-form-urlencoded',
                     data: {
                         "userId": app.editForm.data.userId,
@@ -188,7 +239,102 @@ app.logout = function () {
         }
     });
 };
+/*
+    初始化卡事件（卡）
+ */
+app.InitializationCard = function () {
+    var res = app.ReadCard();
+    if(res =='IC卡未插入写卡器.'|| res =='卡类型不正确.'|| res =='写卡器连接错误.'){
+        app.errorMessage(res)
+        return;
+    }
+    //数据转换
+    if(res[0] && res[0]=='S'){
 
+        res[0]="读卡成功"
+    }else{
+
+        res[0]="读卡失败"
+    }
+    if(res[1] && res[1]=='0'){
+
+        res[1]="新卡"
+    }else if(res[1] && res[1]=='1'){
+
+        res[1]="密码传递卡"
+    }else if(res[1] && res[1]=='2'){
+
+        res[1]="一般充值卡"
+    }
+    //生成标题
+    var cardTitle=["执行结果","卡类型","卡序列号","IC卡编号","卡内气量(单位:0.1方)","维修次数"]
+    app.initCardList(res,cardTitle);
+}
+/*
+读取卡面数据,初始化（卡）
+ */
+app.initCardList = function (res,cardTitle) {
+    var password;
+    var cardListDialog = mdui.dialog({
+        title: '卡面数据',
+        modal: true,
+        content: ' ',
+        buttons: [{
+            text: '初始化卡',
+            onClick: function () {
+                $.ajax({
+                    type: 'POST',
+                    url: 'account'+'/redCard.do',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data:{
+                        cardId:res[3]
+                    } ,
+                    beforeSend: function (xhr) {
+                        xhr.withCredentials = true;
+                    },
+                    success: function (response) {
+                        if(response.status){
+                            password =response.data.cardPassword;
+                            var result=  app.initCard(password);
+                            if(result=='S'){
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'account'+'/initCard.do',
+                                    contentType: 'application/x-www-form-urlencoded',
+                                    data:{
+                                        cardId:res[3],result:result
+                                    } ,
+                                    beforeSend: function (xhr) {
+                                        xhr.withCredentials = true;
+                                    }
+                                });
+                                app.successMessage("已成功初始化")
+
+                            }else if(result=='ocx.ErrorDesc'){
+
+                                app.errorMessage("初始化失败")
+                            }
+                        }else{
+                            app.errorMessage(response.message);
+                        }
+                    }
+                });
+            }
+
+        }, {
+            text: '取消'
+        }],
+        content:cardTitle[0]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[0]+"&nbsp;&nbsp;&nbsp;&nbsp;"+
+        cardTitle[1]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[1]+ "<br / >"+
+        cardTitle[2]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[2]+"&nbsp;&nbsp;&nbsp;&nbsp;"+
+        cardTitle[3]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[3]+"<br / >"+
+        cardTitle[4]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[4]+"&nbsp;&nbsp;&nbsp;&nbsp;"+
+        cardTitle[5]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[5]
+    });
+    $(".tree-combobox-panel").remove();
+
+
+};
 app.render = function (context) {
     // 从缓存中读取数据
     var data = app.getDataCache(context.url);
@@ -244,7 +390,9 @@ app.initEvent = function () {
     var formNames = app.currentPageName;
     var main = $('.container-main');
     var table = app.table;
-    var fields = table.getFields();
+    if(formNames!="initCard"){
+        var fields = table.getFields();
+    }
     main.on('add', function () {
         var dialog = mdui.dialog({
             title: '新增',
@@ -354,7 +502,6 @@ app.initEvent = function () {
             else
                 formNames = app.currentPageName + 'MessAndUnion';
         }
-
         if (app.currentPageName == 'lockAccount') {
             if (table.getSelectedDatas()[0]['isLock'] == 'true')
                 formNames = app.currentPageName + 'UnLock';
@@ -521,6 +668,9 @@ app.initEvent = function () {
                 dialog.handleUpdate();
             }
         });
+    });
+    main.on('pictureinpicturealt', function () {
+        app.InitializationCard();
     });
     main.on('record_voice_over', function () {
         var result = app.ReadCard();
@@ -843,22 +993,16 @@ app.tableFields = {
     replaceCard:[{
         name: 'userId',
         caption: '用户编号'
+    },{
+        name: 'userName',
+        caption: '用户名'
+    },{
+        name: 'iccardId',
+        caption: 'IC卡编号'
     }, {
-        name: 'userDistName',
-        caption: '用户区域'
-    }, {
-        name: 'userAddress',
-        caption: '用户地址'
-    }, {
-        name: 'userTypeName',
-        caption: '用户类型'
-    }, {
-        name: 'userGasTypeName',
-        caption: '用气类型'
-    }, {
-        name: 'userStatusName',
-        caption: '用户状态'
-    }]
+        name: 'iccardIdentifier',
+        caption: 'IC卡识别号'
+    } ]
 };
 /*
  *数据字典
@@ -2176,6 +2320,12 @@ app.getToolbarFields = function (name) {
                 caption: 'IC卡号',
                 type: 'input'
             }];
+        case 'initCard':
+            return [{
+                name: 'picture_in_picture_alt',
+                caption: '初始化卡',
+                perm:'repairorder:iccardinit:visit'
+            }];
         case 'prePayment':
             return [{
                 name: 'record_voice_over',
@@ -2185,6 +2335,24 @@ app.getToolbarFields = function (name) {
                 name: 'edit',
                 caption: '预充值',
                 perm: 'recharge:pre:update'
+            }, {
+                name: 'userName',
+                caption: '用户名称',
+                type: 'input'
+            }, {
+                name: 'iccardId',
+                caption: 'IC卡号',
+                type: 'input'
+            }, {
+                name: 'iccardIdentifier',
+                caption: 'IC卡识别号',
+                type: 'input'
+            }];
+        case 'replaceCard' :
+            return [{
+                name: 'edit',
+                caption: '补卡',
+                perm: 'recharge:supplement:update'
             }, {
                 name: 'userName',
                 caption: '用户名称',
