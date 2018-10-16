@@ -128,13 +128,63 @@ app.initIndex = function () {
                 }
             }
         });
+        $('body').on('focus', 'form [name="nIcCardIdentifier"]', function (res) {
+            console.log(app.editForm);
+            if (app.editForm) {
+                var result = app.ReadCard();
+                if(res[1] && res[1]=='0'){
+                    $.ajax({
+                        type: 'POST',
+                        url: 'account'+'/redCard.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data:{
+                            cardId:res[3]
+                        } ,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            if(response.status){
+                                password =response.data.cardPassword;
+                                var result=  app.initCard(password);
+                                if(result=='S'){
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'account'+'/initCard.do',
+                                        contentType: 'application/x-www-form-urlencoded',
+                                        data:{
+                                            cardId:res[3],result:result
+                                        } ,
+                                        beforeSend: function (xhr) {
+                                            xhr.withCredentials = true;
+                                        }
+                                    });
+                                    app.successMessage("已成功初始化")
+
+                                }else if(result=='ocx.ErrorDesc'){
+
+                                    app.errorMessage("初始化失败")
+                                }
+                            }else{
+                                app.errorMessage(response.message);
+                            }
+                        }
+                    });
+                }
+                }
+                if (result instanceof Array) {
+                    app.editForm.setValue('nIcCardIdentifier', result[2]);
+                } else {
+                    app.warningMessage(result);
+                }
+        });
         $('body').on('keyup', '[name="orderGas"]', function (res) {
             var val = $(this).val();
             if (/^\d+(\.\d+)?$/.test(val)) {
                 $.ajax({
                     async: true,
                     type: 'POST',
-                    url: 'calAmount.do',
+                    url: 'gasPrice/calAmount.do',
                     contentType: 'application/x-www-form-urlencoded',
                     data: {
                         "userId": app.editForm.data.userId,
@@ -939,7 +989,19 @@ app.tableFields = {
         name: 'totalOrderPayment',
         caption: '购气总额'
     }],
-    replaceCard:[{}]
+    replaceCard:[{
+        name: 'userId',
+        caption: '用户编号'
+    },{
+        name: 'userName',
+        caption: '用户名'
+    },{
+        name: 'iccardId',
+        caption: 'IC卡编号'
+    }, {
+        name: 'iccardIdentifier',
+        caption: 'IC卡识别号'
+    } ]
 };
 /*
  *数据字典
@@ -1890,6 +1952,30 @@ app.getEditFormFields = function (name) {
                 caption: '充值金额',
                 required: true
             }];
+        case 'replaceCard':
+            return [{
+                name: 'userName',
+                caption: '充值用户名',
+                disabled: true
+            }, {
+                name: 'iccardIdentifier',
+                caption: 'IC卡识别号',
+                disabled: true
+            },{
+                name: 'nIcCardIdentifier',
+                caption: '新IC卡识别号',
+                required: true,
+                maxlength: 12
+            }, {
+                name: 'orderGas',
+                caption: '充值气量',
+                inputType: 'num',
+                required: true
+            }, {
+                name: 'orderPayment',
+                caption: '充值金额',
+                disabled: true
+            }];
     }
 };
 
@@ -2272,6 +2358,24 @@ app.getToolbarFields = function (name) {
                 name: 'edit',
                 caption: '预充值',
                 perm: 'recharge:pre:update'
+            }, {
+                name: 'userName',
+                caption: '用户名称',
+                type: 'input'
+            }, {
+                name: 'iccardId',
+                caption: 'IC卡号',
+                type: 'input'
+            }, {
+                name: 'iccardIdentifier',
+                caption: 'IC卡识别号',
+                type: 'input'
+            }];
+        case 'replaceCard' :
+            return [{
+                name: 'edit',
+                caption: '补卡',
+                perm: 'recharge:supplement:update'
             }, {
                 name: 'userName',
                 caption: '用户名称',

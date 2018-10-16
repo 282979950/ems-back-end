@@ -81,5 +81,8 @@ public class PrePaymentParam {
      */
     private BigDecimal totalOrderPayment;
 
-
+    /**
+     * 补卡后新的IC卡识别号
+     */
+    private String nIcCardIdentifier;
 }
