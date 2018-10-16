@@ -4,6 +4,7 @@ import com.tdmh.common.JsonData;
 import com.tdmh.param.RepairOrderParam;
 import com.tdmh.service.IRepairOrderService;
 import com.tdmh.util.ShiroUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,7 +60,8 @@ public class RepairOrderController {
     @RequiresPermissions("repairorder:entry:retrieve")
     @RequestMapping(value = "search.do")
     @ResponseBody
-    public JsonData searchRepairOrder() {
-        return repairOrderService.searchRepairOrder();
+    public JsonData searchRepairOrder(@Param("repairOrderId")String repairOrderId, @Param("userId")Integer userId, @Param("repairType")Integer repairType,
+                                      @Param("empName") Integer empName) {
+        return repairOrderService.searchRepairOrder(repairOrderId, userId, repairType, empName);
     }
 }

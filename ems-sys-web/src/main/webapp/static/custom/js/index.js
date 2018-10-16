@@ -2723,6 +2723,23 @@ app.getToolbarFields = function (name) {
                 name: 'edit',
                 caption: '编辑',
                 perm:'repairorder:entry:update'
+            }, {
+                name: 'repairOrderId',
+                caption: '维修单编号',
+                type: 'input'
+            }, {
+                name: 'userId',
+                caption: '户号',
+                type: 'input'
+            }, {
+                name: 'repairType',
+                caption: '维修类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("repair_type")
+            }, {
+                name: 'empName',
+                caption: '维修员姓名',
+                type: 'input'
             }];
     }
 };

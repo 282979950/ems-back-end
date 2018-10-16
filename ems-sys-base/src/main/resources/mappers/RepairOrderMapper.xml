@@ -113,4 +113,43 @@
         update_by = #{updateBy}
         where id = #{id}
     </update>
+    <select id="searchRepairOrder" resultMap="RepairOrderParam" parameterType="map">
+        select
+        ro.id, ro.repair_order_id, ro.user_id ,u.user_name, u.user_phone, u.user_address, ro.repair_type, sd1.dict_key as repair_type_name,
+        ro.gas_equipment_type, sd4.dict_key as gas_equipment_type_name,
+        ro.old_meter_id, m2.meter_code as old_meter_code, m2.meter_type_id as old_meter_type_id, mt2.meter_type as old_meter_type_name,
+        m2.meter_direction as old_meter_direction, sd6.dict_key as old_meter_direction_name, m2.meter_stop_code as old_meter_stop_code,
+        ro.new_meter_id, m1.meter_code as new_meter_code, m1.meter_type_id as new_meter_type_id, mt1.meter_type as new_meter_type_name,
+        m1.meter_direction as new_meter_direction, sd5.dict_key as new_meter_direction_name, m1.meter_stop_code as new_meter_stop_code,
+        ro.repair_fault_type, sd2.dict_key as repair_fault_type_name, ro.repair_result_type, sd3.dict_key as repair_result_type_name,
+        ro.emp_id, e.emp_number, e.emp_name,
+        ro.repair_start_time,ro.repair_end_time, ro.new_safety_code, ro.old_safety_code,
+        ro.create_time, ro.create_by, ro.update_time, ro.update_by, ro.usable, ro.remarks
+        from repair_order ro
+        left join user u on ro.user_id = u.user_id and u.usable = 1
+        left join meter m1 on ro.new_meter_id = m1.meter_id and m1.usable = 1
+        left join meter_type mt1 on m1.meter_type_id = mt1.meter_type_id and mt1.usable = 1
+        left join sys_dictionary sd5 on m1.meter_direction = sd5.dict_value and sd5.dict_category = 'meter_direction' and sd5.usable = 1
+        left join meter m2 on ro.old_meter_id = m2.meter_id
+        left join meter_type mt2 on m2.meter_type_id = mt2.meter_type_id and mt2.usable = 1
+        left join sys_dictionary sd6 on m2.meter_direction = sd6.dict_value and sd6.dict_category = 'meter_direction' and sd6.usable = 1
+        left join sys_dictionary sd1 on ro.repair_type = sd1.dict_value and sd1.dict_category = 'repair_type' and sd1.usable = 1
+        left join sys_dictionary sd2 on ro.repair_fault_type = sd2.dict_value and sd2.dict_category = 'repair_fault_type' and sd2.usable = 1
+        left join sys_dictionary sd3 on ro.repair_fault_type = sd3.dict_value and sd3.dict_category = 'repair_result_type' and sd3.usable = 1
+        left join sys_dictionary sd4 on ro.gas_equipment_type = sd4.dict_value and sd4.dict_category = 'gas_equipment_type' and sd4.usable = 1
+        left join employee e on ro.emp_id = e.emp_id and e.usable = 1
+        where ro.usable = 1
+        <if test="repairOrderId != null and repairOrderId != ''">
+            AND ro.repair_order_id LIKE CONCAT('%', #{repairOrderId}, '%')
+        </if>
+        <if test="userId != null and userId != ''">
+            AND ro.user_id LIKE CONCAT('%', #{userId}, '%')
+        </if>
+        <if test="repairType != null">
+            AND ro.repair_type = #{repairType}
+        </if>
+        <if test="empName != null and empName != ''">
+            AND e.emp_name LIKE CONCAT('%', #{empName}, '%')
+        </if>
+    </select>
 </mapper>
