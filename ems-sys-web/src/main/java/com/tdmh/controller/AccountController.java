@@ -119,4 +119,16 @@ public class AccountController {
     public JsonData initCard(@Param("cardId") Integer cardId,@Param("result") String result) {
         return userService.cardInitService( cardId,result);
     }
+
+    /**
+     * 依据用户户号查询用户信息
+     *
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/searchAccountById.do")
+    @ResponseBody
+    public JsonData searchAccountById(@Param("userId") Integer userId) {
+        return userService.searchAccountById(userId);
+    }
 }

@@ -37,6 +37,11 @@ public interface IMeterService {
     JsonData selectAll();
 
     /**
+     * 获取表具信息
+     * @param meterId
+     */
+    Meter getMeterByMeterId(Integer meterId);
+    /**
      * 获取表具ID
      *
      * @param meterCode
@@ -45,12 +50,26 @@ public interface IMeterService {
     Integer getMeterIdByMeterCode(String meterCode);
 
     /**
+     * 依据表具编号获取表具
+     * @param meterCode
+     * @return
+     */
+    JsonData getMeterByMeterCode(String meterCode);
+
+    /**
      * 更新表具信息
      *
      * @param meter
      * @return
      */
     int updateMeter(Meter meter);
+
+    /**
+     * 清理安装信息
+     *
+     * @param meter
+     */
+    int clearInstallInfo(Meter meter);
 
     /**
      * 表具入库

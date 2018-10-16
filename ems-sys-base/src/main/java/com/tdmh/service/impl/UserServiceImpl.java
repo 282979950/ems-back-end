@@ -376,4 +376,9 @@ public class UserServiceImpl implements IUserService {
         return null;
     }
 
+    @Override
+    public JsonData searchAccountById(Integer userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        return user == null ? JsonData.successMsg("搜索结果为空") : JsonData.success(user, "查询成功");
+    }
 }
