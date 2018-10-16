@@ -204,7 +204,7 @@ app.InitializationCard = function () {
         res[1]="一般充值卡"
     }
     //生成标题
-    var cardTitle=["执行结果","卡类型","卡序列号","IC卡编号","卡内气量(单位:0.1方)","维修次数"]
+    var cardTitle=["执行结果","卡类型","卡序列号","IC卡编号","卡内气量(单位:0.1方)","维修次数","流水号"]
     app.initCardList(res,cardTitle);
 }
 /*
@@ -266,7 +266,8 @@ app.initCardList = function (res,cardTitle) {
         cardTitle[2]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[2]+"&nbsp;&nbsp;&nbsp;&nbsp;"+
         cardTitle[3]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[3]+"<br / >"+
         cardTitle[4]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[4]+"&nbsp;&nbsp;&nbsp;&nbsp;"+
-        cardTitle[5]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[5]
+        cardTitle[5]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[5]+"&nbsp;&nbsp;&nbsp;&nbsp;"+
+        cardTitle[6]+":"+"&nbsp;&nbsp;&nbsp;&nbsp;"+res[6]
     });
     $(".tree-combobox-panel").remove();
 
