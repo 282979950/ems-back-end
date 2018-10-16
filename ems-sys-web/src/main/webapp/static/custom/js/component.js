@@ -1047,13 +1047,14 @@
     };
 
     /**
-     * 读卡结果为长度为6的数组
+     * 读卡结果为长度为7的数组
      * 0: 执行结果
      * 1: 卡类型
      * 2: 卡序列号
      * 3: IC卡编号
      * 4: 卡内气量(单位：0.1方)
      * 5: 维修次数
+     * 6:交易流水号
      * @result 读卡成功返回卡片信息;读卡失败返回错误信息
      * @constructor
      */
@@ -1070,12 +1071,13 @@
      * @param icCardPsw IC卡密码
      * @param gas 充值气量（单位：方）
      * @param fc 维修次数
+     * @param busisn交易流水号
      * @return string S:成功 F:失败
      * @constructor
      */
-    app.WriteUCard = function (icCardId, icCardPsw, gas, fc) {
+    app.WriteUCard = function (icCardId, icCardPsw, gas, fc,busisn) {
         var ocx = $('.rw-comp')[0];
-        var result = ocx.WriteUCard(0, 200, icCardId, icCardPsw, gas * 10, fc);
+        var result = ocx.WriteUCard(0, 200, icCardId, icCardPsw, gas * 10, fc,busisn);
         return result === 'S' ? '写卡成功' : ('写卡失败' + ocx.ErrorDesc);
     };
 
@@ -1086,12 +1088,13 @@
      * @param gas 充值气量（单位：方）
      * @param fc 维修次数（单位：方）
      * @param sum 卡输入总量
+     * @param busisn交易流水号
      * @constructor
      * @return {string}
      */
-    app.WritePCard = function (icCardId, icCardPsw, gas, fc, sum) {
+    app.WritePCard = function (icCardId, icCardPsw, gas, fc, sum,busisn) {
         var ocx = $('.rw-comp')[0];
-        var result = ocx.WritePCard(0, 200, icCardId, icCardPsw, gas * 10, fc, sum);
+        var result = ocx.WritePCard(0, 200, icCardId, icCardPsw, gas * 10, fc, sum,busisn);
         return result === 'S' ? '写卡成功' : ('写卡失败' + ocx.ErrorDesc);
     };
 
