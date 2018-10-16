@@ -1604,6 +1604,7 @@ app.getAddFormFields = function (name) {
                 name: 'userId',
                 caption: '户号',
                 required: true,
+                queryField: true,
                 maxlength: 10
             }, {
                 name: 'userName',
@@ -1691,6 +1692,7 @@ app.getAddFormFields = function (name) {
                 name: 'empNumber',
                 caption: '维修员工号',
                 required: true,
+                queryField: true,
                 maxlength: 50
             }, {
                 name: 'empName',
