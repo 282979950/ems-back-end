@@ -955,16 +955,16 @@ app.tableFields = {
         caption: '第一阶梯气价'
     }, {
         name: 'gasRangeTwo',
-        caption: '第二阶梯起始气量'
+        caption: '第二阶梯起始气量(不含)'
     }, {
         name: 'gasPriceTwo',
-        caption: '第二阶梯气价(不含)'
+        caption: '第二阶梯气价'
     }, {
         name: 'gasRangeThree',
-        caption: '第三阶梯起始气量'
+        caption: '第三阶梯起始气量(不含)'
     }, {
         name: 'gasPriceThree',
-        caption: '第三阶梯气价(不含)'
+        caption: '第三阶梯气价'
     }, {
         name: 'gasRangeFour',
         caption: '第四阶梯起始气量(不含)'
