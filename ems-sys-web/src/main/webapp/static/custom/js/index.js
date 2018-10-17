@@ -1681,7 +1681,7 @@ app.getAddFormFields = function (name) {
                 inputType: 'num'
             }, {
                 name: 'repairFaultType',
-                caption: '维修类型',
+                caption: '维修故障类型',
                 type: 'listcombobox',
                 options: app.getDictionaryByCategory("repair_fault_type")
             }, {
@@ -2411,7 +2411,7 @@ app.getEditFormFields = function (name) {
                 inputType: 'num'
             }, {
                 name: 'repairFaultType',
-                caption: '维修类型',
+                caption: '维修故障类型',
                 type: 'listcombobox',
                 options: app.getDictionaryByCategory("repair_fault_type")
             }, {
