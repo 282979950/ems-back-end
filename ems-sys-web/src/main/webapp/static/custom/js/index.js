@@ -134,7 +134,7 @@ app.initIndex = function () {
             console.log(app.editForm);
             if (app.editForm) {
                 var res = app.ReadCard();
-                if(res[1] && res[1]!='0'){
+                if(res instanceof Array && res[1] && res[1]!='0'){
                     $.ajax({
                         type: 'POST',
                         url: 'account'+'/redCard.do',
@@ -161,21 +161,18 @@ app.initIndex = function () {
                                             xhr.withCredentials = true;
                                         }
                                     });
-
+                                    app.editForm.setValue('nIcCardIdentifier', res[2]);
 
                                 }else if(result=='ocx.ErrorDesc'){
 
-                                    app.errorMessage("初始化失败")
+                                    app.errorMessage("初始化失败");
                                 }
                             }else{
                                 app.errorMessage(response.message);
                             }
                         }
                     });
-                }
-                if (res instanceof Array) {
-                    app.editForm.setValue('nIcCardIdentifier', res[2]);
-                } else {
+                }else {
                     app.warningMessage(res);
                 }
             }

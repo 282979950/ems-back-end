@@ -490,7 +490,7 @@
         (SELECT user_id , MAX(create_time) AS create_time FROM user_lock GROUP BY user_id) um
         WHERE us.user_id = um.user_id AND us.create_time = um.create_time
         ) ul ON u.user_id = ul.user_id
-        where u.usable = 1
+        where u.usable = 1 AND uc.usable=1
         <if test="userId != null and userId != ''">
             AND u.user_id  LIKE CONCAT('%',#{userId,jdbcType=VARCHAR}, '%')
         </if>
