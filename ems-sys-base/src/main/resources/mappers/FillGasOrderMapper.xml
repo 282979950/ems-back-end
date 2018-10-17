@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.FillGasOrderMapper">
+    <resultMap id="FillGasOrderParam" type="com.tdmh.param.FillGasOrderParam">
+        <constructor>
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="gas_count" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="stop_code_count" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="need_fill_gas" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="fill_gas" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="left_gas" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="need_fill_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="fill_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="left_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="fill_gas_order_status" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="fill_gas_order_status_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <insert id="createFillGasOrder" parameterType="com.tdmh.param.FillGasOrderParam">
+        insert into fill_gas_order(
+        user_id, repair_order_id, need_fill_gas, fill_gas, left_gas, need_fill_money, fill_money, left_money, fill_gas_order_status,
+        create_time, create_by, update_time, update_by, remarks
+        )
+        values(#{userId}, #{repairOrderId}, #{needFillGas}, #{fillGas}, #{leftGas}, #{needFillMoney}, #{fillMoney}, #{leftMoney}, #{fillGasOrderStatus}
+        NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks}
+        )
+    </insert>
+    <sql id="sum_order_gas">
+        SELECT
+        SUM(uo.order_gas)
+        from
+        fill_gas_order fgo2
+        LEFT JOIN user_orders uo on uo.user_id = fgo2.user_id and uo.usable = 1
+    </sql>
+    <sql id="sum_meter_stop_code">
+        SELECT
+        SUM(m.meter_stop_code)
+        from
+        fill_gas_order fgo3
+        LEFT JOIN user_meters um on um.user_id = fgo3.user_id
+        LEFT JOIN meter m on um.meter_id = m.meter_id
+    </sql>
+    <select id="listData" resultMap="FillGasOrderParam">
+        SELECT
+        fgo.id, fgo.user_id, u.user_name, u.user_phone, u.user_address,
+        (<include refid="sum_order_gas"/>) as gas_count,
+        (<include refid="sum_meter_stop_code"/>) as stop_code_count,
+        fgo.need_fill_gas, fgo.fill_gas, fgo.left_gas, fgo.need_fill_money, fgo.fill_money, fgo.left_money,
+        fgo.fill_gas_order_status, sd.dict_key as fill_gas_order_status_name,
+        fgo.create_time, fgo.create_by, fgo.update_time, fgo.update_by, fgo.usable, fgo.remarks
+        from
+        fill_gas_order fgo
+        LEFT JOIN `user` u on fgo.user_id = u.user_id and u.usable = 1
+        LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
+    </select>
+    <select id="getSumOrderGasByUserId" resultType="java.math.BigDecimal" parameterType="int">
+        SELECT
+        SUM(order_gas)
+        from
+        user_orders
+        where user_id = #{userId} and usable = 1
+    </select>
+    <select id="getSumMeterStopCodeByUserId" resultType="java.math.BigDecimal">
+        SELECT
+        SUM(m.meter_stop_code)
+        from
+        user_meters um
+        LEFT JOIN meter m on um.meter_id = m.meter_id
+        where um.user_id = #{userId}
+    </select>
+</mapper>

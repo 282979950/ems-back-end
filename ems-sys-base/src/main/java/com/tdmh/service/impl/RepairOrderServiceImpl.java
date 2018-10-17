@@ -6,13 +6,17 @@ import com.tdmh.entity.Meter;
 import com.tdmh.entity.UserMeters;
 import com.tdmh.entity.mapper.RepairOrderMapper;
 import com.tdmh.entity.mapper.UserMetersMapper;
+import com.tdmh.param.FillGasOrderParam;
 import com.tdmh.param.RepairOrderParam;
+import com.tdmh.service.IFillGasService;
 import com.tdmh.service.IMeterService;
 import com.tdmh.service.IRepairOrderService;
+import com.tdmh.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +35,15 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     private UserMetersMapper userMetersMapper;
 
     @Autowired
+    private IUserService userService;
+
+    @Autowired
     private IMeterService meterService;
+
+    @Autowired
+    private IFillGasService fillGasService;
+
+    private static BigDecimal MAX_METER_GAS = new BigDecimal(900);
 
     @Override
     public JsonData listData() {
@@ -76,9 +88,21 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         }
         int resultCount = repairOrderMapper.addRepairOrder(param);
         if (resultCount == 0) {
-            JsonData.fail("新增维修单失败");
+            return JsonData.fail("新增维修单失败");
+        } else {
+            if (checkNeedFillGas(param)) {
+                switch (createFillGasOrder(param)) {
+                    case 1:
+                        return JsonData.successMsg("新增维修单成功,该户需要补气");
+                    case -1:
+                        return JsonData.successMsg("新增维修单成功,该户需要超用补缴结算");
+                    default:
+                        return JsonData.successMsg("新增维修单成功");
+                }
+            } else {
+                return JsonData.successMsg("新增维修单成功");
+            }
         }
-        return JsonData.successMsg("新增维修单成功");
     }
 
     @Override
@@ -111,7 +135,12 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         if (resultCount == 0) {
             JsonData.fail("编辑维修单失败");
         }
-        return JsonData.successMsg("编辑维修单成功");
+        if (checkNeedFillGas(param)) {
+            createFillGasOrder(param);
+            return JsonData.successMsg("编辑维修单成功,该户可能需要补气");
+        } else {
+            return JsonData.successMsg("编辑维修单成功");
+        }
     }
 
     @Override
@@ -163,5 +192,47 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         newUserMeter.setCreateBy(createBy);
         newUserMeter.setUpdateBy(createBy);
         userMetersMapper.installMeter(newUserMeter);
+    }
+
+    private boolean checkNeedFillGas(RepairOrderParam param){
+        //维修类型为换表，维修处理结果为换测控版或清零开票时需要补气
+        return param.getRepairType().equals(0) || param.getRepairResultType().equals(4) || param.getRepairResultType().equals(9);
+    }
+
+    /**
+     * 新增维修补气单
+     */
+    private int createFillGasOrder(RepairOrderParam param) {
+        Integer userId = param.getUserId();
+        String repairOrderId = param.getRepairOrderId();
+        BigDecimal sumOrderGas = fillGasService.getSumOrderGasByUserId(userId);
+        BigDecimal sumMeterStopCode = fillGasService.getSumMeterStopCodeByUserId(userId);
+        switch (sumOrderGas.compareTo(sumMeterStopCode)) {
+            case 1:
+                // 补气
+                FillGasOrderParam fillGasOrder = new FillGasOrderParam();
+                fillGasOrder.setUserId(userId);
+                fillGasOrder.setRepairOrderId(repairOrderId);
+                BigDecimal needFillGas = sumOrderGas.subtract(sumMeterStopCode);
+                //应补气量大于900
+                if (needFillGas.compareTo(MAX_METER_GAS) > 0) {
+                    fillGasOrder.setNeedFillGas(needFillGas);
+                    fillGasOrder.setFillGas(MAX_METER_GAS);
+                    fillGasOrder.setLeftGas(needFillGas.subtract(MAX_METER_GAS));
+                } else {
+                    fillGasOrder.setNeedFillGas(needFillGas);
+                    fillGasOrder.setFillGas(needFillGas);
+                    fillGasOrder.setLeftGas(BigDecimal.ZERO);
+                }
+                fillGasOrder.setFillGasOrderStatus(false);
+                fillGasService.createFillGasOrder(fillGasOrder);
+                return 1;
+            case -1:
+                // 超用补缴
+                return -1;
+            default:
+                // 不需要补气或超用结算
+                return 0;
+        }
     }
 }

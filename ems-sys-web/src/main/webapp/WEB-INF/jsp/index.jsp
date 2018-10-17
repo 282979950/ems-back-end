@@ -162,7 +162,7 @@
                 <shiro:hasPermission name="repairorder:entry:visit">
                 <div class="mdui-list-item mdui-ripple nav-item input">维修单录入</div>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="repairorder:supplement:visit">
+                <shiro:hasPermission name="repairorder:fillGas:visit">
                 <div class="mdui-list-item mdui-ripple nav-item fillGas">维修补气</div>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="repairorder:overuse:visit">

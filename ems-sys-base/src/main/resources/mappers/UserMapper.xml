@@ -514,4 +514,11 @@
       SELECT user_lock_id as userLockId,user_id as userId,is_lock as isLock,lock_reason as lockReason,create_time as createTime
       FROM user_lock where user_id = #{userId,jdbcType=INTEGER}
     </select>
+    <update id="updateFillStatus" parameterType="map">
+        update user
+        set
+        user_fill_gas_status = #{status,jdbcType=BIT}
+        where
+        user_id = #{userId} and usable = 1
+    </update>
 </mapper>

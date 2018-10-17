@@ -54,9 +54,9 @@ app.getPanelContent = function (name) {
          * 维修补气管理: 维修单录入 维修补气 补缴结算 IC卡初始化
          */
         case 'input':
+        case 'fillGas':
             panelContent = this.DEFAULT_TEMPLATE;
             break;
-        case 'fillGas':
         case 'balance':
         case 'initCard':
             panelContent = this.DEFAULT_TEMPLATE;
@@ -1224,7 +1224,32 @@ app.tableFields = {
     }, {
         name: 'iccardIdentifier',
         caption: 'IC卡识别号'
-    } ]
+    }],
+    fillGas: [{
+        name: 'userId',
+        caption: '户号'
+    }, {
+        name: 'userName',
+        caption: '用户名称'
+    }, {
+        name: 'userPhone',
+        caption: '用户手机'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'gasCount',
+        caption: '历史购气总量'
+    }, {
+        name: 'stopCodeCount',
+        caption: '历史表止码'
+    }, {
+        name: 'fillGasOrderStatusName',
+        caption: '补气单状态'
+    }, {
+        name: 'remarks',
+        caption: '备注'
+    }]
 };
 /*
  *数据字典
@@ -2441,6 +2466,23 @@ app.getEditFormFields = function (name) {
                 name: 'oldSafetyCode',
                 caption: '旧安全卡编号'
             }];
+        case 'fillGas':
+            return [{
+                name: 'userId',
+                caption: '户号'
+            }, {
+                name: 'userName',
+                caption: '用户名称'
+            }, {
+                name: 'userPhone',
+                caption: '用户手机'
+            }, {
+                name: 'userAddress',
+                caption: '用户地址'
+            }, {
+                name: 'fillGasOrderStatusName',
+                caption: '补气单状态'
+            }];
     }
 };
 
@@ -2881,6 +2923,12 @@ app.getToolbarFields = function (name) {
                 caption: '维修员姓名',
                 type: 'input'
             }];
+        case 'fillGas':
+            return [{
+                name: 'edit',
+                caption: '编辑',
+                perm:'repairorder:fillGas:edit'
+            }]
     }
 };
 

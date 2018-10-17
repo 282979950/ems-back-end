@@ -384,4 +384,9 @@ public class UserServiceImpl implements IUserService {
         User user = userMapper.selectByPrimaryKey(userId);
         return user == null ? JsonData.successMsg("搜索结果为空") : JsonData.success(user, "查询成功");
     }
+
+    @Override
+    public int updateFillStatus(Integer userId, Boolean status) {
+        return userMapper.updateFillStatus(userId, status);
+    }
 }

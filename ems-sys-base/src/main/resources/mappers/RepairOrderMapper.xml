@@ -68,7 +68,7 @@
         left join sys_dictionary sd6 on m2.meter_direction = sd6.dict_value and sd6.dict_category = 'meter_direction' and sd6.usable = 1
         left join sys_dictionary sd1 on ro.repair_type = sd1.dict_value and sd1.dict_category = 'repair_type' and sd1.usable = 1
         left join sys_dictionary sd2 on ro.repair_fault_type = sd2.dict_value and sd2.dict_category = 'repair_fault_type' and sd2.usable = 1
-        left join sys_dictionary sd3 on ro.repair_fault_type = sd3.dict_value and sd3.dict_category = 'repair_result_type' and sd3.usable = 1
+        left join sys_dictionary sd3 on ro.repair_result_type = sd3.dict_value and sd3.dict_category = 'repair_result_type' and sd3.usable = 1
         left join sys_dictionary sd4 on ro.gas_equipment_type = sd4.dict_value and sd4.dict_category = 'gas_equipment_type' and sd4.usable = 1
         left join employee e on ro.emp_id = e.emp_id and e.usable = 1
         where ro.usable = 1
@@ -135,7 +135,7 @@
         left join sys_dictionary sd6 on m2.meter_direction = sd6.dict_value and sd6.dict_category = 'meter_direction' and sd6.usable = 1
         left join sys_dictionary sd1 on ro.repair_type = sd1.dict_value and sd1.dict_category = 'repair_type' and sd1.usable = 1
         left join sys_dictionary sd2 on ro.repair_fault_type = sd2.dict_value and sd2.dict_category = 'repair_fault_type' and sd2.usable = 1
-        left join sys_dictionary sd3 on ro.repair_fault_type = sd3.dict_value and sd3.dict_category = 'repair_result_type' and sd3.usable = 1
+        left join sys_dictionary sd3 on ro.repair_result_type = sd3.dict_value and sd3.dict_category = 'repair_result_type' and sd3.usable = 1
         left join sys_dictionary sd4 on ro.gas_equipment_type = sd4.dict_value and sd4.dict_category = 'gas_equipment_type' and sd4.usable = 1
         left join employee e on ro.emp_id = e.emp_id and e.usable = 1
         where ro.usable = 1
