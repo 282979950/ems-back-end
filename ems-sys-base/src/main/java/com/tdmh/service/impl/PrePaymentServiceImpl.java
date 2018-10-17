@@ -5,10 +5,12 @@ import com.tdmh.entity.UserCard;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.entity.mapper.PrePaymentMapper;
 import com.tdmh.entity.mapper.UserCardMapper;
+import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.param.PrePaymentParam;
 import com.tdmh.param.WriteCardParam;
 import com.tdmh.service.IPrePaymentService;
+import com.tdmh.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,9 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     @Autowired
     private UserCardMapper userCardMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public JsonData getAllOrderInformation() {
         List<PrePaymentParam> list = prePaymentMapper.getAllOrderInformation(null);
@@ -41,6 +46,8 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     @Override
     public JsonData createUserOrder(UserOrders userOrders) {
         userOrders.setUsable(true);
+        userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
+        userOrders.setOrderType(2); //2为普通充值类型
         userOrders.setUpdateTime(new Date());
         userOrders.setOrderStatus(2);
         int resultCount = userOrdersMapper.insert(userOrders);
@@ -52,7 +59,9 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         param.setIccardId(userCard.getCardId());
         param.setIccardPassword(userCard.getCardPassword());
         param.setOrderGas(userOrders.getOrderGas());
-        param.setServiceTimes(0);
+        param.setFlowNumber(userOrders.getFlowNumber());
+        int serviceTimes = userMapper.getServiceTimesByUserId(userOrders.getUserId());
+        param.setServiceTimes(serviceTimes);
         return JsonData.success(param, "充值订单成功");
     }
 

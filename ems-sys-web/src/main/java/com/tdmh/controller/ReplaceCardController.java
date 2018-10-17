@@ -5,6 +5,7 @@ import com.tdmh.entity.UserOrders;
 import com.tdmh.param.PrePaymentParam;
 import com.tdmh.service.IReplaceCardService;
 import com.tdmh.util.ShiroUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,4 +53,17 @@ public class ReplaceCardController {
         userOrders.setUpdateBy(currentEmpId);
         return replaceCardService.supplementCard(param,userOrders);
     }
+
+    /**
+     * 查询补卡记录
+     * @param userId
+     * @return
+     */
+    @RequiresPermissions("recharge:supplement:supList")
+    @RequestMapping(value = "/List.do")
+    @ResponseBody
+    public JsonData searchSupList(@Param("userId") Integer userId) {
+        return replaceCardService.searchSupList(userId);
+    }
+
 }

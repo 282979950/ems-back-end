@@ -60,5 +60,9 @@ public interface UserMapper {
 
     List<CreateArchiveParam> searchAccountById(Integer userId);
 
+    int updateServiceTimesByUserId(Integer userId);
+
+    int getServiceTimesByUserId(Integer userId);
+
     int updateFillStatus(@Param("userId")Integer userId, @Param("status")Boolean status);
 }

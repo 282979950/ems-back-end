@@ -134,44 +134,45 @@ app.initIndex = function () {
             console.log(app.editForm);
             if (app.editForm) {
                 var res = app.ReadCard();
-                if(res instanceof Array && res[1] && res[1]!='0'){
-                    $.ajax({
-                        type: 'POST',
-                        url: 'account'+'/redCard.do',
-                        contentType: 'application/x-www-form-urlencoded',
-                        data:{
-                            cardId:res[3]
-                        } ,
-                        beforeSend: function (xhr) {
-                            xhr.withCredentials = true;
-                        },
-                        success: function (response) {
-                            if(response.status){
-                                password =response.data.cardPassword;
-                                var result=  app.initCard(password);
-                                if(result=='S'){
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: 'account'+'/initCard.do',
-                                        contentType: 'application/x-www-form-urlencoded',
-                                        data:{
-                                            cardId:res[3],result:result
-                                        } ,
-                                        beforeSend: function (xhr) {
-                                            xhr.withCredentials = true;
-                                        }
-                                    });
-                                    app.editForm.setValue('nIcCardIdentifier', res[2]);
+                if(res instanceof Array) {
+                    if (res[1] && res[1] != '0') {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'account' + '/redCard.do',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: {
+                                cardId: res[3]
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.withCredentials = true;
+                            },
+                            success: function (response) {
+                                if (response.status) {
+                                    password = response.data.cardPassword;
+                                    var result = app.initCard(password);
+                                    if (result == 'S') {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: 'account' + '/initCard.do',
+                                            contentType: 'application/x-www-form-urlencoded',
+                                            data: {
+                                                cardId: res[3], result: result
+                                            },
+                                            beforeSend: function (xhr) {
+                                                xhr.withCredentials = true;
+                                            }
+                                        });
 
-                                }else if(result=='ocx.ErrorDesc'){
-
-                                    app.errorMessage("初始化失败");
+                                    } else if (result == 'ocx.ErrorDesc') {
+                                        app.errorMessage("初始化失败");
+                                    }
+                                } else {
+                                    app.errorMessage(response.message);
                                 }
-                            }else{
-                                app.errorMessage(response.message);
                             }
-                        }
-                    });
+                        });
+                    }
+                    app.editForm.setValue('nIcCardIdentifier', res[2]);
                 }else {
                     app.warningMessage(res);
                 }
@@ -582,7 +583,7 @@ app.initEvent = function () {
                 app.errorMessage(result);
                 return;
             }
-            if(result[1] != '新卡') {
+            if(result[1] != '0') {
                 app.warningMessage('只能对新卡进行开户');
                 return;
             }
@@ -621,12 +622,14 @@ app.initEvent = function () {
                         success: function (response) {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
-                                if (app.currentPageName == 'account'||app.currentPageName == 'replaceCard') {
-                                    var rdata = response.data;
+                                var rdata = response.data;
+                                if (app.currentPageName == 'account') {
                                     app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
                                   }
+                                if(app.currentPageName == 'replaceCard'){
+                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.orderGas, rdata.flowNumber);
+                                }
                                 if (app.currentPageName == 'prePayment') {
-                                    var rdata = response.data;
                                     app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
                                    }
                                 var url = app.currentPageName + '/listData.do';
@@ -797,7 +800,7 @@ app.initEvent = function () {
         $.ajax({
             async: true,
             type: 'Post',
-            url: app.currentPageName + '/lockList.do',
+            url: app.currentPageName + '/List.do',
             data: {
                 "userId": userId
             },
@@ -814,7 +817,7 @@ app.initEvent = function () {
                 });
                 var table = app.createTable({
                     parent: '.mdui-dialog-content',
-                    fields: app.tableFields['lockHistory'],
+                    fields: app.tableFields[app.currentPageName+'History'],
                     data: data
                 });
                 dialog.handleUpdate();
@@ -954,19 +957,19 @@ app.tableFields = {
         caption: '第一阶梯气价'
     }, {
         name: 'gasRangeTwo',
-        caption: '第二阶梯起始气量'
+        caption: '第二阶梯起始气量(不含)'
     }, {
         name: 'gasPriceTwo',
         caption: '第二阶梯气价'
     }, {
         name: 'gasRangeThree',
-        caption: '第三阶梯起始气量'
+        caption: '第三阶梯起始气量(不含)'
     }, {
         name: 'gasPriceThree',
         caption: '第三阶梯气价'
     }, {
         name: 'gasRangeFour',
-        caption: '第四阶梯起始气量'
+        caption: '第四阶梯起始气量(不含)'
     }, {
         name: 'gasPriceFour',
         caption: '第四阶梯气价'
@@ -1095,7 +1098,7 @@ app.tableFields = {
         name: 'lastLockReason',
         caption: '解锁/锁定原因'
     }],
-    lockHistory: [{
+    lockAccountHistory: [{
         name: 'userId',
         caption: '用户编号'
     }, {
@@ -1224,6 +1227,25 @@ app.tableFields = {
     }, {
         name: 'iccardIdentifier',
         caption: 'IC卡识别号'
+    }],
+    replaceCardHistory: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'iccardId',
+        caption: 'IC卡编号'
+    }, {
+        name: 'iccardIdentifier',
+        caption: 'IC卡识别号'
+    }, {
+        name: 'orderGas',
+        caption: '充值气量'
+    }, {
+        name: 'orderPayment',
+        caption: '充值金额'
+    }, {
+        name: 'createTime',
+        caption: '换卡时间'
     }],
     fillGas: [{
         name: 'userId',
@@ -1992,19 +2014,19 @@ app.getEditFormFields = function (name) {
                 caption: '第一阶梯气价'
             }, {
                 name: 'gasRangeTwo',
-                caption: '第二阶梯起始气量'
+                caption: '第二阶梯起始气量(不含)'
             }, {
                 name: 'gasPriceTwo',
                 caption: '第二阶梯气价'
             }, {
                 name: 'gasRangeThree',
-                caption: '第三阶梯起始气量'
+                caption: '第三阶梯起始气量(不含)'
             }, {
                 name: 'gasPriceThree',
                 caption: '第三阶梯气价'
             }, {
                 name: 'gasRangeFour',
-                caption: '第四阶梯起始气量'
+                caption: '第四阶梯起始气量(不含)'
             }, {
                 name: 'gasPriceFour',
                 caption: '第四阶梯气价'
@@ -2883,6 +2905,10 @@ app.getToolbarFields = function (name) {
                 name: 'edit',
                 caption: '补卡',
                 perm: 'recharge:supplement:update'
+            }, {
+                name: 'history',
+                caption: '历史补卡记录',
+                perm: 'recharge:supplement:supList'
             }, {
                 name: 'userName',
                 caption: '用户名称',
