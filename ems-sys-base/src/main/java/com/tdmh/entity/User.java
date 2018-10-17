@@ -69,8 +69,13 @@ public class User extends BaseEntity {
      */
     private Boolean userLocked;
 
+    /**
+     * 维修次数
+     */
+    private Integer serviceTimes;
+
     public User(Integer userId, String userName, String userPhone, String userIdcard, String userDeed, Integer userDistId, String userAddress, Integer
-            userType, Integer userGasType, Integer userStatus, Boolean userLocked, Date
+            userType, Integer userGasType, Integer userStatus, Boolean userLocked, Integer serviceTimes, Date
             createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.userId = userId;
@@ -84,6 +89,7 @@ public class User extends BaseEntity {
         this.userGasType = userGasType;
         this.userStatus = userStatus;
         this.userLocked = userLocked;
+        this.serviceTimes = serviceTimes;
     }
 
     public User() {

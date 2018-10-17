@@ -59,4 +59,8 @@ public interface UserMapper {
     List<UserLock> searchLockList(@Param("userId") Integer userId);
 
     List<CreateArchiveParam> searchAccountById(Integer userId);
+
+    int updateServiceTimesByUserId(Integer userId);
+
+    int getServiceTimesByUserId(Integer userId);
 }

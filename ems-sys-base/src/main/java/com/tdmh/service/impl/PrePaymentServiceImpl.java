@@ -5,6 +5,7 @@ import com.tdmh.entity.UserCard;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.entity.mapper.PrePaymentMapper;
 import com.tdmh.entity.mapper.UserCardMapper;
+import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.param.PrePaymentParam;
 import com.tdmh.param.WriteCardParam;
@@ -32,6 +33,9 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     @Autowired
     private UserCardMapper userCardMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public JsonData getAllOrderInformation() {
         List<PrePaymentParam> list = prePaymentMapper.getAllOrderInformation(null);
@@ -55,7 +59,9 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         param.setIccardId(userCard.getCardId());
         param.setIccardPassword(userCard.getCardPassword());
         param.setOrderGas(userOrders.getOrderGas());
-        param.setServiceTimes(0);
+        param.setFlowNumber(userOrders.getFlowNumber());
+        int serviceTimes = userMapper.getServiceTimesByUserId(userOrders.getUserId());
+        param.setServiceTimes(serviceTimes);
         return JsonData.success(param, "充值订单成功");
     }
 

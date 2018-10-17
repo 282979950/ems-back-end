@@ -622,12 +622,14 @@ app.initEvent = function () {
                         success: function (response) {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
-                                if (app.currentPageName == 'account'||app.currentPageName == 'replaceCard') {
-                                    var rdata = response.data;
+                                var rdata = response.data;
+                                if (app.currentPageName == 'account') {
                                     app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
                                   }
+                                if(app.currentPageName == 'replaceCard'){
+                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.orderGas, rdata.flowNumber);
+                                }
                                 if (app.currentPageName == 'prePayment') {
-                                    var rdata = response.data;
                                     app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
                                    }
                                 var url = app.currentPageName + '/listData.do';

@@ -5,6 +5,7 @@ import com.tdmh.entity.UserCard;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.entity.mapper.PrePaymentMapper;
 import com.tdmh.entity.mapper.UserCardMapper;
+import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.exception.ParameterException;
 import com.tdmh.param.CreateAccountParam;
@@ -32,6 +33,9 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
 
     @Autowired
     private UserOrdersMapper userOrdersMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public JsonData getAllReplaceCardInformation() {
@@ -88,7 +92,12 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         wparam.setIccardPassword(userCard.getCardPassword());
         wparam.setOrderGas(userOrders.getOrderGas());
         wparam.setFlowNumber(userOrders.getFlowNumber());
-        wparam.setServiceTimes(0);
+        int resultCount4 = userMapper.updateServiceTimesByUserId(userOrders.getUserId());
+        if(resultCount4 == 0){
+            throw new ParameterException("补卡失败");
+        }
+        int serviceTimes = userMapper.getServiceTimesByUserId(userOrders.getUserId());
+        wparam.setServiceTimes(serviceTimes);
         return JsonData.success(wparam,"补卡成功");
     }
 
