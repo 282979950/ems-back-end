@@ -40,4 +40,8 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
           usable = #{usable}
           where user_card_id = #{userCardId}
     </update>
+    <select id="getAllSupList" parameterType="Integer" resultType="com.tdmh.entity.UserCard">
+        select uc.user_id as userId, uc.card_id as cardId,uc.card_identifier as cardIdentifier,uc.create_time as createTime from user_card uc
+        where uc.user_id = #{userId} ORDER BY uc.create_time DESC,uc.user_card_id DESC
+    </select>
 </mapper>

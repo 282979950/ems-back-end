@@ -88,4 +88,10 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         wparam.setServiceTimes(0);
         return JsonData.success(wparam,"补卡成功");
     }
+
+    @Override
+    public JsonData searchSupList(Integer userId) {
+        List<UserCard> list = userCardMapper.getAllSupList(userId);
+        return  list == null || list.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(list, "查询成功");
+    }
 }

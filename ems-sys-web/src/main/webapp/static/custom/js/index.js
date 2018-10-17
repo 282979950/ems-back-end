@@ -798,7 +798,7 @@ app.initEvent = function () {
         $.ajax({
             async: true,
             type: 'Post',
-            url: app.currentPageName + '/lockList.do',
+            url: app.currentPageName + '/List.do',
             data: {
                 "userId": userId
             },
@@ -815,7 +815,7 @@ app.initEvent = function () {
                 });
                 var table = app.createTable({
                     parent: '.mdui-dialog-content',
-                    fields: app.tableFields['lockHistory'],
+                    fields: app.tableFields[app.currentPageName+'History'],
                     data: data
                 });
                 dialog.handleUpdate();
@@ -1096,7 +1096,7 @@ app.tableFields = {
         name: 'lastLockReason',
         caption: '解锁/锁定原因'
     }],
-    lockHistory: [{
+    lockAccountHistory: [{
         name: 'userId',
         caption: '用户编号'
     }, {
@@ -1225,7 +1225,20 @@ app.tableFields = {
     }, {
         name: 'iccardIdentifier',
         caption: 'IC卡识别号'
-    } ]
+    }],
+    replaceCardHistory: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'cardId',
+        caption: 'IC卡编号'
+    }, {
+        name: 'cardIdentifier',
+        caption: 'IC卡识别号'
+    }, {
+        name: 'createTime',
+        caption: '换卡时间'
+    }]
 };
 /*
  *数据字典
@@ -2838,6 +2851,10 @@ app.getToolbarFields = function (name) {
                 name: 'edit',
                 caption: '补卡',
                 perm: 'recharge:supplement:update'
+            }, {
+                name: 'history',
+                caption: '历史补卡记录',
+                perm: 'recharge:supplement:supList'
             }, {
                 name: 'userName',
                 caption: '用户名称',

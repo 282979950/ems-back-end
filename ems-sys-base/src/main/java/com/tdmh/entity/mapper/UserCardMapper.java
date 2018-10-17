@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author Administrator on 2018/10/10.
  */
@@ -28,4 +30,6 @@ public interface UserCardMapper {
     初始化卡，刷新标记
      */
     int initCardPwdBycardId(UserCard card);
+
+    List<UserCard> getAllSupList(Integer userId);
 }
