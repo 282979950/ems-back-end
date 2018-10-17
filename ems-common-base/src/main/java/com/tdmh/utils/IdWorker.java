@@ -125,10 +125,10 @@ public class IdWorker {
         public static IdWorker getId(){
                 return  snowFlake;
         }
-        public static void main(String[] args) {
-             for (int i = 0; i < 1000000; i++) {
-                System.out.println(snowFlake.nextId());
-            }
-//            System.out.println(734997018 - 26159816);
-        }//37322183026159816   37322183734997018
+
+//        public static void main(String[] args) {
+//             for (int i = 0; i < 1000000; i++) {
+//                System.out.println(snowFlake.nextId());
+//            }
+//        }
 }

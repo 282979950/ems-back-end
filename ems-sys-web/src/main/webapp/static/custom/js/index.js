@@ -134,44 +134,45 @@ app.initIndex = function () {
             console.log(app.editForm);
             if (app.editForm) {
                 var res = app.ReadCard();
-                if(res instanceof Array && res[1] && res[1]!='0'){
-                    $.ajax({
-                        type: 'POST',
-                        url: 'account'+'/redCard.do',
-                        contentType: 'application/x-www-form-urlencoded',
-                        data:{
-                            cardId:res[3]
-                        } ,
-                        beforeSend: function (xhr) {
-                            xhr.withCredentials = true;
-                        },
-                        success: function (response) {
-                            if(response.status){
-                                password =response.data.cardPassword;
-                                var result=  app.initCard(password);
-                                if(result=='S'){
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: 'account'+'/initCard.do',
-                                        contentType: 'application/x-www-form-urlencoded',
-                                        data:{
-                                            cardId:res[3],result:result
-                                        } ,
-                                        beforeSend: function (xhr) {
-                                            xhr.withCredentials = true;
-                                        }
-                                    });
-                                    app.editForm.setValue('nIcCardIdentifier', res[2]);
+                if(res instanceof Array) {
+                    if (res[1] && res[1] != '0') {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'account' + '/redCard.do',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: {
+                                cardId: res[3]
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.withCredentials = true;
+                            },
+                            success: function (response) {
+                                if (response.status) {
+                                    password = response.data.cardPassword;
+                                    var result = app.initCard(password);
+                                    if (result == 'S') {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: 'account' + '/initCard.do',
+                                            contentType: 'application/x-www-form-urlencoded',
+                                            data: {
+                                                cardId: res[3], result: result
+                                            },
+                                            beforeSend: function (xhr) {
+                                                xhr.withCredentials = true;
+                                            }
+                                        });
 
-                                }else if(result=='ocx.ErrorDesc'){
-
-                                    app.errorMessage("初始化失败");
+                                    } else if (result == 'ocx.ErrorDesc') {
+                                        app.errorMessage("初始化失败");
+                                    }
+                                } else {
+                                    app.errorMessage(response.message);
                                 }
-                            }else{
-                                app.errorMessage(response.message);
                             }
-                        }
-                    });
+                        });
+                    }
+                    app.editForm.setValue('nIcCardIdentifier', res[2]);
                 }else {
                     app.warningMessage(res);
                 }
