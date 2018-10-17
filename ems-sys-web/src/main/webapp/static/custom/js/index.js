@@ -583,7 +583,7 @@ app.initEvent = function () {
                 app.errorMessage(result);
                 return;
             }
-            if(result[1] != '新卡') {
+            if(result[1] != '0') {
                 app.warningMessage('只能对新卡进行开户');
                 return;
             }
@@ -958,16 +958,16 @@ app.tableFields = {
         caption: '第二阶梯起始气量'
     }, {
         name: 'gasPriceTwo',
-        caption: '第二阶梯气价'
+        caption: '第二阶梯气价(不含)'
     }, {
         name: 'gasRangeThree',
         caption: '第三阶梯起始气量'
     }, {
         name: 'gasPriceThree',
-        caption: '第三阶梯气价'
+        caption: '第三阶梯气价(不含)'
     }, {
         name: 'gasRangeFour',
-        caption: '第四阶梯起始气量'
+        caption: '第四阶梯起始气量(不含)'
     }, {
         name: 'gasPriceFour',
         caption: '第四阶梯气价'
@@ -1230,11 +1230,17 @@ app.tableFields = {
         name: 'userId',
         caption: '用户编号'
     }, {
-        name: 'cardId',
+        name: 'iccardId',
         caption: 'IC卡编号'
     }, {
-        name: 'cardIdentifier',
+        name: 'iccardIdentifier',
         caption: 'IC卡识别号'
+    }, {
+        name: 'orderGas',
+        caption: '充值气量'
+    }, {
+        name: 'orderPayment',
+        caption: '充值金额'
     }, {
         name: 'createTime',
         caption: '换卡时间'
@@ -1978,19 +1984,19 @@ app.getEditFormFields = function (name) {
                 caption: '第一阶梯气价'
             }, {
                 name: 'gasRangeTwo',
-                caption: '第二阶梯起始气量'
+                caption: '第二阶梯起始气量(不含)'
             }, {
                 name: 'gasPriceTwo',
                 caption: '第二阶梯气价'
             }, {
                 name: 'gasRangeThree',
-                caption: '第三阶梯起始气量'
+                caption: '第三阶梯起始气量(不含)'
             }, {
                 name: 'gasPriceThree',
                 caption: '第三阶梯气价'
             }, {
                 name: 'gasRangeFour',
-                caption: '第四阶梯起始气量'
+                caption: '第四阶梯起始气量(不含)'
             }, {
                 name: 'gasPriceFour',
                 caption: '第四阶梯气价'

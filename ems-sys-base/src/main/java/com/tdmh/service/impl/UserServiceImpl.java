@@ -215,6 +215,24 @@ public class UserServiceImpl implements IUserService {
         if (resultCount == 0) {
             return JsonData.fail("用户开户失败");
         }
+        UserOrders userOrders = new UserOrders();
+        userOrders.setUserId(param.getUserId());
+        userOrders.setEmployeeId(param.getUpdateBy());
+        BigDecimal gas = param.getOrderGas();
+        userOrders.setOrderGas(gas);
+        BigDecimal payment = param.getOrderPayment();
+        userOrders.setOrderPayment(payment);
+        userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
+        userOrders.setOrderType(1); //1为开户类型
+        userOrders.setCreateBy(param.getUpdateBy());
+        userOrders.setUpdateBy(param.getUpdateBy());
+        userOrders.setOrderStatus(2);
+        userOrders.setUsable(true);
+        // TODO: 2018/8/10 完善订单流程
+        int resultCount2 = userOrdersMapper.insert(userOrders);
+        if (resultCount2 == 0) {
+            return JsonData.fail("初始订单生成失败");
+        }
         //依据充值金额生成第一笔订单,表具的激活需要充值
         UserCard userCard = userCardMapper.getUserCardByUserIdAndCardId(param.getUserId(),param.getIccardId());
         if(userCard == null ) userCard = new UserCard();
@@ -223,6 +241,7 @@ public class UserServiceImpl implements IUserService {
         userCard.setCardIdentifier(param.getIccardIdentifier());
         userCard.setCardPassword(param.getIccardPassword());
         userCard.setCardInitialization(true);
+        userCard.setOrderId(userOrders.getOrderId());
         userCard.setUsable(true);
         userCard.setCreateBy(param.getUpdateBy());
         userCard.setUpdateBy(param.getUpdateBy());
@@ -234,23 +253,6 @@ public class UserServiceImpl implements IUserService {
         }
         if (resultCount1 == 0) {
             return JsonData.fail("用户初始化卡失败");
-        }
-        UserOrders userOrders = new UserOrders();
-        userOrders.setUserId(param.getUserId());
-        userOrders.setEmployeeId(param.getUpdateBy());
-        BigDecimal gas = param.getOrderGas();
-        userOrders.setOrderGas(gas);
-        BigDecimal payment = param.getOrderPayment();
-        userOrders.setOrderPayment(payment);
-        userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
-        userOrders.setCreateBy(param.getUpdateBy());
-        userOrders.setUpdateBy(param.getUpdateBy());
-        userOrders.setOrderStatus(2);
-        userOrders.setUsable(true);
-        // TODO: 2018/8/10 完善订单流程
-        int resultCount2 = userOrdersMapper.insert(userOrders);
-        if (resultCount2 == 0) {
-            return JsonData.fail("初始订单生成失败");
         }
         param.setFlowNumber(userOrders.getFlowNumber());
         return JsonData.success(param,"用户开户成功");

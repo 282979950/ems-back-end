@@ -9,6 +9,7 @@ import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.param.PrePaymentParam;
 import com.tdmh.param.WriteCardParam;
 import com.tdmh.service.IPrePaymentService;
+import com.tdmh.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +42,8 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     @Override
     public JsonData createUserOrder(UserOrders userOrders) {
         userOrders.setUsable(true);
+        userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
+        userOrders.setOrderType(2); //2为普通充值类型
         userOrders.setUpdateTime(new Date());
         userOrders.setOrderStatus(2);
         int resultCount = userOrdersMapper.insert(userOrders);

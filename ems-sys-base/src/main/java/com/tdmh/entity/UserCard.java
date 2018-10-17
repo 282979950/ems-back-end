@@ -35,4 +35,9 @@ public class UserCard extends BaseEntity {
      * 初始化卡标记
      */
     private Boolean cardInitialization;
+
+    /**
+     * 对应订单ID
+     */
+    private Integer orderId;
 }

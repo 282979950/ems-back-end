@@ -208,7 +208,7 @@ CREATE TABLE `sys_dictionary` (
   `usable` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用',
   `remarks` varchar(255) DEFAULT NULL COMMENT '注释',
   UNIQUE KEY `dic_id_index` (`dict_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1007 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of sys_dictionary
@@ -220,6 +220,108 @@ INSERT INTO `sys_dictionary` VALUES ('1003', 'userType', '2', '机械表换IC卡
 INSERT INTO `sys_dictionary` VALUES ('1004', 'userType', '3', '零星用户', null, null, null, null, null, '1', null);
 INSERT INTO `sys_dictionary` VALUES ('1005', 'userType', '4', '新装短信表用户', null, null, null, null, null, '1', null);
 INSERT INTO `sys_dictionary` VALUES ('1006', 'userType', '5', '新装物联表用户', null, null, null, null, null, '1', null);
+
+
+INSERT INTO `sys_dictionary` VALUES ('1007', 'org_type', '公司', '1', '1', '2018-08-24 09:50:04', '22223', '2018-08-24 09:50:04', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1008', 'org_type', '总经办', '2', '2', '2018-08-24 09:50:34', '22223', '2018-08-24 09:50:34', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1009', 'org_type', '部门', '3', '3', '2018-08-24 09:50:53', '22223', '2018-08-24 09:50:53', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1010', 'org_type', '小组', '4', '4', '2018-08-24 09:51:23', '22223', '2018-08-24 09:51:23', '465642', '1', '');
+
+INSERT INTO `sys_dictionary` VALUES ('1012', 'dist_type', '市', '1', null, '2018-09-04 13:59:12', '22223', '2018-09-04 13:59:12', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1013', 'dist_type', '镇(乡)', '2', null, '2018-09-04 13:59:43', '22223', '2018-09-04 13:59:43', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1014', 'dist_type', '村', '3', null, '2018-09-04 14:00:02', '22223', '2018-09-04 14:00:02', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1015', 'dist_type', '户', '4', null, '2018-09-04 14:00:22', '22223', '2018-09-04 14:00:22', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1016', 'emp_login_flag', '是', '1', null, '2018-09-04 14:02:20', '22223', '2018-09-04 14:02:20', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1017', 'emp_login_flag', '否', '0', null, '2018-09-04 14:03:23', '22223', '2018-09-04 14:03:23', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1018', 'meter_direction', '左', '1', null, '2018-09-04 14:07:00', '22223', '2018-09-04 14:07:00', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1019', 'meter_direction', '右', '0', null, '2018-09-04 14:07:27', '22223', '2018-09-04 14:07:27', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1020', 'user_type', '民用用户', '1', null, '2018-09-04 14:09:34', '22223', '2018-09-04 14:09:34', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1021', 'user_type', '商用用户', '2', null, '2018-09-04 14:10:02', '22223', '2018-09-04 14:10:02', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1022', 'user_gas_type', '用气类型1', '1', null, '2018-09-04 14:13:18', '22223', '2018-09-04 14:13:18', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1023', 'user_gas_type', '用气类型2', '2', null, '2018-09-04 14:13:39', '22223', '2018-09-04 14:13:39', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1024', 'user_gas_type', '用气类型3', '3', null, '2018-09-04 14:13:53', '22223', '2018-09-04 14:13:53', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1025', 'user_status', '已建档待挂表', '1', null, '2018-09-04 14:14:51', '22223', '2018-09-04 14:16:00', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1026', 'user_status', '已挂表待开户', '2', null, '2018-09-04 14:15:36', '22223', '2018-09-04 14:15:36', '465642', '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1027', 'user_status', '已开户', '3', null, '2018-09-04 14:16:49', '22223', '2018-09-04 14:16:49', '465642', '1', '');
+
+INSERT INTO `sys_dictionary` VALUES ('1031', 'emp_type', '管理员', '1', '1', '2018-09-12 14:33:55', '22223', '2018-09-12 14:33:55', '465642', '0', '');
+INSERT INTO `sys_dictionary` VALUES ('1032', 'emp_type', '测试', '2', '2', '2018-09-12 14:34:16', '22223', '2018-10-15 16:46:55', '465642', '0', '');
+INSERT INTO `sys_dictionary` VALUES ('1033', 'repair_type', '换表', '0', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1034', 'repair_type', '维修', '1', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1035', 'repair_type', '上门指导', '2', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1036', 'repair_type', '电话指导', '3', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1037', 'repair_type', '校表 ', '4', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1038', 'repair_type', '报停拆表', '5', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1039', 'repair_type', '机换IC卡', '6', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1040', 'repair_type', '工商户换表', '7', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1041', 'repair_type', '工商户维修', '8', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1042', 'repair_type', '挂表', '9', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1043', 'gas_equipment_type', '燃气表', '0', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1044', 'repair_fault_type', '插维修卡', '0', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1045', 'repair_fault_type', '阀门关', '1', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1046', 'repair_fault_type', '数显', '2', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1047', 'repair_fault_type', '乱码', '3', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1048', 'repair_fault_type', '表不走字', '4', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1049', 'repair_fault_type', '新换蓝', '5', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1050', 'repair_fault_type', '表挂反', '6', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1051', 'repair_fault_type', '表漏气', '7', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1052', 'repair_fault_type', '表响', '8', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1053', 'repair_fault_type', '单据遗失', '9', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1054', 'repair_fault_type', '单据过期', '10', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1055', 'repair_fault_type', '卡锁', '11', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1056', 'repair_fault_type', '显示不清', '12', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1057', 'repair_fault_type', '短信表升级', '13', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1058', 'repair_fault_type', '表慢', '14', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1059', 'repair_fault_type', '卡字', '15', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1060', 'repair_fault_type', '卡坏', '16', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1061', 'repair_fault_type', '补单', '17', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1062', 'repair_fault_type', '销售挂表', '18', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1063', 'repair_fault_type', '恢复挂表', '19', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1064', 'repair_fault_type', '其他', '20', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1065', 'repair_fault_type', '置换', '21', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1066', 'repair_fault_type', '错过换表', '22', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1067', 'repair_fault_type', '3000(不关阀)', '23', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1068', 'repair_fault_type', '0002', '24', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1069', 'repair_fault_type', '液晶故障', '25', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1070', 'repair_fault_type', '铜接头漏气', '26', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1071', 'repair_fault_type', '报停', '27', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1072', 'repair_result_type', '主管无气', '0', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1073', 'repair_result_type', '紧急开启', '1', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1074', 'repair_result_type', '电话指导好', '2', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1075', 'repair_result_type', '重复工单', '3', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1076', 'repair_result_type', '清零开票', '4', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1077', 'repair_result_type', '检正常', '5', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1078', 'repair_result_type', '换表', '6', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1079', 'repair_result_type', '电池问题', '7', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1080', 'repair_result_type', '换极片', '8', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1081', 'repair_result_type', '换测控板', '9', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1082', 'repair_result_type', '按功能键', '10', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1083', 'repair_result_type', '正常充入', '11', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1084', 'repair_result_type', '排空气', '12', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1085', 'repair_result_type', '灶具问题', '13', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1086', 'repair_result_type', '主管无气', '14', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1087', 'repair_result_type', '管道', '15', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1088', 'repair_result_type', '开票', '16', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1089', 'repair_result_type', '转稽查', '17', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1090', 'repair_result_type', '紧急开启', '18', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1091', 'repair_result_type', '报警器故障', '19', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1092', 'repair_result_type', '插维修卡', '20', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1093', 'repair_result_type', '充值超量', '21', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1094', 'repair_result_type', '开表阀门', '22', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1095', 'repair_result_type', '开通', '23', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1096', 'repair_result_type', '柜子挡住', '24', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1097', 'repair_result_type', '拒绝换表', '25', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1098', 'repair_result_type', '重写充值卡', '26', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1099', 'repair_result_type', '重写开通卡', '27', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1100', 'repair_result_type', '插0010卡', '28', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1101', 'repair_result_type', '插对时卡', '29', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1102', 'repair_result_type', '其他', '30', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1103', 'repair_result_type', '上门指导好', '31', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1104', 'repair_result_type', '换极片清零', '32', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1105', 'order_type', '开户订单', '1', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1106', 'order_type', '普通订单', '2', null, null, null, null, null, '1', '');
+INSERT INTO `sys_dictionary` VALUES ('1107', 'order_type', '补卡订单', '3', null, null, null, null, null, '1', '');
+
 
 -- ----------------------------
 -- Table structure for `sys_district`
@@ -750,6 +852,7 @@ CREATE TABLE `user_orders` (
   `order_strike_time` datetime DEFAULT NULL COMMENT '订单冲账时间',
   `order_close_time` datetime DEFAULT NULL COMMENT '订单关闭时间',
   `flow_number` varchar(20) DEFAULT NULL COMMENT '订单流水号',
+  `order_type` int(4) unsigned DEFAULT NULL COMMENT '订单类型',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',

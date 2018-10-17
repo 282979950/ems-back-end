@@ -1,6 +1,7 @@
 package com.tdmh.entity.mapper;
 
 import com.tdmh.entity.UserCard;
+import com.tdmh.param.CreateAccountParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -31,5 +32,5 @@ public interface UserCardMapper {
      */
     int initCardPwdBycardId(UserCard card);
 
-    List<UserCard> getAllSupList(Integer userId);
+    List<CreateAccountParam> getAllSupList(Integer userId);
 }
