@@ -2,6 +2,7 @@ package com.tdmh.entity.mapper;
 
 import com.tdmh.param.RepairOrderParam;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public interface RepairOrderMapper {
     int addRepairOrder(RepairOrderParam param);
 
     int editRepairOrder(RepairOrderParam param);
+
+    List<RepairOrderParam> searchRepairOrder(@Param("repairOrderId")String repairOrderId, @Param("userId")Integer userId, @Param("repairType")Integer repairType,
+                                             @Param("empName") Integer empName);
 
     List<RepairOrderParam> listData();
 

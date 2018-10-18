@@ -11,6 +11,8 @@
       <arg column="order_status" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="order_create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="order_close_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="flow_number" jdbcType="VARCHAR" javaType="java.lang.String"/>
+      <arg column="order_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
@@ -20,7 +22,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    order_id, user_id, employee_id, order_payment, order_gas, order_status, order_create_time, order_close_time,
+    order_id, user_id, employee_id, order_payment, order_gas, order_status, order_create_time, order_close_time, flow_number, order_type,
     create_time, create_by, update_time, update_by, usable, remarks
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -39,12 +41,12 @@
 </selectKey>
     insert into user_orders (user_id, employee_id,
       order_payment, order_gas, order_status, order_create_time,
-      order_close_time, create_time, create_by, 
+      order_close_time,flow_number, order_type, create_time, create_by,
       update_time, update_by, usable, 
       remarks)
     values (#{userId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, #{orderPayment,jdbcType=DECIMAL},
       #{orderGas,jdbcType=DECIMAL}, #{orderStatus,jdbcType=INTEGER}, #{orderCreateTime,jdbcType=TIMESTAMP},
-      #{orderCloseTime,jdbcType=TIMESTAMP}, NOW(), #{createBy,jdbcType=INTEGER},
+      #{orderCloseTime,jdbcType=TIMESTAMP}, #{flowNumber,jdbcType=VARCHAR}, #{orderType,jdbcType=INTEGER}, NOW(), #{createBy,jdbcType=INTEGER},
       #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT}, 
       #{remarks,jdbcType=VARCHAR})
   </insert>
@@ -74,6 +76,12 @@
       </if>
       <if test="orderCloseTime != null" >
         order_close_time,
+      </if>
+      <if test="flowNumber != null" >
+        flow_number,
+      </if>
+      <if test="orderType != null" >
+        order_type,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -119,6 +127,12 @@
       <if test="orderCloseTime != null" >
         #{orderCloseTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="flowNumber != null" >
+        #{flowNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null" >
+        #{orderType,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -163,6 +177,12 @@
       <if test="orderCloseTime != null" >
         order_close_time = #{orderCloseTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="flowNumber != null" >
+        flow_number = #{flowNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null" >
+        order_type = #{orderType,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -193,6 +213,8 @@
       order_status = #{orderStatus,jdbcType=INTEGER},
       order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
       order_close_time = #{orderCloseTime,jdbcType=TIMESTAMP},
+      flow_number = #{flowNumber,jdbcType=VARCHAR},
+      order_type = #{orderType,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -204,11 +226,11 @@
   <insert id="createFirstOrder" parameterType="com.tdmh.entity.UserOrders" >
     insert into user_orders (user_id, employee_id,
       order_payment,order_gas, order_status, order_create_time,
-      order_close_time, create_time, create_by,
+      order_close_time, flow_number,order_type, create_time, create_by,
       update_time, update_by, remarks)
     values (#{userId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER},
       #{orderPayment,jdbcType=DECIMAL},#{orderGas,jdbcType=DECIMAL}, #{orderStatus,jdbcType=INTEGER}, NOW(),
-      #{orderCloseTime,jdbcType=TIMESTAMP}, NOW(), #{createBy,jdbcType=INTEGER},
+      #{orderCloseTime,jdbcType=TIMESTAMP},#{flowNumber,jdbcType=VARCHAR},#{orderType,jdbcType=INTEGER}, NOW(), #{createBy,jdbcType=INTEGER},
       NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
   </insert>
   <select id="findHasUsedGasInYear" resultType="decimal">

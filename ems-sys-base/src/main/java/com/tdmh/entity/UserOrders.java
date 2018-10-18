@@ -63,8 +63,18 @@ public class UserOrders extends BaseEntity {
      */
     private Date orderCloseTime;
 
+    /**
+     * 订单流水号
+     */
+    private String flowNumber;
+
+    /**
+     * 订单类型
+     */
+    private Integer orderType;
+
     public UserOrders(Integer orderId, Integer userId, Integer employeeId, BigDecimal orderPayment, BigDecimal orderGas, Integer orderStatus, Date orderCreateTime, Date
-            orderCloseTime, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+            orderCloseTime, String flowNumber,Integer orderType, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.orderId = orderId;
         this.userId = userId;
@@ -74,6 +84,8 @@ public class UserOrders extends BaseEntity {
         this.orderStatus = orderStatus;
         this.orderCreateTime = orderCreateTime;
         this.orderCloseTime = orderCloseTime;
+        this.flowNumber = flowNumber;
+        this.orderType = orderType;
     }
 
     public UserOrders() {

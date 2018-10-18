@@ -167,6 +167,14 @@ public interface IUserService {
      * @return
      */
     JsonData searchAccountById(Integer userId);
+
+    /**
+     * 更新维修补气状态(true为需要补气，false为不需要补气)
+     *
+     * @param userId
+     * @return
+     */
+    int updateFillStatus(Integer userId, Boolean status);
     /**
      *查询所有已开户相关用户信息
      */

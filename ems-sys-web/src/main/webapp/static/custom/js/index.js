@@ -53,9 +53,9 @@ app.getPanelContent = function (name) {
          * 维修补气管理: 维修单录入 维修补气 补缴结算 IC卡初始化
          */
         case 'input':
+        case 'fillGas':
             panelContent = this.DEFAULT_TEMPLATE;
             break;
-        case 'fillGas':
         case 'balance':
         case 'initCard':
             panelContent = this.DEFAULT_TEMPLATE;
@@ -129,13 +129,61 @@ app.initIndex = function () {
                 }
             }
         });
+        $('body').on('focus', 'form [name="nIcCardIdentifier"]', function (res) {
+            console.log(app.editForm);
+            if (app.editForm) {
+                var res = app.ReadCard();
+                if(res instanceof Array) {
+                    if (res[1] && res[1] != '0') {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'account' + '/redCard.do',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: {
+                                cardId: res[3]
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.withCredentials = true;
+                            },
+                            success: function (response) {
+                                if (response.status) {
+                                    password = response.data.cardPassword;
+                                    var result = app.initCard(password);
+                                    if (result == 'S') {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: 'account' + '/initCard.do',
+                                            contentType: 'application/x-www-form-urlencoded',
+                                            data: {
+                                                cardId: res[3], result: result
+                                            },
+                                            beforeSend: function (xhr) {
+                                                xhr.withCredentials = true;
+                                            }
+                                        });
+
+                                    } else if (result == 'ocx.ErrorDesc') {
+                                        app.errorMessage("初始化失败");
+                                    }
+                                } else {
+                                    app.errorMessage(response.message);
+                                }
+                            }
+                        });
+                    }
+                    app.editForm.setValue('nIcCardIdentifier', res[2]);
+                }else {
+                    app.warningMessage(res);
+                }
+            }
+        });
         $('body').on('keyup', '[name="orderGas"]', function (res) {
             var val = $(this).val();
             if (/^\d+(\.\d+)?$/.test(val)) {
                 $.ajax({
                     async: true,
                     type: 'POST',
-                    url: 'calAmount.do',
+                    url: 'gasPrice/calAmount.do',
                     contentType: 'application/x-www-form-urlencoded',
                     data: {
                         "userId": app.editForm.data.userId,
@@ -179,15 +227,15 @@ app.initIndex = function () {
                                 console.log(response);
                                 if (response.status) {
                                     var data = response.data;
-                                    if (app.addForm) {
+                                    if (data && app.addForm) {
                                         app.addForm.setValue('userName', data.userName);
                                         app.addForm.setValue('userPhone', data.userPhone);
                                         app.addForm.setValue('userAddress', data.userAddress);
                                     }
-                                    if (app.editForm) {
-                                        app.addForm.setValue('userName', data.userName);
-                                        app.addForm.setValue('userPhone', data.userPhone);
-                                        app.addForm.setValue('userAddress', data.userAddress);
+                                    if (data && app.editForm) {
+                                        app.editForm.setValue('userName', data.userName);
+                                        app.editForm.setValue('userPhone', data.userPhone);
+                                        app.editForm.setValue('userAddress', data.userAddress);
                                     }
                                 }
                             }
@@ -214,10 +262,10 @@ app.initIndex = function () {
                                         app.addForm.setValue('oldMeterTypeId', data.meterTypeId);
                                         app.addForm.setValue('oldMeterDirection', data.meterDirection);
                                     }
-                                    if (app.editForm) {
-                                        app.addForm.getData().oldMeterId = data.meterId;
-                                        app.addForm.setValue('oldMeterTypeId', data.meterTypeId);
-                                        app.addForm.setValue('oldMeterDirection', data.meterDirection);
+                                    if (data && app.editForm) {
+                                        app.editForm.getData().oldMeterId = data.meterId;
+                                        app.editForm.setValue('oldMeterTypeId', data.meterTypeId);
+                                        app.editForm.setValue('oldMeterDirection', data.meterDirection);
                                     }
                                 }
                             }
@@ -239,12 +287,12 @@ app.initIndex = function () {
                                 console.log(response);
                                 if (response.status) {
                                     var data = response.data;
-                                    if (data && app.editForm) {
-                                        app.editForm.getData().newMeterId = data.meterId;
-                                        app.editForm.setValue('newMeterTypeId', data.meterTypeId);
-                                        app.editForm.setValue('newMeterDirection', data.meterDirection);
+                                    if (data && app.addForm) {
+                                        app.addForm.getData().newMeterId = data.meterId;
+                                        app.addForm.setValue('newMeterTypeId', data.meterTypeId);
+                                        app.addForm.setValue('newMeterDirection', data.meterDirection);
                                     }
-                                    if (app.editForm) {
+                                    if (data && app.editForm) {
                                         app.editForm.getData().newMeterId = data.meterId;
                                         app.editForm.setValue('newMeterTypeId', data.meterTypeId);
                                         app.editForm.setValue('newMeterDirection', data.meterDirection);
@@ -273,9 +321,9 @@ app.initIndex = function () {
                                         app.addForm.getData().empId = data.empId;
                                         app.addForm.setValue('empName', data.empName);
                                     }
-                                    if (app.editForm) {
-                                        app.addForm.getData().empId = data.empId;
-                                        app.addForm.setValue('empName', data.empName);
+                                    if (data && app.editForm) {
+                                        app.editForm.getData().empId = data.empId;
+                                        app.editForm.setValue('empName', data.empName);
                                     }
                                 }
                             }
@@ -289,7 +337,7 @@ app.initIndex = function () {
     });
 };
 
-app.lockScreen = function() {
+app.lockScreen = function () {
     // todo
 };
 
@@ -440,6 +488,7 @@ app.render = function (context) {
             }
         });
     }
+
     function _render(data) {
         if (app.table) {
             app.table.refresh(data);
@@ -527,10 +576,25 @@ app.initEvent = function () {
             app.message('只能选择一条数据');
             return;
         }
-        if (app.currentPageName == 'account' || app.currentPageName == 'prePayment'){
+        if (app.currentPageName == 'account'){
             var result = app.ReadCard();
             if(result[0] !== 'S') {
                 app.errorMessage(result);
+                return;
+            }
+            if(result[1] != '0') {
+                app.warningMessage('只能对新卡进行开户');
+                return;
+            }
+        }
+        if (app.currentPageName == 'prePayment'){
+            var result = app.ReadCard();
+            if(result[0] !== 'S') {
+                app.errorMessage(result);
+                return;
+            }
+            if(result[1] == '0') {
+                app.warningMessage('该卡为新卡，必须开户后再充值');
                 return;
             }
             if(result[4] != '0') {
@@ -557,13 +621,15 @@ app.initEvent = function () {
                         success: function (response) {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
+                                var rdata = response.data;
                                 if (app.currentPageName == 'account') {
-                                    var rdata = response.data;
-                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas);
+                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
                                   }
+                                if(app.currentPageName == 'replaceCard'){
+                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.orderGas, rdata.flowNumber);
+                                }
                                 if (app.currentPageName == 'prePayment') {
-                                    var rdata = response.data;
-                                    app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes);
+                                    app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
                                    }
                                 var url = app.currentPageName + '/listData.do';
                                 // app.setDataCache(url, null);
@@ -733,7 +799,7 @@ app.initEvent = function () {
         $.ajax({
             async: true,
             type: 'Post',
-            url: app.currentPageName + '/lockList.do',
+            url: app.currentPageName + '/List.do',
             data: {
                 "userId": userId
             },
@@ -750,7 +816,7 @@ app.initEvent = function () {
                 });
                 var table = app.createTable({
                     parent: '.mdui-dialog-content',
-                    fields: app.tableFields['lockHistory'],
+                    fields: app.tableFields[app.currentPageName+'History'],
                     data: data
                 });
                 dialog.handleUpdate();
@@ -982,27 +1048,27 @@ app.tableFields = {
     }, {
         name: 'userGasTypeName',
         caption: '用气类型'
-    },{
+    }, {
         name: 'gasRangeOne',
         caption: '第一阶梯起始气量'
     }, {
         name: 'gasPriceOne',
         caption: '第一阶梯气价'
-    },{
+    }, {
         name: 'gasRangeTwo',
-        caption: '第二阶梯起始气量'
+        caption: '第二阶梯起始气量(不含)'
     }, {
         name: 'gasPriceTwo',
         caption: '第二阶梯气价'
-    },{
+    }, {
         name: 'gasRangeThree',
-        caption: '第三阶梯起始气量'
+        caption: '第三阶梯起始气量(不含)'
     }, {
         name: 'gasPriceThree',
         caption: '第三阶梯气价'
-    },{
+    }, {
         name: 'gasRangeFour',
-        caption: '第四阶梯起始气量'
+        caption: '第四阶梯起始气量(不含)'
     }, {
         name: 'gasPriceFour',
         caption: '第四阶梯气价'
@@ -1131,7 +1197,7 @@ app.tableFields = {
         name: 'lastLockReason',
         caption: '解锁/锁定原因'
     }],
-    lockHistory: [{
+    lockAccountHistory: [{
         name: 'userId',
         caption: '用户编号'
     }, {
@@ -1247,6 +1313,63 @@ app.tableFields = {
     }, {
         name: 'totalOrderPayment',
         caption: '购气总额'
+    }],
+    replaceCard:[{
+        name: 'userId',
+        caption: '用户编号'
+    },{
+        name: 'userName',
+        caption: '用户名'
+    },{
+        name: 'iccardId',
+        caption: 'IC卡编号'
+    }, {
+        name: 'iccardIdentifier',
+        caption: 'IC卡识别号'
+    }],
+    replaceCardHistory: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'iccardId',
+        caption: 'IC卡编号'
+    }, {
+        name: 'iccardIdentifier',
+        caption: 'IC卡识别号'
+    }, {
+        name: 'orderGas',
+        caption: '充值气量'
+    }, {
+        name: 'orderPayment',
+        caption: '充值金额'
+    }, {
+        name: 'createTime',
+        caption: '换卡时间'
+    }],
+    fillGas: [{
+        name: 'userId',
+        caption: '户号'
+    }, {
+        name: 'userName',
+        caption: '用户名称'
+    }, {
+        name: 'userPhone',
+        caption: '用户手机'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'gasCount',
+        caption: '历史购气总量'
+    }, {
+        name: 'stopCodeCount',
+        caption: '历史表止码'
+    }, {
+        name: 'fillGasOrderStatusName',
+        caption: '补气单状态'
+    }, {
+        name: 'remarks',
+        caption: '备注'
     }],
     alter: [{
         name: 'userId',
@@ -1649,11 +1772,15 @@ app.getAddFormFields = function (name) {
         case 'input':
             return [{
                 name: 'repairOrderId',
-                caption: '维修单编号'
+                caption: '维修单编号',
+                required: true,
+                maxlength: 20
             }, {
                 name: 'userId',
                 caption: '户号',
-                queryField: true
+                required: true,
+                queryField: true,
+                maxlength: 10
             }, {
                 name: 'userName',
                 caption: '用户名称',
@@ -1679,7 +1806,9 @@ app.getAddFormFields = function (name) {
             }, {
                 name: 'oldMeterCode',
                 caption: '旧表编号',
-                queryField: true
+                required: true,
+                queryField: true,
+                maxlength: 12
             }, {
                 name: 'oldMeterTypeId',
                 caption: '旧表类型',
@@ -1698,7 +1827,9 @@ app.getAddFormFields = function (name) {
                 }]
             }, {
                 name: 'oldMeterStopCode',
-                caption: '旧表止码'
+                caption: '旧表止码',
+                required: true,
+                inputType: 'num'
             }, {
                 name: 'newMeterCode',
                 caption: '新表编号',
@@ -1721,10 +1852,11 @@ app.getAddFormFields = function (name) {
                 }]
             }, {
                 name: 'newMeterStopCode',
-                caption: '新表止码'
+                caption: '新表止码',
+                inputType: 'num'
             }, {
                 name: 'repairFaultType',
-                caption: '维修类型',
+                caption: '维修故障类型',
                 type: 'listcombobox',
                 options: app.getDictionaryByCategory("repair_fault_type")
             }, {
@@ -1734,8 +1866,10 @@ app.getAddFormFields = function (name) {
                 options: app.getDictionaryByCategory("repair_result_type")
             }, {
                 name: 'empNumber',
-                caption: '维修员编号',
-                queryField: 'empNumber'
+                caption: '维修员工号',
+                required: true,
+                queryField: true,
+                maxlength: 50
             }, {
                 name: 'empName',
                 caption: '维修员姓名',
@@ -2011,19 +2145,19 @@ app.getEditFormFields = function (name) {
                 caption: '第一阶梯气价'
             }, {
                 name: 'gasRangeTwo',
-                caption: '第二阶梯起始气量'
+                caption: '第二阶梯起始气量(不含)'
             }, {
                 name: 'gasPriceTwo',
                 caption: '第二阶梯气价'
             }, {
                 name: 'gasRangeThree',
-                caption: '第三阶梯起始气量'
+                caption: '第三阶梯起始气量(不含)'
             }, {
                 name: 'gasPriceThree',
                 caption: '第三阶梯气价'
             }, {
                 name: 'gasRangeFour',
-                caption: '第四阶梯起始气量'
+                caption: '第四阶梯起始气量(不含)'
             }, {
                 name: 'gasPriceFour',
                 caption: '第四阶梯气价'
@@ -2341,14 +2475,42 @@ app.getEditFormFields = function (name) {
                 caption: '充值金额',
                 required: true
             }];
+        case 'replaceCard':
+            return [{
+                name: 'userName',
+                caption: '充值用户名',
+                disabled: true
+            }, {
+                name: 'iccardIdentifier',
+                caption: 'IC卡识别号',
+                disabled: true
+            },{
+                name: 'nIcCardIdentifier',
+                caption: '新IC卡识别号',
+                required: true,
+                maxlength: 12
+            }, {
+                name: 'orderGas',
+                caption: '充值气量',
+                inputType: 'num',
+                required: true
+            }, {
+                name: 'orderPayment',
+                caption: '充值金额',
+                disabled: true
+            }];
         case 'input':
             return [{
                 name: 'repairOrderId',
-                caption: '维修单编号'
+                caption: '维修单编号',
+                required: true,
+                maxlength: 20
             }, {
                 name: 'userId',
                 caption: '户号',
-                disabled: true
+                disabled: true,
+                required: true,
+                maxlength: 10
             }, {
                 name: 'userName',
                 caption: '用户名称',
@@ -2374,7 +2536,9 @@ app.getEditFormFields = function (name) {
             }, {
                 name: 'oldMeterCode',
                 caption: '旧表编号',
-                disabled: true
+                disabled: true,
+                required: true,
+                maxlength: 12
             }, {
                 name: 'oldMeterTypeId',
                 caption: '旧表类型',
@@ -2393,7 +2557,9 @@ app.getEditFormFields = function (name) {
                 }]
             }, {
                 name: 'oldMeterStopCode',
-                caption: '旧表止码'
+                caption: '旧表止码',
+                required: true,
+                inputType: 'num'
             }, {
                 name: 'newMeterCode',
                 caption: '新表编号',
@@ -2416,10 +2582,11 @@ app.getEditFormFields = function (name) {
                 }]
             }, {
                 name: 'newMeterStopCode',
-                caption: '新表止码'
+                caption: '新表止码',
+                inputType: 'num'
             }, {
                 name: 'repairFaultType',
-                caption: '维修类型',
+                caption: '维修故障类型',
                 type: 'listcombobox',
                 options: app.getDictionaryByCategory("repair_fault_type")
             }, {
@@ -2429,7 +2596,10 @@ app.getEditFormFields = function (name) {
                 options: app.getDictionaryByCategory("repair_result_type")
             }, {
                 name: 'empNumber',
-                caption: '维修员工号'
+                caption: '维修员工号',
+                required: true,
+                queryField: true,
+                maxlength: 50
             }, {
                 name: 'empName',
                 caption: '维修员姓名',
@@ -2448,6 +2618,23 @@ app.getEditFormFields = function (name) {
             }, {
                 name: 'oldSafetyCode',
                 caption: '旧安全卡编号'
+            }];
+        case 'fillGas':
+            return [{
+                name: 'userId',
+                caption: '户号'
+            }, {
+                name: 'userName',
+                caption: '用户名称'
+            }, {
+                name: 'userPhone',
+                caption: '用户手机'
+            }, {
+                name: 'userAddress',
+                caption: '用户地址'
+            }, {
+                name: 'fillGasOrderStatusName',
+                caption: '补气单状态'
             }];
         case 'alter':
             return [{
@@ -2870,6 +3057,28 @@ app.getToolbarFields = function (name) {
                 caption: 'IC卡识别号',
                 type: 'input'
             }];
+        case 'replaceCard' :
+            return [{
+                name: 'edit',
+                caption: '补卡',
+                perm: 'recharge:supplement:update'
+            }, {
+                name: 'history',
+                caption: '历史补卡记录',
+                perm: 'recharge:supplement:supList'
+            }, {
+                name: 'userName',
+                caption: '用户名称',
+                type: 'input'
+            }, {
+                name: 'iccardId',
+                caption: 'IC卡号',
+                type: 'input'
+            }, {
+                name: 'iccardIdentifier',
+                caption: 'IC卡识别号',
+                type: 'input'
+            }];
         case 'input':
             return [{
                 name: 'add',
@@ -2879,7 +3088,30 @@ app.getToolbarFields = function (name) {
                 name: 'edit',
                 caption: '编辑',
                 perm:'repairorder:entry:update'
+            }, {
+                name: 'repairOrderId',
+                caption: '维修单编号',
+                type: 'input'
+            }, {
+                name: 'userId',
+                caption: '户号',
+                type: 'input'
+            }, {
+                name: 'repairType',
+                caption: '维修类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("repair_type")
+            }, {
+                name: 'empName',
+                caption: '维修员姓名',
+                type: 'input'
             }];
+        case 'fillGas':
+            return [{
+                name: 'edit',
+                caption: '编辑',
+                perm:'repairorder:fillGas:edit'
+            }]
         case 'alter':
             return [{
                 name: 'event',

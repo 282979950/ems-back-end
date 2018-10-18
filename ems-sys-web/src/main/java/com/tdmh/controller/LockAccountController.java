@@ -64,7 +64,7 @@ public class LockAccountController {
      * @return
      */
     @RequiresPermissions("account:lockAccount:lockList")
-    @RequestMapping(value = "/lockList.do")
+    @RequestMapping(value = "/List.do")
     @ResponseBody
     public JsonData searchLockList(@Param("userId") Integer userId) {
         return userService.searchLockList(userId);

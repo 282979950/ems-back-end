@@ -16,4 +16,5 @@ public class WriteCardParam {
     private String iccardPassword;
     private BigDecimal orderGas;
     private Integer serviceTimes;
+    private String flowNumber;
 }
