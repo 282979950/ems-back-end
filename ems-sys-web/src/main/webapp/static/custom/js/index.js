@@ -627,7 +627,7 @@ app.initEvent = function () {
                                     app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
                                   }
                                 if(app.currentPageName == 'replaceCard'){
-                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.orderGas, rdata.flowNumber);
+                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
                                 }
                                 if (app.currentPageName == 'prePayment') {
                                     app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
