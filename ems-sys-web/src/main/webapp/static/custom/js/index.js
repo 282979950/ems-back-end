@@ -37,9 +37,8 @@ app.getPanelContent = function (name) {
         case 'installMeter':
         case 'account':
         case 'lockAccount':
-            panelContent = this.DEFAULT_TEMPLATE;
-            break;
         case 'alter':
+            panelContent = this.DEFAULT_TEMPLATE;
             break;
         /*
          * 充值缴费管理：预付费充值 补卡充值 后付费充值 发票管理
@@ -848,6 +847,106 @@ app.initEvent = function () {
             }
         });
     });
+    main.on('event', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('请选择一条数据');
+            return;
+        }
+        var userMoney=0;
+        var OrderSupplement=0;
+
+        var dialog = mdui.dialog({
+            title: '录入新用户信息',
+            content: ' ',
+            buttons: [{
+                text: '确定',
+                onClick: function () {
+                    var data = form.getData();
+                    data.userMoney=userMoney;
+                    data.OrderSupplement=OrderSupplement;
+                    console.log(data)
+                    $.ajax({
+                        type: 'POST',
+                        url: app.currentPageName + '/userChangeSettlement.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: data,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            console.log(response)
+                           if(response.status){
+                                //成功变更账户，无超用信息
+                               if(response.data == null){
+                                   alert(response.message)
+
+                               }else{
+                                   //实际补缴超用userMoney
+                                   console.log(data)
+                                  var userMoney=prompt(response.message,response.data[0]);
+                                   if(userMoney) {
+
+                                       data.userMoney=userMoney;
+                                       //应补缴超用
+                                       data.OrderSupplement =response.data[1];
+                                       console.log(data.OrderSupplement)
+                                       $.ajax({
+                                           type: 'POST',
+                                           url: app.currentPageName + '/userChangeSettlement.do',
+                                           contentType: 'application/x-www-form-urlencoded',
+                                           data: data,
+                                           beforeSend: function (xhr) {
+                                               xhr.withCredentials = true;
+                                           },
+                                           success: function (response) {
+                                               response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                                               if (response.status) {
+                                                   var url = app.currentPageName + '/listData.do';
+                                                   // app.setDataCache(url, null);
+                                                   console.log("清理" + url + "缓存");
+                                                   app.render({
+                                                       url: url
+                                                   });
+                                               }
+                                           }
+                                       });
+
+                                   }
+
+                               }
+
+                           } else{
+                               app.errorMessage(response.message);
+                           }
+                            if (response.status) {
+                                var url = app.currentPageName + '/listData.do';
+                                // app.setDataCache(url, null);
+                                console.log("清理" + url + "缓存");
+                                app.render({
+                                    url: url
+                                });
+                            }
+                        }
+                    });
+                }
+            }, {
+                text: '取消'
+            }]
+        });
+        var form = app.createForm({
+            parent: '.mdui-dialog-content',
+            fields: app.getEditFormFields('alter'),
+            data: data[0]
+        });
+        dialog.handleUpdate();
+
+
+    });
     main.on('fillGas', function () {
         function editFillGasOrder(formData) {
             $.ajax({
@@ -1416,6 +1515,37 @@ app.tableFields = {
     }, {
         name: 'remarks',
         caption: '备注'
+    }],
+    alter: [{
+        name: 'userId',
+        caption: '用户编号'
+    },{
+        name: 'userName',
+        caption: '用户姓名'
+    }, {
+        name: 'userPhone',
+        caption: '用户电话'
+    }, {
+        name: 'distName',
+        caption: '区域名称'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userIdcard',
+        caption: '身份证号'
+    }, {
+        name: 'userDeed',
+        caption: '房产证号'
+    }, {
+        name: 'userTypeName',
+        caption: '用户类型'
+    },{
+        name: 'userGasTypeName',
+        caption: '用气类型'
+    },{
+        name: 'userStatusName',
+        caption: '用户状态'
     }]
 };
 /*
@@ -2645,7 +2775,7 @@ app.getEditFormFields = function (name) {
                 name: 'repairOrderId',
                 caption: '维修单编号',
                 disabled: true
-            }, { 
+            }, {
                 name: 'gasCount',
                 caption: '历史购气总量',
                 disabled: true
@@ -2682,6 +2812,32 @@ app.getEditFormFields = function (name) {
                 caption: '补气单状态',
                 disabled: true
             }];
+        case 'alter':
+            return [{
+                name: 'userChangeName',
+                caption: '名称',
+                required: true
+            }, {
+                name: 'userChangePhone',
+                caption: '电话',
+                required: true
+
+            }, {
+                name: 'userChangeIdcard',
+                caption: '身份证号码',
+                required: true
+
+            }, {
+                name: 'userChangeDeed',
+                caption: '房产证号码',
+                required: true
+
+            }, {
+                name: 'tableCode',
+                caption: '燃气表当前址码',
+                required: true
+            }];
+
     }
 };
 
@@ -3132,6 +3288,12 @@ app.getToolbarFields = function (name) {
                 caption: '补气补缴',
                 perm: 'repairorder:fillGas:fillGas'
             }]
+        case 'alter':
+            return [{
+                name: 'event',
+                caption: '账户结算',
+                perm:'account:alter:visit'
+            }];
     }
 };
 

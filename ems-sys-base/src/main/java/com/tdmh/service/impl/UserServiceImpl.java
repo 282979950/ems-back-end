@@ -397,4 +397,12 @@ public class UserServiceImpl implements IUserService {
     public int updateFillStatus(Integer userId, Boolean status) {
         return userMapper.updateFillStatus(userId, status);
     }
+    @Override
+    public JsonData userChangeService(User user){
+        //查询已经开户的相关数据
+        user.setUserStatus(3);
+        List<User>  u =userMapper.userChangeList(user);
+        return   u == null || u.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.successData(u);
+    }
+
 }

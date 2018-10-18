@@ -25,4 +25,5 @@ public interface UserOrdersMapper {
     int createFirstOrder(UserOrders record);
 
     BigDecimal findHasUsedGasInYear(@Param("userId") Integer userId);
+    int createChangeUserOrder(UserOrders record);
 }

@@ -596,6 +596,9 @@
                     case 'local_gas_station' :
                         $field.trigger('fillGas');
                         break;
+                    case 'event' :
+                        $field.trigger('event');
+                        break;
                     default:
                         break;
                 }
