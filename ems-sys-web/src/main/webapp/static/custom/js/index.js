@@ -1238,12 +1238,6 @@ app.tableFields = {
         name: 'iccardIdentifier',
         caption: 'IC卡识别号'
     }, {
-        name: 'orderGas',
-        caption: '充值气量'
-    }, {
-        name: 'orderPayment',
-        caption: '充值金额'
-    }, {
         name: 'createTime',
         caption: '换卡时间'
     }],
@@ -2358,15 +2352,6 @@ app.getEditFormFields = function (name) {
                 caption: '新IC卡识别号',
                 required: true,
                 maxlength: 12
-            }, {
-                name: 'orderGas',
-                caption: '充值气量',
-                inputType: 'num',
-                required: true
-            }, {
-                name: 'orderPayment',
-                caption: '充值金额',
-                disabled: true
             }];
         case 'input':
             return [{

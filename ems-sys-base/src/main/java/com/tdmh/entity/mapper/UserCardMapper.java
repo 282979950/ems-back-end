@@ -33,4 +33,8 @@ public interface UserCardMapper {
     int initCardPwdBycardId(UserCard card);
 
     List<CreateAccountParam> getAllSupList(Integer userId);
+
+    int getUserCardByUserIdAndnIcCardIdentifier(@Param("userId") Integer userId , @Param("iccardIdentifier") String iccardIdentifier);
+
+    int getUserCardByYouSelfIdAndnIcCardIdentifier(@Param("userId") Integer userId ,@Param("iccardIdentifier") String iccardIdentifier, @Param("niccardIdentifier") String niccardIdentifier);
 }

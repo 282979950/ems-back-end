@@ -46,4 +46,19 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
         from user_card uc join user_orders uo on uc.order_id = uo.order_id
         where uc.user_id = #{userId} ORDER BY uc.create_time DESC,uc.user_card_id DESC
     </select>
+    <select id="getUserCardByUserIdAndnIcCardIdentifier" parameterType="map" resultType="int">
+        select count(user_card_id) from user_card
+        where 1=1
+        <if test="userId!=null and userId!=''">
+            and <![CDATA[ user_id <> #{userId} ]]>
+        </if>
+        <if test="iccardIdentifier!=null and iccardIdentifier!=''">
+            and card_identifier = #{iccardIdentifier}
+        </if>
+    </select>
+
+    <select id="getUserCardByYouSelfIdAndnIcCardIdentifier"  parameterType="map" resultType="int">
+        SELECT COUNT(user_card_id) FROM user_card
+        WHERE user_id=#{userId} AND card_identifier=#{niccardIdentifier} AND card_identifier !=#{iccardIdentifier}
+    </select>
 </mapper>
