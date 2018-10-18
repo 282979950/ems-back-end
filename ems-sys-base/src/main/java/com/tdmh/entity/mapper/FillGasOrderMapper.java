@@ -16,6 +16,8 @@ public interface FillGasOrderMapper {
 
     int createFillGasOrder(FillGasOrderParam param);
 
+    int editFillGasOrder(FillGasOrderParam param);
+
     List<FillGasOrderParam> listData();
 
     BigDecimal getSumOrderGasByUserId(Integer id);

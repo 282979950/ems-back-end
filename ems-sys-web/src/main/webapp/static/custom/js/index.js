@@ -848,12 +848,163 @@ app.initEvent = function () {
             }
         });
     });
+    main.on('fillGas', function () {
+        function editFillGasOrder(formData) {
+            $.ajax({
+                type: 'POST',
+                url: 'fillGas/edit.do',
+                contentType: 'application/x-www-form-urlencoded',
+                data: formData,
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (editFillGasOrderResponse) {
+                    if (editFillGasOrderResponse.status) {
+                        app.successMessage('处理补气单成功');
+                        // app.setDataCache(url, null);
+                        app.render({
+                            url: app.currentPageName + '/listData.do'
+                        });
+                    } else {
+                        app.errorMessage(editFillGasOrderResponse.message);
+                    }
+                }
+            });
+        }
+        if (table.getSelectedDatas().length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (table.getSelectedDatas().length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        var dialog = mdui.dialog({
+            title: '补气补缴',
+            modal: true,
+            content: ' ',
+            buttons: [{
+                text: '确认',
+                onClick: function () {
+                    var formData = form.getData();
+                    var userId = formData.userId;
+                    if (formData.fillGasOrderStatus) {
+                        app.message("该补气单已被处理过");
+                    } else {
+                        var result = app.ReadCard();
+                        if(result[0] === 'S') {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'account/redCard.do',
+                                contentType: 'application/x-www-form-urlencoded',
+                                data:{
+                                    cardId:result[3]
+                                } ,
+                                beforeSend: function (xhr) {
+                                    xhr.withCredentials = true;
+                                },
+                                success: function (readCardResponse) {
+                                    if(readCardResponse.status){
+                                        var password = readCardResponse.data.cardPassword;
+                                        var serviceTimes = app.getServiceTimesByUserId(userId);
+                                        var flowNum = app.getFlowNum();
+                                        var isFirstOrder = formData.needFillGas === (formData.gasCount - formData.stopCodeCount);
+                                        if (isFirstOrder) {
+                                            // 初始化IC卡
+                                            var initResult = app.initCard(password);
+                                            if (initResult === 'S') {
+                                                // 获取流水号 获取维修次数
+                                                var writePCardResult = app.WritePCard(result[3], password, formData.fillGas, serviceTimes + 1, formData.fillGas, flowNum);
+                                                if (writePCardResult === '写卡成功') {
+                                                    // 更新订单状态，生成新订单，
+                                                    editFillGasOrder(formData);
+                                                } else {
+                                                    app.errorMessage(writePCardResult);
+                                                }
+                                            } else {
+                                                app.errorMessage("初始化失败");
+                                            }
+                                        } else {
+                                            //写一般充值卡
+                                            var writeUCardResult = app.WriteUCard(result[3], password, formData.fillGas, serviceTimes, flowNum);
+                                            if (writeUCardResult === '写卡成功') {
+                                                editFillGasOrder(formData);
+                                            } else {
+                                                app.errorMessage(writeUCardResult);
+                                            }
+                                        }
+                                    }else{
+                                        app.errorMessage(response.message);
+                                    }
+                                }
+                            });
+                        } else {
+                            app.errorMessage(result);
+                            return;
+                        }
+                    }
+                    app.fillGasForm = null;
+                }
+            }, {
+                text: '取消',
+                onClick: function () {
+                    app.fillGasForm = null;
+                }
+            }]
+        });
+        $(".tree-combobox-panel").remove();
+        var form = app.fillGasForm = app.createForm({
+            parent: '.mdui-dialog-content',
+            fields: app.getEditFormFields(formNames),
+            data: table.getSelectedDatas()[0]
+        });
+        dialog.handleUpdate();
+    });
 };
 
 app.removeEvent = function () {
     $('.container-main').off();
 };
 
+/**
+ * 获取流水号
+ */
+app.getFlowNum = function() {
+    var result;
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: 'fillGas/getFlowNum.do',
+        contentType: 'application/x-www-form-urlencoded',
+        beforeSend: function (xhr) {
+            xhr.withCredentials = true;
+        },
+        success: function (response) {
+            result = response.data;
+        }
+    });
+    return result;
+};
+
+app.getServiceTimesByUserId = function(userId) {
+    var result;
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: 'fillGas/getServiceTimesByUserId.do',
+        data : {
+            userId: userId
+        },
+        contentType: 'application/x-www-form-urlencoded',
+        beforeSend: function (xhr) {
+            xhr.withCredentials = true;
+        },
+        success: function (response) {
+            result = response.data;
+        }
+    });
+    return result;
+};
 /*
 * table fields
 */
@@ -2491,19 +2642,60 @@ app.getEditFormFields = function (name) {
         case 'fillGas':
             return [{
                 name: 'userId',
-                caption: '户号'
+                caption: '户号',
+                disabled: true
             }, {
                 name: 'userName',
-                caption: '用户名称'
+                caption: '用户名称',
+                disabled: true
             }, {
                 name: 'userPhone',
-                caption: '用户手机'
+                caption: '用户手机',
+                disabled: true
             }, {
                 name: 'userAddress',
-                caption: '用户地址'
+                caption: '用户地址',
+                disabled: true
+            }, {
+                name: 'repairOrderId',
+                caption: '维修单编号',
+                disabled: true
+            }, { 
+                name: 'gasCount',
+                caption: '历史购气总量',
+                disabled: true
+            }, {
+                name: 'stopCodeCount',
+                caption: '历史表止码',
+                disabled: true
+            }, {
+                name: 'needFillGas',
+                caption: '应补气量',
+                disabled: true
+            }, {
+                name: 'fillGas',
+                caption: '实补气量',
+                disabled: true
+            }, {
+                name: 'leftGas',
+                caption: '剩余气量',
+                disabled: true
+            }, {
+                name: 'needFillMoney',
+                caption: '应补金额',
+                disabled: true
+            }, {
+                name: 'fillMoney',
+                caption: '实补金额',
+                disabled: true
+            }, {
+                name: 'leftMoney',
+                caption: '剩余金额',
+                disabled: true
             }, {
                 name: 'fillGasOrderStatusName',
-                caption: '补气单状态'
+                caption: '补气单状态',
+                disabled: true
             }];
     }
 };
@@ -2951,9 +3143,9 @@ app.getToolbarFields = function (name) {
             }];
         case 'fillGas':
             return [{
-                name: 'edit',
-                caption: '编辑',
-                perm:'repairorder:fillGas:edit'
+                name: 'local_gas_station',
+                caption: '补气补缴',
+                perm: 'repairorder:fillGas:fillGas'
             }]
     }
 };

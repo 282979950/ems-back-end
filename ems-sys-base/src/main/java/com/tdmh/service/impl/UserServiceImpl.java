@@ -367,18 +367,20 @@ public class UserServiceImpl implements IUserService {
         UserCard card=new UserCard();
 
         if(StringUtils.isBlank(result)){
-            return  JsonData.fail("未获取到初始化结果");
+            return JsonData.fail("未获取到初始化结果");
 
         }
         if( cardId ==null || cardId.intValue()==0){
-
-            JsonData.fail("未获取到卡号码");
+            return JsonData.fail("未获取到卡号码");
         }else{
             card.setCardId(cardId);
             card.setCardInitialization(false);
+            int resultCount = userCardMapper.initCardPwdBycardId(card);
+            if (resultCount == 0) {
+                return JsonData.fail("初始化卡片密码失败");
+            }
+            return JsonData.successMsg("初始化IC卡成功");
         }
-        userCardMapper.initCardPwdBycardId(card);
-        return null;
     }
 
     @Override

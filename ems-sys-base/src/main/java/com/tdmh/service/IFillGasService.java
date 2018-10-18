@@ -22,4 +22,10 @@ public interface IFillGasService {
     BigDecimal getSumOrderGasByUserId(Integer userId);
 
     BigDecimal getSumMeterStopCodeByUserId(Integer userId);
+
+    JsonData getFlowNum();
+
+    JsonData getServiceTimesByUserId(Integer userId);
+
+    void setFillGasOrderProps(FillGasOrderParam param, BigDecimal needFillGas);
 }

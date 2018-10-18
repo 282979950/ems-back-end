@@ -8,6 +8,7 @@
             <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="repair_order_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="gas_count" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
             <arg column="stop_code_count" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
             <arg column="need_fill_gas" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
@@ -16,7 +17,7 @@
             <arg column="need_fill_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
             <arg column="fill_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
             <arg column="left_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
-            <arg column="fill_gas_order_status" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="fill_gas_order_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="fill_gas_order_status_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
@@ -31,30 +32,32 @@
         user_id, repair_order_id, need_fill_gas, fill_gas, left_gas, need_fill_money, fill_money, left_money, fill_gas_order_status,
         create_time, create_by, update_time, update_by, remarks
         )
-        values(#{userId}, #{repairOrderId}, #{needFillGas}, #{fillGas}, #{leftGas}, #{needFillMoney}, #{fillMoney}, #{leftMoney}, #{fillGasOrderStatus}
+        values(#{userId}, #{repairOrderId}, #{needFillGas}, #{fillGas}, #{leftGas}, #{needFillMoney}, #{fillMoney}, #{leftMoney}, #{fillGasOrderStatus},
         NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks}
         )
     </insert>
-    <sql id="sum_order_gas">
-        SELECT
-        SUM(uo.order_gas)
-        from
-        fill_gas_order fgo2
-        LEFT JOIN user_orders uo on uo.user_id = fgo2.user_id and uo.usable = 1
-    </sql>
-    <sql id="sum_meter_stop_code">
-        SELECT
-        SUM(m.meter_stop_code)
-        from
-        fill_gas_order fgo3
-        LEFT JOIN user_meters um on um.user_id = fgo3.user_id
-        LEFT JOIN meter m on um.meter_id = m.meter_id
-    </sql>
+    <update id="editFillGasOrder">
+        update fill_gas_order
+        set
+        fill_gas_order_status = #{fillGasOrderStatus},
+        update_time = NOW(),
+        update_by = #{updateBy}
+        where id = #{id}
+    </update>
     <select id="listData" resultMap="FillGasOrderParam">
         SELECT
-        fgo.id, fgo.user_id, u.user_name, u.user_phone, u.user_address,
-        (<include refid="sum_order_gas"/>) as gas_count,
-        (<include refid="sum_meter_stop_code"/>) as stop_code_count,
+        fgo.id, fgo.user_id, u.user_name, u.user_phone, u.user_address, fgo.repair_order_id,
+        (SELECT
+        SUM(order_gas)
+        from
+        user_orders
+        where user_id = fgo.user_id and usable = 1) as gas_count,
+        (SELECT
+        SUM(m.meter_stop_code)
+        from
+        user_meters um
+        LEFT JOIN meter m on um.meter_id = m.meter_id
+        where um.user_id = fgo.user_id) as stop_code_count,
         fgo.need_fill_gas, fgo.fill_gas, fgo.left_gas, fgo.need_fill_money, fgo.fill_money, fgo.left_money,
         fgo.fill_gas_order_status, sd.dict_key as fill_gas_order_status_name,
         fgo.create_time, fgo.create_by, fgo.update_time, fgo.update_by, fgo.usable, fgo.remarks
