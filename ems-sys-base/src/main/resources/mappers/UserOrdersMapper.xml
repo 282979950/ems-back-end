@@ -236,4 +236,12 @@
   <select id="findHasUsedGasInYear" resultType="decimal">
         SELECT SUM(order_gas) FROM user_orders WHERE user_id = #{userId} AND create_time > MAKEDATE(YEAR(NOW()), 1);
   </select>
+  <insert id="createChangeUserOrder" parameterType="com.tdmh.entity.UserOrders" >
+    insert into user_orders (user_id,employee_id,order_payment,
+                 order_gas,order_type,create_time,create_by,
+                 update_time,update_by,usable,order_supplement,remarks)
+    values (#{userId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER},#{orderPayment,jdbcType=DECIMAL},#{orderGas,jdbcType=DECIMAL},
+             #{orderType},NOW(),#{createBy,jdbcType=INTEGER},NOW(),#{updateBy,jdbcType=INTEGER},#{usable},#{orderSupplement},#{remarks}
+      )
+  </insert>
 </mapper>
