@@ -20,10 +20,9 @@ public interface IReplaceCardService {
     /**
      * 换卡操作
      * @param param
-     * @param userOrders
      * @return
      */
-    JsonData supplementCard(PrePaymentParam param, UserOrders userOrders);
+    JsonData supplementCard(PrePaymentParam param);
 
     /**
      * 查询换卡记录

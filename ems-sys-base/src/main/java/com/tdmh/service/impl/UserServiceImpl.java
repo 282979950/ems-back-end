@@ -201,6 +201,10 @@ public class UserServiceImpl implements IUserService {
     @Transactional
     public JsonData createAccount(CreateAccountParam param) {
         BeanValidator.check(param);
+        int count = userCardMapper.getUserCardByUserIdAndnIcCardIdentifier(null,param.getIccardIdentifier());
+        if(count>0){
+            return JsonData.fail("该卡已绑定其他用户");
+        }
         Integer iccardId = Integer.valueOf(param.getUserId().toString().substring(2))+10000000;
         param.setIccardId(iccardId);
         // TODO: 2018/8/9 从接口中读取IC卡识别号

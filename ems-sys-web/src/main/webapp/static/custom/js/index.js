@@ -627,7 +627,7 @@ app.initEvent = function () {
                                     app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
                                   }
                                 if(app.currentPageName == 'replaceCard'){
-                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.orderGas, rdata.flowNumber);
+                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
                                 }
                                 if (app.currentPageName == 'prePayment') {
                                     app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
@@ -1388,12 +1388,6 @@ app.tableFields = {
     }, {
         name: 'iccardIdentifier',
         caption: 'IC卡识别号'
-    }, {
-        name: 'orderGas',
-        caption: '充值气量'
-    }, {
-        name: 'orderPayment',
-        caption: '充值金额'
     }, {
         name: 'createTime',
         caption: '换卡时间'
@@ -2509,15 +2503,6 @@ app.getEditFormFields = function (name) {
                 caption: '新IC卡识别号',
                 required: true,
                 maxlength: 12
-            }, {
-                name: 'orderGas',
-                caption: '充值气量',
-                inputType: 'num',
-                required: true
-            }, {
-                name: 'orderPayment',
-                caption: '充值金额',
-                disabled: true
             }];
         case 'input':
             return [{
