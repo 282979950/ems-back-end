@@ -68,11 +68,6 @@ public class UserOrders extends BaseEntity {
      */
     private String flowNumber;
 
-    /**
-     * 订单类型
-     */
-    private Integer orderType;
-
     public UserOrders(Integer orderId, Integer userId, Integer employeeId, BigDecimal orderPayment, BigDecimal orderGas, Integer orderStatus, Date orderCreateTime, Date
             orderCloseTime, String flowNumber,Integer orderType, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
