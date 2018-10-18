@@ -2,6 +2,7 @@ package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.User;
+import com.tdmh.entity.UserChange;
 import com.tdmh.param.CreateAccountParam;
 import com.tdmh.param.CreateArchiveParam;
 import com.tdmh.param.InstallMeterParam;
@@ -170,5 +171,7 @@ public interface IUserService {
      *查询所有已开户相关用户信息
      */
     JsonData userChangeService( User user);
+
+
 
 }

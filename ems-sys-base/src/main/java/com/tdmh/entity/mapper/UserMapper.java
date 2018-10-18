@@ -60,4 +60,5 @@ public interface UserMapper {
 
     List<CreateArchiveParam> searchAccountById(Integer userId);
     List<User> userChangeList(User user);
+    int updateUserById(User record);
 }

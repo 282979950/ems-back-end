@@ -49,6 +49,14 @@ public class UserOrders extends BaseEntity {
      * 订单创建时间
      */
     private Date orderCreateTime;
+    /**
+     * 订单类型
+     */
+    private Integer orderType;
+    /**
+     * order_supplement
+     */
+    private BigDecimal orderSupplement;
 
     /**
      * 订单关闭时间

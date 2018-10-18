@@ -381,4 +381,12 @@ public class UserServiceImpl implements IUserService {
         User user = userMapper.selectByPrimaryKey(userId);
         return user == null ? JsonData.successMsg("搜索结果为空") : JsonData.success(user, "查询成功");
     }
+    @Override
+    public JsonData userChangeService(User user){
+        //查询已经开户的相关数据
+        user.setUserStatus(3);
+        List<User>  u =userMapper.userChangeList(user);
+        return   u == null || u.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.successData(u);
+    }
+
 }

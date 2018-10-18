@@ -788,9 +788,97 @@ app.initEvent = function () {
             return;
         }
         if (data.length > 1) {
-            app.message('只能选择一条数据');
+            app.message('请选择一条数据');
             return;
         }
+        var userMoney=0;
+        var OrderSupplement=0;
+
+        var dialog = mdui.dialog({
+            title: '录入新用户信息',
+            content: ' ',
+            buttons: [{
+                text: '确定',
+                onClick: function () {
+                    var data = form.getData();
+                    data.userMoney=userMoney;
+                    data.OrderSupplement=OrderSupplement;
+                    console.log(data)
+                    $.ajax({
+                        type: 'POST',
+                        url: app.currentPageName + '/userChangeSettlement.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: data,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            console.log(response)
+                           if(response.status){
+                                //成功变更账户，无超用信息
+                               if(response.data == null){
+                                   alert(response.message)
+
+                               }else{
+                                   //实际补缴超用userMoney
+                                   console.log(data)
+                                  var userMoney=prompt(response.message,response.data[0]);
+                                   if(userMoney) {
+
+                                       data.userMoney=userMoney;
+                                       //应补缴超用
+                                       data.OrderSupplement =response.data[1];
+                                       console.log(data.OrderSupplement)
+                                       $.ajax({
+                                           type: 'POST',
+                                           url: app.currentPageName + '/userChangeSettlement.do',
+                                           contentType: 'application/x-www-form-urlencoded',
+                                           data: data,
+                                           beforeSend: function (xhr) {
+                                               xhr.withCredentials = true;
+                                           },
+                                           success: function (response) {
+                                               response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                                               if (response.status) {
+                                                   var url = app.currentPageName + '/listData.do';
+                                                   // app.setDataCache(url, null);
+                                                   console.log("清理" + url + "缓存");
+                                                   app.render({
+                                                       url: url
+                                                   });
+                                               }
+                                           }
+                                       });
+
+                                   }
+
+                               }
+
+                           } else{
+                               app.errorMessage(response.message);
+                           }
+                            if (response.status) {
+                                var url = app.currentPageName + '/listData.do';
+                                // app.setDataCache(url, null);
+                                console.log("清理" + url + "缓存");
+                                app.render({
+                                    url: url
+                                });
+                            }
+                        }
+                    });
+                }
+            }, {
+                text: '取消'
+            }]
+        });
+        var form = app.createForm({
+            parent: '.mdui-dialog-content',
+            fields: app.getEditFormFields('alter'),
+            data: data[0]
+        });
+        dialog.handleUpdate();
+
 
     });
 };
@@ -1175,6 +1263,12 @@ app.tableFields = {
     }, {
         name: 'userAddress',
         caption: '用户地址'
+    }, {
+        name: 'userIdcard',
+        caption: '身份证号'
+    }, {
+        name: 'userDeed',
+        caption: '房产证号'
     }, {
         name: 'userTypeName',
         caption: '用户类型'
@@ -2355,6 +2449,32 @@ app.getEditFormFields = function (name) {
                 name: 'oldSafetyCode',
                 caption: '旧安全卡编号'
             }];
+        case 'alter':
+            return [{
+                name: 'userChangeName',
+                caption: '名称',
+                required: true
+            }, {
+                name: 'userChangePhone',
+                caption: '电话',
+                required: true
+
+            }, {
+                name: 'userChangeIdcard',
+                caption: '身份证号码',
+                required: true
+
+            }, {
+                name: 'userChangeDeed',
+                caption: '房产证号码',
+                required: true
+
+            }, {
+                name: 'tableCode',
+                caption: '燃气表当前址码',
+                required: true
+            }];
+
     }
 };
 

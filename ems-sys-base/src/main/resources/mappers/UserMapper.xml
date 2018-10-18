@@ -518,7 +518,9 @@
         SELECT
         u.user_id as userId,u.user_name as userName,u.user_phone as userPhone,
         dist.dist_name as distName,u.user_address as userAddress,
-        u.user_type as userType,sd.dict_key AS userTypeName,
+        u.user_idcard as userIdcard,u.user_deed as userDeed,
+        u.user_type as userType,u.user_gas_type as userGasType,
+        sd.dict_key AS userTypeName,
         u.user_gas_type as userGasType,sd2.dict_key AS  userGasTypeName,
         u.user_status as userStatus,sd3.dict_key AS userStatusName
         FROM user u
@@ -532,4 +534,22 @@
             AND u.user_status = #{userStatus}
         </if>
     </select>
+    <update id="updateUserById" parameterType="com.tdmh.entity.User">
+        update user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                user_phone = #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="userIdcard != null">
+                user_idcard = #{userIdcard,jdbcType=VARCHAR},
+            </if>
+            <if test="userDeed != null">
+                user_deed = #{userDeed,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
 </mapper>
