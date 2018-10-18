@@ -1401,8 +1401,7 @@ app.tableFields = {
     },{
         name: 'userStatusName',
         caption: '用户状态'
-    }],
-    replaceCard:[{}]
+    }]
 };
 /*
  *数据字典
