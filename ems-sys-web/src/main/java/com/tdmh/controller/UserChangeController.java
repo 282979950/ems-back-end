@@ -57,7 +57,7 @@ public class UserChangeController {
     @RequiresPermissions("account:alter:update")
     @RequestMapping(value = "/userEliminationHead.do")
     @ResponseBody
-    public JsonData userEliminationHead(User user,BigDecimal userMoney,BigDecimal OrderSupplement, BigDecimal flage){
+    public JsonData userEliminationHead(User user,BigDecimal userMoney,BigDecimal OrderSupplement, int flage){
         Integer Id = ShiroUtils.getPrincipal().getId();
 
         return user==null?JsonData.fail("未获取到该条数据先关信息，请检查数据或联系管理员"):userChangeService.userEliminationHeadService(user,userMoney,OrderSupplement,flage,Id);

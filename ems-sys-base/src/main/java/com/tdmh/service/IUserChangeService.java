@@ -25,7 +25,7 @@ public interface IUserChangeService {
     /**
      * 账户消户处理
      */
-    JsonData userEliminationHeadService(User user,BigDecimal userMoney,BigDecimal OrderSupplement,BigDecimal flage,Integer Id);
+    JsonData userEliminationHeadService(User user,BigDecimal userMoney,BigDecimal OrderSupplement,int flage,Integer Id);
     /**
      *查询产生变更记录表
      */
