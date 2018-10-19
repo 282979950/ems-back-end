@@ -26,14 +26,13 @@
         invoice_print_time, invoice_cancel_time, emp_id, create_time, create_by, update_time, update_by, usable
         remarks
     </sql>
-    <select id="getAllsignInvoiceList" resultType="com.tdmh.entity.Invoice">
+    <select id="getAllAssignInvoiceList" resultType="com.tdmh.entity.Invoice">
         select i.invoice_id AS invoiceId, i.invoice_code as invoiceCode,i.invoice_number as invoiceNumber,
-        sd.dict_key as invoiceStatusName, e.emp_name as createByName, i.invoice_generate_time as invoiceGenerateTime, emp.emp_name as empName, i.invoice_assign_time as invoiceAssignTime
+        sd.dict_key as invoiceStatusName, e.emp_name as createByName, i.invoice_generate_time as invoiceGenerateTime
         from invoice i
         join sys_dictionary sd on i.invoice_status = sd.dict_value
         join employee e on i.create_by = e.emp_id
-        left join employee emp on i.emp_id = emp.emp_id
-        where sd.dict_category = 'invoice_status' and  (i.invoice_status = 1 or i.invoice_status =2)
+        where sd.dict_category = 'invoice_status' and i.invoice_status = 1
     </select>
     <insert id="insertSelective" parameterType="com.tdmh.entity.Invoice">
         insert into invoice
@@ -157,4 +156,13 @@
             #{invoiceNumber}
         </foreach>
     </update>
+    <select id="getAllPrintCancelInvoiceList" resultType="com.tdmh.entity.Invoice">
+        select i.invoice_id AS invoiceId, i.invoice_code as invoiceCode,i.invoice_number as invoiceNumber,
+        sd.dict_key as invoiceStatusName, emp.emp_name as empName, i.invoice_assign_time as invoiceAssignTime,
+        i.invoice_print_time as invoicePrintTime, i.invoice_cancel_time as invoiceCancelTime
+        from invoice i
+        join sys_dictionary sd on i.invoice_status = sd.dict_value
+        left join employee emp on i.emp_id = emp.emp_id
+        where sd.dict_category = 'invoice_status' and <![CDATA[ i.invoice_status <> 1 ]]>
+    </select>
 </mapper>

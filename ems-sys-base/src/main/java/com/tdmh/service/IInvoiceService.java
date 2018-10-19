@@ -11,4 +11,6 @@ public interface IInvoiceService {
     JsonData addInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer currentEmpId);
 
     JsonData assignInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber,Integer empId, Integer currentEmpId);
+
+    JsonData getAllPrintCancelInvoiceList();
 }

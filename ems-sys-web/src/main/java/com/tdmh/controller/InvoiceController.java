@@ -49,4 +49,15 @@ public class InvoiceController {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         return iInvoiceService.assignInvoice(invoiceCode,sInvoiceNumber,eInvoiceNumber,empId,currentEmpId);
     }
+
+    /**
+     * 查询已分配后的发票编号
+     * @return
+     */
+    @RequestMapping("/printCancel/listData.do")
+    @ResponseBody
+    public JsonData getAllPrintCancelInvoiceList(){
+        return iInvoiceService.getAllPrintCancelInvoiceList();
+    }
+
 }

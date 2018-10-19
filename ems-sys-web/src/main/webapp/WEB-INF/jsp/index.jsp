@@ -159,7 +159,7 @@
                     <shiro:hasPermission name="invoice:assign:visit">
                         <div class="mdui-list-item mdui-ripple nav-item assign">发票分配</div>
                     </shiro:hasPermission>
-                    <shiro:hasPermission name="invoice:printcancel:visit">
+                    <shiro:hasPermission name="invoice:printCancel:visit">
                         <div class="mdui-list-item mdui-ripple nav-item printCancel">发票打印及作废</div>
                     </shiro:hasPermission>
                     <shiro:hasPermission name="invoice:einvoice:visit">

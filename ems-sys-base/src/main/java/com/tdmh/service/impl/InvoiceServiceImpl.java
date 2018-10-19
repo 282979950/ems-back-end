@@ -23,7 +23,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Override
     public JsonData getAllAssignInvoiceList() {
-        List<Invoice> list = invoiceMapper.getAllsignInvoiceList();
+        List<Invoice> list = invoiceMapper.getAllAssignInvoiceList();
         return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
     }
 
@@ -85,5 +85,11 @@ public class InvoiceServiceImpl implements IInvoiceService {
             throw new ParameterException("分配操作人员失败");
         }
         return JsonData.successMsg("分配发票成功");
+    }
+
+    @Override
+    public JsonData getAllPrintCancelInvoiceList() {
+        List<Invoice> list = invoiceMapper.getAllPrintCancelInvoiceList();
+        return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
     }
 }

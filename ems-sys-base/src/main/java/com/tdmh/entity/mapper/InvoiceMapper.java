@@ -13,9 +13,10 @@ import java.util.List;
 
 @Mapper @Component
 public interface InvoiceMapper {
-    List<Invoice> getAllsignInvoiceList();
+    List<Invoice> getAllAssignInvoiceList();
     int insertSelective(Invoice invoice);
     int insertBatch(@Param("invoiceList") List<Invoice> invoiceList);
     List<Invoice> findInvoiceByCodeAndNumber(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumberList") List<String> invoiceNumberList, @Param("invoiceStatus") Integer invoiceStatus);
     int updateInvoiceToEmployee(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumberList") List<String> invoiceNumberList, @Param("empId") Integer empId, @Param("currentEmpId") Integer currentEmpId);
+    List<Invoice> getAllPrintCancelInvoiceList();
 }

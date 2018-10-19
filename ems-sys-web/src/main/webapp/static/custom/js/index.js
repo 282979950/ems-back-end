@@ -49,8 +49,8 @@ app.getPanelContent = function (name) {
         case 'postPayment':
             break;
         case 'assign':
-            panelContent = this.DEFAULT_TEMPLATE;
         case 'printCancel':
+            panelContent = this.DEFAULT_TEMPLATE;
         case 'eInvoice':
             break;
         /*
@@ -1609,13 +1609,29 @@ app.tableFields = {
     },{
         name: 'invoiceGenerateTime',
         caption: '发票生成时间'
+    }],
+    printCancel:[{
+        name: 'invoiceCode',
+        caption: '发票代码'
+    },{
+        name: 'invoiceNumber',
+        caption: '发票号码'
+    },{
+        name: 'invoiceStatusName',
+        caption: '发票状态'
     },{
         name: 'empName',
         caption: '分配员工'
     },{
         name: 'invoiceAssignTime',
         caption: '发票分配时间'
-    },]
+    },{
+        name: 'invoicePrintTime',
+        caption: '发票打印时间'
+    },{
+        name: 'invoiceCancelTime',
+        caption: '发票报废时间'
+    }]
 };
 /*
  *数据字典
@@ -2108,10 +2124,10 @@ app.getAddFormFields = function (name) {
                 caption:'发票代码'
             },{
                 name: 'sInvoiceNumber',
-                caption:'发票起始号码'
+                caption: '发票起始号码',
             },{
                 name: 'eInvoiceNumber',
-                caption:'发票终止号码'
+                caption: '发票终止号码',
             }];
         case 'assignassignment' :
             return [{
