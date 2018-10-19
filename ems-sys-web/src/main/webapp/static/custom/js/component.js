@@ -596,6 +596,9 @@
                     case 'event' :
                         $field.trigger('event');
                         break;
+                    case 'assignment' :
+                        $field.trigger('assignment');
+                        break;
                     default:
                         break;
                 }

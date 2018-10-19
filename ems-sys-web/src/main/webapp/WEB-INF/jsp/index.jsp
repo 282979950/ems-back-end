@@ -145,11 +145,28 @@
                 <shiro:hasPermission name="recharge:suff:visit">
                 <div class="mdui-list-item mdui-ripple nav-item postPayment">后付费充值</div>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="recharge:invoice:visit">
-                <div class="mdui-list-item mdui-ripple nav-item invoice">发票管理</div>
-                </shiro:hasPermission>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="invoice:visit">
+            <div class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">print</i>
+                    <div class="mdui-list-item-content mdui-text-color-blue">发票管理</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
+                </div>
+                <div class="mdui-collapse-item-body mdui-list" style="">
+                    <shiro:hasPermission name="invoice:assign:visit">
+                        <div class="mdui-list-item mdui-ripple nav-item assign">发票分配</div>
+                    </shiro:hasPermission>
+                    <shiro:hasPermission name="invoice:printcancel:visit">
+                        <div class="mdui-list-item mdui-ripple nav-item printCancel">发票打印及作废</div>
+                    </shiro:hasPermission>
+                    <shiro:hasPermission name="invoice:einvoice:visit">
+                        <div class="mdui-list-item mdui-ripple nav-item eInvoice">电子发票管理</div>
+                    </shiro:hasPermission>
+                </div>
+            </div>
         </shiro:hasPermission>
         <shiro:hasPermission name="repairorder:visit">
         <div class="mdui-collapse-item">

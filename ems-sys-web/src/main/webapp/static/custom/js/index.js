@@ -45,9 +45,13 @@ app.getPanelContent = function (name) {
          */
         case 'prePayment':
         case 'replaceCard':
-                panelContent = this.DEFAULT_TEMPLATE;
+            panelContent = this.DEFAULT_TEMPLATE;
         case 'postPayment':
-        case 'invoice':
+            break;
+        case 'assign':
+            panelContent = this.DEFAULT_TEMPLATE;
+        case 'printCancel':
+        case 'eInvoice':
             break;
         /*
          * 维修补气管理: 维修单录入 维修补气 补缴结算 IC卡初始化
@@ -944,8 +948,51 @@ app.initEvent = function () {
             data: data[0]
         });
         dialog.handleUpdate();
-
-
+    });
+    main.on('assignment', function () {
+        var dialog = mdui.dialog({
+            title: '分配',
+            modal: true,
+            content: ' ',
+            buttons: [{
+                text: '确认',
+                onClick: function () {
+                    var data = form.getData();
+                    $.ajax({
+                        type: 'POST',
+                        url: app.currentPageName + '/assignment.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: data,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                            if (response.status) {
+                                var url = app.currentPageName + '/listData.do';
+                                // app.setDataCache(url, null);
+                                console.log("清理" + url + "缓存");
+                                app.render({
+                                    url: url
+                                });
+                            }
+                        }
+                    });
+                    app.addForm = null;
+                }
+            }, {
+                text: '取消',
+                onClick: function () {
+                    app.addForm = null;
+                }
+            }]
+        });
+        $(".tree-combobox-panel").remove();
+        var form = app.addForm = app.createForm({
+            parent: '.mdui-dialog-content',
+            fields: app.getAddFormFields(formNames+'assignment')
+        });
+        dialog.handleUpdate();
     });
 };
 
@@ -1395,7 +1442,29 @@ app.tableFields = {
     },{
         name: 'userStatusName',
         caption: '用户状态'
-    }]
+    }],
+    assign: [{
+        name: 'invoiceCode',
+        caption: '发票代码'
+    },{
+        name: 'invoiceNumber',
+        caption: '发票号码'
+    },{
+        name: 'invoiceStatusName',
+        caption: '发票状态'
+    },{
+        name: 'createByName',
+        caption: '生成员工'
+    },{
+        name: 'invoiceGenerateTime',
+        caption: '发票生成时间'
+    },{
+        name: 'empName',
+        caption: '分配员工'
+    },{
+        name: 'invoiceAssignTime',
+        caption: '发票分配时间'
+    },]
 };
 /*
  *数据字典
@@ -1881,6 +1950,31 @@ app.getAddFormFields = function (name) {
             }, {
                 name: 'oldSafetyCode',
                 caption: '旧安全卡编号'
+            }];
+        case 'assign' :
+            return [{
+                name: 'invoiceCode',
+                caption:'发票代码'
+            },{
+                name: 'sInvoiceNumber',
+                caption:'发票起始号码'
+            },{
+                name: 'eInvoiceNumber',
+                caption:'发票终止号码'
+            }];
+        case 'assignassignment' :
+            return [{
+                name: 'invoiceCode',
+                caption:'发票代码'
+            },{
+                name: 'sInvoiceNumber',
+                caption:'发票起始号码'
+            },{
+                name: 'eInvoiceNumber',
+                caption:'发票终止号码'
+            },{
+                name: 'empId',
+                caption:'所属员工'
             }];
     }
 };
@@ -2645,7 +2739,6 @@ app.getEditFormFields = function (name) {
                 caption: '燃气表当前址码',
                 required: true
             }];
-
     }
 };
 
@@ -3101,6 +3194,16 @@ app.getToolbarFields = function (name) {
                 name: 'event',
                 caption: '账户结算',
                 perm:'account:alter:visit'
+            }];
+        case 'assign' :
+            return [{
+                name: 'add',
+                caption: '发票录入',
+                perm:'invoice:assign:add'
+            },{
+                name: 'assignment',
+                caption: '发票分配',
+                perm:'invoice:assign:assignment'
             }];
     }
 };
