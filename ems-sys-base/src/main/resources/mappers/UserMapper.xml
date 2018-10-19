@@ -560,6 +560,9 @@
         <if test="userStatus != null and userStatus != ''">
             AND u.user_status = #{userStatus}
         </if>
+        <if test="userName != null and userName != ''">
+            AND u.user_name = #{userName}
+        </if>
     </select>
     <update id="updateUserById" parameterType="com.tdmh.entity.User">
         update user
@@ -578,5 +581,9 @@
             </if>
         </set>
         where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <update id="updateUserUsable" parameterType="int" >
+        update user  SET usable=0 where user_id = #{userId,jdbcType=INTEGER}
+
     </update>
 </mapper>

@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 账户变更实现类
@@ -122,5 +123,94 @@ public class UserChangeServiceImp implements IUserChangeService {
 
         return JsonData.fail("服务内部出错");
 
+    }
+    /**
+     * 标识。1，用户超用补缴，2.燃气公司退钱
+     * userMoney 实补金额
+     * OrderSupplement应补金额
+     */
+
+    @Override
+    @Transactional(readOnly = false)
+    public JsonData userEliminationHeadService(User user,BigDecimal userMoney,BigDecimal OrderSupplement,BigDecimal flage,Integer Id){
+
+        Integer userId =user.getUserId();
+
+        //根据id获取当前所有购气总量
+       BigDecimal PurchasingAirVolume =userChangeMapper.sumHistoryPurchasingAirVolume(userId);
+        //根据id获取表址码
+        BigDecimal HistoryTableCode= userChangeMapper.sumHistoryTableCode(userId);
+        BigDecimal amount= PurchasingAirVolume.subtract(HistoryTableCode);
+//        BigDecimal a = new BigDecimal("7.0");
+        //气量持平直接发消息到前台消户即可
+        if(amount.compareTo(BigDecimal.ZERO)==0){
+
+            //执行删除操作（添加状态为不可用）
+          int  count = UserMapper.updateUserUsable(userId);
+
+            if(count>0){
+
+                return JsonData.successMsg("无超用或补缴信息，消户成功");
+
+            }else{
+
+                return JsonData.successMsg("消户失败");
+            }
+
+        }
+        //超用数据结算，新增一笔充值记录
+        if(flage.compareTo(BigDecimal.ZERO)==1){
+
+            UserOrders orders = new UserOrders() ;
+            orders.setUserId(user.getUserId());
+            orders.setEmployeeId(Id);
+            orders.setOrderPayment(userMoney);
+            orders.setOrderGas(amount.negate());
+            orders.setOrderType(5);
+            orders.setCreateTime(new Date());
+            orders.setCreateBy(Id);
+            orders.setUpdateBy(Id);
+            orders.setUpdateTime( new Date());
+            orders.setUsable(true);
+            orders.setOrderSupplement(OrderSupplement);
+            orders.setRemarks("用户消户时超用补缴充值记录");
+           int count =  userOrdersMapper.createChangeUserOrder(orders);
+
+            //执行删除操作（添加状态为不可用）
+            int  userCleanCount = UserMapper.updateUserUsable(userId);
+            if(userCleanCount>0 && count>0){
+
+                return JsonData.successMsg("消户成功");
+
+            }else{
+
+                return JsonData.successMsg("消户失败");
+            }
+
+
+
+        }
+        if(amount.compareTo(BigDecimal.ZERO)<=0){
+            flage = new BigDecimal("1");
+            //消户时用户超用按当时阶梯气价计算对应金额
+            GasPrice gasPrice = gasPriceService.findGasPriceByType(user.getUserType() ,user.getUserGasType());
+            BigDecimal hasUsedGasNum = gasPriceService.findHasUsedGasInYear(userId);
+            if(gasPrice != null){
+                BigDecimal orderPayment = CalculateUtil.gasToPayment((amount.negate()).add(hasUsedGasNum), gasPrice);
+                BigDecimal hasOrderPayment = CalculateUtil.gasToPayment(hasUsedGasNum, gasPrice);
+
+                BigDecimal[] res={orderPayment.subtract(hasOrderPayment),orderPayment.subtract(hasOrderPayment),flage};
+                return JsonData.success(res,"超用气量(单位:方):"+amount.negate()+",超用补缴金额(单位:元):"+orderPayment.subtract(hasOrderPayment));
+            }
+        }
+        if(amount.compareTo(BigDecimal.ZERO)>=0){
+            //此处需要燃气公司退钱处理,设置标识为需要退钱处理（flage）
+            flage = new BigDecimal("2");
+        }
+        return JsonData.fail("系统内部出错，请确认该条信息并刷新，或联系管理员");
+    }
+   public  JsonData selectUserChangeListService(Integer userId){
+       List<UserChange> userChange = userChangeMapper.selectUserChangeList(userId);
+        return JsonData.successData(userChange);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 /**
  * 账户变更controller
@@ -49,5 +50,36 @@ public class UserChangeController {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
 
         return userChangeService.userChangeSettlementService(userChange,user,currentEmpId,userMoney,OrderSupplement);
+    }
+    /**
+     * 账户销户处理
+     */
+    @RequiresPermissions("account:alter:update")
+    @RequestMapping(value = "/userEliminationHead.do")
+    @ResponseBody
+    public JsonData userEliminationHead(User user,BigDecimal userMoney,BigDecimal OrderSupplement, BigDecimal flage){
+        Integer Id = ShiroUtils.getPrincipal().getId();
+
+        return user==null?JsonData.fail("未获取到该条数据先关信息，请检查数据或联系管理员"):userChangeService.userEliminationHeadService(user,userMoney,OrderSupplement,flage,Id);
+    }
+    /**
+     * 查询产生变更记录表List
+     * @return
+     */
+    @RequiresPermissions("account:alter:visit")
+    @RequestMapping(value = "/userChangeList.do")
+    @ResponseBody
+    public JsonData selectUserChangeListController(@Param("userId") Integer userId){
+        return userId==null? JsonData.fail("未获取到相关记录"):userChangeService.selectUserChangeListService(userId);
+    }
+    /**
+     * 显示已开户的用户相关信息（筛选查询）
+     * @return
+     */
+    @RequiresPermissions("account:alter:visit")
+    @RequestMapping(value = "/search.do")
+    @ResponseBody
+    public JsonData userSearchController(User user) {
+        return userService.userChangeService(user);
     }
 }
