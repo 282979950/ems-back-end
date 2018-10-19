@@ -1,5 +1,6 @@
 package com.tdmh.param;
 
+import com.tdmh.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
  */
 @Getter
 @Setter
-public class PrePaymentParam {
+public class PrePaymentParam extends BaseEntity {
 
     /**
      * 用户编号

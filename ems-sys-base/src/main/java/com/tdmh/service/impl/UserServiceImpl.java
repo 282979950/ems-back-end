@@ -201,6 +201,10 @@ public class UserServiceImpl implements IUserService {
     @Transactional
     public JsonData createAccount(CreateAccountParam param) {
         BeanValidator.check(param);
+        int count = userCardMapper.getUserCardByUserIdAndnIcCardIdentifier(null,param.getIccardIdentifier());
+        if(count>0){
+            return JsonData.fail("该卡已绑定其他用户");
+        }
         Integer iccardId = Integer.valueOf(param.getUserId().toString().substring(2))+10000000;
         param.setIccardId(iccardId);
         // TODO: 2018/8/9 从接口中读取IC卡识别号
@@ -367,18 +371,20 @@ public class UserServiceImpl implements IUserService {
         UserCard card=new UserCard();
 
         if(StringUtils.isBlank(result)){
-            return  JsonData.fail("未获取到初始化结果");
+            return JsonData.fail("未获取到初始化结果");
 
         }
         if( cardId ==null || cardId.intValue()==0){
-
-            JsonData.fail("未获取到卡号码");
+            return JsonData.fail("未获取到卡号码");
         }else{
             card.setCardId(cardId);
             card.setCardInitialization(false);
+            int resultCount = userCardMapper.initCardPwdBycardId(card);
+            if (resultCount == 0) {
+                return JsonData.fail("初始化卡片密码失败");
+            }
+            return JsonData.successMsg("初始化IC卡成功");
         }
-        userCardMapper.initCardPwdBycardId(card);
-        return null;
     }
 
     @Override

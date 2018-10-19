@@ -593,6 +593,9 @@
                     case 'picture_in_picture_alt' :
                         $field.trigger('pictureinpicturealt');
                         break;
+                    case 'local_gas_station' :
+                        $field.trigger('fillGas');
+                        break;
                     case 'event' :
                         $field.trigger('event');
                         break;
@@ -1108,7 +1111,7 @@
      * @constructor
      * @return {string}
      */
-    app.WritePCard = function (icCardId, icCardPsw, gas, fc, sum,busisn) {
+    app.WritePCard = function (icCardId, icCardPsw, gas, fc, sum, busisn) {
         var ocx = $('.rw-comp')[0];
         var result = ocx.WritePCard(0, 200, icCardId, icCardPsw, gas * 10, fc, sum,busisn);
         return result === 'S' ? '写卡成功' : ('写卡失败' + ocx.ErrorDesc);

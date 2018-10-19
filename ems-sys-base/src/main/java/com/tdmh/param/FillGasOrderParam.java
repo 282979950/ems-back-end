@@ -91,7 +91,7 @@ public class FillGasOrderParam extends BaseEntity {
     /**
      * 订单状态
      */
-    private Boolean fillGasOrderStatus;
+    private Integer fillGasOrderStatus;
 
     /**
      * 订单状态名称
@@ -100,7 +100,7 @@ public class FillGasOrderParam extends BaseEntity {
 
     public FillGasOrderParam(Integer id, Integer userId, String userName, String userPhone, String userAddress, String repairOrderId, BigDecimal gasCount,
                              BigDecimal stopCodeCount, BigDecimal needFillGas, BigDecimal fillGas, BigDecimal leftGas, BigDecimal needFillMoney,
-                             BigDecimal fillMoney, BigDecimal leftMoney, Boolean fillGasOrderStatus, String fillGasOrderStatusName, Date createTime,
+                             BigDecimal fillMoney, BigDecimal leftMoney, Integer fillGasOrderStatus, String fillGasOrderStatusName, Date createTime,
                              Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.id = id;
@@ -108,6 +108,7 @@ public class FillGasOrderParam extends BaseEntity {
         this.userName = userName;
         this.userPhone = userPhone;
         this.userAddress = userAddress;
+        this.repairOrderId = repairOrderId;
         this.gasCount = gasCount;
         this.stopCodeCount = stopCodeCount;
         this.needFillGas = needFillGas;

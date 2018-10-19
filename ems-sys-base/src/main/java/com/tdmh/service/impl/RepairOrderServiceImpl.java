@@ -43,8 +43,6 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     @Autowired
     private IFillGasService fillGasService;
 
-    private static BigDecimal MAX_METER_GAS = new BigDecimal(900);
-
     @Override
     public JsonData listData() {
         List<RepairOrderParam> orderParams = repairOrderMapper.listData();
@@ -214,17 +212,8 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 fillGasOrder.setUserId(userId);
                 fillGasOrder.setRepairOrderId(repairOrderId);
                 BigDecimal needFillGas = sumOrderGas.subtract(sumMeterStopCode);
-                //应补气量大于900
-                if (needFillGas.compareTo(MAX_METER_GAS) > 0) {
-                    fillGasOrder.setNeedFillGas(needFillGas);
-                    fillGasOrder.setFillGas(MAX_METER_GAS);
-                    fillGasOrder.setLeftGas(needFillGas.subtract(MAX_METER_GAS));
-                } else {
-                    fillGasOrder.setNeedFillGas(needFillGas);
-                    fillGasOrder.setFillGas(needFillGas);
-                    fillGasOrder.setLeftGas(BigDecimal.ZERO);
-                }
-                fillGasOrder.setFillGasOrderStatus(false);
+                fillGasService.setFillGasOrderProps(fillGasOrder, needFillGas);
+                fillGasOrder.setFillGasOrderStatus(0);
                 fillGasService.createFillGasOrder(fillGasOrder);
                 return 1;
             case -1:
