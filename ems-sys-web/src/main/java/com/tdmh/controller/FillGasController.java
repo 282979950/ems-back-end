@@ -3,6 +3,7 @@ package com.tdmh.controller;
 import com.tdmh.common.JsonData;
 import com.tdmh.param.FillGasOrderParam;
 import com.tdmh.service.IFillGasService;
+import com.tdmh.util.ShiroUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,8 @@ public class FillGasController {
     @RequestMapping(value = "edit.do")
     @ResponseBody
     public JsonData editFillGasOrder(FillGasOrderParam param) {
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        param.setUpdateBy(currentEmpId);
         return fillGasService.editFillGasOrder(param);
     }
 
@@ -41,5 +44,17 @@ public class FillGasController {
     @ResponseBody
     public JsonData searchFillGasOrder(@Param("userId") Integer userId) {
         return fillGasService.searchFillGasOrder(userId);
+    }
+
+    @RequestMapping(value = "getFlowNum.do")
+    @ResponseBody
+    public JsonData getFlowNum() {
+        return fillGasService.getFlowNum();
+    }
+
+    @RequestMapping(value = "getServiceTimesByUserId.do")
+    @ResponseBody
+    public JsonData getServiceTimesByUserId(Integer userId) {
+        return fillGasService.getServiceTimesByUserId(userId);
     }
 }
