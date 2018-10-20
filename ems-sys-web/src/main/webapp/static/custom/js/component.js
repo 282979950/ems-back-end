@@ -599,6 +599,12 @@
                     case 'event' :
                         $field.trigger('event');
                         break;
+                    case 'add_to_queue':
+                        $field.trigger('add_to_queue');
+                        break;
+                    case 'mail_outline':
+                        $field.trigger('mail_outline');
+                        break;
                     default:
                         break;
                 }

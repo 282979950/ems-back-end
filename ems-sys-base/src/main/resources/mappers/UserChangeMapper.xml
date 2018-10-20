@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tdmh.entity.mapper.UserChangeMapper">
+    <resultMap id="BaseResultMap" type="com.tdmh.entity.UserChange">
+        <constructor>
+            <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_change_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_change_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_change_idcard" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_change_deed" jdbcType="VARCHAR" javaType="java.lang.String"/>
+
+            <arg column="user_old_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_old_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_old_idcard" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_old_deed" jdbcType="VARCHAR" javaType="java.lang.String"/>
+
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+       id,user_id,user_change_name,user_change_phone,
+       user_change_idcard,user_change_deed,user_old_name,
+       user_old_phone,user_old_idcard,user_old_deed
+    </sql>
 
     <select id="sumHistoryPurchasingAirVolume" resultType="java.math.BigDecimal" parameterType="Integer">
         SELECT  SUM(order_gas) FROM user_orders WHERE user_id =#{userId} AND usable=1
@@ -52,4 +73,15 @@
 
        )
 </insert>
+<select id="selectUserChangeList" resultMap="BaseResultMap" parameterType="Integer">
+
+  SELECT
+    <include refid="Base_Column_List"/>
+  FROM
+       user_change
+ WHERE
+       user_id =#{userId}
+
+
+</select>
 </mapper>

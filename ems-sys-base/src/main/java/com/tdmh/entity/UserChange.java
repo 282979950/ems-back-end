@@ -1,15 +1,20 @@
 package com.tdmh.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author qh on 2018/10/16.
  */
 @Getter
 @Setter
+
 public class UserChange extends BaseEntity {
 
     /**
@@ -58,4 +63,16 @@ public class UserChange extends BaseEntity {
      */
     private BigDecimal tableCode;
 
+    public UserChange(String id, Integer userId, String userChangeName, String userChangePhone, String userChangeIdcard, String userChangeDeed, String userOldName, String userOldPhone, String userOldIdcard, String userOldDeed) {
+        this.id = id;
+        this.userId = userId;
+        this.userChangeName = userChangeName;
+        this.userChangePhone = userChangePhone;
+        this.userChangeIdcard = userChangeIdcard;
+        this.userChangeDeed = userChangeDeed;
+        this.userOldName = userOldName;
+        this.userOldPhone = userOldPhone;
+        this.userOldIdcard = userOldIdcard;
+        this.userOldDeed = userOldDeed;
+    }
 }
