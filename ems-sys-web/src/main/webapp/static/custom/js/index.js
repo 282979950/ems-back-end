@@ -959,7 +959,7 @@ app.initEvent = function () {
                 },
                 success: function (editFillGasOrderResponse) {
                     if (editFillGasOrderResponse.status) {
-                        app.successMessage('处理补气单成功');
+                        app.successMessage(formData.fillGasOrderType === 1 ? '处理补气单成功' : '处理补缴单成功');
                         // app.setDataCache(url, null);
                         app.render({
                             url: app.currentPageName + '/listData.do'
@@ -990,56 +990,66 @@ app.initEvent = function () {
                     if (formData.fillGasOrderStatus) {
                         app.message("该补气单已被处理过");
                     } else {
-                        var result = app.ReadCard();
-                        if(result[0] === 'S') {
-                            $.ajax({
-                                type: 'POST',
-                                url: 'account/redCard.do',
-                                contentType: 'application/x-www-form-urlencoded',
-                                data:{
-                                    cardId:result[3]
-                                } ,
-                                beforeSend: function (xhr) {
-                                    xhr.withCredentials = true;
-                                },
-                                success: function (readCardResponse) {
-                                    if(readCardResponse.status){
-                                        var password = readCardResponse.data.cardPassword;
-                                        var serviceTimes = app.getServiceTimesByUserId(userId);
-                                        var flowNum = app.getFlowNum();
-                                        var isFirstOrder = formData.needFillGas === (formData.gasCount - formData.stopCodeCount);
-                                        if (isFirstOrder) {
-                                            // 初始化IC卡
-                                            var initResult = app.initCard(password);
-                                            if (initResult === 'S') {
-                                                // 获取流水号 获取维修次数
-                                                var writePCardResult = app.WritePCard(result[3], password, formData.fillGas, serviceTimes + 1, formData.fillGas, flowNum);
-                                                if (writePCardResult === '写卡成功') {
-                                                    // 更新订单状态，生成新订单，
-                                                    editFillGasOrder(formData);
+                        switch (formData.fillGasOrderType) {
+                            case 1:
+                                // 补气流程
+                                var result = app.ReadCard();
+                                if(result[0] === 'S') {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'account/redCard.do',
+                                        contentType: 'application/x-www-form-urlencoded',
+                                        data:{
+                                            cardId:result[3]
+                                        } ,
+                                        beforeSend: function (xhr) {
+                                            xhr.withCredentials = true;
+                                        },
+                                        success: function (readCardResponse) {
+                                            if(readCardResponse.status){
+                                                var password = readCardResponse.data.cardPassword;
+                                                var serviceTimes = app.getServiceTimesByUserId(userId);
+                                                var flowNum = app.getFlowNum();
+                                                var isFirstOrder = formData.needFillGas === (formData.gasCount - formData.stopCodeCount);
+                                                if (isFirstOrder) {
+                                                    // 初始化IC卡
+                                                    var initResult = app.initCard(password);
+                                                    if (initResult === 'S') {
+                                                        // 获取流水号 获取维修次数
+                                                        var writePCardResult = app.WritePCard(result[3], password, formData.fillGas, serviceTimes + 1, formData.fillGas, flowNum);
+                                                        if (writePCardResult === '写卡成功') {
+                                                            // 更新订单状态，生成新订单，
+                                                            editFillGasOrder(formData);
+                                                        } else {
+                                                            app.errorMessage(writePCardResult);
+                                                        }
+                                                    } else {
+                                                        app.errorMessage("初始化失败");
+                                                    }
                                                 } else {
-                                                    app.errorMessage(writePCardResult);
+                                                    //写一般充值卡
+                                                    var writeUCardResult = app.WriteUCard(result[3], password, formData.fillGas, serviceTimes, flowNum);
+                                                    if (writeUCardResult === '写卡成功') {
+                                                        editFillGasOrder(formData);
+                                                    } else {
+                                                        app.errorMessage(writeUCardResult);
+                                                    }
                                                 }
-                                            } else {
-                                                app.errorMessage("初始化失败");
-                                            }
-                                        } else {
-                                            //写一般充值卡
-                                            var writeUCardResult = app.WriteUCard(result[3], password, formData.fillGas, serviceTimes, flowNum);
-                                            if (writeUCardResult === '写卡成功') {
-                                                editFillGasOrder(formData);
-                                            } else {
-                                                app.errorMessage(writeUCardResult);
+                                            }else{
+                                                app.errorMessage(readCardResponse.message);
                                             }
                                         }
-                                    }else{
-                                        app.errorMessage(response.message);
-                                    }
+                                    });
+                                } else {
+                                    app.errorMessage(result);
                                 }
-                            });
-                        } else {
-                            app.errorMessage(result);
-                            return;
+                                break;
+                            case 2:
+                                // 补缴流程
+                                editFillGasOrder(formData);
+                                break;
+                            default:
+                                break;
                         }
                     }
                     app.fillGasForm = null;
@@ -1495,6 +1505,9 @@ app.tableFields = {
         name: 'userId',
         caption: '户号'
     }, {
+        name: 'fillGasOrderTypeName',
+        caption: '订单类型'
+    },{
         name: 'userName',
         caption: '用户名称'
     }, {

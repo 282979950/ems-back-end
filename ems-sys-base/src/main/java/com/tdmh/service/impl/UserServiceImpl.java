@@ -272,10 +272,12 @@ public class UserServiceImpl implements IUserService {
         return userMapper.getAllCount();
     }
 
+
     /**
      *
      */
-    private User getUserById(Integer userId) {
+    @Override
+    public User getUserById(Integer userId) {
         return userMapper.getUserById(userId);
     }
 

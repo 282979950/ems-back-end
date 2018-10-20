@@ -2,7 +2,6 @@ package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.User;
-import com.tdmh.entity.UserChange;
 import com.tdmh.param.CreateAccountParam;
 import com.tdmh.param.CreateArchiveParam;
 import com.tdmh.param.InstallMeterParam;
@@ -105,15 +104,24 @@ public interface IUserService {
      */
     JsonData createAccount(CreateAccountParam param);
 
+    /**
+     * 依据用户ID获取用户
+     *
+     * @param userId
+     * @return
+     */
+    User getUserById(Integer userId);
 
     /**
      * 查询所有未开户的信息
+     *
      * @return
      */
     JsonData getAllNotAccountArchive();
 
     /**
      * 条件查询已开户的信息
+     *
      * @param userId
      * @param userDistId
      * @param userAddress
@@ -125,12 +133,14 @@ public interface IUserService {
 
     /**
      * 查询所有可以锁定和解锁的用户信息
+     *
      * @return
      */
     JsonData getAllAccountArchive();
 
     /**
      * 条件查询所有可以锁定和解锁的用户信息
+     *
      * @param userId
      * @param userName
      * @param iccardId
@@ -140,29 +150,31 @@ public interface IUserService {
 
     /**
      * 锁定/解锁用户
+     *
      * @return
      */
     JsonData updateLockStatus(LockAccountParam param);
 
     /**
      * 根据用户查询锁定记录
+     *
      * @param userId
      */
     JsonData searchLockList(Integer userId);
+
     /**
      * 获取需要初始化的相关数据相关数据
-     *
-     *
-     *
      */
-    JsonData cardService( Integer cardId);
+    JsonData cardService(Integer cardId);
+
     /**
-     初始化卡
+     * 初始化卡
      */
-    JsonData cardInitService( Integer cardId,String result);
+    JsonData cardInitService(Integer cardId, String result);
 
     /**
      * 根据户号查询已开户的信息
+     *
      * @param userId
      * @return
      */
@@ -175,11 +187,11 @@ public interface IUserService {
      * @return
      */
     int updateFillStatus(Integer userId, Boolean status);
-    /**
-     *查询所有已开户相关用户信息
-     */
-    JsonData userChangeService( User user);
 
+    /**
+     * 查询所有已开户相关用户信息
+     */
+    JsonData userChangeService(User user);
 
 
 }
