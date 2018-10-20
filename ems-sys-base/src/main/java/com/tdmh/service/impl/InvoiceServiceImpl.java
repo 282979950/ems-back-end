@@ -4,9 +4,12 @@ import com.google.common.collect.Lists;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.Invoice;
 import com.tdmh.entity.mapper.InvoiceMapper;
+import com.tdmh.entity.mapper.OrderMapper;
 import com.tdmh.exception.ParameterException;
+import com.tdmh.param.InvoiceParam;
 import com.tdmh.service.IInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +24,18 @@ public class InvoiceServiceImpl implements IInvoiceService {
     @Autowired
     private InvoiceMapper invoiceMapper;
 
+    @Autowired
+    private OrderMapper orderMapper;
+
     @Override
     public JsonData getAllAssignInvoiceList() {
-        List<Invoice> list = invoiceMapper.getAllAssignInvoiceList();
+        List<Invoice> list = invoiceMapper.getAllAssignInvoiceList(null,null);
+        return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
+    }
+
+    @Override
+    public JsonData searchAssignInvoiceList(String invoiceCode, String invoiceNumber) {
+        List<Invoice> list = invoiceMapper.getAllAssignInvoiceList(invoiceCode, invoiceNumber);
         return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
     }
 
@@ -89,7 +101,41 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Override
     public JsonData getAllPrintCancelInvoiceList() {
-        List<Invoice> list = invoiceMapper.getAllPrintCancelInvoiceList();
+        List<Invoice> list = invoiceMapper.getAllPrintCancelInvoiceList(null,null,null);
         return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
     }
+
+    @Override
+    public JsonData searchPrintCancelInvoiceList(String invoiceCode,String invoiceNumber,Integer empId){
+        List<Invoice> list = invoiceMapper.getAllPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId);
+        return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
+    }
+
+    @Override
+    public JsonData findInvoice(Integer orderId, Integer currentEmpId) {
+        Invoice invoice = invoiceMapper.findInvoice(currentEmpId);
+        if(invoice == null){
+            return JsonData.fail("暂无可用发票");
+        }
+        InvoiceParam invoiceParam = orderMapper.findOrderById(orderId);
+        if(invoiceParam == null){
+            return JsonData.fail("订单有误");
+        }
+        invoiceParam.setInvoiceCode(invoice.getInvoiceCode());
+        invoiceParam.setInvoiceNumber(invoice.getInvoiceNumber());
+        return JsonData.successData(invoiceParam);
+    }
+
+    @Override
+    public JsonData printInvoice(Integer orderId, String invoiceCode, String invoiceNumber, Integer currentEmpId) {
+        int count = invoiceMapper.printInvoice(orderId, invoiceCode, invoiceNumber, currentEmpId);
+        if(count>0){
+            return JsonData.successMsg("打印成功");
+        }
+        return JsonData.fail("打印失败");
+    }
+
+
+
+
 }

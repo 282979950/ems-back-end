@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.OrderMapper">
+    <select id="searchOrderAndInvoiceList" parameterType="map" resultType="com.tdmh.param.OrderParam">
+        SELECT uo.order_id as orderId, u.user_name as userName, uc.card_id as iccardId, uc.card_identifier as iccardIdentifier,
+        uo.order_gas as orderGas,uo.order_payment as orderPayment,uo.flow_number as flowNumber,
+        e.emp_name as orderCreateEmpName,uo.create_time as orderCreateTime, sd.dict_key as invoiceStatusName,
+        i.invoice_code as invoiceCode, i.invoice_number as invoiceNumber,
+        e1.emp_name as invoicePrintEmpName, i.invoice_print_time as invoicePrintTime,
+        e2.emp_name as invoiceCancelEmpName, i.invoice_cancel_time as invoiceCancelTime
+        FROM user_orders uo
+        JOIN `user` u ON uo.user_id = u.user_id
+        join user_card uc on u.user_id = uc.user_id and uc.usable = 1
+        LEFT JOIN invoice i ON uo.order_id = i.order_id
+        left join employee e on uo.create_by = e.emp_id
+        left join sys_dictionary sd on i.invoice_status = sd.dict_value and sd.dict_category = 'invoice_status'
+        LEFT JOIN employee e1 ON i.invoice_print_emp = e1.emp_id
+        left join employee e2 on i.invoice_cancel_emp = e2.emp_id
+        where uo.usable=1
+        <if test="userName!=null and userName!=''">
+            and u.user_name like CONCAT('%', #{userName}, '%')
+        </if>
+        <if test="iccardId!=null and iccardId!=''">
+            and uc.card_id like CONCAT('%', #{iccardId}, '%')
+        </if>
+        <if test="iccardIdentifier!=null and iccardIdentifier!=''">
+            and uc.card_identifier like CONCAT('%', #{iccardIdentifier}, '%')
+        </if>
+        <if test="invoiceCode!=null and invoiceCode!=''">
+            and i.invoice_code like CONCAT('%', #{invoiceCode}, '%')
+        </if>
+        <if test="invoiceNumber!=null and invoiceNumber!=''">
+            and i.invoice_number like CONCAT('%', #{invoiceNumber}, '%')
+        </if>
+    </select>
+    <select id="findOrderById" parameterType="int" resultType="com.tdmh.param.InvoiceParam">
+        select u.user_name as userName , uo.order_gas as orderGas, uo.order_payment as orderPayment
+        from user_orders uo join user u on uo.user_id = u.user_id
+        where uo.order_id = #{orderId}
+    </select>
+
+</mapper>

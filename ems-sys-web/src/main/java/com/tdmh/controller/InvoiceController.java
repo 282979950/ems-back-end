@@ -4,6 +4,7 @@ import com.tdmh.common.JsonData;
 import com.tdmh.service.IInvoiceService;
 import com.tdmh.util.ShiroUtils;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,16 +18,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class InvoiceController {
 
     @Autowired
-    private IInvoiceService iInvoiceService;
+    private IInvoiceService invoiceService;
 
     /**
-     * 查询分配的发票编号
+     * 查询所有的分配的发票编号
      * @return
      */
+    @RequiresPermissions("invoice:assign:visit")
     @RequestMapping("/assign/listData.do")
     @ResponseBody
     public JsonData getAllAssignInvoiceList(){
-        return iInvoiceService.getAllAssignInvoiceList();
+        return invoiceService.getAllAssignInvoiceList();
+    }
+
+    /**
+     * 查询特定的发票
+     * @return
+     */
+    @RequiresPermissions("invoice:assign:retrieve")
+    @RequestMapping("/assign/search.do")
+    @ResponseBody
+    public JsonData searchAssignInvoiceList(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
+        return invoiceService.searchAssignInvoiceList(invoiceCode, invoiceNumber);
     }
 
     /**
@@ -36,28 +49,69 @@ public class InvoiceController {
      * @param eInvoiceNumber
      * @return
      */
+    @RequiresPermissions("invoice:assign:add")
     @RequestMapping("/assign/add.do")
     @ResponseBody
     public JsonData addInvoice(@Param("invoiceCode") String invoiceCode, @Param("sInvoiceNumber") Integer sInvoiceNumber,@Param("eInvoiceNumber") Integer eInvoiceNumber){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return iInvoiceService.addInvoice(invoiceCode,sInvoiceNumber,eInvoiceNumber,currentEmpId);
+        return invoiceService.addInvoice(invoiceCode,sInvoiceNumber,eInvoiceNumber,currentEmpId);
     }
 
+    @RequiresPermissions("invoice:assign:assignment")
     @RequestMapping("/assign/assignment.do")
     @ResponseBody
     public JsonData assignInvoice(@Param("invoiceCode") String invoiceCode, @Param("sInvoiceNumber") Integer sInvoiceNumber,@Param("eInvoiceNumber") Integer eInvoiceNumber,@Param("empId") Integer empId){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return iInvoiceService.assignInvoice(invoiceCode,sInvoiceNumber,eInvoiceNumber,empId,currentEmpId);
+        return invoiceService.assignInvoice(invoiceCode,sInvoiceNumber,eInvoiceNumber,empId,currentEmpId);
     }
 
     /**
      * 查询已分配后的发票编号
      * @return
      */
+    @RequiresPermissions("invoice:printCancel:visit")
     @RequestMapping("/printCancel/listData.do")
     @ResponseBody
     public JsonData getAllPrintCancelInvoiceList(){
-        return iInvoiceService.getAllPrintCancelInvoiceList();
+        return invoiceService.getAllPrintCancelInvoiceList();
+    }
+
+    /**
+     * 查询特定的已分配的发票
+     * @return
+     */
+    @RequiresPermissions("invoice:printCancel:retrieve")
+    @RequestMapping("/printCancel/search.do")
+    @ResponseBody
+    public JsonData searchPrintCancelInvoiceList(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber,@Param("empId") Integer empId){
+        return invoiceService.searchPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId);
+    }
+
+    /**
+     * 查出打印数据
+     * @param orderId
+     * @return
+     */
+    @RequestMapping("/findInvoice.do")
+    @ResponseBody
+    public JsonData findInvoice(@Param("orderId") Integer orderId){
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return invoiceService.findInvoice(orderId, currentEmpId);
+    }
+
+    /**
+     * 改变发票状态
+     * @param orderId
+     * @param invoiceCode
+     * @param invoiceNumber
+     * @return
+     */
+    @RequiresPermissions("recharge:order:print")
+    @RequestMapping("/print.do")
+    @ResponseBody
+    public JsonData printInvoice(@Param("orderId") Integer orderId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return invoiceService.printInvoice(orderId, invoiceCode, invoiceNumber, currentEmpId);
     }
 
 }

@@ -45,8 +45,9 @@ app.getPanelContent = function (name) {
          */
         case 'prePayment':
         case 'replaceCard':
-            panelContent = this.DEFAULT_TEMPLATE;
         case 'postPayment':
+        case 'order':
+            panelContent = this.DEFAULT_TEMPLATE;
             break;
         case 'assign':
         case 'printCancel':
@@ -523,7 +524,7 @@ app.initEvent = function () {
     var formNames = app.currentPageName;
     var main = $('.container-main');
     var table = app.table;
-    if(formNames!="initCard"){
+    if(formNames!="initCard" || formNames!="order"){
         var fields = table.getFields();
     }
     main.on('add', function () {
@@ -1631,6 +1632,55 @@ app.tableFields = {
     },{
         name: 'invoiceCancelTime',
         caption: '发票报废时间'
+    }],
+    order : [{
+        name: 'orderId',
+        caption: '订单编号'
+    },{
+        name: 'userName',
+        caption: '用户名'
+    },{
+        name: 'iccardId',
+        caption: 'IC卡卡号'
+    },{
+        name: 'iccardIdentifier',
+        caption: 'IC卡识别号'
+    },{
+        name: 'orderGas',
+        caption: '购气量'
+    },{
+        name: 'orderPayment',
+        caption: '购气金额'
+    },{
+        name: 'flowNumber',
+        caption: '流水号'
+    },{
+        name: 'orderCreateEmpName',
+        caption: '订单生成员工'
+    },{
+        name: 'orderCreateTime',
+        caption: '订单生成时间'
+    },{
+        name: 'invoiceCode',
+        caption: '发票代码'
+    },{
+        name: 'invoiceNumber',
+        caption: '发票号码'
+    },{
+        name: 'invoiceStatusName',
+        caption: '发票状态'
+    },{
+        name: 'invoicePrintEmpName',
+        caption: '打印发票员工'
+    },{
+        name: 'invoicePrintTime',
+        caption: '发票打印时间'
+    },{
+        name: 'invoiceCancelEmpName',
+        caption: '发票报废员工'
+    },{
+        name: 'invoiceCancelTime',
+        caption: '发票报废时间'
     }]
 };
 /*
@@ -2141,7 +2191,9 @@ app.getAddFormFields = function (name) {
                 caption:'发票终止号码'
             },{
                 name: 'empId',
-                caption:'所属员工'
+                caption:'所属员工',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('emp/listData.do', 'empName', 'empId')
             }];
     }
 };
@@ -3412,6 +3464,63 @@ app.getToolbarFields = function (name) {
                 name: 'assignment',
                 caption: '发票分配',
                 perm:'invoice:assign:assignment'
+            }, {
+                name: 'invoiceCode',
+                caption: '发票代码',
+                type: 'input'
+            }, {
+                name: 'invoiceNumber',
+                caption: '发票号码',
+                type: 'input'
+            }];
+        case 'printCancel' :
+            return [{
+                name: 'invoiceCode',
+                caption: '发票代码',
+                type: 'input'
+            }, {
+                name: 'invoiceNumber',
+                caption: '发票号码',
+                type: 'input'
+            }, {
+                name: 'empId',
+                caption: '所属员工',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('emp/listData.do', 'empName', 'empId')
+            }];
+        case 'order' :
+            return [{
+                name: 'record_voice_over',
+                caption: '识别IC卡',
+                perm:'recharge:order:record'
+            },{
+                name: 'print',
+                caption: '发票打印',
+                perm:'recharge:order:print'
+            },{
+                name: 'cancel',
+                caption: '发票报废',
+                perm:'recharge:order:cancel'
+            }, {
+                name: 'userName',
+                caption: '用户编号',
+                type: 'input'
+            }, {
+                name: 'iccardId',
+                caption: 'IC卡编号',
+                type: 'input'
+            }, {
+                name: 'iccardIdentifier',
+                caption: 'IC卡识别号',
+                type: 'input'
+            }, {
+                name: 'invoiceCode',
+                caption: '发票代码',
+                type: 'input'
+            }, {
+                name: 'invoiceNumber',
+                caption: '发票号码',
+                type: 'input'
             }];
     }
 };

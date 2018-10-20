@@ -145,6 +145,9 @@
                 <shiro:hasPermission name="recharge:suff:visit">
                 <div class="mdui-list-item mdui-ripple nav-item postPayment">后付费充值</div>
                 </shiro:hasPermission>
+                <shiro:hasPermission name="recharge:order:visit">
+                    <div class="mdui-list-item mdui-ripple nav-item order">订单管理</div>
+                </shiro:hasPermission>
             </div>
         </div>
         </shiro:hasPermission>
@@ -160,7 +163,7 @@
                         <div class="mdui-list-item mdui-ripple nav-item assign">发票分配</div>
                     </shiro:hasPermission>
                     <shiro:hasPermission name="invoice:printCancel:visit">
-                        <div class="mdui-list-item mdui-ripple nav-item printCancel">发票打印及作废</div>
+                        <div class="mdui-list-item mdui-ripple nav-item printCancel">发票查询</div>
                     </shiro:hasPermission>
                     <shiro:hasPermission name="invoice:einvoice:visit">
                         <div class="mdui-list-item mdui-ripple nav-item eInvoice">电子发票管理</div>
