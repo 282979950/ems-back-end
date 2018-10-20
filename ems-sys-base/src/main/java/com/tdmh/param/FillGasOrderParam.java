@@ -23,6 +23,17 @@ public class FillGasOrderParam extends BaseEntity {
     private Integer id;
 
     /**
+     * 订单类型
+     */
+    @NotNull
+    private Integer fillGasOrderType;
+
+    /**
+     * 订单类型名称
+     */
+    private String fillGasOrderTypeName;
+
+    /**
      * 用户ID
      */
     @NotNull
@@ -98,12 +109,15 @@ public class FillGasOrderParam extends BaseEntity {
      */
     private String fillGasOrderStatusName;
 
-    public FillGasOrderParam(Integer id, Integer userId, String userName, String userPhone, String userAddress, String repairOrderId, BigDecimal gasCount,
-                             BigDecimal stopCodeCount, BigDecimal needFillGas, BigDecimal fillGas, BigDecimal leftGas, BigDecimal needFillMoney,
-                             BigDecimal fillMoney, BigDecimal leftMoney, Integer fillGasOrderStatus, String fillGasOrderStatusName, Date createTime,
-                             Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+    public FillGasOrderParam(Integer id, Integer fillGasOrderType,String fillGasOrderTypeName, Integer userId, String userName, String userPhone,
+                             String userAddress, String repairOrderId, BigDecimal gasCount, BigDecimal stopCodeCount, BigDecimal needFillGas,
+                             BigDecimal fillGas, BigDecimal leftGas, BigDecimal needFillMoney, BigDecimal fillMoney, BigDecimal leftMoney,
+                             Integer fillGasOrderStatus, String fillGasOrderStatusName, Date createTime, Integer createBy, Date updateTime, Integer updateBy,
+                             Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.id = id;
+        this.fillGasOrderType = fillGasOrderType;
+        this.fillGasOrderTypeName = fillGasOrderTypeName;
         this.userId = userId;
         this.userName = userName;
         this.userPhone = userPhone;

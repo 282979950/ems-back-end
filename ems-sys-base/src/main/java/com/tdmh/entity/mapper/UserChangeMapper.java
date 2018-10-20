@@ -21,5 +21,7 @@ public interface UserChangeMapper {
     BigDecimal sumHistoryPurchasingAirVolume(Integer userId);
     BigDecimal sumHistoryTableCode(Integer userId);
     int insert(UserChange userChange);
+    List<UserChange> selectUserChangeList(Integer userId);
+
 
 }

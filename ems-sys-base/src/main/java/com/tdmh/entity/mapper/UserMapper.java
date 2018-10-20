@@ -67,4 +67,5 @@ public interface UserMapper {
     int getServiceTimesByUserId(Integer userId);
 
     int updateFillStatus(@Param("userId")Integer userId, @Param("status")Boolean status);
+    int updateUserUsable(@Param("userId")Integer userId);
 }

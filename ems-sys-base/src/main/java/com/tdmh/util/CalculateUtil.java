@@ -26,4 +26,12 @@ public class CalculateUtil {
         }
         return sum;
     }
+    //燃气公司需要退钱剩余部分通用类
+    public static BigDecimal gasSurplusToPayment(BigDecimal gas, GasPrice gasPrice) {
+        BigDecimal sum = new BigDecimal(0);
+        if ( (gas.compareTo(gasPrice.getGasRangeOne()) >= 0 ) ){
+            sum = gas.multiply(gasPrice.getGasPriceOne());
+        }
+        return sum;
+    }
 }

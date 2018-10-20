@@ -4,6 +4,8 @@
     <resultMap id="FillGasOrderParam" type="com.tdmh.param.FillGasOrderParam">
         <constructor>
             <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <idArg column="fill_gas_order_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="fill_gas_order_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
@@ -29,11 +31,11 @@
     </resultMap>
     <insert id="createFillGasOrder" parameterType="com.tdmh.param.FillGasOrderParam">
         insert into fill_gas_order(
-        user_id, repair_order_id, need_fill_gas, fill_gas, left_gas, need_fill_money, fill_money, left_money, fill_gas_order_status,
+        user_id, fill_gas_order_type, repair_order_id, need_fill_gas, fill_gas, left_gas, need_fill_money, fill_money, left_money, fill_gas_order_status,
         create_time, create_by, update_time, update_by, remarks
         )
-        values(#{userId}, #{repairOrderId}, #{needFillGas}, #{fillGas}, #{leftGas}, #{needFillMoney}, #{fillMoney}, #{leftMoney}, #{fillGasOrderStatus},
-        NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks}
+        values(#{userId}, #{fillGasOrderType}, #{repairOrderId}, #{needFillGas}, #{fillGas}, #{leftGas}, #{needFillMoney}, #{fillMoney}, #{leftMoney},
+        #{fillGasOrderStatus}, NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks}
         )
     </insert>
     <update id="editFillGasOrder">
@@ -46,7 +48,7 @@
     </update>
     <select id="listData" resultMap="FillGasOrderParam">
         SELECT
-        fgo.id, fgo.user_id, u.user_name, u.user_phone, u.user_address, fgo.repair_order_id,
+        fgo.id, fgo.fill_gas_order_type,sd2.dict_key as fill_gas_order_type_name, fgo.user_id, u.user_name, u.user_phone, u.user_address, fgo.repair_order_id,
         (SELECT
         SUM(order_gas)
         from
@@ -65,6 +67,7 @@
         fill_gas_order fgo
         LEFT JOIN `user` u on fgo.user_id = u.user_id and u.usable = 1
         LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd2 on fgo.fill_gas_order_type = sd2.dict_value and sd2.dict_category = 'fill_gas_order_type' and sd2.usable = 1
     </select>
     <select id="getSumOrderGasByUserId" resultType="java.math.BigDecimal" parameterType="int">
         SELECT

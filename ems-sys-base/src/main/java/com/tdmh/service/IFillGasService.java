@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 /**
  * 维修补气服务
+ *
  * @author litairan on 2018/10/17.
  */
 public interface IFillGasService {
@@ -28,4 +29,6 @@ public interface IFillGasService {
     JsonData getServiceTimesByUserId(Integer userId);
 
     void setFillGasOrderProps(FillGasOrderParam param, BigDecimal needFillGas);
+
+    void setOveruseOrderProps(FillGasOrderParam param, BigDecimal needFillMoney);
 }

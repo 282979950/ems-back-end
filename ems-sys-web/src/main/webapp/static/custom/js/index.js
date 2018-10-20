@@ -1007,7 +1007,7 @@ app.initEvent = function () {
                 },
                 success: function (editFillGasOrderResponse) {
                     if (editFillGasOrderResponse.status) {
-                        app.successMessage('处理补气单成功');
+                        app.successMessage(formData.fillGasOrderType === 1 ? '处理补气单成功' : '处理补缴单成功');
                         // app.setDataCache(url, null);
                         app.render({
                             url: app.currentPageName + '/listData.do'
@@ -1038,56 +1038,66 @@ app.initEvent = function () {
                     if (formData.fillGasOrderStatus) {
                         app.message("该补气单已被处理过");
                     } else {
-                        var result = app.ReadCard();
-                        if(result[0] === 'S') {
-                            $.ajax({
-                                type: 'POST',
-                                url: 'account/redCard.do',
-                                contentType: 'application/x-www-form-urlencoded',
-                                data:{
-                                    cardId:result[3]
-                                } ,
-                                beforeSend: function (xhr) {
-                                    xhr.withCredentials = true;
-                                },
-                                success: function (readCardResponse) {
-                                    if(readCardResponse.status){
-                                        var password = readCardResponse.data.cardPassword;
-                                        var serviceTimes = app.getServiceTimesByUserId(userId);
-                                        var flowNum = app.getFlowNum();
-                                        var isFirstOrder = formData.needFillGas === (formData.gasCount - formData.stopCodeCount);
-                                        if (isFirstOrder) {
-                                            // 初始化IC卡
-                                            var initResult = app.initCard(password);
-                                            if (initResult === 'S') {
-                                                // 获取流水号 获取维修次数
-                                                var writePCardResult = app.WritePCard(result[3], password, formData.fillGas, serviceTimes + 1, formData.fillGas, flowNum);
-                                                if (writePCardResult === '写卡成功') {
-                                                    // 更新订单状态，生成新订单，
-                                                    editFillGasOrder(formData);
+                        switch (formData.fillGasOrderType) {
+                            case 1:
+                                // 补气流程
+                                var result = app.ReadCard();
+                                if(result[0] === 'S') {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'account/redCard.do',
+                                        contentType: 'application/x-www-form-urlencoded',
+                                        data:{
+                                            cardId:result[3]
+                                        } ,
+                                        beforeSend: function (xhr) {
+                                            xhr.withCredentials = true;
+                                        },
+                                        success: function (readCardResponse) {
+                                            if(readCardResponse.status){
+                                                var password = readCardResponse.data.cardPassword;
+                                                var serviceTimes = app.getServiceTimesByUserId(userId);
+                                                var flowNum = app.getFlowNum();
+                                                var isFirstOrder = formData.needFillGas === (formData.gasCount - formData.stopCodeCount);
+                                                if (isFirstOrder) {
+                                                    // 初始化IC卡
+                                                    var initResult = app.initCard(password);
+                                                    if (initResult === 'S') {
+                                                        // 获取流水号 获取维修次数
+                                                        var writePCardResult = app.WritePCard(result[3], password, formData.fillGas, serviceTimes + 1, formData.fillGas, flowNum);
+                                                        if (writePCardResult === '写卡成功') {
+                                                            // 更新订单状态，生成新订单，
+                                                            editFillGasOrder(formData);
+                                                        } else {
+                                                            app.errorMessage(writePCardResult);
+                                                        }
+                                                    } else {
+                                                        app.errorMessage("初始化失败");
+                                                    }
                                                 } else {
-                                                    app.errorMessage(writePCardResult);
+                                                    //写一般充值卡
+                                                    var writeUCardResult = app.WriteUCard(result[3], password, formData.fillGas, serviceTimes, flowNum);
+                                                    if (writeUCardResult === '写卡成功') {
+                                                        editFillGasOrder(formData);
+                                                    } else {
+                                                        app.errorMessage(writeUCardResult);
+                                                    }
                                                 }
-                                            } else {
-                                                app.errorMessage("初始化失败");
-                                            }
-                                        } else {
-                                            //写一般充值卡
-                                            var writeUCardResult = app.WriteUCard(result[3], password, formData.fillGas, serviceTimes, flowNum);
-                                            if (writeUCardResult === '写卡成功') {
-                                                editFillGasOrder(formData);
-                                            } else {
-                                                app.errorMessage(writeUCardResult);
+                                            }else{
+                                                app.errorMessage(readCardResponse.message);
                                             }
                                         }
-                                    }else{
-                                        app.errorMessage(response.message);
-                                    }
+                                    });
+                                } else {
+                                    app.errorMessage(result);
                                 }
-                            });
-                        } else {
-                            app.errorMessage(result);
-                            return;
+                                break;
+                            case 2:
+                                // 补缴流程
+                                editFillGasOrder(formData);
+                                break;
+                            default:
+                                break;
                         }
                     }
                     app.fillGasForm = null;
@@ -1107,6 +1117,121 @@ app.initEvent = function () {
         });
         dialog.handleUpdate();
     });
+    /**
+     * 账户消户
+     */
+    main.on('add_to_queue', function () {
+        var data = table.getSelectedDatas();
+        console.log(data[0])
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('请选择一条数据');
+            return;
+        }
+        var userMoney=0;
+        var OrderSupplement=0;
+        var flage=0;
+        data[0]. userMoney=userMoney;
+        data[0]. OrderSupplement=OrderSupplement;
+        data[0]. flage=flage;
+        $.ajax({
+            type: 'POST',
+            url: app.currentPageName + '/userEliminationHead.do',
+            contentType: 'application/x-www-form-urlencoded',
+            data: data[0],
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                //成功注销，不涉及账务问题
+                if(response.status){
+
+                    if(response.data == null){
+                        app.successMessage(response.message)
+                        var url = app.currentPageName + '/listData.do';
+                        // app.setDataCache(url, null);
+                        console.log("清理" + url + "缓存");
+                        app.render({
+                            url: url
+                        });
+
+                    }else{
+                        //涉及用气退钱,用户超用补缴
+                        var userMoney=prompt(response.message,response.data[0]);
+                        if(userMoney){
+                            data[0].userMoney=userMoney;
+                            //应补缴超用
+                            data[0].OrderSupplement =response.data[1];
+                            data[0].flage=response.data[2];
+                            $.ajax({
+                                type: 'POST',
+                                url: app.currentPageName + '/userEliminationHead.do',
+                                contentType: 'application/x-www-form-urlencoded',
+                                data: data[0],
+                                beforeSend: function (xhr) {
+                                    xhr.withCredentials = true;
+                                },
+                                success: function (response) {
+                                    response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                                    if (response.status) {
+                                        var url = app.currentPageName + '/listData.do';
+                                        // app.setDataCache(url, null);
+                                        console.log("清理" + url + "缓存");
+                                        app.render({
+                                            url: url
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+    })
+    //查看历史变更记录
+    main.on('mail_outline', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        var userId = data[0].userId;
+        $.ajax({
+            async: true,
+            type: 'Post',
+            url: app.currentPageName + '/userChangeList.do',
+            data: {
+                "userId": userId
+            },
+            contentType: 'application/x-www-form-urlencoded',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                var data = response.data;
+                console.log(data)
+                var dialog = mdui.dialog({
+                    title: '历史变更记录',
+                    content: ' ',
+                    buttons: [{text: '关闭'}]
+                });
+                var table = app.createTable({
+                    parent: '.mdui-dialog-content',
+                    fields: app.tableFields[app.currentPageName+'History'],
+                    data: data
+                });
+                dialog.handleUpdate();
+            }
+        });
+    })
 };
 
 app.removeEvent = function () {
@@ -1543,6 +1668,9 @@ app.tableFields = {
         name: 'userId',
         caption: '户号'
     }, {
+        name: 'fillGasOrderTypeName',
+        caption: '订单类型'
+    },{
         name: 'userName',
         caption: '用户名称'
     }, {
@@ -1681,6 +1809,31 @@ app.tableFields = {
     },{
         name: 'invoiceCancelTime',
         caption: '发票报废时间'
+    }],
+    alterHistory: [{
+        name: 'userChangeName',
+        caption: '用户名称'
+    }, {
+        name: 'userChangePhone',
+        caption: '用户电话'
+    }, {
+        name: 'userChangeIdcard',
+        caption: '用户身份证号码'
+    }, {
+        name: 'userChangeDeed',
+        caption: '用户房产证号码'
+    },{
+        name: 'userOldName',
+        caption: '旧用户名称'
+    }, {
+        name: 'userOldPhone',
+        caption: '旧用户电话'
+    }, {
+        name: 'userOldIdcard',
+        caption: '旧用户身份证号码'
+    }, {
+        name: 'userOldDeed',
+        caption: '旧用户房产证号码'
     }]
 };
 /*
@@ -3454,6 +3607,18 @@ app.getToolbarFields = function (name) {
                 name: 'event',
                 caption: '账户结算',
                 perm:'account:alter:visit'
+            }, {
+                name: 'add_to_queue',
+                caption: '账户消户',
+                perm:'account:alter:visit'
+            }, {
+                name: 'mail_outline',
+                caption: '变更记录',
+                perm:'account:alter:visit'
+            }, {
+                name: 'userName',
+                caption: '用户姓名',
+                type: 'input'
             }];
         case 'assign' :
             return [{

@@ -272,10 +272,12 @@ public class UserServiceImpl implements IUserService {
         return userMapper.getAllCount();
     }
 
+
     /**
      *
      */
-    private User getUserById(Integer userId) {
+    @Override
+    public User getUserById(Integer userId) {
         return userMapper.getUserById(userId);
     }
 
@@ -402,7 +404,7 @@ public class UserServiceImpl implements IUserService {
         //查询已经开户的相关数据
         user.setUserStatus(3);
         List<User>  u =userMapper.userChangeList(user);
-        return   u == null || u.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.successData(u);
+        return   u == null || u.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(u,"查询成功");
     }
 
 }
