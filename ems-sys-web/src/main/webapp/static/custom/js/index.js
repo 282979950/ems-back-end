@@ -2105,7 +2105,7 @@ app.getAddFormFields = function (name) {
                 options: {
                     idKey: 'orgId',
                     pIdKey: 'orgParentId',
-                    name: 'orgId',
+                    name: 'orgName',
                     N: 's',
                     Y: 'p',
                     nodes: app.getTreeComboboxNodes('org/listData.do')
@@ -2121,6 +2121,17 @@ app.getAddFormFields = function (name) {
                     Y: 'p',
                     nodes: app.getTreeComboboxNodes('permission/listAllMenusAndPerms.do')
                 }
+            },{
+                name: 'isAdmin',
+                caption:'是否是管理员',
+                type:'listcombobox',
+                options: [{
+                    key: '是',
+                    value: true
+                }, {
+                    key: '否',
+                    value: false
+                }]
             }, {
                 name: 'remarks',
                 caption: '备注'
@@ -2705,6 +2716,17 @@ app.getEditFormFields = function (name) {
                     Y: 'p',
                     nodes: app.getTreeComboboxNodes('permission/listAllMenusAndPerms.do')
                 }
+            }, {
+                name: 'isAdmin',
+                caption:'是否是管理员',
+                type:'listcombobox',
+                options: [{
+                    key: '是',
+                    value: true
+                }, {
+                    key: '否',
+                    value: false
+                }]
             }, {
                 name: 'remarks',
                 caption: '备注'
