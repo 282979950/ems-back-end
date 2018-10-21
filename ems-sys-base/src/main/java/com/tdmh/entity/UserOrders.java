@@ -62,6 +62,14 @@ public class UserOrders extends BaseEntity {
      * 订单关闭时间
      */
     private Date orderCloseTime;
+    /**
+     * 临时参数resltTime 转换后的String类型时间
+     */
+    private String resltTime;
+    /**
+     * 账务状态
+     */
+    private Integer accountState;
 
     /**
      * 订单流水号

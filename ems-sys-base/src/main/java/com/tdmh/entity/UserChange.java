@@ -59,7 +59,7 @@ public class UserChange extends BaseEntity {
      */
     private String userOldDeed;
     /**
-     * 当前表址码
+     * 当前表止码
      */
     private BigDecimal tableCode;
 
@@ -74,5 +74,9 @@ public class UserChange extends BaseEntity {
         this.userOldPhone = userOldPhone;
         this.userOldIdcard = userOldIdcard;
         this.userOldDeed = userOldDeed;
+    }
+
+    public UserChange() {
+        super();
     }
 }

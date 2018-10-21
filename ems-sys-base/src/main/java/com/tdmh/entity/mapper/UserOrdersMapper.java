@@ -26,4 +26,6 @@ public interface UserOrdersMapper {
 
     BigDecimal findHasUsedGasInYear(@Param("userId") Integer userId);
     int createChangeUserOrder(UserOrders record);
+    int countUserOrdersByTimeEmployeeId(UserOrders record);
+    int updateUserOrdersByOrderId(UserOrders record);
 }
