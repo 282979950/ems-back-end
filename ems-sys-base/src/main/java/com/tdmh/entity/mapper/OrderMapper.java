@@ -16,4 +16,8 @@ public interface OrderMapper {
     List<OrderParam> searchOrderAndInvoiceList(@Param("userName") String userName,@Param("iccardId") String iccardId, @Param("iccardIdentifier") String iccardIdentifier, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber);
 
     InvoiceParam findOrderById(@Param("orderId") Integer orderId);
+
+    int updateOrderStatus(@Param("orderId") Integer orderId , @Param("orderStatus") Integer orderStatus);
+
+    int hasAuthorityToInvoice(@Param("orderId") Integer orderId, @Param("userId") Integer userId);
 }

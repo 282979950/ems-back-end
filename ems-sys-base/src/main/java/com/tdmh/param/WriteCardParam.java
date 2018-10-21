@@ -17,4 +17,5 @@ public class WriteCardParam {
     private BigDecimal orderGas;
     private Integer serviceTimes;
     private String flowNumber;
+    private Integer orderId;
 }

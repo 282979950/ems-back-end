@@ -20,6 +20,8 @@ public interface InvoiceMapper {
     List<Invoice> findInvoiceByCodeAndNumber(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumberList") List<String> invoiceNumberList, @Param("invoiceStatus") Integer invoiceStatus);
     int updateInvoiceToEmployee(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumberList") List<String> invoiceNumberList, @Param("empId") Integer empId, @Param("currentEmpId") Integer currentEmpId);
     List<Invoice> getAllPrintCancelInvoiceList(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber,@Param("empId") Integer empId);
+    Invoice findCurrentInvoice(@Param("orderId") Integer orderId);
     Invoice findInvoice(@Param("currentEmpId") Integer currentEmpId);
     int printInvoice(@Param("orderId") Integer orderId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber, @Param("currentEmpId") Integer currentEmpId);
+    int cancelInvoice(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber , @Param("currentEmpId")Integer currentEmpId);
 }

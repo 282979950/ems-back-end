@@ -24,6 +24,10 @@ public class OrderParam extends BaseEntity {
      */
     private Integer orderId;
     /**
+     * 用户ID
+     */
+    private Integer userId;
+    /**
      * 用户名
      */
     private String userName;
@@ -31,10 +35,17 @@ public class OrderParam extends BaseEntity {
      * IC卡卡号
      */
     private Integer iccardId;
+
+    /**
+     * 密码
+     */
+    private String iccardPassword;
     /**
      * IC卡识别号
      */
     private String iccardIdentifier;
+
+    private Integer serviceTimes;
     /**
      * 充值气量
      */

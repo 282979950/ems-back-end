@@ -90,13 +90,15 @@ public class InvoiceController {
     /**
      * 查出打印数据
      * @param orderId
+     * @param userId
+     * @param printType 代表三种打印，1是正常打印，2是原票补打，3是新票补打
      * @return
      */
     @RequestMapping("/findInvoice.do")
     @ResponseBody
-    public JsonData findInvoice(@Param("orderId") Integer orderId){
+    public JsonData findInvoice(@Param("orderId") Integer orderId , @Param("userId") Integer userId , @Param("printType") Integer printType){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return invoiceService.findInvoice(orderId, currentEmpId);
+        return invoiceService.findInvoice(orderId, userId, currentEmpId , printType);
     }
 
     /**
@@ -112,6 +114,22 @@ public class InvoiceController {
     public JsonData printInvoice(@Param("orderId") Integer orderId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         return invoiceService.printInvoice(orderId, invoiceCode, invoiceNumber, currentEmpId);
+    }
+
+
+    /**
+     * 注销发票
+     * @param orderId
+     * @param invoiceCode
+     * @param invoiceNumber
+     * @return
+     */
+    @RequiresPermissions("recharge:order:print")
+    @RequestMapping("/cancel.do")
+    @ResponseBody
+    public JsonData cancelInvoice(@Param("orderId") Integer orderId,@Param("userId") Integer userId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return invoiceService.cancelInvoice(orderId, userId, invoiceCode, invoiceNumber, currentEmpId);
     }
 
 }

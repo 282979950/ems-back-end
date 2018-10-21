@@ -230,7 +230,7 @@ public class UserServiceImpl implements IUserService {
         userOrders.setOrderType(1); //1为开户类型
         userOrders.setCreateBy(param.getUpdateBy());
         userOrders.setUpdateBy(param.getUpdateBy());
-        userOrders.setOrderStatus(2);
+        userOrders.setOrderStatus(1);
         userOrders.setUsable(true);
         // TODO: 2018/8/10 完善订单流程
         int resultCount2 = userOrdersMapper.insert(userOrders);
@@ -258,6 +258,7 @@ public class UserServiceImpl implements IUserService {
         if (resultCount1 == 0) {
             return JsonData.fail("用户初始化卡失败");
         }
+        param.setOrderId(userOrders.getOrderId());
         param.setFlowNumber(userOrders.getFlowNumber());
         return JsonData.success(param,"用户开户成功");
     }

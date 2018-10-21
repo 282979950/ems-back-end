@@ -18,7 +18,9 @@ public interface IInvoiceService {
 
     JsonData searchPrintCancelInvoiceList(String invoiceCode,String invoiceNumber,Integer empId);
 
-    JsonData findInvoice(Integer orderId, Integer currentEmpId);
+    JsonData findInvoice(Integer orderId, Integer userId, Integer currentEmpId, Integer printType);
 
     JsonData printInvoice(Integer orderId, String invoiceCode, String invoiceNumber, Integer currentEmpId);
+
+    JsonData cancelInvoice(Integer orderId,Integer userId, String invoiceCode, String invoiceNumber, Integer currentEmpId);
 }

@@ -22,7 +22,7 @@ public class OrderController {
 
 
     /**
-     * 查询特定的已分配的发票
+     * 查询所有订单
      * @return
      */
     @RequiresPermissions("recharge:order:visit")
@@ -32,7 +32,7 @@ public class OrderController {
         return JsonData.success();
     }
     /**
-     * 查询特定的已分配的发票
+     * 查询指定订单
      * @return
      */
     @RequiresPermissions("recharge:order:visit")
@@ -40,6 +40,18 @@ public class OrderController {
     @ResponseBody
     public JsonData searchOrderAndInvoiceList(@Param("userName") String userName,@Param("iccardId") String iccardId, @Param("iccardIdentifier") String iccardIdentifier, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
         return orderService.searchOrderAndInvoiceList(userName,iccardId,iccardIdentifier, invoiceCode, invoiceNumber);
+    }
+
+    /**
+     *
+     * @param orderId
+     * @param orderStatus
+     * @return
+     */
+    @RequestMapping("/updateOrderStatus.do")
+    @ResponseBody
+    public JsonData updateOrderStatus(@Param("orderId") Integer orderId , @Param("orderStatus") Integer orderStatus){
+        return orderService.updateOrderStatus(orderId , orderStatus);
     }
 
 }

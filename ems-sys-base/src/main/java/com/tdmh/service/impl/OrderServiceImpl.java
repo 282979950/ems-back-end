@@ -23,4 +23,14 @@ public class OrderServiceImpl implements IOrderService {
         List<OrderParam> list = orderMapper.searchOrderAndInvoiceList(userName, iccardId, iccardIdentifier, invoiceCode,invoiceNumber);
         return list == null || list.size() == 0 ? JsonData.successMsg("暂无订单") : JsonData.success(list,"查询成功");
     }
+
+    @Override
+    public JsonData updateOrderStatus(Integer orderId, Integer orderStatus) {
+        int resultCount = orderMapper.updateOrderStatus(orderId,orderStatus);
+        if(resultCount == 0){
+            return JsonData.fail("写卡失败");
+        }else{
+            return JsonData.successMsg("写卡成功");
+        }
+    }
 }

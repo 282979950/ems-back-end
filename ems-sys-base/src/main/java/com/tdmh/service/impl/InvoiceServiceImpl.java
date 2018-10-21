@@ -3,13 +3,16 @@ package com.tdmh.service.impl;
 import com.google.common.collect.Lists;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.Invoice;
+import com.tdmh.entity.SysRole;
+import com.tdmh.entity.mapper.EmployeeMapper;
 import com.tdmh.entity.mapper.InvoiceMapper;
 import com.tdmh.entity.mapper.OrderMapper;
+import com.tdmh.entity.mapper.SysRoleMapper;
 import com.tdmh.exception.ParameterException;
+import com.tdmh.param.EmployeeParam;
 import com.tdmh.param.InvoiceParam;
 import com.tdmh.service.IInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,12 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private EmployeeMapper employeeMapper;
+
+    @Autowired
+    private SysRoleMapper sysRoleMapper;
 
     @Override
     public JsonData getAllAssignInvoiceList() {
@@ -112,14 +121,40 @@ public class InvoiceServiceImpl implements IInvoiceService {
     }
 
     @Override
-    public JsonData findInvoice(Integer orderId, Integer currentEmpId) {
-        Invoice invoice = invoiceMapper.findInvoice(currentEmpId);
-        if(invoice == null){
-            return JsonData.fail("暂无可用发票");
+    public JsonData findInvoice(Integer orderId, Integer userId, Integer currentEmpId , Integer printType) {
+
+        EmployeeParam emp = employeeMapper.getEmpById(currentEmpId);
+        if(emp == null){
+            return JsonData.fail("该操作员不存在");
+        }
+        if(printType == 2 || printType == 3) {
+            SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+            if (!role.getIsAdmin()) {
+                int resultCount = orderMapper.hasAuthorityToInvoice(orderId, userId);
+                if (resultCount == 0) {
+                    return JsonData.fail("您没有权限操作");
+                }
+            }
         }
         InvoiceParam invoiceParam = orderMapper.findOrderById(orderId);
         if(invoiceParam == null){
             return JsonData.fail("订单有误");
+        }
+        Invoice invoice = null;
+        if(printType == 1){
+            invoice = invoiceMapper.findInvoice(currentEmpId);
+        }else if(printType == 2){
+            invoice = invoiceMapper.findCurrentInvoice(orderId);
+        }else if(printType == 3){
+            invoice = invoiceMapper.findCurrentInvoice(orderId);
+            int count = invoiceMapper.cancelInvoice(invoice.getInvoiceCode(),invoice.getInvoiceNumber(),currentEmpId); //撤销之前的
+            if(count == 0){
+                return JsonData.fail("新票补打时没有找到之前的打印记录");
+            }
+            invoice = invoiceMapper.findInvoice(currentEmpId);
+        }
+        if(invoice == null){
+            return JsonData.fail("暂无可用发票");
         }
         invoiceParam.setInvoiceCode(invoice.getInvoiceCode());
         invoiceParam.setInvoiceNumber(invoice.getInvoiceNumber());
@@ -135,7 +170,25 @@ public class InvoiceServiceImpl implements IInvoiceService {
         return JsonData.fail("打印失败");
     }
 
-
+    @Override
+    public JsonData cancelInvoice(Integer orderId,Integer userId, String invoiceCode, String invoiceNumber, Integer currentEmpId) {
+        EmployeeParam emp = employeeMapper.getEmpById(currentEmpId);
+        if(emp == null){
+            return JsonData.fail("该操作员不存在");
+        }
+        SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+        if (!role.getIsAdmin()) {
+            int resultCount = orderMapper.hasAuthorityToInvoice(orderId, userId);
+            if (resultCount == 0) {
+                return JsonData.fail("您没有权限操作");
+            }
+        }
+        int count = invoiceMapper.cancelInvoice(invoiceCode, invoiceNumber, currentEmpId); //撤销之前的
+        if(count == 0){
+            return JsonData.fail("注销发票失败");
+        }
+        return JsonData.successMsg("注销发票成功");
+    }
 
 
 }
