@@ -2,16 +2,18 @@ package com.tdmh.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tdmh.common.JsonData;
-import com.tdmh.service.IWXLoginService;
+import com.tdmh.service.IWXService;
 import com.tdmh.utils.HttpRequestUtil;
 import com.tdmh.utils.RandomUtils;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 /**
  * @author litairan on 2018/10/21.
  */
 @Service("iWXLoginService")
-public class WXLoginServiceImpl implements IWXLoginService {
+public class WXServiceImpl implements IWXService {
 
     private static final String WX_APP_ID = "wx3f09eb2829930acb";
 
@@ -30,12 +32,41 @@ public class WXLoginServiceImpl implements IWXLoginService {
         if (errorMsg == null) {
             String openId = (String) json.get("openid");
             // 依据openId查找对应的绑定用户的记录
-            System.out.println(openId);
             String sessionKey = (String) json.get("session_key");
             String session = RandomUtils.getUUID();
             return JsonData.successData(session);
         } else {
             return JsonData.fail("登录失败");
         }
+    }
+
+    @Override
+    public JsonData getUsersByWXUserId(String userId) {
+        return null;
+    }
+
+    @Override
+    public JsonData getUserInfoByUserId(String userId) {
+        return null;
+    }
+
+    @Override
+    public JsonData bindUser(String wxUserId, String userId) {
+        return null;
+    }
+
+    @Override
+    public JsonData unBindUser(String wxUserId, String userId) {
+        return null;
+    }
+
+    @Override
+    public JsonData getPayment(BigDecimal gas) {
+        return null;
+    }
+
+    @Override
+    public JsonData recharge(Integer userId, BigDecimal gas, BigDecimal payment) {
+        return null;
     }
 }

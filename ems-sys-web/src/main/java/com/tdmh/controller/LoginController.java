@@ -2,7 +2,7 @@ package com.tdmh.controller;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.Principal;
-import com.tdmh.service.IWXLoginService;
+import com.tdmh.service.IWXService;
 import com.tdmh.shiro.CustomFormAuthenticationFilter;
 import com.tdmh.util.ShiroUtils;
 import org.apache.ibatis.annotations.Param;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
 
     @Autowired
-    private IWXLoginService wxLoginService;
+    private IWXService wxLoginService;
 
     /**
      * 进入登录页面
