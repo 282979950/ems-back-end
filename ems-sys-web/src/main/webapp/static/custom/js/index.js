@@ -1241,6 +1241,7 @@ app.initEvent = function () {
             return;
         }
         app.WirteCard(data[0]);
+    });
     /**
      * 预冲账发起
      */
@@ -1293,7 +1294,7 @@ app.initEvent = function () {
     /**
      * 发起审批--冲账
      */
-    main.on('check_box',function () {
+    main.on('check_box', function () {
         var tableData = table.getSelectedDatas();
         if (table.getSelectedDatas().length === 0) {
             app.message('请选择一条数据');
@@ -1304,7 +1305,7 @@ app.initEvent = function () {
             return;
         }
         //标识
-        var flag =true;
+        var flag = true;
         var cardListDialog = mdui.dialog({
             title: '审核',
             modal: true,
@@ -1313,12 +1314,12 @@ app.initEvent = function () {
                 text: '审核通过',
                 onClick: function () {
                     var data = form.getData();
-                    data.flag=true;
+                    data.flag = true;
                     console.log(data)
 
                     $.ajax({
                         type: 'POST',
-                        url: app.currentPageName +'/edit.do',
+                        url: app.currentPageName + '/edit.do',
                         contentType: 'application/x-www-form-urlencoded',
                         data: data,
                         beforeSend: function (xhr) {
@@ -1343,12 +1344,12 @@ app.initEvent = function () {
                 text: '不通过',
                 onClick: function () {
                     var data = form.getData();
-                    data.flag=false;
+                    data.flag = false;
                     console.log(data)
 
                     $.ajax({
                         type: 'POST',
-                        url: app.currentPageName +'/edit.do',
+                        url: app.currentPageName + '/edit.do',
                         contentType: 'application/x-www-form-urlencoded',
                         data: data,
                         beforeSend: function (xhr) {
@@ -1368,23 +1369,17 @@ app.initEvent = function () {
                     });
 
                 }
-            },{
-            text: '取消'
-        }]
+            }, {
+                text: '取消'
+            }]
         });
+        $(".tree-combobox-panel").remove();
         var form = app.createForm({
             parent: '.mdui-dialog-content',
             fields: app.getEditFormFields('strike'),
             data: tableData[0]
         });
         cardListDialog.handleUpdate();
-
-
-    })
-    $(".tree-combobox-panel").remove();
-
-};
-
     });
     // 发票打印
     main.on('print', function () {
