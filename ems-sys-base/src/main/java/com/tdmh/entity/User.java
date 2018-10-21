@@ -1,8 +1,11 @@
 package com.tdmh.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -88,11 +91,47 @@ public class User extends BaseEntity {
      *用气类型名称
      */
     private String userGasTypeName;
+    /**
+     * 临时参数，实际充值金额
+     */
+    private BigDecimal orderPayment;
+    /**
+     * 临时参数，充值气量
+     */
+    private BigDecimal orderGas;
+    /**
+     * 临时参数,充值时间
+     */
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date orderCreateTime;
+    /**
+     * 订单类型名称
+     */
+    private String orderTypeName;
+    /**
+     * 账务状态
+     */
+    private String accountState;
+    /**
+     * 账务状态名称
+     */
+    private String accountStateName;
 
     /**
      *用户状态名称
      */
+
     private String userStatusName;
+    /**
+     * 临时参数，员工id号码
+     */
+    private Integer employeeId;
+    /**
+     * 临时参数订单ID
+     */
+    private Integer orderId;
+
 
     public User(Integer userId, String userName, String userPhone, String userIdcard, String userDeed, Integer userDistId, String userAddress, Integer
             userType, Integer userGasType, Integer userStatus, Boolean userLocked, Integer serviceTimes, Date

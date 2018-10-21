@@ -597,13 +597,19 @@
                         $field.trigger('fillGas');
                         break;
                     case 'event' :
-                        $field.trigger('event');
+                        $field.trigger('tranfer');
                         break;
                     case 'add_to_queue':
                         $field.trigger('add_to_queue');
                         break;
                     case 'mail_outline':
                         $field.trigger('mail_outline');
+                        break;
+                    case 'touch_app':
+                        $field.trigger('touch_app');
+                        break;
+                    case 'check_box':
+                        $field.trigger('check_box');
                         break;
                     default:
                         break;
