@@ -45,9 +45,14 @@ app.getPanelContent = function (name) {
          */
         case 'prePayment':
         case 'replaceCard':
-                panelContent = this.DEFAULT_TEMPLATE;
         case 'postPayment':
-        case 'invoice':
+        case 'order':
+            panelContent = this.DEFAULT_TEMPLATE;
+            break;
+        case 'assign':
+        case 'printCancel':
+            panelContent = this.DEFAULT_TEMPLATE;
+        case 'eInvoice':
             break;
         /*
          * 维修补气管理: 维修单录入 维修补气 补缴结算 IC卡初始化
@@ -519,7 +524,7 @@ app.initEvent = function () {
     var formNames = app.currentPageName;
     var main = $('.container-main');
     var table = app.table;
-    if(formNames!="initCard"){
+    if (formNames != "initCard" || formNames != "order") {
         var fields = table.getFields();
     }
     main.on('add', function () {
@@ -576,28 +581,28 @@ app.initEvent = function () {
             app.message('只能选择一条数据');
             return;
         }
-        if (app.currentPageName == 'account'){
+        if (app.currentPageName == 'account') {
             var result = app.ReadCard();
-            if(result[0] !== 'S') {
+            if (result[0] !== 'S') {
                 app.errorMessage(result);
                 return;
             }
-            if(result[1] != '0') {
+            if (result[1] != '0') {
                 app.warningMessage('只能对新卡进行开户');
                 return;
             }
         }
-        if (app.currentPageName == 'prePayment'){
+        if (app.currentPageName == 'prePayment') {
             var result = app.ReadCard();
-            if(result[0] !== 'S') {
+            if (result[0] !== 'S') {
                 app.errorMessage(result);
                 return;
             }
-            if(result[1] == '0') {
+            if (result[1] == '0') {
                 app.warningMessage('该卡为新卡，必须开户后再充值');
                 return;
             }
-            if(result[4] != '0') {
+            if (result[4] != '0') {
                 app.warningMessage('卡内已有未圈存的气量，不能充值');
                 return;
             }
@@ -622,15 +627,9 @@ app.initEvent = function () {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                             if (response.status) {
                                 var rdata = response.data;
-                                if (app.currentPageName == 'account') {
-                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
-                                  }
-                                if(app.currentPageName == 'replaceCard'){
-                                    app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
+                                if (app.currentPageName == "account" || app.currentPageName == 'replaceCard' || app.currentPageName == 'prePayment') {
+                                    app.WirteCard(rdata);
                                 }
-                                if (app.currentPageName == 'prePayment') {
-                                    app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
-                                   }
                                 var url = app.currentPageName + '/listData.do';
                                 // app.setDataCache(url, null);
                                 console.log("清理" + url + "缓存");
@@ -816,7 +815,7 @@ app.initEvent = function () {
                 });
                 var table = app.createTable({
                     parent: '.mdui-dialog-content',
-                    fields: app.tableFields[app.currentPageName+'History'],
+                    fields: app.tableFields[app.currentPageName + 'History'],
                     data: data
                 });
                 dialog.handleUpdate();
@@ -828,7 +827,7 @@ app.initEvent = function () {
     });
     main.on('record_voice_over', function () {
         var result = app.ReadCard();
-        if(result[0] !== 'S') {
+        if (result[0] !== 'S') {
             app.errorMessage(result);
             return;
         }
@@ -836,7 +835,7 @@ app.initEvent = function () {
             type: 'POST',
             url: app.currentPageName + '/search.do',
             contentType: 'application/x-www-form-urlencoded',
-            data: { "iccardIdentifier" :result[2]},
+            data: {"iccardIdentifier": result[2]},
             beforeSend: function (xhr) {
                 xhr.withCredentials = true;
             },
@@ -857,8 +856,8 @@ app.initEvent = function () {
             app.message('请选择一条数据');
             return;
         }
-        var userMoney=0;
-        var OrderSupplement=0;
+        var userMoney = 0;
+        var OrderSupplement = 0;
 
         var dialog = mdui.dialog({
             title: '录入新用户信息',
@@ -867,8 +866,8 @@ app.initEvent = function () {
                 text: '确定',
                 onClick: function () {
                     var data = form.getData();
-                    data.userMoney=userMoney;
-                    data.OrderSupplement=OrderSupplement;
+                    data.userMoney = userMoney;
+                    data.OrderSupplement = OrderSupplement;
                     console.log(data)
                     $.ajax({
                         type: 'POST',
@@ -880,49 +879,49 @@ app.initEvent = function () {
                         },
                         success: function (response) {
                             console.log(response)
-                           if(response.status){
+                            if (response.status) {
                                 //成功变更账户，无超用信息
-                               if(response.data == null){
-                                   alert(response.message)
+                                if (response.data == null) {
+                                    alert(response.message)
 
-                               }else{
-                                   //实际补缴超用userMoney
-                                   console.log(data)
-                                  var userMoney=prompt(response.message,response.data[0]);
-                                   if(userMoney) {
+                                } else {
+                                    //实际补缴超用userMoney
+                                    console.log(data)
+                                    var userMoney = prompt(response.message, response.data[0]);
+                                    if (userMoney) {
 
-                                       data.userMoney=userMoney;
-                                       //应补缴超用
-                                       data.OrderSupplement =response.data[1];
-                                       console.log(data.OrderSupplement)
-                                       $.ajax({
-                                           type: 'POST',
-                                           url: app.currentPageName + '/userChangeSettlement.do',
-                                           contentType: 'application/x-www-form-urlencoded',
-                                           data: data,
-                                           beforeSend: function (xhr) {
-                                               xhr.withCredentials = true;
-                                           },
-                                           success: function (response) {
-                                               response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
-                                               if (response.status) {
-                                                   var url = app.currentPageName + '/listData.do';
-                                                   // app.setDataCache(url, null);
-                                                   console.log("清理" + url + "缓存");
-                                                   app.render({
-                                                       url: url
-                                                   });
-                                               }
-                                           }
-                                       });
+                                        data.userMoney = userMoney;
+                                        //应补缴超用
+                                        data.OrderSupplement = response.data[1];
+                                        console.log(data.OrderSupplement)
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: app.currentPageName + '/userChangeSettlement.do',
+                                            contentType: 'application/x-www-form-urlencoded',
+                                            data: data,
+                                            beforeSend: function (xhr) {
+                                                xhr.withCredentials = true;
+                                            },
+                                            success: function (response) {
+                                                response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                                                if (response.status) {
+                                                    var url = app.currentPageName + '/listData.do';
+                                                    // app.setDataCache(url, null);
+                                                    console.log("清理" + url + "缓存");
+                                                    app.render({
+                                                        url: url
+                                                    });
+                                                }
+                                            }
+                                        });
 
-                                   }
+                                    }
 
-                               }
+                                }
 
-                           } else{
-                               app.errorMessage(response.message);
-                           }
+                            } else {
+                                app.errorMessage(response.message);
+                            }
                             if (response.status) {
                                 var url = app.currentPageName + '/listData.do';
                                 // app.setDataCache(url, null);
@@ -944,8 +943,51 @@ app.initEvent = function () {
             data: data[0]
         });
         dialog.handleUpdate();
-
-
+    });
+    main.on('assignment', function () {
+        var dialog = mdui.dialog({
+            title: '分配',
+            modal: true,
+            content: ' ',
+            buttons: [{
+                text: '确认',
+                onClick: function () {
+                    var data = form.getData();
+                    $.ajax({
+                        type: 'POST',
+                        url: app.currentPageName + '/assignment.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: data,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                            if (response.status) {
+                                var url = app.currentPageName + '/listData.do';
+                                // app.setDataCache(url, null);
+                                console.log("清理" + url + "缓存");
+                                app.render({
+                                    url: url
+                                });
+                            }
+                        }
+                    });
+                    app.addForm = null;
+                }
+            }, {
+                text: '取消',
+                onClick: function () {
+                    app.addForm = null;
+                }
+            }]
+        });
+        $(".tree-combobox-panel").remove();
+        var form = app.addForm = app.createForm({
+            parent: '.mdui-dialog-content',
+            fields: app.getAddFormFields(formNames + 'assignment')
+        });
+        dialog.handleUpdate();
     });
     main.on('fillGas', function () {
         function editFillGasOrder(formData) {
@@ -995,19 +1037,19 @@ app.initEvent = function () {
                             case 1:
                                 // 补气流程
                                 var result = app.ReadCard();
-                                if(result[0] === 'S') {
+                                if (result[0] === 'S') {
                                     $.ajax({
                                         type: 'POST',
                                         url: 'account/redCard.do',
                                         contentType: 'application/x-www-form-urlencoded',
-                                        data:{
-                                            cardId:result[3]
-                                        } ,
+                                        data: {
+                                            cardId: result[3]
+                                        },
                                         beforeSend: function (xhr) {
                                             xhr.withCredentials = true;
                                         },
                                         success: function (readCardResponse) {
-                                            if(readCardResponse.status){
+                                            if (readCardResponse.status) {
                                                 var password = readCardResponse.data.cardPassword;
                                                 var serviceTimes = app.getServiceTimesByUserId(userId);
                                                 var flowNum = app.getFlowNum();
@@ -1036,7 +1078,7 @@ app.initEvent = function () {
                                                         app.errorMessage(writeUCardResult);
                                                     }
                                                 }
-                                            }else{
+                                            } else {
                                                 app.errorMessage(readCardResponse.message);
                                             }
                                         }
@@ -1086,12 +1128,12 @@ app.initEvent = function () {
             app.message('请选择一条数据');
             return;
         }
-        var userMoney=0;
-        var OrderSupplement=0;
-        var flage=0;
-        data[0]. userMoney=userMoney;
-        data[0]. OrderSupplement=OrderSupplement;
-        data[0]. flage=flage;
+        var userMoney = 0;
+        var OrderSupplement = 0;
+        var flage = 0;
+        data[0].userMoney = userMoney;
+        data[0].OrderSupplement = OrderSupplement;
+        data[0].flage = flage;
         $.ajax({
             type: 'POST',
             url: app.currentPageName + '/userEliminationHead.do',
@@ -1102,9 +1144,9 @@ app.initEvent = function () {
             },
             success: function (response) {
                 //成功注销，不涉及账务问题
-                if(response.status){
+                if (response.status) {
 
-                    if(response.data == null){
+                    if (response.data == null) {
                         app.successMessage(response.message)
                         var url = app.currentPageName + '/listData.do';
                         // app.setDataCache(url, null);
@@ -1113,14 +1155,14 @@ app.initEvent = function () {
                             url: url
                         });
 
-                    }else{
+                    } else {
                         //涉及用气退钱,用户超用补缴
-                        var userMoney=prompt(response.message,response.data[0]);
-                        if(userMoney){
-                            data[0].userMoney=userMoney;
+                        var userMoney = prompt(response.message, response.data[0]);
+                        if (userMoney) {
+                            data[0].userMoney = userMoney;
                             //应补缴超用
-                            data[0].OrderSupplement =response.data[1];
-                            data[0].flage=response.data[2];
+                            data[0].OrderSupplement = response.data[1];
+                            data[0].flage = response.data[2];
                             $.ajax({
                                 type: 'POST',
                                 url: app.currentPageName + '/userEliminationHead.do',
@@ -1180,18 +1222,210 @@ app.initEvent = function () {
                 });
                 var table = app.createTable({
                     parent: '.mdui-dialog-content',
-                    fields: app.tableFields[app.currentPageName+'History'],
+                    fields: app.tableFields[app.currentPageName + 'History'],
                     data: data
                 });
                 dialog.handleUpdate();
             }
         });
     })
-};
+    main.on('credit_card', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('请选择一条数据');
+            return;
+        }
+        app.WirteCard(data[0]);
 
+    });
+    // 发票打印
+    main.on('print', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data[0].invoiceStatusName != undefined) {
+            app.message('该订单已有打印记录，请选择补打');
+            return;
+        }
+        app.findInvoice(data[0], 1);
+
+    });
+    //原票打印
+    main.on('crop_original', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data[0].invoiceStatusName == undefined) {
+            app.message('该订单还没打印过，无法作废');
+            return;
+        }
+        app.findInvoice(data[0], 2);
+    });
+    //新票打印
+    main.on('fiber_new', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data[0].invoiceStatusName == undefined) {
+            app.message('该订单还没打印过，无法作废');
+            return;
+        }
+        app.findInvoice(data[0], 3);
+    });
+    //发票作废
+    main.on('cancel', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data[0].invoiceStatusName == undefined) {
+            app.message('该订单还没打印过，无法作废');
+            return;
+        }
+        $.ajax({
+            async: true,
+            type: 'Post',
+            url: '/cancel.do',
+            data: {
+                "orderId": data[0].orderId,
+                "userId" : data[0].userId,
+                "invoiceCode": data[0].invoiceCode,
+                "invoiceNumber": data[0].invoiceNumber
+            },
+            contentType: 'application/x-www-form-urlencoded',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                    if (response.status) {
+                        var url = app.currentPageName + '/listData.do';
+                        // app.setDataCache(url, null);
+                        console.log("清理" + url + "缓存");
+                        app.render({
+                            url: url
+                        });
+                    }
+            }
+        });
+    });
+}
+app.findInvoice = function(data ,printType) {
+    $.ajax({
+        async: true,
+        type: 'Post',
+        url: '/findInvoice.do',
+        data: {
+            "orderId": data.orderId,
+            "userId": data.userId,
+            "printType": printType
+        },
+        contentType: 'application/x-www-form-urlencoded',
+        beforeSend: function (xhr) {
+            xhr.withCredentials = true;
+        },
+        success: function (response) {
+            if (response.status) {
+                var sdata = response.data;
+                app.PrintInvoice(data, sdata);
+            }else{
+                app.errorMessage(response.message);
+            }
+        }
+    });
+}
+app.PrintInvoice = function(data ,sdata){
+    $.ajax({
+        async: true,
+        type: 'Post',
+        url: '/print.do',
+        data: {
+            "orderId": data.orderId ,
+            "invoiceCode" : sdata.invoiceCode,
+            "invoiceNumber" : sdata.invoiceNumber
+        },
+        contentType: 'application/x-www-form-urlencoded',
+        beforeSend: function (xhr) {
+            xhr.withCredentials = true;
+        },
+        success: function (response) {
+            response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+            if (response.status) {
+                var url = app.currentPageName + '/listData.do';
+                // app.setDataCache(url, null);
+                console.log("清理" + url + "缓存");
+                app.render({
+                    url: url
+                });
+            }
+        }
+    });
+    console.log("打印");
+}
 app.removeEvent = function () {
     $('.container-main').off();
 };
+
+app.WirteCard = function(rdata){
+    var result;
+    if (app.currentPageName == 'account') {
+        result = app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
+    }
+    if(app.currentPageName == 'replaceCard'){
+        result = app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
+        return;
+    }
+    if (app.currentPageName == 'prePayment') {
+        result = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
+    }
+    if(result == '写卡成功'){
+        $.ajax({
+            type: 'POST',
+            async: false,
+            url: 'order/updateOrderStatus.do',
+            data : {
+                'orderId' : rdata.orderId,
+                'orderStatus' : 2
+            },
+            contentType: 'application/x-www-form-urlencoded',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                result = response.data;
+            }
+        });
+    }else {
+        alert("充值成功，写卡失败，请前往订单页面写卡")
+    }
+}
 
 /**
  * 获取流水号
@@ -1681,6 +1915,93 @@ app.tableFields = {
         name: 'userStatusName',
         caption: '用户状态'
     }],
+    assign: [{
+        name: 'invoiceCode',
+        caption: '发票代码'
+    },{
+        name: 'invoiceNumber',
+        caption: '发票号码'
+    },{
+        name: 'invoiceStatusName',
+        caption: '发票状态'
+    },{
+        name: 'createByName',
+        caption: '生成员工'
+    },{
+        name: 'invoiceGenerateTime',
+        caption: '发票生成时间'
+    }],
+    printCancel:[{
+        name: 'invoiceCode',
+        caption: '发票代码'
+    },{
+        name: 'invoiceNumber',
+        caption: '发票号码'
+    },{
+        name: 'invoiceStatusName',
+        caption: '发票状态'
+    },{
+        name: 'empName',
+        caption: '分配员工'
+    },{
+        name: 'invoiceAssignTime',
+        caption: '发票分配时间'
+    },{
+        name: 'invoicePrintTime',
+        caption: '发票打印时间'
+    },{
+        name: 'invoiceCancelTime',
+        caption: '发票报废时间'
+    }],
+    order : [{
+        name: 'orderId',
+        caption: '订单编号'
+    },{
+        name: 'userName',
+        caption: '用户名'
+    },{
+        name: 'iccardId',
+        caption: 'IC卡卡号'
+    },{
+        name: 'iccardIdentifier',
+        caption: 'IC卡识别号'
+    },{
+        name: 'orderGas',
+        caption: '购气量'
+    },{
+        name: 'orderPayment',
+        caption: '购气金额'
+    },{
+        name: 'flowNumber',
+        caption: '流水号'
+    },{
+        name: 'orderCreateEmpName',
+        caption: '订单生成员工'
+    },{
+        name: 'orderCreateTime',
+        caption: '订单生成时间'
+    },{
+        name: 'invoiceCode',
+        caption: '发票代码'
+    },{
+        name: 'invoiceNumber',
+        caption: '发票号码'
+    },{
+        name: 'invoiceStatusName',
+        caption: '发票状态'
+    },{
+        name: 'invoicePrintEmpName',
+        caption: '打印发票员工'
+    },{
+        name: 'invoicePrintTime',
+        caption: '发票打印时间'
+    },{
+        name: 'invoiceCancelEmpName',
+        caption: '发票报废员工'
+    },{
+        name: 'invoiceCancelTime',
+        caption: '发票报废时间'
+    }],
     alterHistory: [{
         name: 'userChangeName',
         caption: '用户名称'
@@ -1869,6 +2190,11 @@ app.getAddFormFields = function (name) {
                 caption: '地址',
                 maxlength: 50
             }, {
+                name: 'roleId',
+                caption: '员工所属角色',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('role/listData.do', 'roleName', 'roleId')
+            }, {
                 name: 'empType',
                 caption: '员工类型',
                 type: 'listcombobox',
@@ -1976,7 +2302,7 @@ app.getAddFormFields = function (name) {
                 options: {
                     idKey: 'orgId',
                     pIdKey: 'orgParentId',
-                    name: 'orgId',
+                    name: 'orgName',
                     N: 's',
                     Y: 'p',
                     nodes: app.getTreeComboboxNodes('org/listData.do')
@@ -1992,6 +2318,17 @@ app.getAddFormFields = function (name) {
                     Y: 'p',
                     nodes: app.getTreeComboboxNodes('permission/listAllMenusAndPerms.do')
                 }
+            },{
+                name: 'isAdmin',
+                caption:'是否是管理员',
+                type:'listcombobox',
+                options: [{
+                    key: '是',
+                    value: true
+                }, {
+                    key: '否',
+                    value: false
+                }]
             }, {
                 name: 'remarks',
                 caption: '备注'
@@ -2192,6 +2529,33 @@ app.getAddFormFields = function (name) {
                 name: 'oldSafetyCode',
                 caption: '旧安全卡编号'
             }];
+        case 'assign' :
+            return [{
+                name: 'invoiceCode',
+                caption:'发票代码'
+            },{
+                name: 'sInvoiceNumber',
+                caption: '发票起始号码',
+            },{
+                name: 'eInvoiceNumber',
+                caption: '发票终止号码',
+            }];
+        case 'assignassignment' :
+            return [{
+                name: 'invoiceCode',
+                caption:'发票代码'
+            },{
+                name: 'sInvoiceNumber',
+                caption:'发票起始号码'
+            },{
+                name: 'eInvoiceNumber',
+                caption:'发票终止号码'
+            },{
+                name: 'empId',
+                caption:'所属员工',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('emp/listData.do', 'empName', 'empId')
+            }];
     }
 };
 
@@ -2390,6 +2754,11 @@ app.getEditFormFields = function (name) {
                 name: 'empAddress',
                 caption: '地址',
                 maxlength: 50
+            },  {
+                name: 'roleId',
+                caption: '员工所属角色',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('role/listData.do', 'roleName', 'roleId')
             }, {
                 name: 'empType',
                 caption: '员工类型',
@@ -2549,6 +2918,17 @@ app.getEditFormFields = function (name) {
                     Y: 'p',
                     nodes: app.getTreeComboboxNodes('permission/listAllMenusAndPerms.do')
                 }
+            }, {
+                name: 'isAdmin',
+                caption:'是否是管理员',
+                type:'listcombobox',
+                options: [{
+                    key: '是',
+                    value: true
+                }, {
+                    key: '否',
+                    value: false
+                }]
             }, {
                 name: 'remarks',
                 caption: '备注'
@@ -3045,7 +3425,6 @@ app.getEditFormFields = function (name) {
                 caption: '燃气表当前址码',
                 required: true
             }];
-
     }
 };
 
@@ -3512,6 +3891,85 @@ app.getToolbarFields = function (name) {
             }, {
                 name: 'userName',
                 caption: '用户姓名',
+                type: 'input'
+            }];
+        case 'assign' :
+            return [{
+                name: 'add',
+                caption: '发票录入',
+                perm:'invoice:assign:add'
+            },{
+                name: 'assignment',
+                caption: '发票分配',
+                perm:'invoice:assign:assignment'
+            }, {
+                name: 'invoiceCode',
+                caption: '发票代码',
+                type: 'input'
+            }, {
+                name: 'invoiceNumber',
+                caption: '发票号码',
+                type: 'input'
+            }];
+        case 'printCancel' :
+            return [{
+                name: 'invoiceCode',
+                caption: '发票代码',
+                type: 'input'
+            }, {
+                name: 'invoiceNumber',
+                caption: '发票号码',
+                type: 'input'
+            }, {
+                name: 'empId',
+                caption: '所属员工',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('emp/listData.do', 'empName', 'empId')
+            }];
+        case 'order' :
+            return [{
+                name: 'record_voice_over',
+                caption: '识别IC卡',
+                perm:'recharge:order:record'
+            },{
+                name: 'credit_card',
+                caption: '写卡',
+                perm:'recharge:order:print'
+            },{
+                name: 'print',
+                caption: '发票打印',
+                perm:'recharge:order:print'
+            },{
+                name: 'crop_original',
+                caption: '原票补打',
+                perm:'recharge:order:print'
+            },{
+                name: 'fiber_new',
+                caption: '新票补打',
+                perm:'recharge:order:print'
+            },{
+                name: 'cancel',
+                caption: '发票作废',
+                perm:'recharge:order:cancel'
+            }, {
+                name: 'userName',
+                caption: '用户编号',
+                type: 'input'
+            }, {
+                name: 'iccardId',
+                caption: 'IC卡编号',
+                type: 'input'
+            }, {
+                name: 'iccardIdentifier',
+                caption: 'IC卡识别号',
+                type: 'input'
+            }, {
+                name: 'invoiceCode',
+                caption: '发票代码',
+                type: 'input'
+            }, {
+                name: 'invoiceNumber',
+                caption: '发票号码',
                 type: 'input'
             }];
     }

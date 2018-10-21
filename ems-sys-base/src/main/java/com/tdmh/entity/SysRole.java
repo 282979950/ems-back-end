@@ -56,19 +56,25 @@ public class SysRole extends BaseEntity {
     private List<Integer> roleOrgList;
 
     /**
+     * 是否是管理员
+     */
+    private Boolean isAdmin;
+
+    /**
      * 角色权限
      */
     private Set<SysPermission> permissions;
     
     private List<Integer> rolePermList;
 
-    public SysRole(Integer roleId, String roleName, String roleDists, String roleOrgs, Date createTime, Integer createBy, Date updateTime, Integer updateBy,
+    public SysRole(Integer roleId, String roleName, String roleDists, String roleOrgs, Boolean isAdmin, Date createTime, Integer createBy, Date updateTime, Integer updateBy,
                    Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.roleId = roleId;
         this.roleName = roleName;
         this.roleDists = roleDists;
         this.roleOrgs = roleOrgs;
+        this.isAdmin = isAdmin;
     }
 
     public SysRole() {

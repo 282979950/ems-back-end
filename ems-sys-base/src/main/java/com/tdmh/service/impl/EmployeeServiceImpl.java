@@ -101,9 +101,13 @@ public class EmployeeServiceImpl implements IEmployeeService {
         int resultCount = employeeMapper.addEmployee(employee);
         if (resultCount == 0) {
             return JsonData.fail("新建用户失败");
-        } else {
-            return JsonData.successMsg("新建用户成功");
         }
+        int resultCount2 = employeeMapper.addEmployeeRole(employee);
+        if(resultCount2 == 0){
+            return JsonData.fail("新建用户失败");
+        }
+        return JsonData.successMsg("新建用户成功");
+
     }
 
     @Override
@@ -117,9 +121,14 @@ public class EmployeeServiceImpl implements IEmployeeService {
         int resultCount = employeeMapper.editEmployee(employee);
         if (resultCount == 0) {
             return JsonData.fail("更新用户失败");
-        } else {
-            return JsonData.successMsg("更新用户成功");
         }
+        employeeMapper.deleteEmployeeRole(employee.getEmpId());
+        int resultCount2 = employeeMapper.addEmployeeRole(employee);
+        if(resultCount2 == 0){
+            return JsonData.fail("更新用户失败");
+        }
+            return JsonData.successMsg("更新用户成功");
+
     }
 
     @Override
@@ -138,6 +147,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
             employees.add(emp);
         }
         int resultCount = employeeMapper.deleteEmployee(employees);
+        employeeMapper.deleteEmployeeRole(currentEmpId);
         if (resultCount < employees.size()) {
             return JsonData.fail("删除用户失败");
         }

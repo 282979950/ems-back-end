@@ -88,4 +88,6 @@ public class CreateAccountParam extends BaseEntity {
 
     private String flowNumber;
 
+    private Integer orderId;
+
 }

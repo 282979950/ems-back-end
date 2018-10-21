@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.InvoiceMapper">
+    <resultMap id="BaseResultMap" type="com.tdmh.entity.Invoice">
+        <constructor>
+            <idArg column="invoice_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="invoice_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="invoice_number" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="invoice_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="invoice_generate_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="invoice_assign_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="invoice_print_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="invoice_cancel_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="emp_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="emp_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        invoice_id, invoice_code, invoice_number, invoice_status, invoice_generate_time, invoice_assign_time,
+        invoice_print_time, invoice_cancel_time, emp_id, create_time, create_by, update_time, update_by, usable
+        remarks
+    </sql>
+    <select id="getAllAssignInvoiceList" parameterType="map" resultType="com.tdmh.entity.Invoice">
+        select i.invoice_id AS invoiceId, i.invoice_code as invoiceCode,i.invoice_number as invoiceNumber,
+        sd.dict_key as invoiceStatusName, e.emp_name as createByName, i.invoice_generate_time as invoiceGenerateTime
+        from invoice i
+        join sys_dictionary sd on i.invoice_status = sd.dict_value
+        join employee e on i.create_by = e.emp_id
+        where sd.dict_category = 'invoice_status' and i.invoice_status = 1
+        <if test="invoiceCode!=null and invoiceCode!=''">
+            and i.invoice_code like CONCAT('%', #{invoiceCode}, '%')
+        </if>
+        <if test="invoiceNumber!=null and invoiceNumber!=''">
+            and i.invoice_number like CONCAT('%', #{invoiceNumber}, '%')
+        </if>
+    </select>
+    <insert id="insertSelective" parameterType="com.tdmh.entity.Invoice">
+        insert into invoice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="invoiceCode != null">
+                invoice_code,
+            </if>
+            <if test="invoiceNumber != null">
+                invoice_number,
+            </if>
+            <if test="invoiceStatus != null">
+                invoice_status,
+            </if>
+            <if test="invoiceGenerateTime != null">
+                invoice_generate_time,
+            </if>
+            <if test="invoiceAssignTime != null">
+                invoice_assign_time,
+            </if>
+            <if test="invoicePrintTime != null">
+                invoice_print_time,
+            </if>
+            <if test="invoiceCancelTime != null">
+                invoice_cancel_time,
+            </if>
+            <if test="empId != null">
+                emp_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="usable != null">
+                usable,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="invoiceCode != null">
+                #{invoiceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceNumber != null">
+                #{invoiceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceStatus != null">
+                #{invoiceStatus,jdbcType=INTEGER},
+            </if>
+            <if test="invoiceGenerateTime != null">
+                #{invoiceGenerateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="invoiceAssignTime != null">
+                #{invoiceAssignTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="invoicePrintTime != null">
+                #{invoicePrintTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="invoiceCancelTime != null">
+                #{invoiceCancelTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="empId != null">
+                #{empId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="usable != null">
+                #{usable,jdbcType=BIT},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO invoice (invoice_code,invoice_number,invoice_status,invoice_generate_time,create_by,create_time,update_by,update_time,usable)
+        VALUES
+        <foreach collection="invoiceList" item="item" index="index" separator="," >
+            (#{item.invoiceCode},#{item.invoiceNumber},#{item.invoiceStatus},NOW(),#{item.createBy},NOW(),#{item.updateBy},NOW(),#{item.usable})
+        </foreach>
+    </insert>
+    <select id="findInvoiceByCodeAndNumber" resultType="com.tdmh.entity.Invoice">
+        select i.invoice_id AS invoiceId, i.invoice_code as invoiceCode,i.invoice_number as invoiceNumber
+        from invoice i
+        where usable = 1
+        <if test="invoiceCode!=null and invoiceCode!=''">
+           and invoice_code = #{invoiceCode}
+        </if>
+        <if test="invoiceNumberList!=null and invoiceNumberList.size > 0">
+           and invoice_number in
+            <foreach item="invoiceNumber" index="index" collection="invoiceNumberList" open="(" separator="," close=")">
+                #{invoiceNumber}
+            </foreach>
+        </if>
+        <if test="invoiceStatus!=null and invoiceStatus!=''">
+            and invoice_status = #{invoiceStatus}
+        </if>
+    </select>
+    <update id="updateInvoiceToEmployee" parameterType="map">
+        update invoice set invoice_status = 2 , invoice_assign_time = NOW() , emp_id = #{empId}, update_by = #{currentEmpId},update_time = NOW()
+        where invoice_code=#{invoiceCode} and invoice_number in
+        <foreach item="invoiceNumber" index="index" collection="invoiceNumberList" open="(" separator="," close=")">
+            #{invoiceNumber}
+        </foreach>
+    </update>
+    <select id="getAllPrintCancelInvoiceList" parameterType="map" resultType="com.tdmh.entity.Invoice">
+        select i.invoice_id AS invoiceId, i.invoice_code as invoiceCode,i.invoice_number as invoiceNumber,
+        sd.dict_key as invoiceStatusName, emp.emp_name as empName, i.invoice_assign_time as invoiceAssignTime,
+        i.invoice_print_time as invoicePrintTime, i.invoice_cancel_time as invoiceCancelTime
+        from invoice i
+        join sys_dictionary sd on i.invoice_status = sd.dict_value
+        left join employee emp on i.emp_id = emp.emp_id
+        where sd.dict_category = 'invoice_status' and <![CDATA[ i.invoice_status <> 1 ]]>
+        <if test="invoiceCode!=null and invoiceCode!=''">
+            and i.invoice_code like CONCAT('%', #{invoiceCode}, '%')
+        </if>
+        <if test="invoiceNumber!=null and invoiceNumber!=''">
+            and i.invoice_number like CONCAT('%', #{invoiceNumber}, '%')
+        </if>
+        <if test="empId!=null">
+            and i.emp_id = #{empId}
+        </if>
+    </select>
+    <select id="findCurrentInvoice" parameterType="int" resultType="com.tdmh.entity.Invoice">
+         SELECT invoice_code as invoiceCode,invoice_number as invoiceNumber FROM invoice WHERE order_id = #{orderId} and usable = 1 order by invoice_id desc limit 1
+    </select>
+    <select id="findInvoice" parameterType="int" resultType="com.tdmh.entity.Invoice">
+          SELECT invoice_code as invoiceCode,invoice_number as invoiceNumber FROM invoice WHERE emp_id = #{currentEmpId} AND invoice_status = 2 LIMIT 1
+    </select>
+    <update id="printInvoice" parameterType="map">
+        update invoice set order_id = #{orderId} ,invoice_print_emp = #{currentEmpId},invoice_print_time = NOW(), invoice_status = 3
+        where invoice_code = #{invoiceCode} and invoice_number = #{invoiceNumber}
+    </update>
+    <update id="cancelInvoice" parameterType="map">
+        update invoice set invoice_cancel_emp = #{currentEmpId},invoice_cancel_time = NOW(), invoice_status = 4
+        where invoice_code = #{invoiceCode} and invoice_number = #{invoiceNumber}
+    </update>
+</mapper>

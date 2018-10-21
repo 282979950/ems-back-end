@@ -49,7 +49,7 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
         userOrders.setOrderType(2); //2为普通充值类型
         userOrders.setUpdateTime(new Date());
-        userOrders.setOrderStatus(2);
+        userOrders.setOrderStatus(1);
         int resultCount = userOrdersMapper.insert(userOrders);
         if (resultCount == 0) {
             return JsonData.fail("充值订单失败");
@@ -59,6 +59,7 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         param.setIccardId(userCard.getCardId());
         param.setIccardPassword(userCard.getCardPassword());
         param.setOrderGas(userOrders.getOrderGas());
+        param.setOrderId(userOrders.getOrderId());
         param.setFlowNumber(userOrders.getFlowNumber());
         int serviceTimes = userMapper.getServiceTimesByUserId(userOrders.getUserId());
         param.setServiceTimes(serviceTimes);

@@ -599,11 +599,29 @@
                     case 'event' :
                         $field.trigger('event');
                         break;
+                    case 'assignment' :
+                        $field.trigger('assignment');
+                        break;
                     case 'add_to_queue':
                         $field.trigger('add_to_queue');
                         break;
                     case 'mail_outline':
                         $field.trigger('mail_outline');
+                        break;
+                    case 'credit_card' :
+                        $field.trigger('credit_card');
+                        break;
+                    case 'print' :
+                        $field.trigger('print');
+                        break;
+                    case 'crop_original' :
+                        $field.trigger('crop_original');
+                        break;
+                    case 'fiber_new' :
+                        $field.trigger('fiber_new');
+                        break;
+                    case 'cancel' :
+                        $field.trigger('cancel');
                         break;
                     default:
                         break;

@@ -58,6 +58,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
         role.setRoleName(roleName);
         role.setRoleDists(roleParam.getDistIds());
         role.setRoleOrgs(roleParam.getOrgIds());
+        role.setIsAdmin(roleParam.getIsAdmin());
         role.setRemarks(roleParam.getRemarks());
         role.setUsable(true);
         role.setCreateBy(roleParam.getCreateBy());
@@ -119,6 +120,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
         sysRole.setRoleName(roleName);
         sysRole.setRoleDists(roleParam.getDistIds());
         sysRole.setRoleOrgs(roleParam.getOrgIds());
+        sysRole.setIsAdmin(roleParam.getIsAdmin());
         sysRole.setRemarks(roleParam.getRemarks());
         sysRole.setUpdateBy(roleParam.getUpdateBy());
         int resultCount = roleMapper.updateByPrimaryKey(sysRole);
@@ -204,6 +206,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
            	    sysRoleParam.setOrgIds(StringUtils.join(sysRole.getRoleOrgList(),Const.DEFAULT_SEPARATOR));
                 sysRole.setRolePermList();
             	sysRoleParam.setPermIds(StringUtils.join(sysRole.getRolePermList(),Const.DEFAULT_SEPARATOR));
+                sysRoleParam.setIsAdmin(sysRole.getIsAdmin());
                 sysRoleParam.setCreateTime(sysRole.getCreateTime());
                 sysRoleParam.setRemarks(sysRole.getRemarks());
                 roleList.add(sysRoleParam);
