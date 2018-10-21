@@ -1998,6 +1998,11 @@ app.getAddFormFields = function (name) {
                 caption: '地址',
                 maxlength: 50
             }, {
+                name: 'roleId',
+                caption: '员工所属角色',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('role/listData.do', 'roleName', 'roleId')
+            }, {
                 name: 'empType',
                 caption: '员工类型',
                 type: 'listcombobox',
@@ -2557,6 +2562,11 @@ app.getEditFormFields = function (name) {
                 name: 'empAddress',
                 caption: '地址',
                 maxlength: 50
+            },  {
+                name: 'roleId',
+                caption: '员工所属角色',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('role/listData.do', 'roleName', 'roleId')
             }, {
                 name: 'empType',
                 caption: '员工类型',

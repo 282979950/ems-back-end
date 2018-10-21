@@ -89,6 +89,17 @@ public class EmployeeParam extends BaseEntity {
     private String empAddress;
 
     /**
+     * 员工所属角色
+     */
+    @NotNull
+    private Integer roleId;
+
+//    /**
+//     * 员工角色名称
+//     */
+//    private String roleName;
+
+    /**
      * 员工类型
      */
     @NotNull
@@ -126,7 +137,7 @@ public class EmployeeParam extends BaseEntity {
     private String empLoginFlagName;
 
     public EmployeeParam(Integer empId, String empNumber, String empName, Integer empOrgId, String orgName, Integer empDistrictId, String distName, String
-            empLoginName, String empPassword, String empEmail, String empPhone, String empMobile, String empAddress, Integer empType, String empTypeName,
+            empLoginName, String empPassword, String empEmail, String empPhone, String empMobile, String empAddress, Integer roleId , Integer empType, String empTypeName,
                          String empManagementDistId, String empLoginIp, Date empLoginDate, Boolean empLoginFlag, String empLoginFlagName, Date createTime,
                          Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
@@ -143,6 +154,7 @@ public class EmployeeParam extends BaseEntity {
         this.empPhone = empPhone;
         this.empMobile = empMobile;
         this.empAddress = empAddress;
+        this.roleId = roleId;
         this.empType = empType;
         this.empTypeName = empTypeName;
         this.empManagementDistId = empManagementDistId;

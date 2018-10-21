@@ -431,6 +431,7 @@
             <arg column="emp_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="role_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="emp_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="emp_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="emp_management_dist_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
@@ -449,16 +450,21 @@
     <select id="getAllEmployees" resultMap="EmployeeParam">
         select
         e.emp_id, e.emp_number, e.emp_name, e.emp_org_id, o.org_name, e.emp_district_id, sd.dist_name, e.emp_login_name, e.emp_password, e.emp_email,
-        e.emp_phone, e.emp_mobile, e.emp_address, e.emp_type , sd2.dict_key AS emp_type_name, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e
+        e.emp_phone, e.emp_mobile, e.emp_address, er.role_id, e.emp_type , sd2.dict_key AS emp_type_name, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e
         .emp_login_flag, sd3.dict_key AS emp_login_flag_name, e.create_time, e .create_by, e.update_time, e.update_by, e.usable, e.remarks
         from
-        employee e left join sys_district sd on e.emp_district_id = sd.dist_id
+        employee e
+        left join sys_district sd on e.emp_district_id = sd.dist_id
         left join sys_organization o on e.emp_org_id = o.org_id
+        left join employee_role er on e.emp_id = er.emp_id
         LEFT JOIN sys_dictionary sd2 on e.emp_type = sd2.dict_value and sd2.dict_category = 'emp_type' and sd2.usable = 1
         LEFT JOIN sys_dictionary sd3 on e.emp_login_flag = sd3.dict_value and sd3.dict_category = 'emp_login_flag' and sd3.usable = 1
         where e.usable = 1
     </select>
     <insert id="addEmployee" parameterType="com.tdmh.param.EmployeeParam">
+        <selectKey keyColumn="empId" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
         insert into employee (emp_number, emp_name,
         emp_org_id, emp_district_id, emp_login_name,
         emp_password, emp_email, emp_phone,
@@ -474,6 +480,14 @@
         #{empLoginFlag,jdbcType=BIT}, NOW(), #{createBy,jdbcType=INTEGER},
         NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
     </insert>
+    <insert id="addEmployeeRole" parameterType="com.tdmh.param.EmployeeParam">
+        insert into employee_role(emp_id, role_id, create_time, create_by, update_time, update_by,remarks)
+        values (#{empId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER},NOW(), #{updateBy,jdbcType=INTEGER},
+        NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
+    </insert>
+    <delete id="deleteEmployeeRole" parameterType="int">
+        delete from employee_role where emp_id = #{empId}
+    </delete>
     <update id="editEmployee" parameterType="com.tdmh.entity.Employee">
         update employee
         <set>
@@ -532,11 +546,12 @@
     <select id="searchEmployee" parameterType="map" resultMap="EmployeeParam">
         select
         e.emp_id, e.emp_number, e.emp_name, e.emp_org_id, o.org_name, e.emp_district_id, sd.dist_name, e.emp_login_name, e.emp_password, e.emp_email,
-        e.emp_phone, e.emp_mobile, e.emp_address, e.emp_type , sd2.dict_key AS emp_type_name, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e
+        e.emp_phone, e.emp_mobile, e.emp_address, er.role_id, e.emp_type , sd2.dict_key AS emp_type_name, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e
         .emp_login_flag, sd3.dict_key AS emp_login_flag_name, e.create_time, e .create_by, e.update_time, e.update_by, e.usable, e.remarks
         from
         employee e left join sys_district sd on e.emp_district_id = sd.dist_id
         left join sys_organization o on e.emp_org_id = o.org_id
+        left join employee_role er on e.emp_id = er.emp_id
         LEFT JOIN sys_dictionary sd2 on e.emp_type = sd2.dict_value and sd2.dict_category = 'emp_type' and sd2.usable = 1
         LEFT JOIN sys_dictionary sd3 on e.emp_login_flag = sd3.dict_value and sd3.dict_category = 'emp_login_flag' and sd3.usable = 1
         where e.usable = 1
@@ -568,11 +583,12 @@
     <select id="getEmpById" parameterType="integer" resultMap="EmployeeParam">
         select
         e.emp_id, e.emp_number, e.emp_name, e.emp_org_id, o.org_name, e.emp_district_id, sd.dist_name, e.emp_login_name, e.emp_password, e.emp_email,
-        e.emp_phone, e.emp_mobile, e.emp_address, e.emp_type , sd2.dict_key AS emp_type_name, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e
+        e.emp_phone, e.emp_mobile, e.emp_address, er.role_id, e.emp_type , sd2.dict_key AS emp_type_name, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e
         .emp_login_flag, sd3.dict_key AS emp_login_flag_name, e.create_time, e .create_by, e.update_time, e.update_by, e.usable, e.remarks
         from
         employee e left join sys_district sd on e.emp_district_id = sd.dist_id
         left join sys_organization o on e.emp_org_id = o.org_id
+        left join employee_role er on e.emp_id = er.emp_id
         LEFT JOIN sys_dictionary sd2 on e.emp_type = sd2.dict_value and sd2.dict_category = 'emp_type' and sd2.usable = 1
         LEFT JOIN sys_dictionary sd3 on e.emp_login_flag = sd3.dict_value and sd3.dict_category = 'emp_login_flag' and sd3.usable = 1
         where e.usable = 1 and e.emp_id = #{empId,jdbcType=INTEGER}

@@ -45,6 +45,10 @@ public interface EmployeeMapper {
 
     int addEmployee(EmployeeParam employee);
 
+    int addEmployeeRole(EmployeeParam employee);
+
+    int deleteEmployeeRole(@Param("empId") Integer empId);
+
     int editEmployee(EmployeeParam employee);
 
     int deleteEmployee(List<EmployeeParam> employees);
