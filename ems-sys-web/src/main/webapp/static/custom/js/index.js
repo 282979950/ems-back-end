@@ -1172,7 +1172,7 @@ app.initEvent = function () {
             },
             success: function (response) {
                 var data = response.data;
-                console.log(data)
+                console.log(data);
                 var dialog = mdui.dialog({
                     title: '历史变更记录',
                     content: ' ',

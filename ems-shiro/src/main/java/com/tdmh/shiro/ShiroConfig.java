@@ -119,6 +119,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/login", "authc");
         // 配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/logout", "logout");
+        filterChainDefinitionMap.put("/wxLogin", "anon");
         // authc:所有url都必须认证通过才可以访问
         filterChainDefinitionMap.put("/*", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

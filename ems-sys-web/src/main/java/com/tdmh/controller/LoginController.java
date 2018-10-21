@@ -1,17 +1,22 @@
 package com.tdmh.controller;
 
+import com.tdmh.common.JsonData;
 import com.tdmh.entity.Principal;
+import com.tdmh.service.IWXLoginService;
 import com.tdmh.shiro.CustomFormAuthenticationFilter;
 import com.tdmh.util.ShiroUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +26,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping(value = "/")
 public class LoginController {
+
+    @Autowired
+    private IWXLoginService wxLoginService;
 
     /**
      * 进入登录页面
@@ -74,5 +82,11 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         return "login";
+    }
+
+    @RequestMapping(value = "wxLogin", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonData wxLogin(@Param("code") String code) {
+        return wxLoginService.wxLogin(code);
     }
 }
