@@ -135,17 +135,17 @@ public class FillGasServiceImpl implements IFillGasService {
     }
 
     @Override
-    public void setOveruseOrderProps(FillGasOrderParam param, BigDecimal needFillMoney) {
+    public void setOveruseOrderProps(FillGasOrderParam param, BigDecimal needFillGas, BigDecimal needFillMoney) {
         param.setFillGasOrderType(2);
-        param.setNeedFillGas(BigDecimal.ZERO);
-        param.setFillGas(BigDecimal.ZERO);
+        param.setNeedFillGas(needFillGas);
+        param.setFillGas(needFillGas);
         param.setLeftGas(BigDecimal.ZERO);
         param.setNeedFillMoney(needFillMoney);
         param.setFillMoney(needFillMoney);
         param.setLeftMoney(BigDecimal.ZERO);
     }
 
-    private void createOveruseOrder(BigDecimal payment ,BigDecimal gas, Integer userId,Integer empId) {
+    private void createOveruseOrder(BigDecimal payment, BigDecimal gas, Integer userId, Integer empId) {
         UserOrders userOrders = new UserOrders();
         userOrders.setUserId(userId);
         userOrders.setEmployeeId(empId);
@@ -153,7 +153,9 @@ public class FillGasServiceImpl implements IFillGasService {
         userOrders.setFlowNumber(String.valueOf(IdWorker.getId().nextId()));
         userOrders.setOrderGas(gas);
         userOrders.setOrderPayment(payment);
+        userOrders.setOrderSupplement(payment);
         userOrders.setOrderType(4);
+        userOrders.setCreateTime(new Date());
         userOrders.setUpdateTime(new Date());
         userOrders.setOrderStatus(2);
         userOrders.setCreateBy(empId);

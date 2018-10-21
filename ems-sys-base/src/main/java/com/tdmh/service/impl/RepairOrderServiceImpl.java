@@ -184,9 +184,17 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         userMetersMapper.installMeter(newUserMeter);
     }
 
+    /**
+     * 维修类型为换表，维修处理结果为换测控版或清零开票时需要补气
+     * @param param
+     * @return
+     */
     private boolean checkNeedFillGas(RepairOrderParam param){
-        //维修类型为换表，维修处理结果为换测控版或清零开票时需要补气
         return param.getRepairType().equals(0) || param.getRepairResultType().equals(4) || param.getRepairResultType().equals(9);
+    }
+
+    private boolean checkCloseAccount(RepairOrderParam param) {
+        return param.getRepairType().equals(5);
     }
 
     /**
@@ -197,39 +205,44 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         String repairOrderId = param.getRepairOrderId();
         BigDecimal sumOrderGas = fillGasService.getSumOrderGasByUserId(userId);
         BigDecimal sumMeterStopCode = fillGasService.getSumMeterStopCodeByUserId(userId);
-        switch (sumOrderGas.compareTo(sumMeterStopCode)) {
-            case 1:
-                // 补气
-                if(checkNeedFillGas(param)) {
+        // 当用户为销户维修单时，走销户流程
+        if (checkCloseAccount(param)) {
+            return JsonData.successMsg("新增维修单成功");
+        } else {
+            switch (sumOrderGas.compareTo(sumMeterStopCode)) {
+                case 1:
+                    // 补气
+                    if(checkNeedFillGas(param)) {
+                        FillGasOrderParam fillGasOrder = new FillGasOrderParam();
+                        fillGasOrder.setUserId(userId);
+                        fillGasOrder.setRepairOrderId(repairOrderId);
+                        BigDecimal needFillGas = sumOrderGas.subtract(sumMeterStopCode);
+                        fillGasService.setFillGasOrderProps(fillGasOrder, needFillGas);
+                        fillGasOrder.setFillGasOrderStatus(0);
+                        fillGasService.createFillGasOrder(fillGasOrder);
+                        return JsonData.successMsg("新增维修单成功,该户需要补气");
+                    } else {
+                        return JsonData.successMsg("新增维修单成功");
+                    }
+                case -1:
+                    // 超用补缴
                     FillGasOrderParam fillGasOrder = new FillGasOrderParam();
                     fillGasOrder.setUserId(userId);
                     fillGasOrder.setRepairOrderId(repairOrderId);
-                    BigDecimal needFillGas = sumOrderGas.subtract(sumMeterStopCode);
-                    fillGasService.setFillGasOrderProps(fillGasOrder, needFillGas);
+                    BigDecimal overusedGas = sumMeterStopCode.subtract(sumOrderGas);
+                    BigDecimal gasInYear = gasPriceService.findHasUsedGasInYear(userId);
+                    User user = userService.getUserById(userId);
+                    GasPrice gasPrice = gasPriceService.findGasPriceByType(user.getUserType(), user.getUserGasType());
+                    BigDecimal needFillMoney = CalculateUtil.gasToPayment(gasInYear.add(overusedGas), gasPrice).subtract(CalculateUtil.gasToPayment(gasInYear,
+                            gasPrice));
+                    fillGasService.setOveruseOrderProps(fillGasOrder, overusedGas, needFillMoney);
                     fillGasOrder.setFillGasOrderStatus(0);
                     fillGasService.createFillGasOrder(fillGasOrder);
-                    return JsonData.successMsg("新增维修单成功,该户需要补气");
-                } else {
-                    return JsonData.successMsg("新增维修单成功");
-                }
-            case -1:
-                // 超用补缴
-                FillGasOrderParam fillGasOrder = new FillGasOrderParam();
-                fillGasOrder.setUserId(userId);
-                fillGasOrder.setRepairOrderId(repairOrderId);
-                BigDecimal overusedGas = sumMeterStopCode.subtract(sumOrderGas);
-                BigDecimal gasInYear = gasPriceService.findHasUsedGasInYear(userId);
-                User user = userService.getUserById(userId);
-                GasPrice gasPrice = gasPriceService.findGasPriceByType(user.getUserType(), user.getUserGasType());
-                BigDecimal needFillMoney = CalculateUtil.gasToPayment(gasInYear.add(overusedGas), gasPrice).subtract(CalculateUtil.gasToPayment(gasInYear,
-                    gasPrice));
-                fillGasService.setOveruseOrderProps(fillGasOrder, overusedGas);
-                fillGasOrder.setFillGasOrderStatus(0);
-                fillGasService.createFillGasOrder(fillGasOrder);
-                return JsonData.successMsg("编辑维修单成功,该户需要补缴费用");
-            default:
-                // 不需要补气或超用结算
-                return JsonData.successMsg("编辑维修单成功");
+                    return JsonData.successMsg("编辑维修单成功,该户需要补缴费用");
+                default:
+                    // 不需要补气或超用结算
+                    return JsonData.successMsg("编辑维修单成功");
+            }
         }
     }
 }

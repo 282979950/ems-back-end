@@ -970,11 +970,12 @@ app.initEvent = function () {
                 }
             });
         }
-        if (table.getSelectedDatas().length === 0) {
+        var datas = table.getSelectedDatas();
+        if (datas.length === 0) {
             app.message('请选择一条数据');
             return;
         }
-        if (table.getSelectedDatas().length > 1) {
+        if (datas.length > 1) {
             app.message('只能选择一条数据');
             return;
         }
@@ -1062,9 +1063,11 @@ app.initEvent = function () {
             }]
         });
         $(".tree-combobox-panel").remove();
+        var data = datas[0];
+        var fillGasFormFields = ['fillGas', 'overuse'];
         var form = app.fillGasForm = app.createForm({
             parent: '.mdui-dialog-content',
-            fields: app.getEditFormFields(formNames),
+            fields: app.getEditFormFields(data.fillGasOrderType === 1 ? 'fillGas' : 'overuse'),
             data: table.getSelectedDatas()[0]
         });
         dialog.handleUpdate();
@@ -1617,12 +1620,15 @@ app.tableFields = {
         caption: '换卡时间'
     }],
     fillGas: [{
+        name: 'repairOrderId',
+        caption: '维修单编号'
+    }, {
         name: 'userId',
         caption: '户号'
     }, {
         name: 'fillGasOrderTypeName',
         caption: '订单类型'
-    },{
+    }, {
         name: 'userName',
         caption: '用户名称'
     }, {
@@ -2949,21 +2955,70 @@ app.getEditFormFields = function (name) {
                 caption: '剩余气量',
                 disabled: true
             }, {
+                name: 'fillGasOrderStatusName',
+                caption: '补气单状态',
+                disabled: true
+            }];
+        case 'overuse':
+            return [{
+                name: 'userId',
+                caption: '户号',
+                disabled: true
+            }, {
+                name: 'userName',
+                caption: '用户名称',
+                disabled: true
+            }, {
+                name: 'userPhone',
+                caption: '用户手机',
+                disabled: true
+            }, {
+                name: 'userAddress',
+                caption: '用户地址',
+                disabled: true
+            }, {
+                name: 'repairOrderId',
+                caption: '维修单编号',
+                disabled: true
+            }, {
+                name: 'gasCount',
+                caption: '历史购气总量',
+                disabled: true
+            }, {
+                name: 'stopCodeCount',
+                caption: '历史表止码',
+                disabled: true
+            }, {
+                name: 'needFillGas',
+                caption: '应补气量',
+                disabled: true
+            }, {
+                name: 'fillGas',
+                caption: '实补气量',
+                disabled: true
+            }, {
+                name: 'leftGas',
+                caption: '剩余气量',
+                disabled: true
+            }, {
                 name: 'needFillMoney',
                 caption: '应补金额',
                 disabled: true
             }, {
                 name: 'fillMoney',
                 caption: '实补金额',
-                disabled: true
+                required: true
             }, {
                 name: 'leftMoney',
                 caption: '剩余金额',
-                disabled: true
+                required: true
             }, {
                 name: 'fillGasOrderStatusName',
                 caption: '补气单状态',
                 disabled: true
+            },{
+                name: 'remarks',
+                caption: '备注'
             }];
         case 'alter':
             return [{
