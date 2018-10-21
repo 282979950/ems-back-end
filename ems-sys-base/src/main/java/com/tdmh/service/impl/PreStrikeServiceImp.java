@@ -38,7 +38,8 @@ public class PreStrikeServiceImp implements IPreStrikeService {
     @Autowired
     private StrikeNucleusMapper strikeNucleus;
 
-    public  JsonData selectUserByOrderTypeService(User user){
+    public  JsonData selectUserByOrderTypeService(User user,Integer currentEmpId){
+        user.setEmployeeId(currentEmpId);
         List<User> u = userMapper.selectUserByOrderType(user);
         return JsonData.success(u,"查询成功");
     }

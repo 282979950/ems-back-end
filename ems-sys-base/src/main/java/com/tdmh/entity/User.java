@@ -87,6 +87,7 @@ public class User extends BaseEntity {
      */
     private String userTypeName;
 
+
     /**
      *用气类型名称
      */

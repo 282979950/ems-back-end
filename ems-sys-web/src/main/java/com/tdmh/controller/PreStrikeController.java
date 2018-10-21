@@ -38,7 +38,8 @@ public class PreStrikeController {
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData selectUserListController(User user){
-        return preStrikeService.selectUserByOrderTypeService( user);
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return preStrikeService.selectUserByOrderTypeService( user,currentEmpId);
     }
 
     /**
@@ -63,7 +64,8 @@ public class PreStrikeController {
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData searchUserListController(User user){
-        return preStrikeService.selectUserByOrderTypeService( user);
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return preStrikeService.selectUserByOrderTypeService( user,currentEmpId);
     }
 
 }

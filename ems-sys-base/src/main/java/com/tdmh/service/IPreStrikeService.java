@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface IPreStrikeService {
 
-    JsonData selectUserByOrderTypeService(User user);
+    JsonData selectUserByOrderTypeService(User user,Integer currentEmpId);
     JsonData editUserOrdersService(User user,String  currentEmpName,Integer currentEmpId);
     JsonData selectStrikeNucleusListService(StrikeNucleus strikeNucleus);
     JsonData updateStrikeService(StrikeNucleus strikeNucleus,boolean flag);
