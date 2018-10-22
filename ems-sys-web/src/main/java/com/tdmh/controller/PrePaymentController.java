@@ -41,12 +41,12 @@ public class PrePaymentController {
     @RequiresPermissions("recharge:pre:update")
     @RequestMapping(value = "edit.do")
     @ResponseBody
-    public JsonData createUserOrder(UserOrders userOrders , Integer iccardId, String iccardIdentifier) {
+    public JsonData createUserOrder(UserOrders userOrders) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         userOrders.setEmployeeId(currentEmpId);
         userOrders.setCreateBy(currentEmpId);
         userOrders.setUpdateBy(currentEmpId);
-        return prePaymentService.createUserOrder(userOrders , iccardId , iccardIdentifier);
+        return prePaymentService.createUserOrder(userOrders);
     }
 
     //依据条件查询对应数据
@@ -55,5 +55,13 @@ public class PrePaymentController {
     @ResponseBody
     public JsonData selectFindListByPre(PrePaymentParam param){
         return prePaymentService.selectFindListByPre(param);
+    }
+
+
+    //判断数据库中IC卡识别号与IC卡编号是否一致
+    @RequestMapping(value = "/verifyCard.do")
+    @ResponseBody
+    public JsonData verifyCard(PrePaymentParam param){
+        return prePaymentService.verifyCard(param);
     }
 }

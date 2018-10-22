@@ -61,4 +61,17 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
         SELECT COUNT(user_card_id) FROM user_card
         WHERE user_id=#{userId} AND card_identifier=#{niccardIdentifier} AND card_identifier !=#{iccardIdentifier}
     </select>
+    <select id="getCardByCardMessage" parameterType="map" resultType="int">
+        SELECT COUNT(user_card_id) FROM user_card
+        WHERE usable=1
+        <if test="userId!=null and userId!=''">
+            AND user_id = #{userId}
+        </if>
+        <if test="iccardId!=null and iccardId!=''">
+            AND card_id = #{iccardId}
+        </if>
+        <if test="iccardIdentifier!=null and iccardIdentifier!=''">
+            AND card_identifier=#{iccardIdentifier}
+        </if>
+    </select>
 </mapper>

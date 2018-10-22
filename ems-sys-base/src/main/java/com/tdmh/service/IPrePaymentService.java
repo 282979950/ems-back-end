@@ -11,7 +11,9 @@ public interface IPrePaymentService {
 
     JsonData getAllOrderInformation();
 
-    JsonData createUserOrder(UserOrders userOrders , Integer iccardId, String iccardIdentifier);
+    JsonData createUserOrder(UserOrders userOrders);
 
     JsonData selectFindListByPre(PrePaymentParam param);
+
+    JsonData verifyCard(PrePaymentParam param);
 }

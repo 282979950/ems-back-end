@@ -44,8 +44,8 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
 
     @Transactional
     @Override
-    public JsonData createUserOrder(UserOrders userOrders , Integer iccardId, String iccardIdentifier) {
-       userOrders.setUsable(true);
+    public JsonData createUserOrder(UserOrders userOrders) {
+        userOrders.setUsable(true);
         userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
         userOrders.setOrderType(2); //2为普通充值类型
         userOrders.setUpdateTime(new Date());
@@ -70,5 +70,14 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     public JsonData selectFindListByPre(PrePaymentParam param) {
         List<PrePaymentParam> list = prePaymentMapper.getAllOrderInformation(param);
         return list == null || list.size() == 0 ? JsonData.successMsg("暂无可充值用户") : JsonData.success(list,"查询成功");
+    }
+
+    @Override
+    public JsonData verifyCard(PrePaymentParam param) {
+        int result = userCardMapper.getCardByCardMessage(null,param.getIccardId(),param.getIccardIdentifier());
+        if(result == 0){
+            return JsonData.fail("IC卡识别号与IC卡号与数据库绑定的不一致");
+        }
+        return JsonData.success();
     }
 }

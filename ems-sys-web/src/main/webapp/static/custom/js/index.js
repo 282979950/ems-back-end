@@ -592,6 +592,7 @@ app.initEvent = function () {
                 return;
             }
         }
+        var flag = true;
         if (app.currentPageName == 'prePayment') {
             var result = app.ReadCard();
             if (result[0] !== 'S') {
@@ -606,7 +607,27 @@ app.initEvent = function () {
                 app.warningMessage('卡内已有未圈存的气量，不能充值');
                 return;
             }
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: 'prePayment/verifyCard.do',
+                data : {
+                    'iccardId' : result[3],
+                    'iccardIdentifier' : result[2]
+                },
+                contentType: 'application/x-www-form-urlencoded',
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (response) {
+                    if(!response.status){
+                        app.errorMessage(response.message);
+                        flag = false;
+                    }
+                }
+            });
         }
+        if(!flag) return;
         var dialog = mdui.dialog({
             title: '编辑',
             modal: true,
