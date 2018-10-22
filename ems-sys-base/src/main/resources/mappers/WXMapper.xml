@@ -10,5 +10,39 @@
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
         </constructor>
     </resultMap>
-
+    <select id="getBindUsersByWXUserId" resultMap="WXUserParam">
+        select
+        wxu.id, wxu.wx_user_id, wxu.user_id, u.user_name, wxu.create_time
+        from
+        wx_user wxu left join `user` u on wxu.user_id = u.user_id
+        where wxu.wx_user_id = #{wxUserId}
+    </select>
+    <insert id="bindUser" parameterType="map">
+        insert into
+        wx_user(wx_user_id, user_id, create_time)
+        values (#{wxUserId}, #{userId}, NOW())
+    </insert>
+    <delete id="unBindUser">
+        delete from wx_user
+        where wx_user_id = #{wxUserId} and user_id = #{userId}
+    </delete>
+    <select id="checkUserExists" resultType="java.lang.Integer" parameterType="map">
+        select
+        count(1)
+        from user
+        where user_id = #{userId} and user_name = #{userName} and usable = 1
+    </select>
+    <resultMap id="WXUserInfoParam" type="com.tdmh.param.WXUserInfoParam" >
+        <constructor >
+            <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String" />
+        </constructor>
+    </resultMap>
+    <select id="getUserInfo" resultMap="WXUserInfoParam" parameterType="integer">
+        select
+        user_id, user_name, user_address
+        from `user`
+        where user_id = #{userId} and usable = 1
+    </select>
 </mapper>
