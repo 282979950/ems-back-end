@@ -45,4 +45,10 @@
         from `user`
         where user_id = #{userId} and usable = 1
     </select>
+    <select id="checkBindExists" resultType="java.lang.Boolean">
+        select
+        count(1)
+        from wx_user
+        where user_id = #{userId} and wx_user_id = #{wxUserId}
+    </select>
 </mapper>

@@ -14,13 +14,17 @@ import java.util.List;
 @Mapper
 @Component
 public interface WXMapper {
+
     List<WXUserParam> getBindUsersByWXUserId(@Param("wxUserId") String wxUserId);
 
     int bindUser(@Param("wxUserId") String wxUserId, @Param("userId") Integer userId);
+
+
+    boolean checkBindExists(@Param("wxUserId") String wxUserId, @Param("userId") Integer userId);
 
     int unBindUser(@Param("wxUserId") String wxUserId, @Param("userId") Integer userId);
 
     int checkUserExists(@Param("userId") Integer userId, @Param("userName") String userName);
 
-    WXUserInfoParam getUserInfo(@Param("userId")Integer userId);
+    WXUserInfoParam getUserInfo(@Param("userId") Integer userId);
 }
