@@ -84,6 +84,7 @@ app.getPanelContent = function (name) {
          */
         case 'cardQuery':
         case 'accountQuery':
+            panelContent = this.DEFAULT_TEMPLATE;
         case 'userQuery':
         case 'exceptionQuery':
         case 'businessDataQuery':
@@ -2266,6 +2267,31 @@ app.tableFields = {
     },{
         name:'rechargeTime',
         caption:'充值时间'
+    }],
+    accountQuery:[{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'userName',
+        caption: '用户名'
+    }, {
+        name: 'userDistName',
+        caption: '用户区域'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userTypeName',
+        caption: '用户类型'
+    }, {
+        name: 'userGasTypeName',
+        caption: '用气类型'
+    }, {
+        name: 'openByName',
+        caption: '开户人'
+    }, {
+        name: 'openTime',
+        caption: '开户时间'
     }]
 };
 /*
@@ -4258,6 +4284,33 @@ app.getToolbarFields = function (name) {
                 name: 'check_box',
                 caption: '审批',
                 perm:'financial:strike:visit'
+            }];
+        case 'accountQuery':
+            return [{
+                name: 'accountDate',
+                caption: '开户日期',
+                type: 'date',
+                formatter: 'yyyy-mm-dd',
+                minView: 2
+            },{
+                name: 'userDistId',
+                caption: '用户区域',
+                type: 'input',
+                type: 'treecombobox',
+                options: {
+                    idKey: 'distId',
+                    pIdKey: 'distParentId',
+                    name: 'distName',
+                    chkStyle: 'radio',
+                    radioType: 'all',
+                    N: 's',
+                    Y: 'p',
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
+                }
+            },{
+                name: 'userAddress',
+                caption: '用户地址',
+                type: 'input'
             }];
     }
 };

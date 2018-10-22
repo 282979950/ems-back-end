@@ -950,3 +950,24 @@ DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci
 ROW_FORMAT=DYNAMIC
 ;
 
+
+--函数
+set global log_bin_trust_function_creators=TRUE;
+CREATE FUNCTION `getDistrictChildList`(distId INT)
+ RETURNS varchar(1000)
+BEGIN
+    DECLARE sTemp VARCHAR(1000);
+    DECLARE sTempChd VARCHAR(1000);
+		SET sTempChd = cast(distId as CHAR);
+		WHILE sTempChd is not null DO
+IF (sTemp is not null) THEN
+SET sTemp = concat(sTemp,',',sTempChd);
+ELSE
+SET sTemp = concat(sTempChd);
+END IF;
+          SELECT group_concat(dist_id) INTO sTempChd FROM sys_district where FIND_IN_SET(dist_parent_id,sTempChd)>0;
+    END WHILE;
+    RETURN sTemp;
+END;
+
+

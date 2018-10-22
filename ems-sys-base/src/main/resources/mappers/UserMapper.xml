@@ -459,6 +459,8 @@
         user_status = 3,
         user_locked = #{userLocked,jdbcType=BIT},
         service_times = 0,
+        open_time = NOW(),
+        open_by = #{updateBy,jdbcType=INTEGER},
         update_time = NOW(),
         update_by = #{updateBy,jdbcType=INTEGER},
         usable = #{usable,jdbcType=BIT},
@@ -628,5 +630,24 @@ WHERE orders.order_type IN ( '2','4')
         </if>
         ORDER BY orderCreateTime DESC
     </select>
-
+    <select id="searchAccountQueryList" parameterType="map" resultType="com.tdmh.param.AccountQueryParam">
+        select u.user_id as userId, u.user_name as userName, sd.dist_name as userDistName, u.user_address as userAddress,
+        sd1.dict_key AS userTypeName , sd2.dict_key AS  userGasTypeName, e.emp_name as openByName, u.open_time as openTime
+        from user u
+        left join sys_district sd on u.user_dist_id = sd.dist_id
+        LEFT JOIN sys_dictionary sd1 ON u.user_type = sd1.dict_value AND sd1.dict_category = 'user_type' AND sd1.usable = 1
+        LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND sd2.usable = 1
+        LEFT JOIN employee e on u.open_by = e.emp_id
+        where u.usable = 1
+        <if test="accountDate!=null and accountDate!=''">
+            AND to_days(u.open_time) = to_days(#{accountDate})
+        </if>
+        <if test="distIds!=null and distIds!=''">
+            AND u.user_dist_id IN (${distIds})
+        </if>
+        <if test="userAddress!=null and userAddress!=''">
+            AND u.user_address like CONTACT('%',#{userAddress},'%')
+        </if>
+        ORDER BY u.open_time DESC
+    </select>
 </mapper>

@@ -239,7 +239,7 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list" style="">
-                <shiro:hasPermission name="querystats:iccard:visit">
+                <shiro:hasPermission name="querystats:ardQuery:visit">
                 <div class="mdui-list-item mdui-ripple nav-item ardQuery">IC卡查询</div>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="querystats:account:visit">

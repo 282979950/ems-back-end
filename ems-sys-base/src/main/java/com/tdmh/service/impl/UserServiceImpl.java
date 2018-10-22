@@ -4,15 +4,10 @@ package com.tdmh.service.impl;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.*;
-import com.tdmh.entity.mapper.UserCardMapper;
-import com.tdmh.entity.mapper.UserMapper;
-import com.tdmh.entity.mapper.UserMetersMapper;
-import com.tdmh.entity.mapper.UserOrdersMapper;
-import com.tdmh.param.CreateAccountParam;
-import com.tdmh.param.CreateArchiveParam;
-import com.tdmh.param.InstallMeterParam;
-import com.tdmh.param.LockAccountParam;
+import com.tdmh.entity.mapper.*;
+import com.tdmh.param.*;
 import com.tdmh.service.IMeterService;
+import com.tdmh.service.ISysDistrictService;
 import com.tdmh.service.IUserService;
 import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RandomUtils;
@@ -49,6 +44,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IMeterService meterService;
+
+    @Autowired
+    private SysDistrictMapper sysDistrictMapper;
 
     @Override
     public JsonData getAllArchives() {
@@ -406,6 +404,17 @@ public class UserServiceImpl implements IUserService {
         user.setUserStatus(3);
         List<User>  u =userMapper.userChangeList(user);
         return   u == null || u.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(u,"查询成功");
+    }
+
+    @Override
+    public JsonData searchAccountQueryList(String accountDate, Integer userDistId, String userAddress) {
+        String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
+        List<AccountQueryParam> list = userMapper.searchAccountQueryList(accountDate,distIds,userAddress);
+        AccountQueryParam param = new AccountQueryParam();
+        param.setUserAddress("<strong>总开户数:</strong>");
+        param.setUserTypeName("<strong>共<font color=\"#FF0000\">"+list.size()+"</font>条</strong>");
+        list.add(param);
+        return  list == null || list.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(list,"查询成功");
     }
 
 }

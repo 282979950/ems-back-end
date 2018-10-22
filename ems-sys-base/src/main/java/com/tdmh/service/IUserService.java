@@ -7,6 +7,7 @@ import com.tdmh.param.CreateArchiveParam;
 import com.tdmh.param.InstallMeterParam;
 import com.tdmh.param.LockAccountParam;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -192,6 +193,12 @@ public interface IUserService {
      * 查询所有已开户相关用户信息
      */
     JsonData userChangeService(User user);
+
+    /**
+     * 开户账户查询
+     * @return
+     */
+    JsonData searchAccountQueryList(String accountDate, Integer userDistId, String userAddress);
 
 
 }
