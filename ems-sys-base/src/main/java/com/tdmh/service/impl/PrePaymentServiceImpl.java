@@ -44,8 +44,8 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
 
     @Transactional
     @Override
-    public JsonData createUserOrder(UserOrders userOrders) {
-        userOrders.setUsable(true);
+    public JsonData createUserOrder(UserOrders userOrders , Integer iccardId, String iccardIdentifier) {
+       userOrders.setUsable(true);
         userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
         userOrders.setOrderType(2); //2为普通充值类型
         userOrders.setUpdateTime(new Date());

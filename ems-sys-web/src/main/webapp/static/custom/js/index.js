@@ -524,7 +524,7 @@ app.initEvent = function () {
     var formNames = app.currentPageName;
     var main = $('.container-main');
     var table = app.table;
-    if (formNames != "initCard" || formNames != "order") {
+    if (formNames != "initCard") {
         var fields = table.getFields();
     }
     main.on('add', function () {
@@ -628,7 +628,7 @@ app.initEvent = function () {
                             if (response.status) {
                                 var rdata = response.data;
                                 if (app.currentPageName == "account" || app.currentPageName == 'replaceCard' || app.currentPageName == 'prePayment') {
-                                    app.WirteCard(rdata);
+                                    app.WriteCard(rdata);
                                 }
                                 var url = app.currentPageName + '/listData.do';
                                 // app.setDataCache(url, null);
@@ -1239,7 +1239,11 @@ app.initEvent = function () {
             app.message('请选择一条数据');
             return;
         }
-        app.WirteCard(data[0]);
+        if (data[0].orderStatus == 2) {
+            app.message('该订单已写卡成功，不能补写');
+            return;
+        }
+        app.WriteCard(data[0]);
 
     });
     // 发票打印
@@ -1393,19 +1397,43 @@ app.removeEvent = function () {
     $('.container-main').off();
 };
 
-app.WirteCard = function(rdata){
-    var result;
+app.WriteCard = function(rdata){
+    var wresult;
     if (app.currentPageName == 'account') {
-        result = app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
-    }
-    if(app.currentPageName == 'replaceCard'){
-        result = app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
-        return;
+        wresult = app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
     }
     if (app.currentPageName == 'prePayment') {
-        result = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
+        wresult = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
     }
-    if(result == '写卡成功'){
+    if(app.currentPageName == 'replaceCard'){
+        wresult = app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
+    }
+    if(app.currentPageName == 'order'){
+        var result = app.ReadCard();
+        if (result[0] !== 'S') {
+            app.errorMessage(result);
+            return;
+        }
+        if(rdata.orderType == 1){
+            if (result[1] != '0') {
+                app.warningMessage('只能对新卡进行开户');
+                return;
+            }
+            wresult = app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
+        }
+        if(rdata.orderType == 2){
+            if (result[1] == '0') {
+                app.warningMessage('该卡为新卡，必须开户后再充值');
+                return;
+            }
+            if (result[4] != '0') {
+                app.warningMessage('卡内已有未圈存的气量，不能充值');
+                return;
+            }
+            wresult = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
+        }
+    }
+    if(wresult == '写卡成功'){
         $.ajax({
             type: 'POST',
             async: false,
@@ -1419,11 +1447,11 @@ app.WirteCard = function(rdata){
                 xhr.withCredentials = true;
             },
             success: function (response) {
-                result = response.data;
+                response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
             }
         });
     }else {
-        alert("充值成功，写卡失败，请前往订单页面写卡")
+        app.errorMessage("充值成功，写卡失败，请前往订单页面写卡");
     }
 }
 
@@ -1508,6 +1536,9 @@ app.tableFields = {
     }, {
         name: 'empName',
         caption: '员工名称'
+    }, {
+        name: 'roleName',
+        caption: '员工角色'
     }, {
         name: 'orgName',
         caption: '所属机构'
@@ -1942,7 +1973,7 @@ app.tableFields = {
         caption: '发票状态'
     },{
         name: 'empName',
-        caption: '分配员工'
+        caption: '所属员工'
     },{
         name: 'invoiceAssignTime',
         caption: '发票分配时间'
@@ -1950,8 +1981,11 @@ app.tableFields = {
         name: 'invoicePrintTime',
         caption: '发票打印时间'
     },{
+        name: 'invoiceCancelEmpName',
+        caption: '作废人'
+    },{
         name: 'invoiceCancelTime',
-        caption: '发票报废时间'
+        caption: '发票作废时间'
     }],
     order : [{
         name: 'orderId',
@@ -1991,16 +2025,16 @@ app.tableFields = {
         caption: '发票状态'
     },{
         name: 'invoicePrintEmpName',
-        caption: '打印发票员工'
+        caption: '发票打印员工'
     },{
         name: 'invoicePrintTime',
         caption: '发票打印时间'
     },{
         name: 'invoiceCancelEmpName',
-        caption: '发票报废员工'
+        caption: '发票作废员工'
     },{
         name: 'invoiceCancelTime',
-        caption: '发票报废时间'
+        caption: '发票作废时间'
     }],
     alterHistory: [{
         name: 'userChangeName',

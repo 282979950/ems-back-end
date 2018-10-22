@@ -41,12 +41,12 @@ public class PrePaymentController {
     @RequiresPermissions("recharge:pre:update")
     @RequestMapping(value = "edit.do")
     @ResponseBody
-    public JsonData createUserOrder(UserOrders userOrders) {
+    public JsonData createUserOrder(UserOrders userOrders , Integer iccardId, String iccardIdentifier) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         userOrders.setEmployeeId(currentEmpId);
         userOrders.setCreateBy(currentEmpId);
         userOrders.setUpdateBy(currentEmpId);
-        return prePaymentService.createUserOrder(userOrders);
+        return prePaymentService.createUserOrder(userOrders , iccardId , iccardIdentifier);
     }
 
     //依据条件查询对应数据
