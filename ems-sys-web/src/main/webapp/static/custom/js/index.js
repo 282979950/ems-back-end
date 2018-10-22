@@ -70,6 +70,7 @@ app.getPanelContent = function (name) {
          */
         case 'preStrike':
         case 'strike':
+            panelContent = this.DEFAULT_TEMPLATE;
             break;
         /*
          * 表具运行管理：抄表 阀门控制 异常情况
@@ -867,7 +868,7 @@ app.initEvent = function () {
             }
         });
     });
-    main.on('event', function () {
+    main.on('tranfer', function () {
         var data = table.getSelectedDatas();
         if (data.length === 0) {
             app.message('请选择一条数据');
@@ -1265,7 +1266,143 @@ app.initEvent = function () {
             return;
         }
         app.WriteCard(data[0]);
+    });
+    /**
+     * 预冲账发起
+     */
+    main.on('touch_app',function () {
+        var data = table.getSelectedDatas();
+        console.log(data);
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
 
+        if(data[0].accountState !=undefined){
+
+            app.errorMessage("已经发起过的账单不可再次发起")
+            return ;
+
+        }
+
+       var flag= confirm("确定发起该笔预冲账申请?")
+        if(flag){
+            $.ajax({
+                type: 'POST',
+                url: app.currentPageName +'/edit.do',
+                contentType: 'application/x-www-form-urlencoded',
+                data: data[0],
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (response) {
+                    response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                    if (response.status) {
+                        var url = app.currentPageName + '/listData.do';
+                        // app.setDataCache(url, null);
+                        console.log("清理" + url + "缓存");
+                        app.render({
+                            url: url
+                        });
+                    }
+                }
+            });
+
+        }
+    })
+    /**
+     * 发起审批--冲账
+     */
+    main.on('check_box', function () {
+        var tableData = table.getSelectedDatas();
+        if (table.getSelectedDatas().length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (table.getSelectedDatas().length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        //标识
+        var flag = true;
+        var cardListDialog = mdui.dialog({
+            title: '审核',
+            modal: true,
+            content: ' ',
+            buttons: [{
+                text: '审核通过',
+                onClick: function () {
+                    var data = form.getData();
+                    data.flag = true;
+                    console.log(data)
+
+                    $.ajax({
+                        type: 'POST',
+                        url: app.currentPageName + '/edit.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: data,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                            if (response.status) {
+                                var url = app.currentPageName + '/listData.do';
+                                // app.setDataCache(url, null);
+                                console.log("清理" + url + "缓存");
+                                app.render({
+                                    url: url
+                                });
+                            }
+                        }
+                    });
+
+                }
+
+            }, {
+                text: '不通过',
+                onClick: function () {
+                    var data = form.getData();
+                    data.flag = false;
+                    console.log(data)
+
+                    $.ajax({
+                        type: 'POST',
+                        url: app.currentPageName + '/edit.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: data,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                            if (response.status) {
+                                var url = app.currentPageName + '/listData.do';
+                                // app.setDataCache(url, null);
+                                console.log("清理" + url + "缓存");
+                                app.render({
+                                    url: url
+                                });
+                            }
+                        }
+                    });
+
+                }
+            }, {
+                text: '取消'
+            }]
+        });
+        $(".tree-combobox-panel").remove();
+        var form = app.createForm({
+            parent: '.mdui-dialog-content',
+            fields: app.getEditFormFields('strike'),
+            data: tableData[0]
+        });
+        cardListDialog.handleUpdate();
     });
     // 发票打印
     main.on('print', function () {
@@ -1428,6 +1565,7 @@ app.WriteCard = function(rdata){
     }
     if(app.currentPageName == 'replaceCard'){
         wresult = app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
+        return;
     }
     if(app.currentPageName == 'order'){
         var result = app.ReadCard();
@@ -2081,6 +2219,53 @@ app.tableFields = {
     }, {
         name: 'userOldDeed',
         caption: '旧用户房产证号码'
+    }],
+    preStrike:[{
+        name: 'userName',
+        caption: '用户姓名'
+    },{
+        name: 'userTypeName',
+        caption: '用户类型'
+    },{
+        name: 'userGasTypeName',
+        caption: '用气类型'
+    },{
+        name: 'orderPayment',
+        caption: '实际充值金额(单位:方)'
+    },{
+        name: 'orderGas',
+        caption: '充值气量(单位:元)'
+    },{
+        name: 'orderTypeName',
+        caption: '订单类型'
+    },{
+        name: 'orderCreateTime',
+        caption: '充值时间'
+    },{
+        name: 'accountStateName',
+        caption: '账务状态'
+    },{
+        name: 'userAddress',
+        caption: '用户地址'
+    }],
+    strike:[{
+        name: 'orderId',
+        caption: '订单编号'
+    },{
+        name:'userName',
+        caption:'用户名称'
+    },{
+        name:'nucleusGas',
+        caption:'充值气量单位(方)'
+    },{
+        name:'nucleusPayment',
+        caption:'充值金额'
+    },{
+        name:'nucleusLaunchingPerson',
+        caption:'发起人姓名'
+    },{
+        name:'rechargeTime',
+        caption:'充值时间'
     }]
 };
 /*
@@ -3477,9 +3662,28 @@ app.getEditFormFields = function (name) {
 
             }, {
                 name: 'tableCode',
-                caption: '燃气表当前址码',
+                caption: '燃气表当前止码',
                 required: true
             }];
+        case 'strike':
+            return [ {
+                name: 'orderId',
+                caption: '订单编号',
+                disabled: true
+            },{
+                name: 'userName',
+                caption: '用户名称',
+                disabled: true
+            }, {
+                name: 'nucleusLaunchingPerson',
+                caption: '发起人姓名',
+                disabled: true
+
+            }, {
+                name: 'nucleusOpinion',
+                caption: '审核意见'
+            }];
+
     }
 };
 
@@ -3933,7 +4137,7 @@ app.getToolbarFields = function (name) {
         case 'alter':
             return [{
                 name: 'event',
-                caption: '账户结算',
+                caption: '过户',
                 perm:'account:alter:visit'
             }, {
                 name: 'add_to_queue',
@@ -3941,7 +4145,7 @@ app.getToolbarFields = function (name) {
                 perm:'account:alter:visit'
             }, {
                 name: 'mail_outline',
-                caption: '变更记录',
+                caption: '过户变更记录',
                 perm:'account:alter:visit'
             }, {
                 name: 'userName',
@@ -4026,6 +4230,34 @@ app.getToolbarFields = function (name) {
                 name: 'invoiceNumber',
                 caption: '发票号码',
                 type: 'input'
+            }];
+        case 'preStrike':
+            return[{
+                name: 'touch_app',
+                caption: '预冲账处理',
+                perm:'financial:prestrike:visit'
+            },{
+                name: 'userName',
+                caption: '用户姓名',
+                type: 'input'
+            },{
+                name: 'userTypeName',
+                caption: '用户类型',
+                type: 'input'
+            }];
+        case 'strike':
+            return[{
+                name: 'orderId',
+                caption: '订单编号',
+                type: 'input'
+            },{
+                name: 'userName',
+                caption: '用户名称',
+                type: 'input'
+            },{
+                name: 'check_box',
+                caption: '审批',
+                perm:'financial:strike:visit'
             }];
     }
 };

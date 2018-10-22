@@ -244,4 +244,13 @@
              #{orderType},NOW(),#{createBy,jdbcType=INTEGER},NOW(),#{updateBy,jdbcType=INTEGER},#{usable},#{orderSupplement},#{remarks}
       )
   </insert>
+  <select id="countUserOrdersByTimeEmployeeId" resultType="java.lang.Integer" parameterType="com.tdmh.entity.UserOrders">
+       SELECT   COUNT(order_id)  FROM  user_orders  WHERE order_id = #{orderId}  AND create_time =
+        (SELECT  create_time    FROM    user_orders         WHERE employee_id = #{employeeId}   AND
+          DATE_FORMAT(create_time,'%Y-%m-%d')= #{resltTime}    ORDER BY create_time DESC     LIMIT 1)
+  </select>
+  <update id="updateUserOrdersByOrderId" parameterType="com.tdmh.entity.UserOrders">
+    UPDATE  user_orders SET account_state=#{accountState}  WHERE order_id=#{orderId}
+
+  </update>
 </mapper>

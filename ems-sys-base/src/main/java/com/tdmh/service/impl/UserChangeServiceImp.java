@@ -96,7 +96,7 @@ public class UserChangeServiceImp implements IUserChangeService {
             orders.setEmployeeId(currentEmpId);
             orders.setOrderPayment(new BigDecimal(userMoney+""));
             orders.setOrderGas(amount.negate());
-            orders.setOrderType(5);
+            orders.setOrderType(4);
             orders.setCreateTime(new Date());
             orders.setCreateBy(currentEmpId);
             orders.setUpdateBy(currentEmpId);
@@ -167,7 +167,7 @@ public class UserChangeServiceImp implements IUserChangeService {
             orders.setUserId(user.getUserId());
             orders.setEmployeeId(Id);
             orders.setOrderGas(amount.negate());
-            orders.setOrderType(5);
+            orders.setOrderType(4);
             orders.setCreateTime(new Date());
             orders.setCreateBy(Id);
             orders.setUpdateBy(Id);

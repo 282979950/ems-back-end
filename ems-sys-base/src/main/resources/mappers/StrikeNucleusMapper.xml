@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.StrikeNucleusMapper">
+    <resultMap id="BaseResultMap" type="com.tdmh.entity.StrikeNucleus">
+        <constructor>
+            <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="nucleus_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="nucleus_opinion" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="nucleus_gas" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+
+            <arg column="nucleus_payment" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="nucleus_launching_person" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="recharge_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean" />
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
+
+
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+      id,order_id,user_name,nucleus_status,nucleus_opinion,nucleus_gas,nucleus_payment,
+      nucleus_launching_person,recharge_time,create_time,create_by,update_time,update_by,
+      usable,remarks
+    </sql>
+    <insert id="insertStrikeNucleus" parameterType="com.tdmh.entity.StrikeNucleus" >
+        INSERT INTO strike_nucleus (
+          id,
+          order_id,
+          user_name,
+          nucleus_status,
+          nucleus_opinion,
+          nucleus_gas,
+          nucleus_payment,
+          nucleus_launching_person,
+          recharge_time,
+          create_time,
+          create_by,
+          update_time,
+          update_by,
+          usable,
+          remarks
+    )
+    VALUES (
+        #{id},
+        #{orderId},
+        #{userName},
+        #{nucleusStatus},
+        #{nucleusOpinion},
+        #{nucleusGas},
+        #{nucleusPayment},
+        #{nucleusLaunchingPerson},
+        #{rechargeTime} ,
+        NOW(),
+        #{createBy,jdbcType=INTEGER},
+        NOW(),
+        #{updateBy,jdbcType=INTEGER},
+        #{usable},
+        #{remarks}
+      )
+  </insert>
+    <select id="selectStrikeNucleusList" resultMap="BaseResultMap" parameterType="com.tdmh.entity.StrikeNucleus">
+
+      SELECT
+        <include refid="Base_Column_List" />
+      FROM
+        strike_nucleus
+    WHERE
+        usable=1 AND nucleus_status  is null
+        <if test="orderId != null and orderId != ''">
+            and    order_id = #{orderId}
+        </if>
+        <if test="userName != null and userName != ''">
+            AND  user_name = #{userName}
+        </if>
+    </select>
+    <update id="updateStrikeNucleusById" parameterType="com.tdmh.entity.StrikeNucleus">
+        UPDATE
+             strike_nucleus
+        SET
+             nucleus_status=#{nucleusStatus}
+        <if test="nucleusOpinion != null" >
+            ,nucleus_opinion=#{nucleusOpinion}
+        </if>
+        WHERE
+            id=#{id}
+
+    </update>
+
+</mapper>

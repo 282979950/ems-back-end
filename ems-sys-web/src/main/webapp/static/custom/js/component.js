@@ -597,7 +597,7 @@
                         $field.trigger('fillGas');
                         break;
                     case 'event' :
-                        $field.trigger('event');
+                        $field.trigger('tranfer');
                         break;
                     case 'assignment' :
                         $field.trigger('assignment');
@@ -607,6 +607,12 @@
                         break;
                     case 'mail_outline':
                         $field.trigger('mail_outline');
+                        break;
+                    case 'touch_app':
+                        $field.trigger('touch_app');
+                        break;
+                    case 'check_box':
+                        $field.trigger('check_box');
                         break;
                     case 'credit_card' :
                         $field.trigger('credit_card');

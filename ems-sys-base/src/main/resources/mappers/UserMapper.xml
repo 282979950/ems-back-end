@@ -531,7 +531,7 @@
         update user set service_times = service_times +1 where user_id = #{userId}
     </update>
 
-    <select id="getServiceTimesByUserId" parameterType="int" resultType="int">
+    <select id="getServiceTimesByUserId" parameterType="int" resultType="java.lang.Integer">
         select service_times from user where user_id = #{userId}
     </select>
     <update id="updateFillStatus" parameterType="map">
@@ -586,4 +586,47 @@
         update user  SET usable=0 where user_id = #{userId,jdbcType=INTEGER}
 
     </update>
+    <!--查询充值类型为	普通订单和超用补缴订单数据-->
+    <select id="selectUserByOrderType" resultType="com.tdmh.entity.User" parameterType="com.tdmh.entity.User">
+        SELECT
+          u.user_id as userId,
+          u.user_name as userName,
+          u.user_address as userAddress,
+          u.user_type as userType,
+          u.user_gas_type as userGasType,
+          orders.order_id as orderId,
+
+          orders.order_payment as orderPayment,
+          orders.order_gas as orderGas,
+          orders.employee_id as employeeId,
+          orders.order_status as orderStatus,
+          orders.create_time as orderCreateTime,
+          orders.order_type as orderType,
+          orders.account_state as accountState,
+          sd.dict_key AS userTypeName ,
+         sd2.dict_key AS  userGasTypeName,
+         sd3.dict_key AS  orderTypeName,
+         sd4.dict_value AS accountStateName
+        FROM
+           user_orders orders
+        LEFT JOIN user u  ON orders.user_id = u.user_id
+        LEFT JOIN sys_district dist ON u.user_dist_id = dist.dist_id
+        LEFT JOIN sys_dictionary sd ON u.user_type = sd.dict_value AND sd.dict_category = 'user_type' AND sd.usable = 1
+        LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 ON orders.order_type = sd3.dict_value AND sd3.dict_category = 'order_type' AND sd3.usable = 1
+    LEFT JOIN sys_dictionary sd4 ON orders.account_state = sd4.dict_key AND sd4.dict_category = 'account_state' AND sd4.usable = 1
+
+WHERE orders.order_type IN ( '2','4')
+        <if test="userName != null and userName != ''">
+         and    user_name = #{userName}
+        </if>
+        <if test="userTypeName != null and userTypeName != ''">
+            AND sd.dict_key = #{userTypeName}
+        </if>
+        <if test="employeeId != null">
+            AND orders.employee_id = #{employeeId}
+        </if>
+        ORDER BY orderCreateTime DESC
+    </select>
+
 </mapper>
