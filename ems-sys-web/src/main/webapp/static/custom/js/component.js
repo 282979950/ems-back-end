@@ -457,6 +457,24 @@
         });
     };
 
+    Form.prototype.hideField = function (fieldName) {
+        var _this = this;
+        _this.$fields.each(function (index, field) {
+            if (field.name === fieldName) {
+                $(field).parent('.form-field').css('display', 'none');
+            }
+        });
+    };
+
+    Form.prototype.showField = function (fieldName) {
+        var _this = this;
+        _this.$fields.each(function (index, field) {
+            if (field.name === fieldName) {
+                $(field).parent('.form-field').css('display', 'block');
+            }
+        });
+    };
+
     /**
      * 创建Form表单
      * @param params
@@ -628,6 +646,9 @@
                         break;
                     case 'cancel' :
                         $field.trigger('cancel');
+                        break;
+                    case 'receipt' :
+                        $field.trigger('receipt');
                         break;
                     default:
                         break;

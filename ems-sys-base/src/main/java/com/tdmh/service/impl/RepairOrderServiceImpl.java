@@ -10,6 +10,7 @@ import com.tdmh.entity.mapper.RepairOrderMapper;
 import com.tdmh.entity.mapper.UserMetersMapper;
 import com.tdmh.param.FillGasOrderParam;
 import com.tdmh.param.RepairOrderParam;
+import com.tdmh.param.RepairOrderUserParam;
 import com.tdmh.service.*;
 import com.tdmh.util.CalculateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,6 +138,12 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     public JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, Integer empName) {
         List<RepairOrderParam> orderParams = repairOrderMapper.searchRepairOrder(repairOrderId, userId, repairType, empName);
         return orderParams == null || orderParams.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.success(orderParams, "查询成功");
+    }
+
+    @Override
+    public JsonData getRepairOrderUserById(Integer userId) {
+        RepairOrderUserParam user = repairOrderMapper.getRepairOrderUserById(userId);
+        return user == null ? JsonData.successMsg("查询结果为空"): JsonData.successData(user);
     }
 
     private boolean checkRepairOrderExists(String repairOrderId) {

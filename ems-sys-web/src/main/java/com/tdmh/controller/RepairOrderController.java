@@ -64,4 +64,13 @@ public class RepairOrderController {
                                       @Param("empName") Integer empName) {
         return repairOrderService.searchRepairOrder(repairOrderId, userId, repairType, empName);
     }
+
+    /**
+     * 查询用户及其表具信息
+     */
+    @RequestMapping(value = "getRepairOrderUserById.do")
+    @ResponseBody
+    public JsonData getRepairOrderUserById(@Param("userId")Integer userId) {
+        return repairOrderService.getRepairOrderUserById(userId);
+    }
 }

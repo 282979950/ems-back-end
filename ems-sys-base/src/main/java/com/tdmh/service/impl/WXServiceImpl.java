@@ -70,7 +70,7 @@ public class WXServiceImpl implements IWXService {
     @Override
     public JsonData bindUser(String wxUserId, Integer userId) {
         if (checkBindExists(wxUserId, userId)) {
-            return JsonData.successMsg("微信号与该户号已绑定");
+            return JsonData.fail("微信号与该户号已绑定");
         }
         int resultCount = wxMapper.bindUser(wxUserId, userId);
         if (resultCount == 0) {

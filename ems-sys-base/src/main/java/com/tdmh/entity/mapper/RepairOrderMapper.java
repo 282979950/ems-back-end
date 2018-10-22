@@ -1,6 +1,7 @@
 package com.tdmh.entity.mapper;
 
 import com.tdmh.param.RepairOrderParam;
+import com.tdmh.param.RepairOrderUserParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -26,4 +27,6 @@ public interface RepairOrderMapper {
     RepairOrderParam getRepairOrderById(Integer id);
 
     boolean checkRepairOrderExists(String repairOrderId);
+
+    RepairOrderUserParam getRepairOrderUserById(Integer userId);
 }
