@@ -657,7 +657,7 @@ WHERE orders.order_type IN ( '2','4')
     <select id="searchAbnormalUserList" parameterType="map" resultType="com.tdmh.param.AbnormalUser">
         SELECT u.user_id AS userId, u.user_name AS userName, uc.card_id AS iccardId, uc.card_identifier AS iccardIdentifier, u.user_phone AS userPhone, sd.dist_name as userDistName,
         u.user_address AS userAddress, uo.totalOrderGas, uo.totalOrderPayment, uo.startBuyDay, uo.endBuyDay, datediff(now(),uo.endBuyDay) AS notBuyDayCount,
-        ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) AS monthAveGas, ROUND(totalOrderPayment /(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) AS monthAvePayment
+        ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) AS monthAveGas, ROUND(totalOrderPayment /(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) AS monthAvePayment
         FROM `user` u
         JOIN user_card uc ON u.user_id = uc.user_id AND uc.usable = 1
         LEFT JOIN sys_district sd on u.user_dist_id = sd.dist_id AND sd.usable = 1
@@ -667,7 +667,7 @@ WHERE orders.order_type IN ( '2','4')
         ) uo ON u.user_id = uo.user_id
         WHERE u.usable = 1
         <if test="monthAveGas!=null">
-            AND  ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) <![CDATA[ <= ]]> #{monthAveGas}
+            AND  ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) <![CDATA[ <= ]]> #{monthAveGas}
         </if>
         <if test="monthAvePayment!=null">
             AND ROUND(totalOrderPayment /(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) <![CDATA[ <= ]]> #{monthAvePayment}
