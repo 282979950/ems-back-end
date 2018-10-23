@@ -3,14 +3,12 @@ package com.tdmh.entity.mapper;
 
 import com.tdmh.entity.User;
 import com.tdmh.entity.UserLock;
-import com.tdmh.param.CreateAccountParam;
-import com.tdmh.param.CreateArchiveParam;
-import com.tdmh.param.InstallMeterParam;
-import com.tdmh.param.LockAccountParam;
+import com.tdmh.param.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 @Mapper @Component
 public interface UserMapper {
@@ -70,4 +68,6 @@ public interface UserMapper {
     int updateUserUsable(@Param("userId")Integer userId);
     //查询充值类型为	普通订单和超用补缴订单数据
     List<User>  selectUserByOrderType(User user);
+
+    List<AccountQueryParam> searchAccountQueryList(@Param("accountDate")String accountDate, @Param("distIds") String distIds, @Param("userAddress") String userAddress);
 }

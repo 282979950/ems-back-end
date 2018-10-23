@@ -35,4 +35,6 @@ public interface IRepairOrderService {
      * @return
      */
     JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, Integer empName);
+
+    JsonData getRepairOrderUserById(Integer userId);
 }

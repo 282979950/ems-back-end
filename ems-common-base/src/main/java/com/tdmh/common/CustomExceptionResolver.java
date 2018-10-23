@@ -6,8 +6,11 @@ import com.tdmh.exception.PermissionException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,9 +21,15 @@ import javax.servlet.http.HttpServletResponse;
  * @author litairan on 2018/7/20.
  */
 @Slf4j
+@Component
 public class CustomExceptionResolver implements HandlerExceptionResolver {
 
     private static final String DEFAULT_ERROR_MESSAGE = "系统错误";
+
+    @Bean("jsonView")
+    MappingJackson2JsonView mappingJackson2JsonView(){
+        return new MappingJackson2JsonView();
+    }
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object o, Exception e) {

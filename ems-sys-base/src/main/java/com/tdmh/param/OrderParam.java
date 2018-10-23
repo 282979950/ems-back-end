@@ -23,6 +23,16 @@ public class OrderParam extends BaseEntity {
      * 订单ID
      */
     private Integer orderId;
+
+    /**
+     * 订单类型
+     */
+    private Integer orderType;
+
+    /**
+     * 订单状态
+     */
+    private Integer orderStatus;
     /**
      * 用户ID
      */
@@ -45,6 +55,9 @@ public class OrderParam extends BaseEntity {
      */
     private String iccardIdentifier;
 
+    /**
+     * 维修次数
+     */
     private Integer serviceTimes;
     /**
      * 充值气量

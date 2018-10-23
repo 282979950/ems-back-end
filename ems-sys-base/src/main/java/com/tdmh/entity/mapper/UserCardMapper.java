@@ -37,4 +37,6 @@ public interface UserCardMapper {
     int getUserCardByUserIdAndnIcCardIdentifier(@Param("userId") Integer userId , @Param("iccardIdentifier") String iccardIdentifier);
 
     int getUserCardByYouSelfIdAndnIcCardIdentifier(@Param("userId") Integer userId ,@Param("iccardIdentifier") String iccardIdentifier, @Param("niccardIdentifier") String niccardIdentifier);
+
+    int getCardByCardMessage(@Param("userId") Integer userId , @Param("iccardId") Integer iccardId , @Param("iccardIdentifier") String iccardIdentifier);
 }

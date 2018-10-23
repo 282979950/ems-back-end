@@ -31,9 +31,18 @@ public interface IWXService {
      * 依据用户Id获取用户信息
      *
      * @param userId
+     * @param userName
      * @return
      */
-    JsonData getUserInfoByUserId(String userId);
+    JsonData checkUserExists(Integer userId, String userName);
+
+    /**
+     * 依据用户Id获取用户信息
+     *
+     * @param userId
+     * @return
+     */
+    JsonData getUserInfo(Integer userId);
 
     /**
      * 绑定户号
@@ -42,7 +51,7 @@ public interface IWXService {
      * @param userId
      * @return
      */
-    JsonData bindUser(String wxUserId, String userId);
+    JsonData bindUser(String wxUserId, Integer userId);
 
     /**
      * 解绑户号
@@ -51,7 +60,7 @@ public interface IWXService {
      * @param userId
      * @return
      */
-    JsonData unBindUser(String wxUserId, String userId);
+    JsonData unBindUser(String wxUserId, Integer userId);
 
     /**
      * 获取充值金额
@@ -59,7 +68,7 @@ public interface IWXService {
      * @param gas
      * @return
      */
-    JsonData getPayment(BigDecimal gas);
+    JsonData getPayment(Integer userId, BigDecimal gas);
 
     /**
      * 充值

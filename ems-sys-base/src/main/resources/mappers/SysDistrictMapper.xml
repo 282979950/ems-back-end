@@ -315,4 +315,7 @@
         </if>
         ORDER BY s1.dist_id
     </select>
+    <select id="getDistrictChildList" parameterType="int" resultType="string">
+        select getDistrictChildList(#{userDistId})
+    </select>
 </mapper>

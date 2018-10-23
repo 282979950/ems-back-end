@@ -230,4 +230,13 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         }
         //执行导出结束
     }
+
+    @Override
+    public JsonData verifyCard(PrePaymentParam param) {
+        int result = userCardMapper.getCardByCardMessage(null,param.getIccardId(),param.getIccardIdentifier());
+        if(result == 0){
+            return JsonData.fail("IC卡识别号与IC卡号与数据库绑定的不一致");
+        }
+        return JsonData.success();
+    }
 }

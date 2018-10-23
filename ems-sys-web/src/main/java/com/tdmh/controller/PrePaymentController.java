@@ -56,4 +56,12 @@ public class PrePaymentController {
     public JsonData selectFindListByPre(PrePaymentParam param){
         return prePaymentService.selectFindListByPre(param);
     }
+
+
+    //判断数据库中IC卡识别号与IC卡编号是否一致
+    @RequestMapping(value = "/verifyCard.do")
+    @ResponseBody
+    public JsonData verifyCard(PrePaymentParam param){
+        return prePaymentService.verifyCard(param);
+    }
 }
