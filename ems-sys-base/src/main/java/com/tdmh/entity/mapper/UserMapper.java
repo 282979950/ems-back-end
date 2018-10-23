@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 @Mapper @Component
@@ -70,4 +71,6 @@ public interface UserMapper {
     List<User>  selectUserByOrderType(User user);
 
     List<AccountQueryParam> searchAccountQueryList(@Param("accountDate")String accountDate, @Param("distIds") String distIds, @Param("userAddress") String userAddress);
+
+    List<AbnormalUser> searchAbnormalUserList(@Param("notBuyDayCount") Integer notBuyDayCount, @Param("monthAveGas") BigDecimal monthAveGas, @Param("monthAvePayment") BigDecimal monthAvePayment, @Param("distIds") String distIds, @Param("userAddress") String userAddress);
 }

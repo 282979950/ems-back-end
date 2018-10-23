@@ -475,7 +475,8 @@ INSERT INTO `sys_permission` VALUES ('1016', 'recharge:visit', '充值缴费管�
 INSERT INTO `sys_permission` VALUES ('1017', 'recharge:pre:visit', '预付费充值', '/recharge/pre', '1016', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1018', 'recharge:supplement:visit', '补卡充值', '/recharge/supplement', '1016', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1019', 'recharge:suff:visit', '后付费缴费', '/recharge/suff', '1016', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1020', 'recharge:invoice:visit', '发票管理', '/recharge/invoice', '1016', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1020', 'recharge:order:visit', '订单管理', '/recharge/order', '1016', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
 
 INSERT INTO `sys_permission` VALUES ('1021', 'declareorder:visit', '报修单管理', '/declareorder/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1022', 'declareorder:business:visit', '业务功能描述', '/declareorder/business', '1021', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
@@ -637,6 +638,81 @@ INSERT INTO `sys_permission` VALUES ('1117', 'account:installation:export', '导
 -- ----------------------------
 INSERT INTO `sys_permission` VALUES ('1118', 'sys:gasPrice:visit', '气价管理', '/sys/gasPrice', '1001', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1119', 'sys:gasPrice:update', '修改', null, '1118', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1120', 'sys:gasPrice:import', '导入', null, '1118', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1121', 'sys:gasPrice:export', '导出', null, '1118', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+
+-- ----------------------------
+-- Records of 预充值管理
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1122', 'recharge:pre:record', '识别IC卡', null, '1017', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1123', 'recharge:pre:update', '预充值', null, '1017', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1157', 'recharge:pre:retrieve', '查询', null, '1017', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+INSERT INTO `sys_permission` VALUES ('1124', 'recharge:pre:import', '导入', null, '1017', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1125', 'recharge:pre:export', '导出', null, '1017', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+
+-- ----------------------------
+-- Records of 补卡充值
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1126', 'recharge:supplement:update', '补卡充值', null, '1018', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1127', 'recharge:supplement:supList', '历史补卡记录', null, '1018', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1156', 'recharge:supplement:retrieve', '查询', null, '1018', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1128', 'recharge:supplement:import', '导入', null, '1018', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1129', 'recharge:supplement:export', '导出', null, '1018', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+-- ----------------------------
+-- Records of 订单管理
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1130', 'recharge:order:record', '识别IC卡', null, '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1131', 'recharge:order:writeCard', '写卡', null, '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1132', 'recharge:order:print', '发票打印', null, '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1133', 'recharge:order:old', '原票补打', null, '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1134', 'recharge:order:new', '新票补打', null, '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1135', 'recharge:order:cancel', '发票作废', null, '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1136', 'recharge:order:retrieve', '查询', null, '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1137', 'recharge:order:import', '导入', null, '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1138', 'recharge:order:export', '导出', null, '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+
+-- ----------------------------
+-- Records of 发票管理
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1139', 'recharge:invoice:visit', '发票管理', '/recharge/invoice', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+-- ----------------------------
+-- Records of 发票分配
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1140', 'invoice:assign:visit', '发票分配', '/invoice/assign', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1141', 'invoice:assign:add', '发票录入', null, '1140', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1142', 'invoice:assign:assignment', '发票分配', null, '1140', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1143', 'invoice:assign:retrieve', '查询', null, '1140', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1144', 'invoice:assign:import', '导入', null, '1140', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1145', 'invoice:assign:export', '导出', null, '1140', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+-- ----------------------------
+-- Records of 发票查询
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1146', 'invoice:printCancel:visit', '发票查询', '/invoice/printCancel', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1147', 'invoice:printCancel:retrieve', '查询', null, '1146', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1148', 'invoice:printCancel:import', '导入', null, '1146', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1149', 'invoice:printCancel:export', '导出', null, '1146', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+-- ----------------------------
+-- Records of 开户账户查询
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1150', 'querystats:account:retrieve', '查询', null, '1038', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1151', 'querystats:account:import', '导入', null, '1038', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1152', 'querystats:account:export', '导出', null, '1038', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
+-- ----------------------------
+-- Records of 异常用户查询
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1153', 'querystats:abnormaluser:retrieve', '查询', null, '1040', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1154', 'querystats:abnormaluser:import', '导入', null, '1040', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1155', 'querystats:abnormaluser:export', '导出', null, '1040', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+
 
 
 -- ----------------------------

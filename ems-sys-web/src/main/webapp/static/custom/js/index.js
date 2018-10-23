@@ -84,9 +84,9 @@ app.getPanelContent = function (name) {
          */
         case 'cardQuery':
         case 'accountQuery':
-            panelContent = this.DEFAULT_TEMPLATE;
         case 'userQuery':
         case 'exceptionQuery':
+            panelContent = this.DEFAULT_TEMPLATE;
         case 'businessDataQuery':
         case 'businessReportQuery':
             break;
@@ -2338,6 +2338,49 @@ app.tableFields = {
     }, {
         name: 'openTime',
         caption: '开户时间'
+    }],
+    exceptionQuery:[{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'userName',
+        caption: '用户名'
+    }, {
+        name: 'iccardId',
+        caption: 'IC卡卡号'
+    }, {
+        name: 'iccardIdentifier',
+        caption: 'IC卡识别号'
+    },{
+        name: 'userPhone',
+        caption: '用户手机号'
+    },{
+        name: 'userDistName',
+        caption: '用户区域'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    },{
+        name: 'totalOrderGas',
+        caption: '购气总量'
+    }, {
+        name: 'totalOrderPayment',
+        caption: '购气总额'
+    },{
+        name: 'startBuyDay',
+        caption: '初次购气日期'
+    }, {
+        name: 'endBuyDay',
+        caption: '最后购气日期'
+    },{
+        name: 'notBuyDayCount',
+        caption: '未购气天数'
+    }, {
+        name: 'monthAveGas',
+        caption: '月均购气量'
+    }, {
+        name: 'monthAvePayment',
+        caption: '月均购气金额'
     }]
 };
 /*
@@ -4263,7 +4306,7 @@ app.getToolbarFields = function (name) {
             },{
                 name: 'credit_card',
                 caption: '写卡',
-                perm:'recharge:order:print'
+                perm:'recharge:order:writeCard'
             },{
                 name: 'print',
                 caption: '发票打印',
@@ -4271,11 +4314,11 @@ app.getToolbarFields = function (name) {
             },{
                 name: 'crop_original',
                 caption: '原票补打',
-                perm:'recharge:order:print'
+                perm:'recharge:order:old'
             },{
                 name: 'fiber_new',
                 caption: '新票补打',
-                perm:'recharge:order:print'
+                perm:'recharge:order:new'
             },{
                 name: 'cancel',
                 caption: '发票作废',
@@ -4339,7 +4382,6 @@ app.getToolbarFields = function (name) {
             },{
                 name: 'userDistId',
                 caption: '用户区域',
-                type: 'input',
                 type: 'treecombobox',
                 options: {
                     idKey: 'distId',
@@ -4354,6 +4396,38 @@ app.getToolbarFields = function (name) {
             },{
                 name: 'userAddress',
                 caption: '用户地址',
+                type: 'input'
+            }];
+        case 'exceptionQuery':
+            return [{
+                name: 'userDistId',
+                caption: '用户区域',
+                type: 'treecombobox',
+                options: {
+                    idKey: 'distId',
+                    pIdKey: 'distParentId',
+                    name: 'distName',
+                    chkStyle: 'radio',
+                    radioType: 'all',
+                    N: 's',
+                    Y: 'p',
+                    nodes: app.getTreeComboboxNodes('dist/listData.do')
+                }
+            },{
+                name: 'userAddress',
+                caption: '用户地址',
+                type: 'input'
+            },{
+                name: 'notBuyDayCount',
+                caption: '未购气天数(天)',
+                type: 'input'
+            },{
+                name: 'monthAveGas',
+                caption: '月均购气量(立方)',
+                type: 'input'
+            },{
+                name: 'monthAvePayment',
+                caption: '月均购气金额(元)',
                 type: 'input'
             }];
     }
