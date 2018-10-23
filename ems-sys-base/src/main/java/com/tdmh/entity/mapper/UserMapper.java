@@ -70,7 +70,7 @@ public interface UserMapper {
     //查询充值类型为	普通订单和超用补缴订单数据
     List<User>  selectUserByOrderType(User user);
 
-    List<AccountQueryParam> searchAccountQueryList(@Param("accountDate")String accountDate, @Param("distIds") String distIds, @Param("userAddress") String userAddress);
+    List<AccountQueryParam> searchAccountQueryList(@Param("startDate")String startDate,@Param("endDate")String endDate, @Param("distIds") String distIds, @Param("userAddress") String userAddress);
 
     List<AbnormalUser> searchAbnormalUserList(@Param("notBuyDayCount") Integer notBuyDayCount, @Param("monthAveGas") BigDecimal monthAveGas, @Param("monthAvePayment") BigDecimal monthAvePayment, @Param("distIds") String distIds, @Param("userAddress") String userAddress);
 }

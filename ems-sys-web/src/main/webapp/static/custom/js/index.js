@@ -4437,8 +4437,14 @@ app.getToolbarFields = function (name) {
             }];
         case 'accountQuery':
             return [{
-                name: 'accountDate',
-                caption: '开户日期',
+                name: 'startDate',
+                caption: '开户起始日期',
+                type: 'date',
+                formatter: 'yyyy-mm-dd',
+                minView: 2
+            },{
+                name: 'endDate',
+                caption: '开户终止日期',
                 type: 'date',
                 formatter: 'yyyy-mm-dd',
                 minView: 2

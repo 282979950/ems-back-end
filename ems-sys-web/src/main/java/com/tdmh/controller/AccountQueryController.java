@@ -36,7 +36,7 @@ public class AccountQueryController {
     @RequiresPermissions("querystats:account:retrieve")
     @RequestMapping("/search.do")
     @ResponseBody
-    public JsonData searchAccountQueryList(@Param("accountDate") String accountDate, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress){
-        return userService.searchAccountQueryList(accountDate, userDistId, userAddress);
+    public JsonData searchAccountQueryList(@Param("startDate") String startDate,@Param("endDate") String endDate, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress){
+        return userService.searchAccountQueryList(startDate, endDate, userDistId, userAddress);
     }
 }

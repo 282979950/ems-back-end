@@ -199,7 +199,7 @@ public interface IUserService {
      * 开户账户查询
      * @return
      */
-    JsonData searchAccountQueryList(String accountDate, Integer userDistId, String userAddress);
+    JsonData searchAccountQueryList(String startDate,String endDate, Integer userDistId, String userAddress);
 
     /**
      * 查询异常用户

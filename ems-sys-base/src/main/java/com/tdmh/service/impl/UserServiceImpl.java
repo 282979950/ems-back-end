@@ -407,9 +407,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData searchAccountQueryList(String accountDate, Integer userDistId, String userAddress) {
+    public JsonData searchAccountQueryList(String startDate,String endDate, Integer userDistId, String userAddress) {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
-        List<AccountQueryParam> list = userMapper.searchAccountQueryList(accountDate,distIds,userAddress);
+        List<AccountQueryParam> list = userMapper.searchAccountQueryList(startDate,endDate,distIds,userAddress);
         AccountQueryParam param = new AccountQueryParam();
         param.setUserAddress("<strong>总开户数:</strong>");
         param.setUserTypeName("<strong>共<font color=\"#FF0000\">"+list.size()+"</font>条</strong>");

@@ -639,8 +639,11 @@ WHERE orders.order_type IN ( '2','4')
         LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND sd2.usable = 1
         LEFT JOIN employee e on u.open_by = e.emp_id
         where u.usable = 1
-        <if test="accountDate!=null and accountDate!=''">
-            AND to_days(u.open_time) = to_days(#{accountDate})
+        <if test="startDate!=null and startDate!=''">
+            AND u.open_time &gt;= #{startDate}
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            AND u.open_time &lt;= #{endDate}
         </if>
         <if test="distIds!=null and distIds!=''">
             AND u.user_dist_id IN (${distIds})
