@@ -2,10 +2,13 @@ package com.tdmh.service.impl;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.GasPrice;
+import com.tdmh.entity.User;
 import com.tdmh.entity.mapper.GasPriceMapper;
+import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.param.GasPriceParam;
 import com.tdmh.service.IGasPriceService;
+import com.tdmh.util.CalculateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,9 @@ public class GasPriceServiceImpl implements IGasPriceService {
 
     @Autowired
     private UserOrdersMapper userOrdersMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public JsonData listAllGasPrice() {
@@ -53,5 +59,19 @@ public class GasPriceServiceImpl implements IGasPriceService {
     @Override
     public BigDecimal findHasUsedGasInYear(Integer userId) {
         return userOrdersMapper.findHasUsedGasInYear(userId);
+    }
+
+    @Override
+    public JsonData calAmount(Integer userId, BigDecimal orderGas) {
+        User user = userMapper.getUserById(userId);
+        GasPrice gasPrice = gasPriceMapper.findGasPriceByType(user.getUserType() ,user.getUserGasType());
+        BigDecimal hasUsedGasNum = userOrdersMapper.findHasUsedGasInYear(userId);
+        if(gasPrice != null){
+            if(hasUsedGasNum == null) hasUsedGasNum = new BigDecimal(0);
+            BigDecimal orderPayment = CalculateUtil.gasToPayment(orderGas.add(hasUsedGasNum), gasPrice);
+            BigDecimal hasOrderPayment = CalculateUtil.gasToPayment(hasUsedGasNum, gasPrice);
+            return JsonData.success(orderPayment.subtract(hasOrderPayment),"查询成功");
+        }
+        return JsonData.successMsg("暂未配置天然气区间价格");
     }
 }

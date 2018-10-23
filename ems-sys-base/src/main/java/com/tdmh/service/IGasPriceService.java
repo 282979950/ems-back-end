@@ -20,4 +20,6 @@ public interface IGasPriceService {
     JsonData updateGasPrice(GasPriceParam param);
 
     BigDecimal findHasUsedGasInYear(Integer userId);
+
+    JsonData calAmount(Integer userId,  BigDecimal orderGas);
 }

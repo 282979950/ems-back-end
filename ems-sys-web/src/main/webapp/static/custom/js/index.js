@@ -194,8 +194,6 @@ app.initIndex = function () {
                     contentType: 'application/x-www-form-urlencoded',
                     data: {
                         "userId": app.editForm.data.userId,
-                        "userType": app.editForm.data.userType,
-                        "userGasType": app.editForm.data.userGasType,
                         "orderGas": val
                     },
                     beforeSend: function (xhr) {
