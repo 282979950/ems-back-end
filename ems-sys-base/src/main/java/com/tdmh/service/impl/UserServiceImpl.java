@@ -417,4 +417,12 @@ public class UserServiceImpl implements IUserService {
         return  list == null || list.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(list,"查询成功");
     }
 
+    @Override
+    public JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {
+        String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
+        List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
+        return list == null || list.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(list,"查询成功");
+
+    }
+
 }
