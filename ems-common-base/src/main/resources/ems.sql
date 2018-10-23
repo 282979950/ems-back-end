@@ -648,6 +648,7 @@ CREATE TABLE `sys_role` (
   `role_name` varchar(20) NOT NULL COMMENT '角色名称',
   `role_dists` varchar(200) NOT NULL COMMENT '角色区域范围',
   `role_orgs` varchar(200) NOT NULL COMMENT '角色组织范围',
+  `is_admin` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否是管理员',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -796,6 +797,8 @@ CREATE TABLE `user` (
   `user_status` int(4) unsigned NOT NULL DEFAULT 1 COMMENT '用户状态',
   `user_locked` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否被锁定',
   `service_times` int(4) unsigned NOT NULL COMMENT '维修次数',
+  `open_time` datetime DEFAULT NULL COMMENT '开户时间',
+  `open_by` int(10) unsigned DEFAULT NULL COMMENT '开户者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -949,6 +952,39 @@ ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci
 ROW_FORMAT=DYNAMIC
 ;
+
+-- ----------------------------
+-- Table structure for `invoice`
+-- ----------------------------
+DROP TABLE IF EXISTS `invoice`;
+CREATE TABLE `invoice` (
+`invoice_id`  int(11) NOT NULL AUTO_INCREMENT ,
+`invoice_code`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL ,
+`invoice_number`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL ,
+`emp_id`  int(11) NULL DEFAULT NULL ,
+`order_id`  int(11) NULL DEFAULT NULL ,
+`invoice_status`  int(4) NULL DEFAULT NULL COMMENT '发票状态(1已生成未分配，2已分配未打印，3已打印，4已报废)' ,
+`invoice_generate_time`  datetime NULL DEFAULT NULL COMMENT '发票生成时间' ,
+`invoice_assign_time`  datetime NULL DEFAULT NULL COMMENT '发票分配时间' ,
+`invoice_print_emp`  int(11) NULL DEFAULT NULL ,
+`invoice_print_time`  datetime NULL DEFAULT NULL COMMENT '发票打印时间' ,
+`invoice_cancel_emp`  int(11) NULL DEFAULT NULL ,
+`invoice_cancel_time`  datetime NULL DEFAULT NULL COMMENT '发票报废时间' ,
+`create_time`  datetime NULL DEFAULT NULL ,
+`create_by`  int(11) NULL DEFAULT NULL ,
+`update_time`  datetime NULL DEFAULT NULL ,
+`update_by`  int(11) NULL DEFAULT NULL ,
+`usable`  tinyint(1) NULL DEFAULT NULL ,
+`remarks`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL ,
+PRIMARY KEY (`invoice_id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci
+AUTO_INCREMENT=1
+ROW_FORMAT=DYNAMIC
+;
+
+
 
 
 --函数
