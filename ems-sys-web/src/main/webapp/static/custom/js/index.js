@@ -222,7 +222,7 @@ app.initIndex = function () {
                         $.ajax({
                             async: true,
                             type: 'POST',
-                            url: 'account/searchAccountById.do',
+                            url: 'input/getRepairOrderUserById.do',
                             contentType: 'application/x-www-form-urlencoded',
                             data: {
                                 "userId": value
@@ -234,43 +234,21 @@ app.initIndex = function () {
                                 console.log(response);
                                 if (response.status) {
                                     var data = response.data;
-                                    if (data && app.addForm) {
-                                        app.addForm.setValue('userName', data.userName);
-                                        app.addForm.setValue('userPhone', data.userPhone);
-                                        app.addForm.setValue('userAddress', data.userAddress);
-                                    }
-                                    if (data && app.editForm) {
-                                        app.editForm.setValue('userName', data.userName);
-                                        app.editForm.setValue('userPhone', data.userPhone);
-                                        app.editForm.setValue('userAddress', data.userAddress);
-                                    }
-                                }
-                            }
-                        });
-                        break;
-                    case 'oldMeterCode':
-                        $.ajax({
-                            async: true,
-                            type: 'POST',
-                            url: 'entry/getMeterByMeterCode.do',
-                            contentType: 'application/x-www-form-urlencoded',
-                            data: {
-                                'meterCode': value
-                            },
-                            beforeSend: function (xhr) {
-                                xhr.withCredentials = true;
-                            },
-                            success: function (response) {
-                                console.log(response);
-                                if (response.status) {
-                                    var data = response.data;
-                                    if (data && app.addForm) {
+                                    if (app.addForm) {
+                                        app.addForm.setValue('userName', data ? data.userName : null);
+                                        app.addForm.setValue('userPhone', data ? data.userPhone : null);
+                                        app.addForm.setValue('userAddress', data ? data.userAddress : null);
                                         app.addForm.getData().oldMeterId = data.meterId;
+                                        app.addForm.setValue('oldMeterCode', data.meterCode);
                                         app.addForm.setValue('oldMeterTypeId', data.meterTypeId);
                                         app.addForm.setValue('oldMeterDirection', data.meterDirection);
                                     }
-                                    if (data && app.editForm) {
+                                    if (app.editForm) {
+                                        app.editForm.setValue('userName', data ? data.userName : null);
+                                        app.editForm.setValue('userPhone', data ? data.userPhone : null);
+                                        app.editForm.setValue('userAddress', data ? data.userAddress : null);
                                         app.editForm.getData().oldMeterId = data.meterId;
+                                        app.editForm.setValue('oldMeterCode', data.meterCode);
                                         app.editForm.setValue('oldMeterTypeId', data.meterTypeId);
                                         app.editForm.setValue('oldMeterDirection', data.meterDirection);
                                     }
@@ -295,14 +273,14 @@ app.initIndex = function () {
                                 if (response.status) {
                                     var data = response.data;
                                     if (data && app.addForm) {
-                                        app.addForm.getData().newMeterId = data.meterId;
-                                        app.addForm.setValue('newMeterTypeId', data.meterTypeId);
-                                        app.addForm.setValue('newMeterDirection', data.meterDirection);
+                                        app.addForm.getData().newMeterId = data ? data.meterId : null;
+                                        app.addForm.setValue('newMeterTypeId', data ? data.meterTypeId : null);
+                                        app.addForm.setValue('newMeterDirection', data ? data.meterDirection : null);
                                     }
                                     if (data && app.editForm) {
-                                        app.editForm.getData().newMeterId = data.meterId;
-                                        app.editForm.setValue('newMeterTypeId', data.meterTypeId);
-                                        app.editForm.setValue('newMeterDirection', data.meterDirection);
+                                        app.editForm.getData().newMeterId = data ? data.meterId : null;
+                                        app.editForm.setValue('newMeterTypeId', data ? data.meterTypeId : null);
+                                        app.editForm.setValue('newMeterDirection', data ? data.meterDirection : null);
                                     }
                                 }
                             }
@@ -323,14 +301,14 @@ app.initIndex = function () {
                             success: function (response) {
                                 console.log(response);
                                 if (response.status) {
-                                    var data = response.data[0];
-                                    if (data && app.addForm) {
-                                        app.addForm.getData().empId = data.empId;
-                                        app.addForm.setValue('empName', data.empName);
+                                    var data = response.data;
+                                    if (app.addForm) {
+                                        app.addForm.getData().empId = data ? data[0].empId : null;
+                                        app.addForm.setValue('empName', data ? data[0].empName : null);
                                     }
-                                    if (data && app.editForm) {
-                                        app.editForm.getData().empId = data.empId;
-                                        app.editForm.setValue('empName', data.empName);
+                                    if (app.editForm) {
+                                        app.editForm.getData().empId = data ? data[0].empId : null;
+                                        app.editForm.setValue('empName', data ? data[0].empName : null);
                                     }
                                 }
                             }
@@ -407,7 +385,7 @@ app.InitializationCard = function () {
 /*
 读取卡面数据,初始化（卡）
  */
-app.initCardList = function (res,cardTitle) {
+app.initCardList = function (res, cardTitle) {
     var password;
     var cardListDialog = mdui.dialog({
         title: '卡面数据',
@@ -1499,8 +1477,76 @@ app.initEvent = function () {
             }
         });
     });
-}
-app.findInvoice = function(data ,printType) {
+    // 维修单录入
+    main.on('receipt', function () {
+        var dialog = mdui.dialog({
+            title: '新增维修单',
+            modal: true,
+            content: ' ',
+            buttons: [{
+                text: '确认',
+                onClick: function () {
+                    var data = form.getData();
+                    $.ajax({
+                        type: 'POST',
+                        url: app.currentPageName + '/add.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: data,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                            if (response.status) {
+                                var url = app.currentPageName + '/listData.do';
+                                app.render({
+                                    url: url
+                                });
+                            }
+                        }
+                    });
+                    app.addForm = null;
+                }
+            }, {
+                text: '取消',
+                onClick: function () {
+                    app.addForm = null;
+                }
+            }]
+        });
+        $(".tree-combobox-panel").remove();
+        var form = app.addForm = app.createForm({
+            parent: '.mdui-dialog-content',
+            fields: app.getAddFormFields(formNames)
+        });
+        form.$dom.on('change', function (event) {
+            var $target = $(event.target);
+            var value = $target.val();
+            switch (event.target.name) {
+                case 'repairType':
+                    // 换表、机换IC卡、工商户换表
+                    if (value === '0' || value === '6' || value === '7') {
+                        form.showField('newMeterCode');
+                        form.showField('newMeterTypeId');
+                        form.showField('newMeterDirection');
+                        form.showField('newMeterStopCode');
+                        form.showField('newSafetyCode');
+                    } else {
+                        form.hideField('newMeterCode');
+                        form.hideField('newMeterTypeId');
+                        form.hideField('newMeterDirection');
+                        form.hideField('newMeterStopCode');
+                        form.hideField('newSafetyCode');
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+        dialog.handleUpdate();
+    });
+};
+app.findInvoice = function (data, printType) {
     $.ajax({
         async: true,
         type: 'Post',
@@ -2078,7 +2124,7 @@ app.tableFields = {
     alter: [{
         name: 'userId',
         caption: '用户编号'
-    },{
+    }, {
         name: 'userName',
         caption: '用户姓名'
     }, {
@@ -2712,9 +2758,7 @@ app.getAddFormFields = function (name) {
             }, {
                 name: 'oldMeterCode',
                 caption: '旧表编号',
-                required: true,
-                queryField: true,
-                maxlength: 12
+                disabled: true
             }, {
                 name: 'oldMeterTypeId',
                 caption: '旧表类型',
@@ -2727,7 +2771,7 @@ app.getAddFormFields = function (name) {
                 options: [{
                     key: '左',
                     value: true
-                },{
+                }, {
                     key: '右',
                     value: false
                 }]
@@ -2736,6 +2780,9 @@ app.getAddFormFields = function (name) {
                 caption: '旧表止码',
                 required: true,
                 inputType: 'num'
+            }, {
+                name: 'oldSafetyCode',
+                caption: '旧安全卡编号'
             }, {
                 name: 'newMeterCode',
                 caption: '新表编号',
@@ -2752,7 +2799,7 @@ app.getAddFormFields = function (name) {
                 options: [{
                     key: '左',
                     value: true
-                },{
+                }, {
                     key: '右',
                     value: false
                 }]
@@ -2760,6 +2807,9 @@ app.getAddFormFields = function (name) {
                 name: 'newMeterStopCode',
                 caption: '新表止码',
                 inputType: 'num'
+            }, {
+                name: 'newSafetyCode',
+                caption: '新安全卡编号'
             }, {
                 name: 'repairFaultType',
                 caption: '维修故障类型',
@@ -2788,12 +2838,6 @@ app.getAddFormFields = function (name) {
                 name: 'repairEndTime',
                 caption: '维修结束时间',
                 type: 'date'
-            }, {
-                name: 'newSafetyCode',
-                caption: '新安全卡编号'
-            }, {
-                name: 'oldSafetyCode',
-                caption: '旧安全卡编号'
             }];
         case 'assign' :
             return [{
@@ -3433,7 +3477,7 @@ app.getEditFormFields = function (name) {
                 name: 'iccardIdentifier',
                 caption: 'IC卡识别号',
                 disabled: true
-            },{
+            }, {
                 name: 'nIcCardIdentifier',
                 caption: '新IC卡识别号',
                 required: true,
