@@ -1123,7 +1123,7 @@ app.initEvent = function () {
         dialog.handleUpdate();
     });
     /**
-     * 账户消户
+     * 账户销户
      */
     main.on('add_to_queue', function () {
         var data = table.getSelectedDatas();
@@ -1136,6 +1136,8 @@ app.initEvent = function () {
             app.message('请选择一条数据');
             return;
         }
+        if(window.confirm('确定要对该户名为:'+data[0].userName+'销户吗？')){
+
         var userMoney = 0;
         var OrderSupplement = 0;
         var flage = 0;
@@ -1196,6 +1198,10 @@ app.initEvent = function () {
                 }
             }
         });
+            return true;
+        }else{
+            return false;
+        }
     })
     //查看历史变更记录
     main.on('mail_outline', function () {
@@ -4266,7 +4272,7 @@ app.getToolbarFields = function (name) {
                 perm:'account:alter:visit'
             }, {
                 name: 'add_to_queue',
-                caption: '账户消户',
+                caption: '账户销户',
                 perm:'account:alter:visit'
             }, {
                 name: 'mail_outline',

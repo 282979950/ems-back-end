@@ -151,11 +151,11 @@ public class UserChangeServiceImp implements IUserChangeService {
 
             if(count>0){
 
-                return JsonData.successMsg("无超用或补缴信息，消户成功");
+                return JsonData.successMsg("无超用或补缴信息，销户成功");
 
             }else{
 
-                return JsonData.successMsg("消户失败");
+                return JsonData.successMsg("销户失败");
             }
 
         }
@@ -178,12 +178,12 @@ public class UserChangeServiceImp implements IUserChangeService {
 
                 orders.setOrderPayment(userMoney);
                 orders.setOrderSupplement(OrderSupplement);
-                orders.setRemarks("用户消户时超用补缴充值记录");
+                orders.setRemarks("用户销户时超用补缴充值记录");
             }else{
 
                 orders.setOrderPayment(userMoney.negate());
                 orders.setOrderSupplement(OrderSupplement.negate());
-                orders.setRemarks("用户消户时补缴金额记录");
+                orders.setRemarks("用户销户时补缴金额记录");
             }
 
            int count =  userOrdersMapper.createChangeUserOrder(orders);
@@ -192,11 +192,11 @@ public class UserChangeServiceImp implements IUserChangeService {
             int  userCleanCount = UserMapper.updateUserUsable(userId);
             if(userCleanCount>0 && count>0){
 
-                return JsonData.successMsg("消户成功");
+                return JsonData.successMsg("销户成功");
 
             }else{
 
-                return JsonData.successMsg("消户失败");
+                return JsonData.successMsg("销户失败");
             }
         }
 
@@ -220,7 +220,7 @@ public class UserChangeServiceImp implements IUserChangeService {
         if(amount.compareTo(BigDecimal.ZERO)>0){
             //此处需要燃气公司退钱处理,设置标识为需要退钱处理（number）
             number=new BigDecimal("2");
-            //消户时查看当时阶梯气价
+            //销户时查看当时阶梯气价
             GasPrice gasPrice = gasPriceService.findGasPriceByType(user.getUserType() ,user.getUserGasType());
             //查看当年该用户购买总气量
             BigDecimal hasUsedGasNum = gasPriceService.findHasUsedGasInYear(userId);

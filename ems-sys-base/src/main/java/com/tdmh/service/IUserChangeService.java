@@ -23,7 +23,7 @@ public interface IUserChangeService {
      */
     JsonData userChangeSettlementService(UserChange userChange, User user,Integer currentEmpId,double userMoney,double OrderSupplement);
     /**
-     * 账户消户处理
+     * 账户销户处理
      */
     JsonData userEliminationHeadService(User user,BigDecimal userMoney,BigDecimal OrderSupplement,int flage,Integer Id);
     /**
