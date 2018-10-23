@@ -131,6 +131,11 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.51</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
+        </dependency>
     </dependencies>
 
     <build>
