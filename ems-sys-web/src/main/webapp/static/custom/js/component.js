@@ -629,6 +629,9 @@
                     case 'cancel' :
                         $field.trigger('cancel');
                         break;
+                    case 'screen_share' :
+                        $field.trigger('screen_share');
+                        break;
                     default:
                         break;
                 }
@@ -1151,4 +1154,30 @@
         var result = ocx.InitCard(0, 200, icPsw);
         return result === 'S' ? result : ocx.ErrorDesc;
     };
+    /**
+     * 通用excel导出
+     * 1.data,(data = table.getSelectedDatas())获取到的值
+     * 2.str(导出的列标题:如var str = `用户编号,IC卡号'格式)
+     * 3.name(excel文件名称)
+     */
+    app.excelUtils = function(data,str,name){
+         str =str+'\n';
+        //增加\t为了不让表格显示科学计数法或者其他格式
+        for(var i = 0 ; i < data.length ; i++ ){
+            for(var item in data[i]){
+                str+=`${data[i][item] + '\t'},`;
+            }
+            str+='\n';
+        }
+        //encodeURIComponent解决中文乱码
+        var uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
+        //通过创建a标签实现
+        var link = document.createElement("a");
+        link.href = uri;
+        //对下载的文件命名
+        link.download =  name+".csv";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 })();

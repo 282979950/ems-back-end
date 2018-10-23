@@ -82,7 +82,9 @@ app.getPanelContent = function (name) {
         /*
          * 查询统计：IC卡查询 开户信息查询 用户信息查询 异常用户查询 营业数据查询 营业报表查询
          */
-        case 'cardQuery':
+        case 'ardQuery':
+            panelContent = this.DEFAULT_TEMPLATE;
+            break;
         case 'accountQuery':
         case 'userQuery':
         case 'exceptionQuery':
@@ -525,9 +527,13 @@ app.initEvent = function () {
     var formNames = app.currentPageName;
     var main = $('.container-main');
     var table = app.table;
-    if (formNames != "initCard" || formNames != "order") {
+    if(table!=null){
         var fields = table.getFields();
+
     }
+//    if (formNames != "initCard" || formNames != "order") {
+ //      var fields = table.getFields();
+ //   }
     main.on('add', function () {
         var dialog = mdui.dialog({
             title: '新增',
@@ -827,6 +833,7 @@ app.initEvent = function () {
         app.InitializationCard();
     });
     main.on('record_voice_over', function () {
+
         var result = app.ReadCard();
         if (result[0] !== 'S') {
             app.errorMessage(result);
@@ -836,7 +843,7 @@ app.initEvent = function () {
             type: 'POST',
             url: app.currentPageName + '/search.do',
             contentType: 'application/x-www-form-urlencoded',
-            data: {"iccardIdentifier": result[2]},
+            data: {"iccardIdentifier": result[2],"cardOrderGas": result[4]},
             beforeSend: function (xhr) {
                 xhr.withCredentials = true;
             },
@@ -1241,6 +1248,25 @@ app.initEvent = function () {
             return;
         }
         app.WirteCard(data[0]);
+    });
+    /**
+     * 查询统计，导出EXCEL
+     */
+    main.on('screen_share', function () {
+
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('请选择一条数据');
+            return;
+        }
+        var str = `用户编号,IC卡号,卡识别号,客户姓名,客户电话,客户地址,购气次数,购气总量,卡内气量`;
+        var name ="IC卡导出数据"
+        app.excelUtils(data,str,name);
+
     });
     /**
      * 预冲账发起
@@ -2212,6 +2238,34 @@ app.tableFields = {
     },{
         name:'rechargeTime',
         caption:'充值时间'
+    }],
+    ardQuery:[{
+        name:'userId',
+        caption:'用户编号'
+    },{
+        name:'iccardId',
+        caption:'IC卡号'
+    },{
+        name:'iccardIdentifier',
+        caption:'卡识别号'
+    },{
+        name:'userName',
+        caption:'客户姓名'
+    },{
+        name:'userPhone',
+        caption:'客户电话'
+    },{
+        name:'userAddress',
+        caption:'客户地址'
+    },{
+        name:'cardOrderGas',
+        caption:'卡内气量'
+    },{
+        name:'totalOrderGas',
+        caption:'购气总量'
+    },{
+        name:'totalOrderTimes',
+        caption:'购气次数'
     }]
 };
 /*
@@ -4192,18 +4246,28 @@ app.getToolbarFields = function (name) {
                 type: 'input'
             }];
         case 'strike':
-            return[{
-                name: 'orderId',
-                caption: '订单编号',
-                type: 'input'
+        return[{
+            name: 'orderId',
+            caption: '订单编号',
+            type: 'input'
+        },{
+            name: 'userName',
+            caption: '用户名称',
+            type: 'input'
+        },{
+            name: 'check_box',
+            caption: '审批',
+            perm:'financial:strike:visit'
+        }];
+        case 'ardQuery':
+            return [{
+                name: 'record_voice_over',
+                caption: '识别IC卡',
+                perm: 'querystats:ardQuery:record'
             },{
-                name: 'userName',
-                caption: '用户名称',
-                type: 'input'
-            },{
-                name: 'check_box',
-                caption: '审批',
-                perm:'financial:strike:visit'
+                name: 'screen_share',
+                caption: 'EXCEL导出',
+                perm:'querystats:ardQuery:visit'
             }];
     }
 };

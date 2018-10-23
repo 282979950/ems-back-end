@@ -76,6 +76,10 @@ public class PrePaymentParam extends BaseEntity {
      * 购气总量
      */
     private BigDecimal totalOrderGas;
+    /**
+     * 卡面气量(临时参数)
+     */
+    private BigDecimal cardOrderGas;
 
     /**
      * 购气总额

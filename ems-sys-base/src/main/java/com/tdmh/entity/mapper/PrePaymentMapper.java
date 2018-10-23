@@ -14,4 +14,5 @@ import java.util.List;
 @Mapper @Component
 public interface PrePaymentMapper {
      List<PrePaymentParam> getAllOrderInformation(@Param("param") PrePaymentParam param);
+     List<PrePaymentParam> getOrderInformationCardOrderGas(@Param("param") PrePaymentParam param);
 }

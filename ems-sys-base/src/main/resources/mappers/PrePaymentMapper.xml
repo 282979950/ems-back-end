@@ -31,5 +31,29 @@
         </if>
     </select>
 
+    <select id="getOrderInformationCardOrderGas" parameterType="com.tdmh.param.PrePaymentParam"
+            resultType="com.tdmh.param.PrePaymentParam">
+        SELECT u.user_id as userId,uc.card_id as iccardId ,uc.card_identifier as iccardIdentifier, u.user_name as
+        userName,u.user_phone as userPhone,
+        u.user_address as userAddress,uo.totalOrderTimes,uo.totalOrderGas
+        FROM `user` u JOIN user_card uc
+        JOIN sys_dictionary sd1 ON u.user_type = sd1.dict_value
+        JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value
+        JOIN (
+        SELECT user_id, COUNT(order_id) AS totalOrderTimes, SUM(order_gas) AS totalOrderGas,SUM(order_payment) AS
+        totalOrderPayment FROM user_orders GROUP BY user_id
+        ) uo ON u.user_id = uo.user_id
+        LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
+        LEFT JOIN meter m ON um.meter_id=m.meter_id and m.usable=1
+        LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
+        WHERE u.user_id = uc.user_id AND sd1.dict_category='user_type' AND sd2.dict_category='user_gas_type'
+        and uc.card_initialization is NOT FALSE AND u.usable=1 AND uc.usable=1
 
+        <if test="param != null and param.iccardId != null and param.iccardId != ''">
+            AND locate (#{param.iccardId} ,uc.card_id) > 0
+        </if>
+        <if test="param != null and param.iccardIdentifier!=null and param.iccardIdentifier!=''">
+            AND locate (#{param.iccardIdentifier} ,uc.card_identifier) > 0
+        </if>
+    </select>
 </mapper>
