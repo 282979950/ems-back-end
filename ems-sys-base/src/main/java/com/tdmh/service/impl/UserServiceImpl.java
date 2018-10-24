@@ -13,13 +13,9 @@ import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RandomUtils;
 import com.tdmh.utils.StringUtils;
 import com.tdmh.utils.excel.ExportExcel;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -433,12 +429,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress, HttpServletRequest request, HttpServletResponse response) {
+    public void exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress) {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
         List<AccountQueryParam> list = userMapper.searchAccountQueryList(DateUtils.parseDate(startDate),DateUtils.parseDate(endDate),distIds,userAddress);
         String fileName = "开户信息-"+DateUtils.getDate()+".xlsx";
         try {
-            new ExportExcel("开户信息", AccountQueryParam.class).setDataList(list).write(request, response, fileName).dispose();
+            new ExportExcel("开户信息", AccountQueryParam.class).setDataList(list).write(fileName).dispose();
         }catch (Exception e){
             e.printStackTrace();
         }

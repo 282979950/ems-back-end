@@ -15,6 +15,8 @@ import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -411,8 +413,11 @@ public class ExportExcel {
 	 *
 	 * @param fileName 输出文件名
 	 */
-	public ExportExcel write(HttpServletRequest request, HttpServletResponse response, String fileName) throws IOException {
-		log.info("==request header==" + request.getHeader("User-Agent"));
+	public ExportExcel write(String fileName) throws IOException {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        HttpServletResponse response = requestAttributes.getResponse();
+        log.info("==request header==" + request.getHeader("User-Agent"));
 		if(request.getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0 || request.getHeader("User-Agent").toUpperCase().indexOf("TRIDENT") > 0) {
 			fileName = URLEncoder.encode(fileName, "UTF-8");
 		} else {
