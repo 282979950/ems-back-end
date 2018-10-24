@@ -212,6 +212,13 @@
     };
 
     /**
+     * 获取table的datas
+     */
+    Table.prototype.getDatas = function () {
+        return this.data;
+    };
+
+    /**
      * 刷新Table
      */
     Table.prototype.refresh = function (data) {
@@ -652,6 +659,9 @@
                         break;
                     case 'screen_share' :
                         $field.trigger('screen_share');
+                        break;
+                    case 'arrow_downward' :
+                        $field.trigger('arrow_downward');
                         break;
                     case'link':
                         $field.trigger('link_name');

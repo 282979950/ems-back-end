@@ -1282,6 +1282,13 @@ app.initEvent = function () {
 
     });
     /**
+     * 通用导出
+     */
+    main.on('arrow_downward', function () {
+        var data = app.toolbar.getInputsData();
+        window.open(app.currentPageName + '/export.do');
+    });
+    /**
      * 预冲账发起
      */
     main.on('touch_app',function () {
@@ -4510,6 +4517,10 @@ app.getToolbarFields = function (name) {
             }];
         case 'accountQuery':
             return [{
+                name: 'arrow_downward',
+                caption: '导出',
+                perm:'querystats:account:export'
+            }, {
                 name: 'startDate',
                 caption: '开户起始日期',
                 type: 'date',
