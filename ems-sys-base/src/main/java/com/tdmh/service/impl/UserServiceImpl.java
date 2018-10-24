@@ -436,7 +436,7 @@ public class UserServiceImpl implements IUserService {
     public void exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress, HttpServletRequest request, HttpServletResponse response) {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
         List<AccountQueryParam> list = userMapper.searchAccountQueryList(DateUtils.parseDate(startDate),DateUtils.parseDate(endDate),distIds,userAddress);
-        String fileName = "开户信息-"+DateUtils.getDate()+".xls";
+        String fileName = "开户信息-"+DateUtils.getDate()+".xlsx";
         try {
             new ExportExcel("开户信息", AccountQueryParam.class).setDataList(list).write(request, response, fileName).dispose();
         }catch (Exception e){

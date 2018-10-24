@@ -128,8 +128,10 @@ public class ExportExcel {
 		});
 		// Initialize
 		List<String> headerList = Lists.newArrayList();
+		List<Integer> lenList = Lists.newArrayList();
 		for(Object[] os : annotationList) {
 			String t = ((ExcelField) os[0]).title();
+			Integer c = ((ExcelField) os[0]).length();
 			log.info("==title==" + title);
 			// 如果是导出，则去掉注释
 			if(type == 1) {
@@ -138,10 +140,11 @@ public class ExportExcel {
 					t = ss[0];
 				}
 			}
+			lenList.add(c);
 			headerList.add(t);
 		}
 		log.info("====enter export excel==55==");
-		initialize(title, headerList);
+		initialize(title, headerList, lenList);
 	}
 
 	/**
@@ -151,7 +154,7 @@ public class ExportExcel {
 	 * @param headers 表头数组
 	 */
 	public ExportExcel(String title, String[] headers) {
-		initialize(title, Lists.newArrayList(headers));
+		initialize(title, Lists.newArrayList(headers),null);
 	}
 
 	/**
@@ -161,7 +164,7 @@ public class ExportExcel {
 	 * @param headerList 表头列表
 	 */
 	public ExportExcel(String title, List<String> headerList) {
-		initialize(title, headerList);
+		initialize(title, headerList,null);
 	}
 
 	/**
@@ -170,7 +173,7 @@ public class ExportExcel {
 	 * @param title      表格标题，传“空值”，表示无标题
 	 * @param headerList 表头列表
 	 */
-	private void initialize(String title, List<String> headerList) {
+	private void initialize(String title, List<String> headerList, List<Integer> lenList) {
 		this.wb = new SXSSFWorkbook(500);
 		this.sheet = wb.createSheet("Export");
 		this.styles = createStyles(wb);
@@ -203,9 +206,8 @@ public class ExportExcel {
 			}
 			sheet.autoSizeColumn(i);
 		}
-		for(int i = 0; i < headerList.size(); i++) {
-			int colWidth = sheet.getColumnWidth(i) * 3;
-			sheet.setColumnWidth(i, colWidth < 3000 ? 3000 : colWidth);
+		for(int i = 0; i < lenList.size(); i++) {
+		    sheet.setColumnWidth(i, lenList.get(i));
 		}
 		log.debug("Initialize success.");
 	}
