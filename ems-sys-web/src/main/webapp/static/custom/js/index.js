@@ -270,12 +270,12 @@ app.initIndex = function () {
                                 console.log(response);
                                 if (response.status) {
                                     var data = response.data;
-                                    if (data && app.addForm) {
+                                    if (app.addForm) {
                                         app.addForm.getData().newMeterId = data ? data.meterId : null;
                                         app.addForm.setValue('newMeterTypeId', data ? data.meterTypeId : null);
                                         app.addForm.setValue('newMeterDirection', data ? data.meterDirection : null);
                                     }
-                                    if (data && app.editForm) {
+                                    if (app.editForm) {
                                         app.editForm.getData().newMeterId = data ? data.meterId : null;
                                         app.editForm.setValue('newMeterTypeId', data ? data.meterTypeId : null);
                                         app.editForm.setValue('newMeterDirection', data ? data.meterDirection : null);

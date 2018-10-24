@@ -57,6 +57,19 @@ public class MD5Utils {
         return resultString.toUpperCase();
     }
 
+    public static String MD5Encode(String origin) {
+        String resultString = null;
+        try {
+            resultString = origin;
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(resultString.getBytes("UTF-8"));
+            resultString = byteArrayToHexString(md.digest()).toUpperCase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultString;
+    }
+
     public static String MD5EncodeUtf8(String origin) {
         return MD5Encode(origin, Global.DEFAULT_MD5_SALT,"utf-8");
     }

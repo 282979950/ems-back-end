@@ -73,10 +73,10 @@ public interface IWXService {
     /**
      * 充值
      *
+     * @param wxUserId
      * @param userId
      * @param gas
-     * @param payment
      * @return
      */
-    JsonData recharge(Integer userId, BigDecimal gas, BigDecimal payment);
+    JsonData recharge(String wxUserId, Integer userId, BigDecimal gas, String ipAddress);
 }
