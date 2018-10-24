@@ -7,6 +7,8 @@ import com.tdmh.param.CreateArchiveParam;
 import com.tdmh.param.InstallMeterParam;
 import com.tdmh.param.LockAccountParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -206,4 +208,6 @@ public interface IUserService {
      * @return
      */
     JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress);
+
+    void exportAccountQueryList(String startDate,String endDate, Integer userDistId, String userAddress,HttpServletRequest request, HttpServletResponse response);
 }

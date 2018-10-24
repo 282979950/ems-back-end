@@ -12,10 +12,17 @@ import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RandomUtils;
 import com.tdmh.utils.StringUtils;
+import com.tdmh.utils.excel.ExportExcel;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -423,6 +430,18 @@ public class UserServiceImpl implements IUserService {
         List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
         return list == null || list.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(list,"查询成功");
 
+    }
+
+    @Override
+    public void exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress, HttpServletRequest request, HttpServletResponse response) {
+        String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
+        List<AccountQueryParam> list = userMapper.searchAccountQueryList(DateUtils.parseDate(startDate),DateUtils.parseDate(endDate),distIds,userAddress);
+        String fileName = "开户信息-"+DateUtils.getDate()+".xls";
+        try {
+            new ExportExcel("开户信息", AccountQueryParam.class).setDataList(list).write(request, response, fileName).dispose();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }
