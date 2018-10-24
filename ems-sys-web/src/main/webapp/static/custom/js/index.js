@@ -85,11 +85,12 @@ app.getPanelContent = function (name) {
         case 'ardQuery':
 
         case 'accountQuery':
-            panelContent = this.DEFAULT_TEMPLATE;
-            break;
+
         case 'userQuery':
         case 'exceptionQuery':
         case 'businessDataQuery':
+            panelContent = this.DEFAULT_TEMPLATE;
+            break;
         case 'businessReportQuery':
             break;
     }
@@ -720,6 +721,7 @@ app.initEvent = function () {
     });
     main.on('search', function () {
         var data = app.toolbar.getInputsData();
+
         $.ajax({
             type: 'POST',
             url: app.currentPageName + '/search.do',
@@ -853,6 +855,17 @@ app.initEvent = function () {
                 app.table.refresh(response.data)
             }
         });
+    });
+    main.on('link_name', function () {
+        var data = table.getSelectedDatas();
+        if (data.length <= 0){
+            app.message('请至少选择一条数据');
+            return;
+        }
+        var str = '订单ID,用户姓名,用户电话,用户身份证号,用户地址,维修次数,操作人姓名,支付金额,充值气量(单位:方),充值时间';
+        var name ="营业数据导出"
+        app.excelUtils(data,str,name);
+
     });
     main.on('tranfer', function () {
         var data = table.getSelectedDatas();
@@ -2399,6 +2412,37 @@ app.tableFields = {
     },{
         name:'totalOrderTimes',
         caption:'购气次数'
+    }],
+    businessDataQuery:[{
+        name:'orderId',
+        caption:'订单ID'
+    },{
+        name:'userName',
+        caption:'用户姓名'
+    },{
+        name:'userPhone',
+        caption:'用户电话'
+    },{
+        name:'userIdcard',
+        caption:'用户身份证号'
+    },{
+        name:'userAddress',
+        caption:'用户地址'
+    },{
+        name:'serviceTimes',
+        caption:'维修次数'
+    },{
+        name:'orderPayment',
+        caption:'支付金额'
+    },{
+        name:'orderGas',
+        caption:'充值气量(单位:方)'
+    },{
+        name:'rechargeTime',
+        caption:'充值时间'
+    },{
+        name:'empName',
+        caption:'操作人姓名'
     }]
 };
 /*
@@ -4400,6 +4444,35 @@ app.getToolbarFields = function (name) {
                 caption: 'EXCEL导出',
                 perm:'querystats:ardQuery:visit'
             }];
+        case 'businessDataQuery':
+            return[{
+                name: 'link',
+                caption: 'EXCEL导出',
+                perm:'businessDataQuery:data:visit'
+            },{
+                name: 'startTime',
+                caption: '起始时间',
+                type: 'date',
+                formatter: 'yyyy-mm-dd',
+                minView: 3
+            },{
+                name: 'endTime',
+                caption: '截止时间',
+                type: 'date',
+                formatter: 'yyyy-mm-dd',
+                minView: 3
+            },{
+                name: 'empId',
+                caption: '操作人名称',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('emp/listData.do', 'empName', 'empId')
+            },{
+                name: 'accountState',
+                caption: '账务状态',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory('account_state')
+
+            }]
         case 'accountQuery':
             return [{
                 name: 'accountDate',
@@ -4427,6 +4500,7 @@ app.getToolbarFields = function (name) {
                 caption: '用户地址',
                 type: 'input'
             }];
+
     }
 };
 

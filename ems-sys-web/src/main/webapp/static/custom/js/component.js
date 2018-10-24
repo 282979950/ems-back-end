@@ -653,6 +653,8 @@
                     case 'screen_share' :
                         $field.trigger('screen_share');
                         break;
+                    case'link':
+                        $field.trigger('link_name');
                     default:
                         break;
                 }

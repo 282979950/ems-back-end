@@ -1,7 +1,9 @@
 package com.tdmh.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,6 +26,35 @@ public class UserOrders extends BaseEntity {
      * 用户ID
      */
     private Integer userId;
+    /**
+     * 用户姓名
+     */
+    private String userName;
+    /**
+     * 用户电话
+     */
+    private String userPhone;
+    /**
+     * 用户身份证号
+     */
+    private String userIdcard;
+    /**
+     * 用户地址
+     */
+    private String userAddress;
+    /**
+     * 维修次数
+     */
+    private Integer serviceTimes;
+    /**
+     * 员工名称
+     */
+    private String empName;
+    /**
+     * 员工id
+     */
+    private Integer empId;
+
 
     /**
      * 员工ID
@@ -71,16 +102,37 @@ public class UserOrders extends BaseEntity {
      */
     private Integer accountState;
 
+
     /**
      * 订单流水号
      */
     private String flowNumber;
+    /**
+     * 临时参数，充值时间
+     */
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    private Date rechargeTime;
+    /**
+     * 临时参数（筛选条件开始时间）
+     */
+    private String startTime;
+    /**
+     * 临时参数（筛选条件结束时间）
+     */
+    private String endTime;
 
-    public UserOrders(Integer orderId, Integer userId, Integer employeeId, BigDecimal orderPayment, BigDecimal orderGas, Integer orderStatus, Date orderCreateTime, Date
+    public UserOrders(Integer orderId, Integer userId,String userName,String userPhone,String userIdcard,String userAddress,Integer serviceTimes,String empName, Integer employeeId, BigDecimal orderPayment, BigDecimal orderGas, Integer orderStatus, Date orderCreateTime, Date
             orderCloseTime, String flowNumber,Integer orderType, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.orderId = orderId;
         this.userId = userId;
+        this.userName=userName;
+        this.userPhone=userPhone;
+        this.userIdcard = userIdcard;
+        this.userAddress = userAddress;
+        this.serviceTimes = serviceTimes;
+        this.empName=empName;
         this.employeeId = employeeId;
         this.orderPayment = orderPayment;
         this.orderGas = orderGas;
