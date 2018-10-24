@@ -407,14 +407,22 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData searchAccountQueryList(String accountDate, Integer userDistId, String userAddress) {
+    public JsonData searchAccountQueryList(String startDate,String endDate, Integer userDistId, String userAddress) {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
-        List<AccountQueryParam> list = userMapper.searchAccountQueryList(accountDate,distIds,userAddress);
+        List<AccountQueryParam> list = userMapper.searchAccountQueryList(startDate,endDate,distIds,userAddress);
         AccountQueryParam param = new AccountQueryParam();
         param.setUserAddress("<strong>总开户数:</strong>");
         param.setUserTypeName("<strong>共<font color=\"#FF0000\">"+list.size()+"</font>条</strong>");
         list.add(param);
         return  list == null || list.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(list,"查询成功");
+    }
+
+    @Override
+    public JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {
+        String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
+        List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
+        return list == null || list.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(list,"查询成功");
+
     }
 
 }

@@ -7,6 +7,7 @@ import com.tdmh.param.CreateArchiveParam;
 import com.tdmh.param.InstallMeterParam;
 import com.tdmh.param.LockAccountParam;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -198,7 +199,11 @@ public interface IUserService {
      * 开户账户查询
      * @return
      */
-    JsonData searchAccountQueryList(String accountDate, Integer userDistId, String userAddress);
+    JsonData searchAccountQueryList(String startDate,String endDate, Integer userDistId, String userAddress);
 
-
+    /**
+     * 查询异常用户
+     * @return
+     */
+    JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress);
 }

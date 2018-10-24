@@ -9,14 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
+import java.math.BigDecimal;
 
 /**
- * @author Liuxia on 2018/10/22.
+ * @author Administrator on 2018/10/23.
  */
 @Controller
-@RequestMapping("/accountQuery")
-public class AccountQueryController {
+@RequestMapping("/exceptionQuery")
+public class AbnormalUserController {
 
     @Autowired
     private IUserService userService;
@@ -25,18 +25,18 @@ public class AccountQueryController {
      * 查询所有订单
      * @return
      */
-    @RequiresPermissions("querystats:account:visit")
+    @RequiresPermissions("querystats:abnormaluser:visit")
     @RequestMapping("/listData.do")
     @ResponseBody
-    public JsonData getAllAccountQueryList(){
+    public JsonData getAllAbnormalUserList(){
         return JsonData.success();
     }
 
 
-    @RequiresPermissions("querystats:account:retrieve")
+    @RequiresPermissions("querystats:abnormaluser:retrieve")
     @RequestMapping("/search.do")
     @ResponseBody
-    public JsonData searchAccountQueryList(@Param("startDate") String startDate,@Param("endDate") String endDate, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress){
-        return userService.searchAccountQueryList(startDate, endDate, userDistId, userAddress);
+    public JsonData searchAbnormalUserList(@Param("notBuyDayCount") Integer notBuyDayCount, @Param("monthAveGas") BigDecimal monthAveGas, @Param("monthAvePayment") BigDecimal monthAvePayment, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress){
+        return userService.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress);
     }
 }

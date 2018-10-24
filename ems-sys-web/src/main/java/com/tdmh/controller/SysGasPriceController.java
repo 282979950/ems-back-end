@@ -43,15 +43,7 @@ public class SysGasPriceController {
 
     @RequestMapping(value = "/calAmount.do")
     @ResponseBody
-    public JsonData calAmount(@Param("userId") Integer userId, @Param("orderGas") BigDecimal orderGas, @Param("userType") Integer userType, @Param("userGasType") Integer userGasType) {
-        GasPrice gasPrice = gasPriceService.findGasPriceByType(userType ,userGasType);
-        BigDecimal hasUsedGasNum = gasPriceService.findHasUsedGasInYear(userId);
-        if(gasPrice != null){
-            if(hasUsedGasNum == null) hasUsedGasNum = new BigDecimal(0);
-            BigDecimal orderPayment = CalculateUtil.gasToPayment(orderGas.add(hasUsedGasNum), gasPrice);
-            BigDecimal hasOrderPayment = CalculateUtil.gasToPayment(hasUsedGasNum, gasPrice);
-            return JsonData.success(orderPayment.subtract(hasOrderPayment),"查询成功");
-        }
-        return JsonData.successMsg("暂未配置天然气区间价格");
+    public JsonData calAmount(@Param("userId") Integer userId, @Param("orderGas") BigDecimal orderGas) {
+        return gasPriceService.calAmount(userId,orderGas);
     }
 }

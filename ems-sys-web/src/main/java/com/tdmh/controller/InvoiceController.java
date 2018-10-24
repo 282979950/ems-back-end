@@ -4,6 +4,7 @@ import com.tdmh.common.JsonData;
 import com.tdmh.service.IInvoiceService;
 import com.tdmh.util.ShiroUtils;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -108,7 +109,7 @@ public class InvoiceController {
      * @param invoiceNumber
      * @return
      */
-    @RequiresPermissions("recharge:order:print")
+    @RequiresPermissions(value = {"recharge:order:print","recharge:order:old","recharge:order:new"},logical = Logical.OR)
     @RequestMapping("/print.do")
     @ResponseBody
     public JsonData printInvoice(@Param("orderId") Integer orderId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
@@ -124,7 +125,7 @@ public class InvoiceController {
      * @param invoiceNumber
      * @return
      */
-    @RequiresPermissions("recharge:order:print")
+    @RequiresPermissions("recharge:order:cancel")
     @RequestMapping("/cancel.do")
     @ResponseBody
     public JsonData cancelInvoice(@Param("orderId") Integer orderId,@Param("userId") Integer userId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
