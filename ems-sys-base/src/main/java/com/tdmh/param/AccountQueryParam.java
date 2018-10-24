@@ -32,7 +32,7 @@ public class AccountQueryParam {
     /**
      * 用户地址
      */
-    @ExcelField(title="用户地址", type=1, align=2, sort=4)
+    @ExcelField(title="用户地址", type=1, align=2, sort=4, length=5000)
     private String userAddress;
     /**
      * 用户类型
@@ -54,7 +54,7 @@ public class AccountQueryParam {
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @ExcelField(title="开户时间", type=1, align=2, sort=8)
+    @ExcelField(title="开户时间", type=1, align=2, sort=8,length=5000)
     private Date openTime;
 
 
