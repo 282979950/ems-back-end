@@ -267,6 +267,7 @@
         u.user_name as userName,
         u.user_phone as userPhone,
         u.user_idcard as userIdcard,
+        sd4.dict_key AS accountStateName,
         u.user_address as userAddress,
         e.emp_name as empName,
         u.service_times as serviceTimes,

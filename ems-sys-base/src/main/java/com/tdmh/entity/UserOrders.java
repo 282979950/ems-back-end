@@ -101,7 +101,10 @@ public class UserOrders extends BaseEntity {
      * 账务状态
      */
     private Integer accountState;
-
+    /**
+     * 账务状态名称
+     */
+    private String accountStateName;
 
     /**
      * 订单流水号

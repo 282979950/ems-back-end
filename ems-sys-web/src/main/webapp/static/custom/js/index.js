@@ -854,9 +854,6 @@ app.initEvent = function () {
             app.message('请至少选择一条数据');
             return;
         }
-        var str = '订单ID,用户姓名,用户电话,用户身份证号,用户地址,维修次数,操作人姓名,支付金额,充值气量(单位:方),充值时间';
-        var name ="营业数据导出"
-        app.excelUtils(data,str,name);
 
     });
     main.on('tranfer', function () {
@@ -2454,6 +2451,9 @@ app.tableFields = {
     },{
         name:'userName',
         caption:'用户姓名'
+    },{
+        name:'accountStateName',
+        caption:'账务状态'
     },{
         name:'userPhone',
         caption:'用户电话'
