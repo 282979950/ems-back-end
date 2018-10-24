@@ -638,12 +638,12 @@ WHERE orders.order_type IN ( '2','4')
         LEFT JOIN sys_dictionary sd1 ON u.user_type = sd1.dict_value AND sd1.dict_category = 'user_type' AND sd1.usable = 1
         LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND sd2.usable = 1
         LEFT JOIN employee e on u.open_by = e.emp_id
-        where u.usable = 1
-        <if test="startDate!=null and startDate!=''">
+        where u.usable = 1 and u.user_status = 3
+        <if test="startDate!=null">
             AND u.open_time &gt;= #{startDate}
         </if>
-        <if test="endDate!=null and endDate!=''">
-            AND u.open_time &lt;= #{endDate}
+        <if test="endDate!=null">
+            AND u.open_time &lt; DATE_ADD(#{endDate},interval 1 day)
         </if>
         <if test="distIds!=null and distIds!=''">
             AND u.user_dist_id IN (${distIds})

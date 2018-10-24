@@ -7,8 +7,8 @@ import com.tdmh.entity.*;
 import com.tdmh.entity.mapper.*;
 import com.tdmh.param.*;
 import com.tdmh.service.IMeterService;
-import com.tdmh.service.ISysDistrictService;
 import com.tdmh.service.IUserService;
+import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RandomUtils;
 import com.tdmh.utils.StringUtils;
@@ -409,7 +409,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonData searchAccountQueryList(String startDate,String endDate, Integer userDistId, String userAddress) {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
-        List<AccountQueryParam> list = userMapper.searchAccountQueryList(startDate,endDate,distIds,userAddress);
+        List<AccountQueryParam> list = userMapper.searchAccountQueryList(DateUtils.parseDate(startDate),DateUtils.parseDate(endDate),distIds,userAddress);
         AccountQueryParam param = new AccountQueryParam();
         param.setUserAddress("<strong>总开户数:</strong>");
         param.setUserTypeName("<strong>共<font color=\"#FF0000\">"+list.size()+"</font>条</strong>");
