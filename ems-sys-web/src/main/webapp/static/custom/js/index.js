@@ -832,6 +832,14 @@ app.initEvent = function () {
             }
         });
     });
+    main.on('link_name', function () {
+        var data = table.getSelectedDatas();
+        if (data.length <= 0){
+            app.message('请至少选择一条数据');
+            return;
+        }
+
+    });
     main.on('tranfer', function () {
         var data = table.getSelectedDatas();
         if (data.length === 0) {
@@ -2538,6 +2546,40 @@ app.tableFields = {
     }, {
         name: 'monthAvePayment',
         caption: '月均购气金额'
+    }],
+    businessDataQuery:[{
+        name:'orderId',
+        caption:'订单ID'
+    },{
+        name:'userName',
+        caption:'用户姓名'
+    },{
+        name:'accountStateName',
+        caption:'账务状态'
+    },{
+        name:'userPhone',
+        caption:'用户电话'
+    },{
+        name:'userIdcard',
+        caption:'用户身份证号'
+    },{
+        name:'userAddress',
+        caption:'用户地址'
+    },{
+        name:'serviceTimes',
+        caption:'维修次数'
+    },{
+        name:'orderPayment',
+        caption:'支付金额'
+    },{
+        name:'orderGas',
+        caption:'充值气量(单位:方)'
+    },{
+        name:'rechargeTime',
+        caption:'充值时间'
+    },{
+        name:'empName',
+        caption:'操作人姓名'
     }]
 };
 /*
@@ -4542,6 +4584,35 @@ app.getToolbarFields = function (name) {
                 name: 'screen_share',
                 caption: 'EXCEL导出',
                 perm:'querystats:ardQuery:visit'
+            }];
+        case 'businessDataQuery':
+            return[{
+                name: 'link',
+                caption: 'EXCEL导出',
+                perm:'businessDataQuery:data:visit'
+            },{
+                name: 'startTime',
+                caption: '起始时间',
+                type: 'date',
+                formatter: 'yyyy-mm-dd',
+                minView: 3
+            },{
+                name: 'endTime',
+                caption: '截止时间',
+                type: 'date',
+                formatter: 'yyyy-mm-dd',
+                minView: 3
+            },{
+                name: 'empId',
+                caption: '操作人名称',
+                type: 'listcombobox',
+                options: app.getListComboboxOptions('emp/listData.do', 'empName', 'empId')
+            },{
+                name: 'accountState',
+                caption: '账务状态',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory('account_state')
+
             }];
         case 'accountQuery':
             return [{

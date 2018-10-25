@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Mapper @Component
 public interface UserOrdersMapper {
@@ -28,4 +29,6 @@ public interface UserOrdersMapper {
     int createChangeUserOrder(UserOrders record);
     int countUserOrdersByTimeEmployeeId(UserOrders record);
     int updateUserOrdersByOrderId(UserOrders record);
+
+    List<UserOrders> selectBusinessDataQuery(UserOrders record);
 }

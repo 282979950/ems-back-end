@@ -608,7 +608,7 @@
           sd.dict_key AS userTypeName ,
          sd2.dict_key AS  userGasTypeName,
          sd3.dict_key AS  orderTypeName,
-         sd4.dict_value AS accountStateName
+         sd4.dict_key AS accountStateName
         FROM
            user_orders orders
         LEFT JOIN user u  ON orders.user_id = u.user_id
@@ -616,7 +616,7 @@
         LEFT JOIN sys_dictionary sd ON u.user_type = sd.dict_value AND sd.dict_category = 'user_type' AND sd.usable = 1
         LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND sd2.usable = 1
         LEFT JOIN sys_dictionary sd3 ON orders.order_type = sd3.dict_value AND sd3.dict_category = 'order_type' AND sd3.usable = 1
-    LEFT JOIN sys_dictionary sd4 ON orders.account_state = sd4.dict_key AND sd4.dict_category = 'account_state' AND sd4.usable = 1
+    LEFT JOIN sys_dictionary sd4 ON orders.account_state = sd4.dict_value AND sd4.dict_category = 'account_state' AND sd4.usable = 1
 
 WHERE orders.order_type IN ( '2','4')
         <if test="userName != null and userName != ''">

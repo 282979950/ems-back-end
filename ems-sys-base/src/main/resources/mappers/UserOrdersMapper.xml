@@ -5,6 +5,13 @@
     <constructor >
       <idArg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+      <arg column="user_idcard" jdbcType="VARCHAR" javaType="java.lang.String"/>
+      <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+      <arg column="emp_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+
+      <arg column="service_times" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="employee_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="order_payment" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="order_gas" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
@@ -253,4 +260,44 @@
     UPDATE  user_orders SET account_state=#{accountState}  WHERE order_id=#{orderId}
 
   </update>
+
+  <select id="selectBusinessDataQuery" resultType="com.tdmh.entity.UserOrders" parameterType="com.tdmh.entity.UserOrders">
+      SELECT
+        orders.order_id as orderId,
+        u.user_name as userName,
+        u.user_phone as userPhone,
+        u.user_idcard as userIdcard,
+        sd4.dict_key AS accountStateName,
+        u.user_address as userAddress,
+        e.emp_name as empName,
+        u.service_times as serviceTimes,
+        orders.order_payment as orderPayment,
+        orders.order_gas as orderGas,
+        orders.create_time as rechargeTime
+
+      FROM
+        user_orders orders
+          LEFT JOIN `user` u
+          ON orders.user_id = u.user_id
+          LEFT JOIN employee e
+          ON orders.employee_id = e.emp_id
+         LEFT JOIN sys_dictionary sd4
+          ON orders.account_state = sd4.dict_value
+          AND sd4.dict_category = 'account_state' AND sd4.usable = 1
+
+      WHERE orders.usable = 1
+      <if test="empId!=null and empId!=''">
+          AND e.emp_id=#{empId}
+      </if>
+      <if test="accountState!=null and accountState!=''">
+         and  sd4.dict_value = #{accountState}
+      </if>
+      <if test="startTime!=null and startTime!='' and endTime!=null and endTime!=''">
+          AND
+          DATE_FORMAT(orders.create_time,'%Y-%m-%d')&gt;=#{startTime}
+          AND
+          DATE_FORMAT(orders.create_time,'%Y-%m-%d')&lt;=#{endTime}
+
+      </if>
+  </select>
 </mapper>

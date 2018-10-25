@@ -251,7 +251,7 @@
                 <shiro:hasPermission name="querystats:abnormaluser:visit">
                 <div class="mdui-list-item mdui-ripple nav-item exceptionQuery">异常用户查询</div>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="querystats:data:visit">
+                <shiro:hasPermission name="businessDataQuery:data:visit">
                 <div class="mdui-list-item mdui-ripple nav-item businessDataQuery">营业数据查询</div>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="querystats:report:visit">

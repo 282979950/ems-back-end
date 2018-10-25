@@ -212,13 +212,6 @@
     };
 
     /**
-     * 获取table的datas
-     */
-    Table.prototype.getDatas = function () {
-        return this.data;
-    };
-
-    /**
      * 刷新Table
      */
     Table.prototype.refresh = function (data) {
@@ -663,8 +656,11 @@
                     case 'arrow_downward' :
                         $field.trigger('arrow_downward');
                         break;
-                    case  'payment' :
+                    case 'payment' :
                         $field.trigger('payment');
+                        break;
+                    case 'link':
+                        $field.trigger('link_name');
                         break;
                     default:
                         break;
