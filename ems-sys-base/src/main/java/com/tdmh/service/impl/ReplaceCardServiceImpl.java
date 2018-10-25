@@ -31,6 +31,9 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserOrdersMapper userOrdersMapper;
+
     @Override
     public JsonData getAllReplaceCardInformation() {
         List<PrePaymentParam> list = replaceCardMapper.getAllreplaceCard(null);
@@ -45,7 +48,7 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
 
     @Transactional
     @Override
-    public JsonData supplementCard(PrePaymentParam param) {
+    public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders) {
         UserCard oldUserCard = userCardMapper.getUserCardByUserIdAndCardId(param.getUserId(),param.getIccardId());
         if(oldUserCard == null){
             return JsonData.fail("该用户没有可用卡");
@@ -61,7 +64,15 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         if(count1>0){
             return JsonData.fail("该卡已变为无效卡");
         }
-
+        userOrders.setUserId(param.getUserId());
+        userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
+        userOrders.setOrderType(3); //3为补卡订单
+        userOrders.setOrderStatus(1);
+        userOrders.setUsable(true);
+        int resultCount3 = userOrdersMapper.insert(userOrders);
+        if(resultCount3 == 0){
+            throw new ParameterException("补卡首充失败");
+        }
         oldUserCard.setUsable(false);
         int resultCount =  userCardMapper.update(oldUserCard);
         if(resultCount == 0){
@@ -73,6 +84,7 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         userCard.setCardIdentifier(param.getNIcCardIdentifier());
         userCard.setCardPassword(oldUserCard.getCardPassword());
         userCard.setCardInitialization(true);
+        userCard.setOrderId(userOrders.getOrderId());
         userCard.setCreateBy(param.getCreateBy());
         userCard.setUpdateBy(param.getUpdateBy());
         userCard.setUsable(true);
@@ -83,7 +95,9 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         WriteCardParam wparam = new WriteCardParam();
         wparam.setIccardId(userCard.getCardId());
         wparam.setIccardPassword(userCard.getCardPassword());
-        wparam.setFlowNumber("");
+        wparam.setOrderId(userOrders.getOrderId());
+        wparam.setOrderGas(userOrders.getOrderGas());
+        wparam.setFlowNumber(userOrders.getFlowNumber());
         int serviceTimes = userMapper.getServiceTimesByUserId(param.getUserId());
         wparam.setServiceTimes(serviceTimes);
         return JsonData.success(wparam,"补卡成功");

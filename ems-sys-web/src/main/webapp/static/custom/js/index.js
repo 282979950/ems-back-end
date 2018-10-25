@@ -136,49 +136,17 @@ app.initIndex = function () {
                 }
             }
         });
-        $('body').on('focus', 'form [name="nIcCardIdentifier"]', function (res) {
+        $('body').on('click', 'form [name="nIcCardIdentifier"]', function (res) {
             console.log(app.editForm);
             if (app.editForm) {
                 var res = app.ReadCard();
                 if(res instanceof Array) {
-                    if (res[1] && res[1] != '0') {
-                        $.ajax({
-                            type: 'POST',
-                            url: 'account' + '/redCard.do',
-                            contentType: 'application/x-www-form-urlencoded',
-                            data: {
-                                cardId: res[3]
-                            },
-                            beforeSend: function (xhr) {
-                                xhr.withCredentials = true;
-                            },
-                            success: function (response) {
-                                if (response.status) {
-                                    password = response.data.cardPassword;
-                                    var result = app.initCard(password);
-                                    if (result == 'S') {
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: 'account' + '/initCard.do',
-                                            contentType: 'application/x-www-form-urlencoded',
-                                            data: {
-                                                cardId: res[3], result: result
-                                            },
-                                            beforeSend: function (xhr) {
-                                                xhr.withCredentials = true;
-                                            }
-                                        });
-
-                                    } else if (result == 'ocx.ErrorDesc') {
-                                        app.errorMessage("初始化失败");
-                                    }
-                                } else {
-                                    app.errorMessage(response.message);
-                                }
-                            }
-                        });
+                    if(res[1] != 0){
+                        app.warningMessage("只能用新卡进行补卡");
+                        app.editForm.setValue('nIcCardIdentifier', '');
+                        return;
                     }
-                    app.editForm.setValue('nIcCardIdentifier', res[2]);
+                   app.editForm.setValue('nIcCardIdentifier', res[2]);
                 }else {
                     app.warningMessage(res);
                 }
@@ -1745,8 +1713,8 @@ app.WriteCard = function(rdata){
         wresult = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
     }
     if(app.currentPageName == 'replaceCard'){
-        wresult = app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
-        return;
+        app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
+        wresult = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
     }
     if(app.currentPageName == 'order'){
         var result = app.ReadCard();
@@ -1754,36 +1722,31 @@ app.WriteCard = function(rdata){
             app.errorMessage(result);
             return;
         }
+        if(rdata.orderStatus == 2){
+            app.warningMessage("该订单已经写卡成功，不能补写");
+        }
         if(rdata.orderType == 1){
-            if (result[1] != '0') {
-                app.warningMessage('只能对新卡进行开户');
-                return;
-            }
             wresult = app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
         }
         if(rdata.orderType == 2){
-            if (result[1] == '0') {
-                app.warningMessage('该卡为新卡，必须开户后再充值');
-                return;
-            }
-            if (result[4] != '0') {
-                app.warningMessage('卡内已有未圈存的气量，不能充值');
-                return;
-            }
+            wresult = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
+        }
+        if(rdata.orderType == 3){
+            app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
             wresult = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
         }
     }
-    app.updateOrderStatus(wresult);
+    app.updateOrderStatus(wresult,rdata.orderId);
 }
 
-app.updateOrderStatus = function(wresult) {
+app.updateOrderStatus = function(wresult,orderId) {
     if(wresult == '写卡成功'){
         $.ajax({
             type: 'POST',
             async: false,
             url: 'order/updateOrderStatus.do',
             data : {
-                'orderId' : rdata.orderId,
+                'orderId' : orderId,
                 'orderStatus' : 2
             },
             contentType: 'application/x-www-form-urlencoded',
@@ -1792,6 +1755,14 @@ app.updateOrderStatus = function(wresult) {
             },
             success: function (response) {
                 response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                if (response.status) {
+                    var url = app.currentPageName + '/listData.do';
+                    // app.setDataCache(url, null);
+                    console.log("清理" + url + "缓存");
+                    app.render({
+                        url: url
+                    });
+                }
             }
         });
     }else {
@@ -2223,6 +2194,12 @@ app.tableFields = {
     }, {
         name: 'iccardIdentifier',
         caption: 'IC卡识别号'
+    }, {
+        name: 'orderGas',
+        caption: '充值气量'
+    }, {
+        name: 'orderPayment',
+        caption: '充值金额'
     }, {
         name: 'createTime',
         caption: '换卡时间'
@@ -3720,10 +3697,22 @@ app.getEditFormFields = function (name) {
                 caption: 'IC卡识别号',
                 disabled: true
             }, {
+                name: 'cardCost',
+                caption: '补卡工本费',
+                value:app.getDictionaryByCategory("cardCost"),
+                disabled: true
+            }, {
                 name: 'nIcCardIdentifier',
                 caption: '新IC卡识别号',
                 required: true,
                 maxlength: 12
+            }, {
+                name: 'orderGas',
+                caption: '充值气量'
+            }, {
+                name: 'orderPayment',
+                caption: '充值金额',
+                disabled: true
             }];
         case 'input':
             return [{

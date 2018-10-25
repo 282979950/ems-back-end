@@ -324,6 +324,9 @@
                     if (field.maxlength) {
                         $input.attr('maxlength', field.maxlength);
                     }
+                    if(field.value){
+                        $input.val(field.value[0].value);
+                    }
                     if (field.disabled) {
                         $input.attr('disabled', field.disabled);
                         $input.parent().addClass('mdui-textfield-not-empty');
@@ -387,18 +390,20 @@
         var data = _this.data = params.data ? JSON.parse(JSON.stringify(params.data)) : {};
         var $fields = _this.$fields = $dom.find('.field');
         $fields.each(function (index, field) {
-            var text = $(field).attr('text');
-            if(text){
-                var tree = _this.children[field.name].tree;
-                var nodes = tree.getCheckedNodes();
-                var value = [];
-                nodes.forEach(function (node) {
-                    value.push(node[tree.nameKey]);
-                });
-                var val = value.join();
-                $(field).val(val === true || val === false ? JSON.stringify(val) : val);
-            }else {
-                $(field).val(data[field.name] === true || data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
+            if(!$(field).val()) {
+                var text = $(field).attr('text');
+                if (text) {
+                    var tree = _this.children[field.name].tree;
+                    var nodes = tree.getCheckedNodes();
+                    var value = [];
+                    nodes.forEach(function (node) {
+                        value.push(node[tree.nameKey]);
+                    });
+                    var val = value.join();
+                    $(field).val(val === true || val === false ? JSON.stringify(val) : val);
+                } else {
+                    $(field).val(data[field.name] === true || data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
+                }
             }
         });
         // 调整dom布局

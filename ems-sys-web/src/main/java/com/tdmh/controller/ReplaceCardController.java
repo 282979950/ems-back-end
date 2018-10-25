@@ -46,11 +46,14 @@ public class ReplaceCardController {
     @RequiresPermissions("recharge:supplement:update")
     @RequestMapping(value = "edit.do")
     @ResponseBody
-    public JsonData supplementCard(PrePaymentParam param) {
+    public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         param.setCreateBy(currentEmpId);
         param.setUpdateBy(currentEmpId);
-        return replaceCardService.supplementCard(param);
+        userOrders.setEmployeeId(currentEmpId);
+        userOrders.setCreateBy(currentEmpId);
+        userOrders.setUpdateBy(currentEmpId);
+        return replaceCardService.supplementCard(param,userOrders);
     }
 
     /**
