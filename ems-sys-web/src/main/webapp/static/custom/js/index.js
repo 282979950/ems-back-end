@@ -2006,6 +2006,9 @@ app.tableFields = {
     }, {
         name: 'meterEntryDate',
         caption: '表具入库时间'
+    }, {
+        name: 'meterStatusName',
+        caption: '表具状态'
     }],
     createArchive: [{
         name: 'userId',
