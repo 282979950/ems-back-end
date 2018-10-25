@@ -570,7 +570,6 @@ app.initEvent = function () {
                 return;
             }
         }
-        var flag = true;
         if (app.currentPageName == 'prePayment') {
             var result = app.ReadCard();
             if (result[0] !== 'S') {
@@ -578,34 +577,21 @@ app.initEvent = function () {
                 return;
             }
             if (result[1] == '0') {
-                app.warningMessage('该卡为新卡，必须开户后再充值');
+                app.warningMessage('该卡为新卡，请使用发卡充值');
+                return;
+            }
+            if (result[1] == '1') {
+                app.warningMessage('该卡为密码传递卡，不能充值');
                 return;
             }
             if (result[4] != '0') {
-                app.warningMessage('卡内已有未圈存的气量，不能充值');
-                return;
-            }
-            $.ajax({
-                type: 'POST',
-                async: false,
-                url: 'prePayment/verifyCard.do',
-                data : {
-                    'iccardId' : result[3],
-                    'iccardIdentifier' : result[2]
-                },
-                contentType: 'application/x-www-form-urlencoded',
-                beforeSend: function (xhr) {
-                    xhr.withCredentials = true;
-                },
-                success: function (response) {
-                    if(!response.status){
-                        app.errorMessage(response.message);
-                        flag = false;
-                    }
+                var msg = "卡内已有未圈存的气量,确认覆盖已有气量继续充值吗";
+                if (confirm(msg) == false) {
+                    return;
                 }
-            });
+            }
+            if (!app.verifyCard(result)) return;
         }
-        if(!flag) return;
         var dialog = mdui.dialog({
             title: '编辑',
             modal: true,
@@ -1276,7 +1262,10 @@ app.initEvent = function () {
      */
     main.on('arrow_downward', function () {
         var data = app.toolbar.getInputsData();
-        window.open(app.currentPageName + '/export.do');
+        app.DownLoadFile({
+            url : app.currentPageName + '/export.do',
+            data : data
+        });
     });
     /**
      * 预冲账发起
@@ -1577,7 +1566,112 @@ app.initEvent = function () {
         });
         dialog.handleUpdate();
     });
+    main.on('payment', function () {
+        if (table.getSelectedDatas().length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (table.getSelectedDatas().length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        var result = app.ReadCard();
+        if (result[0] !== 'S') {
+            app.errorMessage(result);
+            return;
+        }
+        if (result[1] != '0') {
+            app.warningMessage('只能对新卡进行发卡充值');
+            return;
+        }
+        if(!app.verifyCard(result)) return;
+        var dialog = mdui.dialog({
+            title: '编辑',
+            modal: true,
+            content: ' ',
+            buttons: [{
+                text: '确认',
+                onClick: function () {
+                    var data = form.getData();
+                    $.ajax({
+                        type: 'POST',
+                        url: app.currentPageName + '/edit.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: data,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                            if (response.status) {
+                                var rdata = response.data;
+                                var wresult = app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.orderGas, rdata.flowNumber);
+                                app.updateOrderStatus(wresult);
+                                var url = app.currentPageName + '/listData.do';
+                                // app.setDataCache(url, null);
+                                console.log("清理" + url + "缓存");
+                                app.render({
+                                    url: url
+                                });
+                            }
+                        }
+                    });
+                    app.editForm = null;
+                }
+            }, {
+                text: '取消',
+                onClick: function () {
+                    app.editForm = null;
+                }
+            }]
+        });
+        if (table.getSelectedDatas()[0]['meterCategory'] == 'IC卡表')
+            formNames = app.currentPageName + 'IC';
+        else
+            formNames = app.currentPageName + 'MessAndUnion';
+        var form = app.editForm = app.createForm({
+            parent: '.mdui-dialog-content',
+            fields: app.getEditFormFields(formNames),
+            data: table.getSelectedDatas()[0]
+        });
+        dialog.handleUpdate();
+    });
 };
+app.verifyCard = function(result){
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: 'prePayment/verifyCard.do',
+        data : {
+            'iccardId' : result[3],
+            'iccardIdentifier' : result[2]
+        },
+        contentType: 'application/x-www-form-urlencoded',
+        beforeSend: function (xhr) {
+            xhr.withCredentials = true;
+        },
+        success: function (response) {
+            if(!response.status){
+                app.errorMessage(response.message);
+                return false;
+            }
+        }
+    });
+    return true;
+}
+app.DownLoadFile = function (options) {
+    var config = $.extend(true, { method: 'post' }, options);
+    var $iframe = $('<iframe id="down-file-iframe" />');
+    var $form = $('<form target="down-file-iframe" method="' + config.method + '" />');
+    $form.attr('action', config.url);
+    for (var key in config.data) {
+        $form.append('<input type="hidden" name="' + config.data[key].name + '" value="' + config.data[key].value + '" />');
+    }
+    $iframe.append($form);
+    $(document.body).append($iframe);
+    $form[0].submit();
+    $iframe.remove();
+}
 app.findInvoice = function (data, printType) {
     $.ajax({
         async: true,
@@ -1671,6 +1765,10 @@ app.WriteCard = function(rdata){
             wresult = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
         }
     }
+    app.updateOrderStatus(wresult);
+}
+
+app.updateOrderStatus = function(wresult) {
     if(wresult == '写卡成功'){
         $.ajax({
             type: 'POST',
@@ -1692,7 +1790,6 @@ app.WriteCard = function(rdata){
         app.errorMessage("充值成功，写卡失败，请前往订单页面写卡");
     }
 }
-
 /**
  * 获取流水号
  */
@@ -4239,6 +4336,10 @@ app.getToolbarFields = function (name) {
                 name: 'edit',
                 caption: '预充值',
                 perm: 'recharge:pre:update'
+            }, {
+                name: 'payment',
+                caption: '发卡充值',
+                perm: 'recharge:pre:new'
             }, {
                 name: 'userName',
                 caption: '用户名称',

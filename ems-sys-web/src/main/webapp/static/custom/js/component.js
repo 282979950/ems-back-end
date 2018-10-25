@@ -663,6 +663,9 @@
                     case 'arrow_downward' :
                         $field.trigger('arrow_downward');
                         break;
+                    case  'payment' :
+                        $field.trigger('payment');
+                        break;
                     default:
                         break;
                 }
