@@ -306,7 +306,8 @@
                         autoclose: true,
                         minView : field.minView,
                         todayHighlight:true,
-                        todayBtn : true
+                        todayBtn : true,
+                        pickerPosition : 'top-right'
                     });
                     break;
                 default:
