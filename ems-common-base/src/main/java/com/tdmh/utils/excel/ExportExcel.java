@@ -337,16 +337,14 @@ public class ExportExcel {
 					cell.setCellValue((String) Class.forName(this.getClass().getName().replaceAll(this.getClass().getSimpleName(), "fieldtype." + val.getClass().getSimpleName() + "Type")).getMethod("setValue", Object.class).invoke(null, val));
 				}
 			}
-			if(val != null) {
-				CellStyle style = styles.get("data_column_" + column);
-				if(style == null) {
-					style = wb.createCellStyle();
-					style.cloneStyleFrom(styles.get("data" + (align >= 1 && align <= 3 ? align : "")));
-					style.setDataFormat(wb.createDataFormat().getFormat(cellFormatString));
-					styles.put("data_column_" + column, style);
-				}
-				cell.setCellStyle(style);
+			CellStyle style = styles.get("data_column_" + column);
+			if(style == null) {
+				style = wb.createCellStyle();
+				style.cloneStyleFrom(styles.get("data" + (align >= 1 && align <= 3 ? align : "")));
+				style.setDataFormat(wb.createDataFormat().getFormat(cellFormatString));
+				styles.put("data_column_" + column, style);
 			}
+			cell.setCellStyle(style);
 		} catch(Exception ex) {
 			log.info("Set cell value [" + row.getRowNum() + "," + column + "] error: " + ex.toString());
 			cell.setCellValue(val.toString());
