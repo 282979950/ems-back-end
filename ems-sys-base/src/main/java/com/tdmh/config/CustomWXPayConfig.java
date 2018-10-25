@@ -12,17 +12,37 @@ public class CustomWXPayConfig implements WXPayConfig {
     /**
      * 小程序ID
      */
-    private static final String APP_ID = "wx3f09eb2829930acb";
+//    public static final String APP_ID = "wx5a0f9d772e934b2f";// TD
+    public static final String APP_ID = "wx3f09eb2829930acb";// LY
+
+    /**
+     * 小程序秘钥
+     */
+//    public static final String APP_SECRET = "4bffcda4baa71c306c052dcd54a015c5";//TD
+    public static final String APP_SECRET = "e8c74540c7beef1e30b83500afef4cea";//LY
 
     /**
      * 商户ID
      */
-    private static final String MCH_ID = "1431092502";
+//    public static final String MCH_ID = "1517235401";//TD
+    public static final String MCH_ID = "1431092502";//LY
 
     /**
      * 商户秘钥
      */
-    private static final String KEY = "2BC3F298B931A74CC8C0C25CE3A39694";
+//    public static final String KEY = "3458DF824AFF46C98282F063770DF620";//TD
+    public static final String KEY = "2BC3F298B931A74CC8C0C25CE3A39694";//LY
+
+    public static final String GRANT_TYPE = "authorization_code";
+
+    /**
+     * 微信登录获取openId
+     */
+    public static final String WX_JSON2SESSION_URL = "https://api.weixin.qq.com/sns/jscode2session";
+
+    public static final String NOTIFY_URL = "https://www.wuhanlanyan.cn/ems/wx/getOrderNotify";
+
+    public static final String TRADE_TYPE = "JSAPI";
 
     public CustomWXPayConfig() {
     }
