@@ -1413,7 +1413,11 @@ app.initEvent = function () {
             return;
         }
         if (data[0].invoiceStatusName == undefined) {
-            app.message('该订单还没打印过，无法作废');
+            app.message('该订单还没打印过，无法补打');
+            return;
+        }
+        if (data[0].invoiceStatusName == '已作废') {
+            app.message('该订单已作废过，无法原票补打');
             return;
         }
         app.findInvoice(data[0], 2);
@@ -1430,7 +1434,7 @@ app.initEvent = function () {
             return;
         }
         if (data[0].invoiceStatusName == undefined) {
-            app.message('该订单还没打印过，无法作废');
+            app.message('该订单还没打印过，无法补打');
             return;
         }
         app.findInvoice(data[0], 3);
@@ -1446,26 +1450,27 @@ app.initEvent = function () {
             app.message('请选择一条数据');
             return;
         }
-        if (data[0].invoiceStatusName == undefined) {
-            app.message('该订单还没打印过，无法作废');
-            return;
-        }
-        $.ajax({
-            async: true,
-            type: 'Post',
-            url: '/cancel.do',
-            data: {
-                "orderId": data[0].orderId,
-                "userId" : data[0].userId,
-                "invoiceCode": data[0].invoiceCode,
-                "invoiceNumber": data[0].invoiceNumber
-            },
-            contentType: 'application/x-www-form-urlencoded',
-            beforeSend: function (xhr) {
-                xhr.withCredentials = true;
-            },
-            success: function (response) {
-                response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+        if(app.currentPageName == 'order') {
+            if (data[0].invoiceStatusName == undefined) {
+                app.message('该订单还没打印过，无法作废');
+                return;
+            }
+            $.ajax({
+                async: true,
+                type: 'Post',
+                url: app.currentPageName + '/cancel.do',
+                data: {
+                    "orderId": data[0].orderId,
+                    "userId": data[0].userId,
+                    "invoiceCode": data[0].invoiceCode,
+                    "invoiceNumber": data[0].invoiceNumber
+                },
+                contentType: 'application/x-www-form-urlencoded',
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (response) {
+                    response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                     if (response.status) {
                         var url = app.currentPageName + '/listData.do';
                         // app.setDataCache(url, null);
@@ -1474,8 +1479,39 @@ app.initEvent = function () {
                             url: url
                         });
                     }
+                }
+            });
+        }
+        if(app.currentPageName == 'printCancel') {
+            if (data[0].invoiceStatusName == '已作废') {
+                app.message('该发票已作废过，无法再作废');
+                return;
             }
-        });
+            $.ajax({
+                async: true,
+                type: 'Post',
+                url: app.currentPageName + '/cancel.do',
+                data: {
+                    "invoiceCode": data[0].invoiceCode,
+                    "invoiceNumber": data[0].invoiceNumber
+                },
+                contentType: 'application/x-www-form-urlencoded',
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (response) {
+                    response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                    if (response.status) {
+                        var url = app.currentPageName + '/listData.do';
+                        // app.setDataCache(url, null);
+                        console.log("清理" + url + "缓存");
+                        app.render({
+                            url: url
+                        });
+                    }
+                }
+            });
+        }
     });
     // 维修单录入
     main.on('receipt', function () {
@@ -3056,24 +3092,34 @@ app.getAddFormFields = function (name) {
         case 'assign' :
             return [{
                 name: 'invoiceCode',
-                caption:'发票代码'
+                caption:'发票代码',
+                required: true
             },{
                 name: 'sInvoiceNumber',
                 caption: '发票起始号码',
+                maxlength: 8,
+                required: true
             },{
                 name: 'eInvoiceNumber',
                 caption: '发票终止号码',
+                maxlength: 8,
+                required: true
             }];
         case 'assignassignment' :
             return [{
                 name: 'invoiceCode',
-                caption:'发票代码'
+                caption:'发票代码',
+                required: true
             },{
                 name: 'sInvoiceNumber',
-                caption:'发票起始号码'
+                caption:'发票起始号码',
+                maxlength: 8,
+                required: true
             },{
                 name: 'eInvoiceNumber',
-                caption:'发票终止号码'
+                caption:'发票终止号码',
+                maxlength: 8,
+                required: true
             },{
                 name: 'empId',
                 caption:'所属员工',
@@ -3329,34 +3375,44 @@ app.getEditFormFields = function (name) {
         case 'gasPrice':
             return [{
                 name: 'userTypeName',
-                caption: '用户类型'
+                caption: '用户类型',
+                disabled: true
             }, {
                 name: 'userGasTypeName',
-                caption: '用气类型'
+                caption: '用气类型',
+                disabled: true
             }, {
                 name: 'gasRangeOne',
-                caption: '第一阶梯起始气量'
+                caption: '第一阶梯起始气量',
+                inputType: 'num'
             }, {
                 name: 'gasPriceOne',
-                caption: '第一阶梯气价'
+                caption: '第一阶梯气价',
+                inputType: 'num'
             }, {
                 name: 'gasRangeTwo',
-                caption: '第二阶梯起始气量(不含)'
+                caption: '第二阶梯起始气量(不含)',
+                inputType: 'num'
             }, {
                 name: 'gasPriceTwo',
-                caption: '第二阶梯气价'
+                caption: '第二阶梯气价',
+                inputType: 'num'
             }, {
                 name: 'gasRangeThree',
-                caption: '第三阶梯起始气量(不含)'
+                caption: '第三阶梯起始气量(不含)',
+                inputType: 'num'
             }, {
                 name: 'gasPriceThree',
-                caption: '第三阶梯气价'
+                caption: '第三阶梯气价',
+                inputType: 'num'
             }, {
                 name: 'gasRangeFour',
-                caption: '第四阶梯起始气量(不含)'
+                caption: '第四阶梯起始气量(不含)',
+                inputType: 'num'
             }, {
                 name: 'gasPriceFour',
-                caption: '第四阶梯气价'
+                caption: '第四阶梯气价',
+                inputType: 'num'
             }];
         case 'permission':
             return [{
@@ -4472,6 +4528,10 @@ app.getToolbarFields = function (name) {
             }];
         case 'printCancel' :
             return [{
+                name: 'cancel',
+                caption: '发票作废',
+                perm:'recharge:printCancel:cancel'
+            }, {
                 name: 'invoiceCode',
                 caption: '发票代码',
                 type: 'input'

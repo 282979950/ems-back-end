@@ -29,7 +29,8 @@ public class InvoiceController {
     @RequestMapping("/assign/listData.do")
     @ResponseBody
     public JsonData getAllAssignInvoiceList(){
-        return invoiceService.getAllAssignInvoiceList();
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return invoiceService.getAllAssignInvoiceList(currentEmpId);
     }
 
     /**
@@ -40,7 +41,8 @@ public class InvoiceController {
     @RequestMapping("/assign/search.do")
     @ResponseBody
     public JsonData searchAssignInvoiceList(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
-        return invoiceService.searchAssignInvoiceList(invoiceCode, invoiceNumber);
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return invoiceService.searchAssignInvoiceList(invoiceCode, invoiceNumber, currentEmpId);
     }
 
     /**
@@ -74,7 +76,8 @@ public class InvoiceController {
     @RequestMapping("/printCancel/listData.do")
     @ResponseBody
     public JsonData getAllPrintCancelInvoiceList(){
-        return invoiceService.getAllPrintCancelInvoiceList();
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return invoiceService.getAllPrintCancelInvoiceList(currentEmpId);
     }
 
     /**
@@ -85,7 +88,8 @@ public class InvoiceController {
     @RequestMapping("/printCancel/search.do")
     @ResponseBody
     public JsonData searchPrintCancelInvoiceList(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber,@Param("empId") Integer empId){
-        return invoiceService.searchPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId);
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return invoiceService.searchPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, currentEmpId);
     }
 
     /**
@@ -119,18 +123,32 @@ public class InvoiceController {
 
 
     /**
-     * 注销发票
+     * 注销已打印的发票
      * @param orderId
      * @param invoiceCode
      * @param invoiceNumber
      * @return
      */
     @RequiresPermissions("recharge:order:cancel")
-    @RequestMapping("/cancel.do")
+    @RequestMapping("order/cancel.do")
     @ResponseBody
     public JsonData cancelInvoice(@Param("orderId") Integer orderId,@Param("userId") Integer userId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         return invoiceService.cancelInvoice(orderId, userId, invoiceCode, invoiceNumber, currentEmpId);
+    }
+
+    /**
+     * 注销未打印的发票
+     * @param invoiceCode
+     * @param invoiceNumber
+     * @return
+     */
+    @RequiresPermissions("recharge:printCancel:cancel")
+    @RequestMapping("printCancel/cancel.do")
+    @ResponseBody
+    public JsonData cancelNotPrintInvoice(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return invoiceService.cancelNotPrintInvoice(invoiceCode, invoiceNumber, currentEmpId);
     }
 
 }

@@ -64,6 +64,8 @@ public class Invoice extends BaseEntity{
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date invoiceCancelTime;
 
+    private String invoiceCancelEmpName;
+
     /**
      * 发票所属员工ID
      */
