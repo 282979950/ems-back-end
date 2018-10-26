@@ -391,7 +391,8 @@
         var data = _this.data = params.data ? JSON.parse(JSON.stringify(params.data)) : {};
         var $fields = _this.$fields = $dom.find('.field');
         $fields.each(function (index, field) {
-            if(!$(field).val()) {
+            var fieldVal = $(field).val();
+            if(fieldVal == '' || fieldVal == undefined || fieldVal == null) {
                 var text = $(field).attr('text');
                 if (text) {
                     var tree = _this.children[field.name].tree;
@@ -405,6 +406,8 @@
                 } else {
                     $(field).val(data[field.name] === true || data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
                 }
+            }else{
+                data[field.name] = $(field).val();
             }
         });
         // 调整dom布局

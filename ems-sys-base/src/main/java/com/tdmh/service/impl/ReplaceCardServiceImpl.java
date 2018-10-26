@@ -85,6 +85,7 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         userCard.setCardPassword(oldUserCard.getCardPassword());
         userCard.setCardInitialization(true);
         userCard.setOrderId(userOrders.getOrderId());
+        userCard.setCardCost(param.getCardCost());
         userCard.setCreateBy(param.getCreateBy());
         userCard.setUpdateBy(param.getUpdateBy());
         userCard.setUsable(true);

@@ -3,6 +3,8 @@ package com.tdmh.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 /**
  * @author Lucia on 2018/10/10.
  */
@@ -40,4 +42,9 @@ public class UserCard extends BaseEntity {
      * 对应订单ID
      */
     private Integer orderId;
+
+    /**
+     * 补卡收费
+     */
+    private BigDecimal cardCost;
 }

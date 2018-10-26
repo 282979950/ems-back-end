@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tdmh.entity.mapper.UserCardMapper">
 <insert id="insert">
- insert into user_card (user_id, card_id,card_identifier,card_password,card_initialization, order_id, create_time, create_by,update_time,update_by ,usable)
-       values (#{userId,jdbcType=INTEGER},#{cardId,jdbcType=INTEGER},#{cardIdentifier,jdbcType=VARCHAR}, #{cardPassword,jdbcType=VARCHAR},#{cardInitialization,jdbcType=BIT},#{orderId,jdbcType=INTEGER},NOW(),#{createBy,jdbcType=INTEGER},NOW(),
+ insert into user_card (user_id, card_id,card_identifier,card_password,card_initialization, order_id, card_cost, create_time, create_by,update_time,update_by ,usable)
+       values (#{userId,jdbcType=INTEGER},#{cardId,jdbcType=INTEGER},#{cardIdentifier,jdbcType=VARCHAR}, #{cardPassword,jdbcType=VARCHAR},#{cardInitialization,jdbcType=BIT},#{orderId,jdbcType=INTEGER},#{cardCost,jdbcType=DECIMAL}, NOW(),#{createBy,jdbcType=INTEGER},NOW(),
         #{updateBy,jdbcType=INTEGER},#{usable,jdbcType=BIT})
 </insert>
 <select id="countUserCardBycardId" parameterType="Integer" resultType="Integer">
@@ -42,7 +42,7 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
           where user_card_id = #{userCardId}
     </update>
     <select id="getAllSupList" parameterType="Integer" resultType="com.tdmh.param.CreateAccountParam">
-        select uc.user_id as userId, uc.card_id as iccardId, uc.card_identifier as iccardIdentifier, uo.order_gas as orderGas,uo.order_payment as orderPayment,uc.create_time as createTime
+        select uc.user_id as userId, uc.card_id as iccardId, uc.card_identifier as iccardIdentifier, uc.card_cost as castCost, uo.order_gas as orderGas,uo.order_payment as orderPayment,uc.create_time as createTime
         from user_card uc join user_orders uo on uc.order_id = uo.order_id
         where uc.user_id = #{userId} ORDER BY uc.create_time DESC,uc.user_card_id DESC
     </select>

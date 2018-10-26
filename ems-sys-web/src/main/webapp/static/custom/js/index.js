@@ -558,7 +558,10 @@ app.initEvent = function () {
                     return;
                 }
             }
-            if (!app.verifyCard(result)) return;
+            if(result[2] != table.getSelectedDatas()[0].iccardIdentifier || result[3] != table.getSelectedDatas()[0].cardId){
+                app.warningMessage("该卡不是与该用户绑定的卡");
+                return;
+            }
         }
         var dialog = mdui.dialog({
             title: '编辑',
@@ -1560,7 +1563,10 @@ app.initEvent = function () {
             app.warningMessage('只能对新卡进行发卡充值');
             return;
         }
-        if(!app.verifyCard(result)) return;
+        if(result[2] != table.getSelectedDatas()[0].iccardIdentifier){
+            app.warningMessage("该卡不是与该用户绑定的卡");
+            return;
+        }
         var dialog = mdui.dialog({
             title: '编辑',
             modal: true,
@@ -1613,27 +1619,13 @@ app.initEvent = function () {
         dialog.handleUpdate();
     });
 };
-app.verifyCard = function(result){
-    $.ajax({
-        type: 'POST',
-        async: false,
-        url: 'prePayment/verifyCard.do',
-        data : {
-            'iccardId' : result[3],
-            'iccardIdentifier' : result[2]
-        },
-        contentType: 'application/x-www-form-urlencoded',
-        beforeSend: function (xhr) {
-            xhr.withCredentials = true;
-        },
-        success: function (response) {
-            if(!response.status){
-                app.errorMessage(response.message);
-                return false;
-            }
-        }
-    });
+app.verifyCard = function(result,data){
+    if(result[2] != data.iccardIdentifier || result[3] != data.cardId){
+        app.warningMessage("该卡不是与该用户绑定的卡");
+        return false;
+    }
     return true;
+
 }
 app.DownLoadFile = function (options) {
     var config = $.extend(true, { method: 'post' }, options);
@@ -2194,6 +2186,9 @@ app.tableFields = {
     }, {
         name: 'iccardIdentifier',
         caption: 'IC卡识别号'
+    }, {
+        name: 'castCost',
+        caption: '补卡工本费'
     }, {
         name: 'orderGas',
         caption: '充值气量'
