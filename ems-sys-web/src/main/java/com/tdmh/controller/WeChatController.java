@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 
 /**
@@ -59,6 +60,12 @@ public class WeChatController {
         return wxService.unBindUser(wxUserId, userId);
     }
 
+    @RequestMapping(value = "getWXOrders", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonData getWXOrders(@Param("userId") Integer userId) {
+        return wxService.getWXOrders(userId);
+    }
+
     @RequestMapping(value = "recharge", method = RequestMethod.GET)
     @ResponseBody
     public JsonData recharge(@Param("wxUserId") String wxUserId, @Param("userId") Integer userId, @Param("gas") BigDecimal gas, HttpServletRequest request) {
@@ -66,14 +73,22 @@ public class WeChatController {
         return wxService.recharge(wxUserId, userId, gas,ipAddress);
     }
 
+    @RequestMapping(value = "closeOrder", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonData closeOrder(@Param("wxUserId") String wxUserId, @Param("userId") Integer userId, @Param("gas") BigDecimal gas, HttpServletRequest request) {
+        String ipAddress = HttpRequestUtil.getIpAddress(request);
+        return wxService.recharge(wxUserId, userId, gas,ipAddress);
+    }
+
     /**
-     * 接收维修回调的地址
+     * 接收订单回调的地址
      *
      * @return
      */
     @RequestMapping(value = "getOrderNotify")
     @ResponseBody
-    public void getOrderNotify(HttpServletRequest request) {
-        request.getSession();
+    public void getOrderNotify(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("接收到订单回调");
+        wxService.getOrderNotify(request, response);
     }
 }

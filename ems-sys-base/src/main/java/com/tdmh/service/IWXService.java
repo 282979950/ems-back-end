@@ -2,6 +2,8 @@ package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 
 /**
@@ -65,10 +67,10 @@ public interface IWXService {
     /**
      * 获取充值金额
      *
-     * @param gas
+     * @param userId
      * @return
      */
-    JsonData getPayment(Integer userId, BigDecimal gas);
+    JsonData getWXOrders(Integer userId);
 
     /**
      * 充值
@@ -79,4 +81,12 @@ public interface IWXService {
      * @return
      */
     JsonData recharge(String wxUserId, Integer userId, BigDecimal gas, String ipAddress);
+
+    /**
+     * 处理微信支付回调
+     *
+     * @param request
+     * @param response
+     */
+    void getOrderNotify(HttpServletRequest request, HttpServletResponse response);
 }
