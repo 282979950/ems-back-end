@@ -3,4 +3,9 @@ spring:
     url: jdbc:mysql://192.168.0.20:3306/ems?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
     username: root
     password: root
+#    url: jdbc:mysql://39.105.6.33:3306/ems?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
+#    username: root
+#    password: 123456
     driver-class-name : com.mysql.jdbc.Driver
+  jmx:
+    default-domain: common-base
