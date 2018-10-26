@@ -90,4 +90,9 @@ public class PrePaymentParam extends BaseEntity {
      * 补卡后新的IC卡识别号
      */
     private String nIcCardIdentifier;
+
+    /**
+     * 补卡工本费
+     */
+    private BigDecimal cardCost;
 }
