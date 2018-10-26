@@ -44,7 +44,7 @@ public class ShiroConfig {
         manager.setSessionListeners(sessionListenerList);
         manager.setSessionIdUrlRewritingEnabled(false);
         manager.setDeleteInvalidSessions(true);
-        manager.setGlobalSessionTimeout(720000);
+        manager.setGlobalSessionTimeout(7200000);
         return manager;
     }
 
