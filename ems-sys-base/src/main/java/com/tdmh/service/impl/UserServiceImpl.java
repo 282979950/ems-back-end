@@ -440,6 +440,30 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public JsonData userQueryListService() {
+        List<User> list =userMapper.userListByUserQuery();
+        return list==null?JsonData.fail("未查询到相关数据"):JsonData.successData(list);
+    }
+
+    @Override
+    public JsonData userQuerySearchService(User user) {
+       List<User> list = userMapper.userQuerySearch(user);
+        return list.size()==0?JsonData.fail("未查询到相关数据，请刷新重试"):JsonData.success(list,"查询成功");
+    }
+
+    @Override
+    public JsonData selectHistoryUserCardQueryService(Integer userId) {
+
+        if(userId.intValue()==0){
+
+          return JsonData.fail("未获取到数据，请刷新或联系管理员");
+        }
+
+        List<UserCard> list = userCardMapper.selectUserCardQuery(userId);
+        return list.size()==0?JsonData.fail("未查询到相关数据，请重新选择或联系管理员"):JsonData.success(list,"查询成功");
+    }
+
+    @Override
     public int updateServiceTimesByUserId(Integer userId) {
         return userMapper.updateServiceTimesByUserId(userId);
     }

@@ -73,4 +73,6 @@ public interface UserMapper {
     List<AccountQueryParam> searchAccountQueryList(@Param("startDate")Date startDate,@Param("endDate")Date endDate, @Param("distIds") String distIds, @Param("userAddress") String userAddress);
 
     List<AbnormalUser> searchAbnormalUserList(@Param("notBuyDayCount") Integer notBuyDayCount, @Param("monthAveGas") BigDecimal monthAveGas, @Param("monthAvePayment") BigDecimal monthAvePayment, @Param("distIds") String distIds, @Param("userAddress") String userAddress);
+    List<User> userListByUserQuery();
+    List<User> userQuerySearch(User user);
 }

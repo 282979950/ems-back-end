@@ -42,6 +42,10 @@ public class UserCard extends BaseEntity {
      * 对应订单ID
      */
     private Integer orderId;
+    /**
+     * 补卡工本费用
+     */
+    private BigDecimal cardCost;
 
     /**
      * 补卡收费

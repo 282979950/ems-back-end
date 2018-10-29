@@ -44,4 +44,5 @@ public interface UserOrdersMapper {
     int cancelWxOrder(Integer userId);
 
     List<UserOrders> selectBusinessDataQuery(UserOrders record);
+    List<UserOrders> selectordersListQuery(Integer userId);
 }

@@ -337,4 +337,34 @@
 
       </if>
   </select>
+  <select  id ="selectordersListQuery" resultType="com.tdmh.entity.UserOrders" parameterType="java.lang.Integer">
+         SELECT
+	      orders.user_id AS userId,
+          orders. order_payment AS orderPayment,
+          orders.order_supplement as orderSupplement,
+          orders.order_gas AS orderGas,
+          sd2.dict_key AS orderStatusName,
+          orders. flow_number AS flowNumber,
+          sd1.dict_key AS orderTypeName,
+          orders.create_time AS createTime,
+          sd3.dict_key AS accountStateName
+
+      FROM
+          user_orders orders
+
+          LEFT JOIN sys_dictionary sd1
+          ON orders.order_type = sd1.dict_value
+          AND sd1.dict_category = 'order_type' AND sd1.usable = 1
+	      LEFT JOIN sys_dictionary sd2
+          ON orders.order_type = sd2.dict_value
+          AND sd2.dict_category = 'order_status' AND sd2.usable = 1
+          LEFT JOIN sys_dictionary sd3
+          ON orders.order_type = sd3.dict_value
+          AND sd3.dict_category = 'account_state' AND sd3.usable = 1
+
+      WHERE orders.usable = 1
+      and
+      orders.user_id=#{userId}
+
+  </select>
 </mapper>

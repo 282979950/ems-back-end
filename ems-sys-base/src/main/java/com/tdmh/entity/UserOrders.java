@@ -75,6 +75,11 @@ public class UserOrders extends BaseEntity {
      * 订单状态
      */
     private Integer orderStatus;
+    /**
+     * 订单状态名称
+     */
+    private String orderStatusName;
+
 
     /**
      * 订单创建时间
@@ -84,6 +89,10 @@ public class UserOrders extends BaseEntity {
      * 订单类型
      */
     private Integer orderType;
+    /**
+     * 订单类型名称
+     */
+    private String orderTypeName;
     /**
      * order_supplement
      */
