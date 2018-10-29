@@ -181,7 +181,7 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     }
 
     @Override
-    public JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, Integer empName) {
+    public JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName) {
         List<RepairOrderParam> orderParams = repairOrderMapper.searchRepairOrder(repairOrderId, userId, repairType, empName);
         return orderParams == null || orderParams.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.success(orderParams, "查询成功");
     }

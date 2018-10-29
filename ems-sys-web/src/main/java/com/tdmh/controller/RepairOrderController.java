@@ -61,7 +61,7 @@ public class RepairOrderController {
     @RequestMapping(value = "search.do")
     @ResponseBody
     public JsonData searchRepairOrder(@Param("repairOrderId")String repairOrderId, @Param("userId")Integer userId, @Param("repairType")Integer repairType,
-                                      @Param("empName") Integer empName) {
+                                      @Param("empName") String empName) {
         return repairOrderService.searchRepairOrder(repairOrderId, userId, repairType, empName);
     }
 

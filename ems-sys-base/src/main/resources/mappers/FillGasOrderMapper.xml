@@ -57,6 +57,7 @@
         LEFT JOIN `user` u on fgo.user_id = u.user_id and u.usable = 1
         LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
         LEFT JOIN sys_dictionary sd2 on fgo.fill_gas_order_type = sd2.dict_value and sd2.dict_category = 'fill_gas_order_type' and sd2.usable = 1
+        where fgo.usable = 1
         order by fgo.id desc
     </select>
     <select id="getSumOrderGasByUserId" resultType="java.math.BigDecimal" parameterType="int">
@@ -105,6 +106,29 @@
         count(1)
         from fill_gas_order
         where user_id = #{userId} and repair_order_id = #{repairOrderId} and fill_gas_order_status = 1
+    </select>
+    <select id="searchFillGasOrder" resultMap="FillGasOrderParam" parameterType="map">
+        SELECT
+        fgo.id, fgo.fill_gas_order_type,sd2.dict_key as fill_gas_order_type_name, fgo.user_id, u.user_name, u.user_phone, u.user_address, fgo.repair_order_id,
+        fgo.gas_count, fgo.stop_code_count, fgo.need_fill_gas, fgo.fill_gas, fgo.left_gas, fgo.need_fill_money, fgo.fill_money, fgo.left_money,
+        fgo.fill_gas_order_status, sd.dict_key as fill_gas_order_status_name,
+        fgo.create_time, fgo.create_by, fgo.update_time, fgo.update_by, fgo.usable, fgo.remarks
+        from
+        fill_gas_order fgo
+        LEFT JOIN `user` u on fgo.user_id = u.user_id and u.usable = 1
+        LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd2 on fgo.fill_gas_order_type = sd2.dict_value and sd2.dict_category = 'fill_gas_order_type' and sd2.usable = 1
+        where fgo.usable = 1
+        <if test="repairOrderId != null and repairOrderId != ''">
+            AND fgo.repair_order_id LIKE CONCAT('%', #{repairOrderId}, '%')
+        </if>
+        <if test="userId != null and userId != ''">
+            AND fgo.user_id LIKE CONCAT('%', #{userId}, '%')
+        </if>
+        <if test="fillGasOrderType != null">
+            AND fgo.fill_gas_order_type = #{fillGasOrderType}
+        </if>
+        order by fgo.id desc
     </select>
     <select id="selectFillGasOrderQuery" resultType="com.tdmh.param.FillGasOrderParam" parameterType="java.lang.Integer">
     SELECT

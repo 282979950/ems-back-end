@@ -84,8 +84,9 @@ public class FillGasServiceImpl implements IFillGasService {
     }
 
     @Override
-    public JsonData searchFillGasOrder(Integer userId) {
-        return null;
+    public JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType) {
+        List<FillGasOrderParam> fillGasOrders = fillGasOrderMapper.searchFillGasOrder(repairOrderId, userId, fillGasOrderType);
+        return fillGasOrders == null || fillGasOrders.size() == 0 ? JsonData.successMsg("查询结果为空"): JsonData.success(fillGasOrders, "查询成功");
     }
 
     @Override

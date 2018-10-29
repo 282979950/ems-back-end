@@ -34,7 +34,7 @@ public interface IRepairOrderService {
      * 查询维修单
      * @return
      */
-    JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, Integer empName);
+    JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName);
 
     JsonData getRepairOrderUserById(Integer userId);
 

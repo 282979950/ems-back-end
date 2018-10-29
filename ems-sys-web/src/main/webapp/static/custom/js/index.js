@@ -4936,6 +4936,19 @@ app.getToolbarFields = function (name) {
                 name: 'local_gas_station',
                 caption: '补气补缴',
                 perm: 'repairorder:fillGas:fillGas'
+            },{
+                name: 'repairOrderId',
+                caption: '维修单编号',
+                type: 'input'
+            }, {
+                name: 'userId',
+                caption: '户号',
+                type: 'input'
+            }, {
+                name: 'fillGasOrderType',
+                caption: '维修类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("fill_gas_order_type")
             }];
         case 'alter':
             return [{

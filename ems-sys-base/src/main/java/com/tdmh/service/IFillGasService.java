@@ -18,7 +18,7 @@ public interface IFillGasService {
 
     JsonData editFillGasOrder(FillGasOrderParam param);
 
-    JsonData searchFillGasOrder(Integer userId);
+    JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType);
 
     BigDecimal getSumOrderGasByUserId(Integer userId);
 
