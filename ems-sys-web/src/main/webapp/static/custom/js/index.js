@@ -2342,11 +2342,14 @@ app.tableFields = {
         name: 'orderId',
         caption: '订单编号'
     },{
+        name: 'userId',
+        caption: '用户编号'
+    },{
         name: 'userName',
         caption: '用户名'
     },{
         name: 'iccardId',
-        caption: 'IC卡卡号'
+        caption: 'IC卡编号'
     },{
         name: 'iccardIdentifier',
         caption: 'IC卡识别号'
@@ -4572,7 +4575,7 @@ app.getToolbarFields = function (name) {
                 perm:'recharge:order:cancel'
             }, {
                 name: 'userName',
-                caption: '用户编号',
+                caption: '用户名称',
                 type: 'input'
             }, {
                 name: 'iccardId',
