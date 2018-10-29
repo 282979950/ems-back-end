@@ -155,6 +155,12 @@ app.initIndex = function () {
         $('body').on('keyup', '[name="orderGas"]', function (res) {
             var val = $(this).val();
             if (/^\d+(\.\d+)?$/.test(val)) {
+                if(val > 900){
+                    app.warningMessage("充值气量不能大于900");
+                    app.editForm.setValue('orderGas', null);
+                    app.editForm.setValue('orderPayment', null);
+                    return;
+                }
                 $.ajax({
                     async: true,
                     type: 'POST',
@@ -169,7 +175,7 @@ app.initIndex = function () {
                     },
                     success: function (response) {
                         console.log(response);
-                        response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                        // response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                         if (response.status) {
                             app.editForm.setValue('orderPayment', response.data);
                         }
