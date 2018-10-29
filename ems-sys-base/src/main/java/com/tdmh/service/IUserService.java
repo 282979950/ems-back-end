@@ -2,6 +2,7 @@ package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.User;
+import com.tdmh.entity.UserCard;
 import com.tdmh.param.CreateAccountParam;
 import com.tdmh.param.CreateArchiveParam;
 import com.tdmh.param.InstallMeterParam;
@@ -209,4 +210,16 @@ public interface IUserService {
     JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress);
 
     void exportAccountQueryList(String startDate,String endDate, Integer userDistId, String userAddress);
+    /**
+     * 查询统计（用户信息查询）
+     */
+    JsonData userQueryListService();
+    /**
+     * 查询统计（筛选查询）
+     */
+    JsonData userQuerySearchService(User user);
+    /**
+     * 查询统计（用户卡相关查询）
+     */
+    JsonData selectHistoryUserCardQueryService(Integer userId);
 }

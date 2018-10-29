@@ -23,4 +23,5 @@ public interface FillGasOrderMapper {
     BigDecimal getSumOrderGasByUserId(Integer id);
 
     BigDecimal getSumMeterStopCodeByUserId(Integer id);
+    List<FillGasOrderParam>selectFillGasOrderQuery(Integer userId);
 }

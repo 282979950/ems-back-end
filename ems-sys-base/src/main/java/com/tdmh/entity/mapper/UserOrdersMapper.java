@@ -31,4 +31,5 @@ public interface UserOrdersMapper {
     int updateUserOrdersByOrderId(UserOrders record);
 
     List<UserOrders> selectBusinessDataQuery(UserOrders record);
+    List<UserOrders> selectordersListQuery(Integer userId);
 }

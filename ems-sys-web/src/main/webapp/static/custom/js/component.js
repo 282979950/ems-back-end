@@ -636,8 +636,8 @@
                     case 'touch_app':
                         $field.trigger('touch_app');
                         break;
-                    case 'check_box':
-                        $field.trigger('check_box');
+                    case 'assignment_turned_in':
+                        $field.trigger('assignment_turned_in');
                         break;
                     case 'credit_card' :
                         $field.trigger('credit_card');
@@ -665,6 +665,19 @@
                         break;
                     case'link':
                         $field.trigger('link_name');
+                        break
+                    case 'gradient' :
+                        $field.trigger('gradient');
+                        break;
+                    case 'note' :
+                        $field.trigger('note_alt');
+                        break;
+                    case 'build' :
+                        $field.trigger('build');
+                        break;
+                    case 'tab' :
+                        $field.trigger('userQuery_tab');
+                        break;
                     default:
                         break;
                 }
@@ -1198,7 +1211,7 @@
         //增加\t为了不让表格显示科学计数法或者其他格式
         for(var i = 0 ; i < data.length ; i++ ){
             for(var item in data[i]){
-                str+=`${data[i][item] + '\t'},`;
+                str+='${data[i][item] + \'\\t\'},';
             }
             str+='\n';
         }

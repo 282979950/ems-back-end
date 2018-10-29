@@ -1336,9 +1336,184 @@ app.initEvent = function () {
         }
     })
     /**
+     * 用户变更信息查询
+     */
+    main.on('gradient', function () {
+
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        var userId = data[0].userId;
+        $.ajax({
+            async: true,
+            type: 'Post',
+            url: app.currentPageName + '/historyQuery.do',
+            data: {
+                "userId": userId
+            },
+            contentType: 'application/x-www-form-urlencoded',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                var data = response.data;
+                console.log(data);
+                var dialog = mdui.dialog({
+                    title: '历史变更记录',
+                    content: ' ',
+                    buttons: [{text: '关闭'}]
+                });
+                var table = app.createTable({
+                    parent: '.mdui-dialog-content',
+                    fields: app.tableFields[app.currentPageName + 'History'],
+                    data: data
+                });
+                dialog.handleUpdate();
+            }
+        });
+
+    });
+    /**
+     * 充值记录查询
+     */
+    main.on('note_alt', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        var userId = data[0].userId;
+        $.ajax({
+            async: true,
+            type: 'Post',
+            url: app.currentPageName + '/historyQueryOrders.do',
+            data: {
+                "userId": userId
+            },
+            contentType: 'application/x-www-form-urlencoded',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                var data = response.data;
+                console.log(data);
+                var dialog = mdui.dialog({
+                    title: '充值记录',
+                    content: ' ',
+                    buttons: [{text: '关闭'}]
+                });
+                var table = app.createTable({
+                    parent: '.mdui-dialog-content',
+                    fields: app.tableFields[app.currentPageName + 'HistoryOrders'],
+                    data: data
+                });
+                dialog.handleUpdate();
+            }
+        });
+
+    });
+    /**
+     * 维修记录
+     */
+    main.on('build', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        var userId = data[0].userId;
+        $.ajax({
+            async: true,
+            type: 'Post',
+            url: app.currentPageName + '/historyFillGasOrder.do',
+            data: {
+                "userId": userId
+            },
+            contentType: 'application/x-www-form-urlencoded',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                var data = response.data;
+                console.log(data);
+                var dialog = mdui.dialog({
+                    title: '维修记录',
+                    content: ' ',
+                    buttons: [{text: '关闭'}]
+                });
+                var table = app.createTable({
+                    parent: '.mdui-dialog-content',
+                    fields: app.tableFields[app.currentPageName + 'HistoryFillGasOrder'],
+                    data: data
+                });
+                dialog.handleUpdate();
+            }
+        });
+
+    });
+    /**
+     * 用户,卡相关记录
+     */
+    main.on('userQuery_tab', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        var userId = data[0].userId;
+        $.ajax({
+            async: true,
+            type: 'Post',
+            url: app.currentPageName + '/historyUserCard.do',
+            data: {
+                "userId": userId
+            },
+            contentType: 'application/x-www-form-urlencoded',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                var data = response.data;
+                console.log(data);
+                var dialog = mdui.dialog({
+                    title: 'IC卡相关信息',
+                    content: ' ',
+                    buttons: [{text: '关闭'}]
+                });
+                var table = app.createTable({
+                    parent: '.mdui-dialog-content',
+                    fields: app.tableFields[app.currentPageName + 'HistoryUserCard'],
+                    data: data
+                });
+                dialog.handleUpdate();
+            }
+        });
+
+
+
+    });
+    /**
      * 发起审批--冲账
      */
-    main.on('check_box', function () {
+    main.on('assignment_turned_in', function () {
         var tableData = table.getSelectedDatas();
         if (table.getSelectedDatas().length === 0) {
             app.message('请选择一条数据');
@@ -2309,6 +2484,115 @@ app.tableFields = {
         name: 'userOldDeed',
         caption: '旧用户房产证号码'
     }],
+    userQueryHistory: [{
+        name: 'userChangeName',
+        caption: '用户名称'
+    }, {
+        name: 'userChangePhone',
+        caption: '用户电话'
+    }, {
+        name: 'userChangeIdcard',
+        caption: '用户身份证号码'
+    }, {
+        name: 'userChangeDeed',
+        caption: '用户房产证号码'
+    },{
+        name: 'userOldName',
+        caption: '旧用户名称'
+    }, {
+        name: 'userOldPhone',
+        caption: '旧用户电话'
+    }, {
+        name: 'userOldIdcard',
+        caption: '旧用户身份证号码'
+    }, {
+        name: 'userOldDeed',
+        caption: '旧用户房产证号码'
+    }],
+    userQueryHistoryOrders: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'orderPayment',
+        caption: '实付金额'
+    }, {
+        name: 'orderGas',
+        caption: '充值气量'
+    }, {
+        name: 'flowNumber',
+        caption: '流水号'
+    },{
+        name: 'orderSupplement',
+        caption: '应付金额'
+    }, {
+        name: 'orderStatusName',
+        caption: '订单状态'
+    }, {
+        name: 'orderTypeName',
+        caption: '订单类型'
+    }, {
+        name: 'accountStateName',
+        caption: '账务状态'
+    }, {
+        name: 'createTime',
+        caption: '创建时间'
+    }],
+    userQueryHistoryFillGasOrder: [{
+        name: 'userId',
+        caption: '用户编号'
+    }, {
+        name: 'fillGasOrderTypeName',
+        caption: '订单类型'
+    }, {
+        name: 'gasCount',
+        caption: '历史购气总量'
+    }, {
+        name: 'stopCodeCount',
+        caption: '历史表止码'
+    },{
+        name: 'needFillGas',
+        caption: '应补气量'
+    },{
+        name: 'fillGas',
+        caption: '实补气量'
+    }, {
+        name: 'leftGas',
+        caption: '剩余气量'
+    }, {
+        name: 'needFillMoney',
+        caption: '应补金额'
+    }, {
+        name: 'fillMoney',
+        caption: '实补金额'
+    }, {
+        name: 'leftMoney',
+        caption: '剩余金额'
+    }, {
+        name: 'fillGasOrderStatusName',
+        caption: '订单状态'
+    }, {
+        name: 'createTime',
+        caption: '创建时间'
+    }],
+    userQueryHistoryUserCard: [{
+        name: 'userId',
+        caption: '用户编号'
+    },{
+        name: 'cardId',
+        caption: 'IC卡卡号'
+    },{
+        name: 'cardIdentifier',
+        caption: 'IC卡识别号'
+    },{
+        name: 'cardIdentifier',
+        caption: 'IC卡识别号'
+    },{
+        name: 'cardCost',
+        caption: '补卡工本费用'
+    },{
+        name: 'createTime',
+        caption: '创建时间'
+    }],
     preStrike:[{
         name: 'userName',
         caption: '用户姓名'
@@ -2485,6 +2769,25 @@ app.tableFields = {
     },{
         name:'empName',
         caption:'操作人姓名'
+    }],
+    userQuery:[{
+        name:'userId',
+        caption:'用户编号'
+    },{
+        name:'userName',
+        caption:'用户名称'
+    },{
+        name:'userPhone',
+        caption:'用户手机号码'
+    },{
+        name:'userIdcard',
+        caption:'用户身份证号'
+    },{
+        name:'userAddress',
+        caption:'用户地址'
+    },{
+        name:'createTime',
+        caption:'创建时间'
     }]
 };
 /*
@@ -4472,7 +4775,7 @@ app.getToolbarFields = function (name) {
             caption: '用户名称',
             type: 'input'
         },{
-            name: 'check_box',
+            name: 'assignment_turned_in',
             caption: '审批',
             perm:'financial:strike:visit'
         }];
@@ -4581,6 +4884,32 @@ app.getToolbarFields = function (name) {
             },{
                 name: 'monthAvePayment',
                 caption: '月均购气金额(元)',
+                type: 'input'
+            }];
+        case 'userQuery':
+            return [{
+                name: 'gradient',
+                caption: '变更信息',
+                perm:'querystats:accountdetail:visit'
+            },{
+                name: 'note',
+                caption: '充值信息',
+                perm:'querystats:accountdetail:visit'
+            },{
+                name: 'build',
+                caption: '维修信息',
+                perm:'querystats:accountdetail:visit'
+            },{
+                name: 'tab',
+                caption: '卡信息',
+                perm:'querystats:accountdetail:visit'
+            },{
+                name:'userId',
+                caption:'用户编号',
+                type: 'input'
+            },{
+                name:'userName',
+                caption:'用户名称',
                 type: 'input'
             }];
 

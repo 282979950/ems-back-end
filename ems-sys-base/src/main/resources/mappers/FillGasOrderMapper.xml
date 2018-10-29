@@ -84,4 +84,35 @@
         LEFT JOIN meter m on um.meter_id = m.meter_id
         where um.user_id = #{userId}
     </select>
+    <select id="selectFillGasOrderQuery" resultType="com.tdmh.param.FillGasOrderParam" parameterType="java.lang.Integer">
+    SELECT
+         fgs.user_id as userId,
+        sd1.dict_key AS fillGasOrderTypeName,
+
+        fgs.gas_count as gasCount,
+        fgs.stop_code_count as stopCodeCount,
+        fgs.need_fill_gas as needFillGas,
+        fgs.fill_gas as fillGas,
+        fgs.left_gas as leftGas,
+        fgs.need_fill_money as needFillMoney,
+        fgs.fill_money as fillMoney,
+        fgs.left_money as leftMoney,
+        sd2.dict_key AS fillGasOrderStatusName,
+        fgs.create_time as createTime
+
+ FROM fill_gas_order fgs
+  LEFT JOIN sys_dictionary sd1
+          ON fgs.fill_gas_order_type = sd1.dict_value
+          AND sd1.dict_category = 'fill_gas_order_type' AND sd1.usable = 1
+
+  LEFT JOIN sys_dictionary sd2
+          ON fgs.fill_gas_order_status = sd2.dict_value
+          AND sd2.dict_category = 'fill_gas_order_status' AND sd2.usable = 1
+
+
+     WHERE
+          fgs.user_id=#{userId}
+      AND fgs.usable=1
+
+    </select>
 </mapper>
