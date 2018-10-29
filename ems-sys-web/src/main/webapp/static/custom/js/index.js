@@ -1581,6 +1581,147 @@ app.initEvent = function () {
         });
         dialog.handleUpdate();
     });
+    // 维修单编辑
+    main.on('repairOrderEdit', function () {
+        /**
+         * 判断补气单是否被处理
+         */
+        function hasFillGasOrderResolved(userId, repairOrderId) {
+            var result;
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: 'input/hasFillGasOrderResolved.do',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    userId: userId,
+                    repairOrderId: repairOrderId
+                },
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (response) {
+                    if (response.status) {
+                        result = response.data;
+                    }
+                }
+            });
+            return result;
+        }
+
+        /**
+         * 判断是否为最近的一条订单
+         */
+        function isLatestFillGasOrder(id, userId) {
+            var result;
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: 'input/isLatestFillGasOrder.do',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    id: id,
+                    userId: userId
+                },
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (response) {
+                    if (response.status) {
+                        result = response.data;
+                    }
+                }
+            });
+            return result;
+        }
+        var selectDatas = table.getSelectedDatas();
+        if (table.getSelectedDatas().length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (table.getSelectedDatas().length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        if (!isLatestFillGasOrder(selectDatas[0].id, selectDatas[0].userId)) {
+            app.message("该维修单不是最新的，不能编辑");
+            return;
+        }
+        if (hasFillGasOrderResolved(selectDatas[0].userId, selectDatas[0].repairOrderId)) {
+            app.message("该维修单的补气单或超用单已被处理，不能编辑");
+            return;
+        }
+        var dialog = mdui.dialog({
+            title: '编辑维修单',
+            modal: true,
+            content: ' ',
+            buttons: [{
+                text: '确认',
+                onClick: function () {
+                    var data = form.getData();
+                    $.ajax({
+                        type: 'POST',
+                        url: app.currentPageName + '/edit.do',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: data,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                        },
+                        success: function (response) {
+                            response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                            if (response.status) {
+                                var url = app.currentPageName + '/listData.do';
+                                app.render({
+                                    url: url
+                                });
+                            }
+                        }
+                    });
+                    app.editForm = null;
+                }
+            }, {
+                text: '取消',
+                onClick: function () {
+                    app.editForm = null;
+                }
+            }]
+        });
+        $(".tree-combobox-panel").remove();
+        var form = app.editForm = app.createForm({
+            parent: '.mdui-dialog-content',
+            fields: app.getEditFormFields(formNames),
+            data: table.getSelectedDatas()[0]
+        });
+        var data = form.getData();
+        // 判断是否为换表
+        if (data.repairType === 0 || data.repairType === 6 || data.repairType === 7) {
+            form.disableField("repairType");
+            form.disableField("gasEquipmentType");
+            form.disableField("oldMeterTypeId");
+            form.disableField("oldMeterDirection");
+            form.disableField("newMeterTypeId");
+            form.disableField("newMeterDirection");
+            form.disableField("repairFaultType");
+            form.disableField("repairResultType");
+        } else {
+            //禁用新表输入项
+            form.hideField('newMeterCode');
+            form.hideField('newMeterTypeId');
+            form.hideField('newMeterDirection');
+            form.hideField('newMeterStopCode');
+            form.hideField('newSafetyCode');
+            form.disableField("repairType");
+            form.disableField("oldMeterTypeId");
+            form.disableField("oldMeterDirection");
+            form.disableField("gasEquipmentType");
+            // 判断是否为补气维修单
+            if(data.repairResultType === 4 || data.repairResultType === 9) {
+                form.disableField("repairFaultType");
+                form.disableField("repairResultType");
+            }
+        }
+        dialog.handleUpdate();
+    });
     main.on('payment', function () {
         if (table.getSelectedDatas().length === 0) {
             app.message('请选择一条数据');
@@ -2146,7 +2287,7 @@ app.tableFields = {
         caption: '新表止码'
     }, {
         name: 'repairFaultTypeName',
-        caption: '维修类型'
+        caption: '维修故障类型'
     }, {
         name: 'repairResultTypeName',
         caption: '维修结果'
@@ -3830,6 +3971,9 @@ app.getEditFormFields = function (name) {
                 required: true,
                 inputType: 'num'
             }, {
+                name: 'oldSafetyCode',
+                caption: '旧安全卡编号'
+            }, {
                 name: 'newMeterCode',
                 caption: '新表编号',
                 queryField: true
@@ -3853,6 +3997,9 @@ app.getEditFormFields = function (name) {
                 name: 'newMeterStopCode',
                 caption: '新表止码',
                 inputType: 'num'
+            }, {
+                name: 'newSafetyCode',
+                caption: '新安全卡编号'
             }, {
                 name: 'repairFaultType',
                 caption: '维修故障类型',
@@ -3881,12 +4028,6 @@ app.getEditFormFields = function (name) {
                 name: 'repairEndTime',
                 caption: '维修结束时间',
                 type: 'date'
-            }, {
-                name: 'newSafetyCode',
-                caption: '新安全卡编号'
-            }, {
-                name: 'oldSafetyCode',
-                caption: '旧安全卡编号'
             }];
         case 'fillGas':
             return [{
@@ -4462,11 +4603,11 @@ app.getToolbarFields = function (name) {
             }];
         case 'input':
             return [{
-                name: 'add',
+                name: 'receipt',
                 caption: '新增',
                 perm:'repairorder:entry:create'
             }, {
-                name: 'edit',
+                name: 'mode_edit',
                 caption: '编辑',
                 perm:'repairorder:entry:update'
             }, {
@@ -4492,7 +4633,7 @@ app.getToolbarFields = function (name) {
                 name: 'local_gas_station',
                 caption: '补气补缴',
                 perm: 'repairorder:fillGas:fillGas'
-            }]
+            }];
         case 'alter':
             return [{
                 name: 'event',

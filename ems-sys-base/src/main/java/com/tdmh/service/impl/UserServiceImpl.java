@@ -439,4 +439,8 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    @Override
+    public int updateServiceTimesByUserId(Integer userId) {
+        return userMapper.updateServiceTimesByUserId(userId);
+    }
 }

@@ -73,4 +73,16 @@ public class RepairOrderController {
     public JsonData getRepairOrderUserById(@Param("userId")Integer userId) {
         return repairOrderService.getRepairOrderUserById(userId);
     }
+
+    @RequestMapping(value = "hasFillGasOrderResolved.do")
+    @ResponseBody
+    public JsonData hasFillGasOrderResolved(@Param("userId")Integer userId, @Param("repairOrderId")String repairOrderId) {
+        return repairOrderService.hasFillGasOrderResolved(userId, repairOrderId);
+    }
+
+    @RequestMapping(value = "isLatestFillGasOrder.do")
+    @ResponseBody
+    public JsonData isLatestFillGasOrder(@Param("id")Integer id, @Param("userId")Integer userId) {
+        return repairOrderService.isLatestFillGasOrder(id, userId);
+    }
 }

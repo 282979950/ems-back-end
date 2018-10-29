@@ -466,6 +466,24 @@
         });
     };
 
+    Form.prototype.disableField = function (fieldName) {
+        var _this = this;
+        _this.$fields.each(function (index, field) {
+            if (field.name === fieldName) {
+                $(field).attr('disabled', true);
+            }
+        });
+    };
+
+    Form.prototype.enableField = function (fieldName) {
+        var _this = this;
+        _this.$fields.each(function (index, field) {
+            if (field.name === fieldName) {
+                $(field).attr('disabled', false);
+            }
+        });
+    };
+
     Form.prototype.hideField = function (fieldName) {
         var _this = this;
         _this.$fields.each(function (index, field) {
@@ -658,6 +676,9 @@
                         break;
                     case 'receipt' :
                         $field.trigger('receipt');
+                        break;
+                    case 'mode_edit' :
+                        $field.trigger('repairOrderEdit');
                         break;
                     case 'screen_share' :
                         $field.trigger('screen_share');

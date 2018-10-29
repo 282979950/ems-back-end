@@ -31,11 +31,11 @@
     </resultMap>
     <insert id="createFillGasOrder" parameterType="com.tdmh.param.FillGasOrderParam">
         insert into fill_gas_order(
-        user_id, fill_gas_order_type, repair_order_id, need_fill_gas, fill_gas, left_gas, need_fill_money, fill_money, left_money, fill_gas_order_status,
-        create_time, create_by, update_time, update_by, remarks
+        user_id, fill_gas_order_type, repair_order_id, gas_count, stop_code_count, need_fill_gas, fill_gas, left_gas, need_fill_money, fill_money, left_money,
+        fill_gas_order_status, create_time, create_by, update_time, update_by, remarks
         )
-        values(#{userId}, #{fillGasOrderType}, #{repairOrderId}, #{needFillGas}, #{fillGas}, #{leftGas}, #{needFillMoney}, #{fillMoney}, #{leftMoney},
-        #{fillGasOrderStatus}, NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks}
+        values(#{userId}, #{fillGasOrderType}, #{repairOrderId}, #{gasCount}, #{stopCodeCount}, #{needFillGas}, #{fillGas}, #{leftGas}, #{needFillMoney},
+        #{fillMoney}, #{leftMoney}, #{fillGasOrderStatus}, NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks}
         )
     </insert>
     <update id="editFillGasOrder">
@@ -49,18 +49,7 @@
     <select id="listData" resultMap="FillGasOrderParam">
         SELECT
         fgo.id, fgo.fill_gas_order_type,sd2.dict_key as fill_gas_order_type_name, fgo.user_id, u.user_name, u.user_phone, u.user_address, fgo.repair_order_id,
-        (SELECT
-        SUM(order_gas)
-        from
-        user_orders
-        where user_id = fgo.user_id and usable = 1) as gas_count,
-        (SELECT
-        SUM(m.meter_stop_code)
-        from
-        user_meters um
-        LEFT JOIN meter m on um.meter_id = m.meter_id
-        where um.user_id = fgo.user_id) as stop_code_count,
-        fgo.need_fill_gas, fgo.fill_gas, fgo.left_gas, fgo.need_fill_money, fgo.fill_money, fgo.left_money,
+        fgo.gas_count, fgo.stop_code_count, fgo.need_fill_gas, fgo.fill_gas, fgo.left_gas, fgo.need_fill_money, fgo.fill_money, fgo.left_money,
         fgo.fill_gas_order_status, sd.dict_key as fill_gas_order_status_name,
         fgo.create_time, fgo.create_by, fgo.update_time, fgo.update_by, fgo.usable, fgo.remarks
         from
@@ -68,6 +57,7 @@
         LEFT JOIN `user` u on fgo.user_id = u.user_id and u.usable = 1
         LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
         LEFT JOIN sys_dictionary sd2 on fgo.fill_gas_order_type = sd2.dict_value and sd2.dict_category = 'fill_gas_order_type' and sd2.usable = 1
+        order by fgo.id desc
     </select>
     <select id="getSumOrderGasByUserId" resultType="java.math.BigDecimal" parameterType="int">
         SELECT
@@ -83,5 +73,37 @@
         user_meters um
         LEFT JOIN meter m on um.meter_id = m.meter_id
         where um.user_id = #{userId}
+    </select>
+    <select id="getFillGasOrderByUserId" resultType="com.tdmh.param.FillGasOrderParam" parameterType="integer">
+        SELECT
+        fgo.id, fgo.fill_gas_order_type, sd2.dict_key as fill_gas_order_type_name, fgo.user_id, u.user_name, u.user_phone, u.user_address, fgo.repair_order_id,
+        fgo.gas_count, fgo.stop_code_count, fgo.need_fill_gas, fgo.fill_gas, fgo.left_gas, fgo.need_fill_money, fgo.fill_money, fgo.left_money,
+        fgo.fill_gas_order_status, sd.dict_key as fill_gas_order_status_name,
+        fgo.create_time, fgo.create_by, fgo.update_time, fgo.update_by, fgo.usable, fgo.remarks
+        from
+        fill_gas_order fgo
+        LEFT JOIN `user` u on fgo.user_id = u.user_id and u.usable = 1
+        LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd2 on fgo.fill_gas_order_type = sd2.dict_value and sd2.dict_category = 'fill_gas_order_type' and sd2.usable = 1
+        where fgo.user_id = #{userId} and fgo.usable = 1
+    </select>
+    <select id="hasUnfinishedFillGasOrder" resultType="java.lang.Boolean">
+        select
+        count(1)
+        from fill_gas_order
+        where user_id = #{userId} and fill_gas_order_status = 0 and usable = 1
+    </select>
+    <update id="cancelFillGasByUserId" parameterType="integer">
+        update fill_gas_order
+        set
+        fill_gas_order_status = 2,
+        update_time = NOW()
+        where user_id = #{userId} and fill_gas_order_status = 0 and usable = 1
+    </update>
+    <select id="hasFillGasOrderResolved" resultType="java.lang.Boolean" parameterType="map">
+        select
+        count(1)
+        from fill_gas_order
+        where user_id = #{userId} and repair_order_id = #{repairOrderId} and fill_gas_order_status = 1
     </select>
 </mapper>
