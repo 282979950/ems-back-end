@@ -605,6 +605,7 @@
           orders.create_time as orderCreateTime,
           orders.order_type as orderType,
           orders.account_state as accountState,
+          orders.order_strike_time as orderStrikeTime,
           sd.dict_key AS userTypeName ,
          sd2.dict_key AS  userGasTypeName,
          sd3.dict_key AS  orderTypeName,

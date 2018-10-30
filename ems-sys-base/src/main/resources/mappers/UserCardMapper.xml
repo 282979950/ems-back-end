@@ -118,4 +118,13 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
         from user_card
         where card_identifier = #{newCardIdentifier}
     </select>
+    <select id="selectCountUserCard" parameterType="Integer" resultType="java.lang.Integer">
+
+        SELECT COUNT(0) FROM user_card WHERE user_id=#{userId}  AND usable=1
+
+    </select>
+    <update id="updateUserCardByUserIdCardStatus" parameterType="com.tdmh.entity.UserCard">
+
+      UPDATE user_card SET card_status=#{cardStatus},usable=0    WHERE user_id=#{userId}  AND usable=1
+</update>
 </mapper>

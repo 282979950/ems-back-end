@@ -42,6 +42,8 @@ public interface UserCardMapper {
     int getCardByCardMessage(@Param("userId") Integer userId , @Param("iccardId") Integer iccardId , @Param("iccardIdentifier") String iccardIdentifier);
 
     List<UserCard> selectUserCardQuery(Integer userId);
+    int selectCountUserCard(Integer userId);
+    int updateUserCardByUserIdCardStatus(UserCard card);
 
     BindNewCardParam getBindNewCardParamByUserId(Integer userId);
 

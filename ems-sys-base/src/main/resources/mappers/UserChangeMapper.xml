@@ -14,13 +14,14 @@
             <arg column="user_old_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_old_idcard" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_old_deed" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
 
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
        id,user_id,user_change_name,user_change_phone,
        user_change_idcard,user_change_deed,user_old_name,
-       user_old_phone,user_old_idcard,user_old_deed
+       user_old_phone,user_old_idcard,user_old_deed,create_time
     </sql>
 
     <select id="sumHistoryPurchasingAirVolume" resultType="java.math.BigDecimal" parameterType="Integer">

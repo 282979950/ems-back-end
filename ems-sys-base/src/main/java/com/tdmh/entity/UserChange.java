@@ -1,10 +1,12 @@
 package com.tdmh.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -63,7 +65,14 @@ public class UserChange extends BaseEntity {
      */
     private BigDecimal tableCode;
 
-    public UserChange(String id, Integer userId, String userChangeName, String userChangePhone, String userChangeIdcard, String userChangeDeed, String userOldName, String userOldPhone, String userOldIdcard, String userOldDeed) {
+    /**
+     * 时间
+     */
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date createTime;
+
+    public UserChange(String id, Integer userId, String userChangeName, String userChangePhone, String userChangeIdcard, String userChangeDeed, String userOldName, String userOldPhone, String userOldIdcard, String userOldDeed,Date createTime) {
         this.id = id;
         this.userId = userId;
         this.userChangeName = userChangeName;
@@ -74,6 +83,7 @@ public class UserChange extends BaseEntity {
         this.userOldPhone = userOldPhone;
         this.userOldIdcard = userOldIdcard;
         this.userOldDeed = userOldDeed;
+        this.createTime = createTime;
     }
 
     public UserChange() {

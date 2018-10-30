@@ -133,6 +133,12 @@ public class UserOrders extends BaseEntity {
      * 临时参数（筛选条件结束时间）
      */
     private String endTime;
+    /**
+     * 发起冲账时间
+     */
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date orderStrikeTime;
 
     public UserOrders(Integer orderId, Integer userId,String userName,String userPhone,String userIdcard,String userAddress,Integer serviceTimes,String empName, Integer employeeId, BigDecimal orderPayment, BigDecimal orderGas, Integer orderStatus, Date orderCreateTime, Date
             orderCloseTime, String flowNumber,Integer orderType, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {

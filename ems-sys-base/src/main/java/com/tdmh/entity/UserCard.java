@@ -47,4 +47,8 @@ public class UserCard extends BaseEntity {
      * 补卡收费
      */
     private BigDecimal cardCost;
+    /**
+     * 卡片状态
+     */
+    private Integer cardStatus;
 }

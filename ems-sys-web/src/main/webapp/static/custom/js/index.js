@@ -859,9 +859,13 @@ app.initEvent = function () {
                             if (response.status) {
                                 //成功变更账户，无超用信息
                                 if (response.data == null) {
-                                    alert(response.message)
+                                    mdui.alert(response.message);
 
-                                } else {
+                                }
+                                /*
+                                 *超用费用结清代码屏蔽
+
+                                else {
                                     //实际补缴超用userMoney
                                     console.log(data)
                                     var userMoney = prompt(response.message, response.data[0]);
@@ -895,6 +899,7 @@ app.initEvent = function () {
                                     }
 
                                 }
+                                */
 
                             } else {
                                 app.errorMessage(response.message);
@@ -1114,7 +1119,7 @@ app.initEvent = function () {
             app.message('请选择一条数据');
             return;
         }
-        if(window.confirm('确定要对该户名为:'+data[0].userName+'销户吗？')){
+        mdui.confirm('确定要对该户名为:'+data[0].userName+'销户吗？',function(){
 
         var userMoney = 0;
         var OrderSupplement = 0;
@@ -1176,10 +1181,9 @@ app.initEvent = function () {
                 }
             }
         });
-            return true;
-        }else{
-            return false;
-        }
+        },'',{
+            modal:true
+        });
     })
     //查看历史变更记录
     main.on('mail_outline', function () {
@@ -2821,6 +2825,9 @@ app.tableFields = {
     }, {
         name: 'userOldDeed',
         caption: '旧用户房产证号码'
+    }, {
+        name: 'createTime',
+        caption: '创建时间'
     }],
     userQueryHistory: [{
         name: 'userChangeName',
@@ -2958,6 +2965,9 @@ app.tableFields = {
     },{
         name: 'userAddress',
         caption: '用户地址'
+    },{
+        name: 'orderStrikeTime',
+        caption: '账务发起时间'
     }],
     strike:[{
         name: 'orderId',
