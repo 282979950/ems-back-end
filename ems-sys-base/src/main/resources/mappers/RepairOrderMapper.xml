@@ -51,9 +51,9 @@
         ro.id, ro.repair_order_id, ro.user_id ,u.user_name, u.user_phone, u.user_address, ro.repair_type, sd1.dict_key as repair_type_name,
         ro.gas_equipment_type, sd4.dict_key as gas_equipment_type_name,
         ro.old_meter_id, m2.meter_code as old_meter_code, m2.meter_type_id as old_meter_type_id, mt2.meter_type as old_meter_type_name,
-        m2.meter_direction as old_meter_direction, sd6.dict_key as old_meter_direction_name, m2.meter_stop_code as old_meter_stop_code,
+        m2.meter_direction as old_meter_direction, sd6.dict_key as old_meter_direction_name, ro.old_meter_stop_code,
         ro.new_meter_id, m1.meter_code as new_meter_code, m1.meter_type_id as new_meter_type_id, mt1.meter_type as new_meter_type_name,
-        m1.meter_direction as new_meter_direction, sd5.dict_key as new_meter_direction_name, m1.meter_stop_code as new_meter_stop_code,
+        m1.meter_direction as new_meter_direction, sd5.dict_key as new_meter_direction_name, ro.new_meter_stop_code,
         ro.repair_fault_type, sd2.dict_key as repair_fault_type_name, ro.repair_result_type, sd3.dict_key as repair_result_type_name,
         ro.emp_id, e.emp_number, e.emp_name,
         ro.repair_start_time,ro.repair_end_time, ro.new_safety_code, ro.old_safety_code,
@@ -75,6 +75,7 @@
     </sql>
     <select id="listData" resultMap="RepairOrderParam">
         <include refid="Base_Sql"></include>
+        order by ro.id desc
     </select>
     <select id="getRepairOrderById" resultMap="RepairOrderParam" parameterType="int">
         <include refid="Base_Sql"></include>
@@ -88,10 +89,10 @@
     </select>
     <insert id="addRepairOrder" parameterType="com.tdmh.param.RepairOrderParam">
         insert into repair_order(
-        repair_order_id, user_id, repair_type, gas_equipment_type, old_meter_id, new_meter_id,
+        repair_order_id, user_id, repair_type, gas_equipment_type, old_meter_id, old_meter_stop_code, new_meter_id, new_meter_stop_code,
         repair_fault_type, repair_result_type, emp_id, repair_start_time, repair_end_time, new_safety_code, old_safety_code,
         create_time, create_by, update_time, update_by, remarks
-        ) values (#{repairOrderId}, #{userId}, #{repairType}, #{gasEquipmentType}, #{oldMeterId}, #{newMeterId},
+        ) values (#{repairOrderId}, #{userId}, #{repairType}, #{gasEquipmentType}, #{oldMeterId}, #{oldMeterStopCode}, #{newMeterId}, #{newMeterStopCode},
         #{repairFaultType}, #{repairResultType}, #{empId}, #{repairStartTime}, #{repairEndTime}, #{newSafetyCode}, #{oldSafetyCode},
         NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks})
     </insert>
@@ -101,7 +102,10 @@
         repair_order_id = #{repairOrderId},
         repair_type = #{repairType},
         gas_equipment_type = #{gasEquipmentType},
+        old_meter_id = #{oldMeterId},
+        old_meter_stop_code = #{oldMeterStopCode},
         new_meter_id = #{newMeterId},
+        new_meter_stop_code = #{newMeterStopCode},
         repair_fault_type = #{repairFaultType},
         repair_result_type = #{repairResultType},
         emp_id = #{empId},

@@ -37,4 +37,8 @@ public interface IRepairOrderService {
     JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, Integer empName);
 
     JsonData getRepairOrderUserById(Integer userId);
+
+    JsonData hasFillGasOrderResolved(Integer userId, String repairOrderId);
+
+    JsonData isLatestFillGasOrder(Integer id, Integer userId);
 }

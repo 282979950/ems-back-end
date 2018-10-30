@@ -2,6 +2,7 @@ package com.tdmh.entity.mapper;
 
 import com.tdmh.param.FillGasOrderParam;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -23,4 +24,13 @@ public interface FillGasOrderMapper {
     BigDecimal getSumOrderGasByUserId(Integer id);
 
     BigDecimal getSumMeterStopCodeByUserId(Integer id);
+
+    List<FillGasOrderParam> getFillGasOrderByUserId(Integer userId);
+
+    int cancelFillGasByUserId(Integer userId);
+
+    boolean hasUnfinishedFillGasOrder(Integer userId);
+
+    boolean hasFillGasOrderResolved(@Param("userId") Integer userId, @Param("repairOrderId") String repairOrderId);
+    List<FillGasOrderParam>selectFillGasOrderQuery(Integer userId);
 }

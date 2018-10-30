@@ -105,6 +105,7 @@ public class RepairOrderParam extends BaseEntity {
     /**
      * 旧表止码
      */
+    @NotNull(message = "旧表止码不能为空")
     private BigDecimal oldMeterStopCode;
 
     /**

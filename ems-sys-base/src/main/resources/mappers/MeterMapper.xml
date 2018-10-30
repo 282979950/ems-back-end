@@ -275,6 +275,8 @@
             <arg column="meter_direction_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="meter_prod_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="meter_entry_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="meter_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="meter_status_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -286,9 +288,11 @@
     <select id="getAllEntryMeters" parameterType="map" resultMap="EntryMeterParam">
         select
         m.meter_id, m.meter_code, m.meter_stop_code, mt.meter_category, mt.meter_type, m.meter_direction, sd.dict_key as meter_direction_name,
-        m.meter_prod_date, m.meter_entry_date, m.create_time, m.create_by, m.update_time, m.update_by, m.usable, m.remarks
+        m.meter_prod_date, m.meter_entry_date, m.meter_status, sd2.dict_key as meter_status_name, m.create_time, m.create_by, m.update_time, m.update_by,
+        m.usable, m.remarks
         from meter m left join meter_type mt on m.meter_type_id = mt.meter_type_id
         LEFT JOIN sys_dictionary sd on m.meter_direction = sd.dict_value and sd.dict_category = 'meter_direction' and sd.usable = 1
+        LEFT JOIN sys_dictionary sd2 on m.meter_status = sd2.dict_value and sd2.dict_category = 'meter_status' and sd2.usable = 1
         where m.usable = 1
         order by m.meter_id
     </select>

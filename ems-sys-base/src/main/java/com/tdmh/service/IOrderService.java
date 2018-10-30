@@ -13,4 +13,5 @@ public interface IOrderService {
     JsonData updateOrderStatus(Integer orderId ,Integer orderStatus);
     JsonData BusinessDataQueryService(UserOrders orders);
     JsonData BusinessDataQuerySearchListService(UserOrders orders);
+    JsonData selectHistoryOrdersService(Integer userId);
 }
