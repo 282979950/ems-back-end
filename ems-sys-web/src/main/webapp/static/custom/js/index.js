@@ -155,6 +155,18 @@ app.initIndex = function () {
         $('body').on('keyup', '[name="orderGas"]', function (res) {
             var val = $(this).val();
             if (/^\d+(\.\d+)?$/.test(val)) {
+                if(val = 0){
+                    app.warningMessage("充值气量必须大于0");
+                    app.editForm.setValue('orderGas', null);
+                    app.editForm.setValue('orderPayment', null);
+                    return;
+                }
+                if(val > 900){
+                    app.warningMessage("充值气量不能大于900");
+                    app.editForm.setValue('orderGas', null);
+                    app.editForm.setValue('orderPayment', null);
+                    return;
+                }
                 $.ajax({
                     async: true,
                     type: 'POST',
@@ -169,7 +181,7 @@ app.initIndex = function () {
                     },
                     success: function (response) {
                         console.log(response);
-                        response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
+                        // response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                         if (response.status) {
                             app.editForm.setValue('orderPayment', response.data);
                         }
@@ -2737,11 +2749,14 @@ app.tableFields = {
         name: 'orderId',
         caption: '订单编号'
     },{
+        name: 'userId',
+        caption: '用户编号'
+    },{
         name: 'userName',
         caption: '用户名'
     },{
         name: 'iccardId',
-        caption: 'IC卡卡号'
+        caption: 'IC卡编号'
     },{
         name: 'iccardIdentifier',
         caption: 'IC卡识别号'
@@ -5135,7 +5150,7 @@ app.getToolbarFields = function (name) {
                 perm:'recharge:order:cancel'
             }, {
                 name: 'userName',
-                caption: '用户编号',
+                caption: '用户名称',
                 type: 'input'
             }, {
                 name: 'iccardId',
