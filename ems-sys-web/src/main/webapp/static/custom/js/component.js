@@ -212,13 +212,6 @@
     };
 
     /**
-     * 获取table的datas
-     */
-    Table.prototype.getDatas = function () {
-        return this.data;
-    };
-
-    /**
      * 刷新Table
      */
     Table.prototype.refresh = function (data) {
@@ -313,7 +306,8 @@
                         autoclose: true,
                         minView : field.minView,
                         todayHighlight:true,
-                        todayBtn : true
+                        todayBtn : true,
+                        pickerPosition : 'top-right'
                     });
                     break;
                 default:
@@ -330,6 +324,9 @@
                     }
                     if (field.maxlength) {
                         $input.attr('maxlength', field.maxlength);
+                    }
+                    if(field.value){
+                        $input.val(field.value[0].value);
                     }
                     if (field.disabled) {
                         $input.attr('disabled', field.disabled);
@@ -394,18 +391,23 @@
         var data = _this.data = params.data ? JSON.parse(JSON.stringify(params.data)) : {};
         var $fields = _this.$fields = $dom.find('.field');
         $fields.each(function (index, field) {
-            var text = $(field).attr('text');
-            if(text){
-                var tree = _this.children[field.name].tree;
-                var nodes = tree.getCheckedNodes();
-                var value = [];
-                nodes.forEach(function (node) {
-                    value.push(node[tree.nameKey]);
-                });
-                var val = value.join();
-                $(field).val(val === true || val === false ? JSON.stringify(val) : val);
-            }else {
-                $(field).val(data[field.name] === true || data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
+            var fieldVal = $(field).val();
+            if(fieldVal == '' || fieldVal == undefined || fieldVal == null) {
+                var text = $(field).attr('text');
+                if (text) {
+                    var tree = _this.children[field.name].tree;
+                    var nodes = tree.getCheckedNodes();
+                    var value = [];
+                    nodes.forEach(function (node) {
+                        value.push(node[tree.nameKey]);
+                    });
+                    var val = value.join();
+                    $(field).val(val === true || val === false ? JSON.stringify(val) : val);
+                } else {
+                    $(field).val(data[field.name] === true || data[field.name] === false ? JSON.stringify(data[field.name]) : data[field.name]);
+                }
+            }else{
+                data[field.name] = $(field).val();
             }
         });
         // 调整dom布局
@@ -460,6 +462,24 @@
             if(field.name === name) {
                 $(field).val(value === true || value === false ? JSON.stringify(value) : value);
                 $(field).parent().addClass('mdui-textfield-focus');
+            }
+        });
+    };
+
+    Form.prototype.disableField = function (fieldName) {
+        var _this = this;
+        _this.$fields.each(function (index, field) {
+            if (field.name === fieldName) {
+                $(field).attr('disabled', true);
+            }
+        });
+    };
+
+    Form.prototype.enableField = function (fieldName) {
+        var _this = this;
+        _this.$fields.each(function (index, field) {
+            if (field.name === fieldName) {
+                $(field).attr('disabled', false);
             }
         });
     };
@@ -657,15 +677,21 @@
                     case 'receipt' :
                         $field.trigger('receipt');
                         break;
+                    case 'mode_edit' :
+                        $field.trigger('repairOrderEdit');
+                        break;
                     case 'screen_share' :
                         $field.trigger('screen_share');
                         break;
                     case 'arrow_downward' :
                         $field.trigger('arrow_downward');
                         break;
-                    case'link':
+                    case 'payment' :
+                        $field.trigger('payment');
+                        break;
+                    case 'link':
                         $field.trigger('link_name');
-                        break
+                        break;
                     case 'gradient' :
                         $field.trigger('gradient');
                         break;

@@ -62,37 +62,49 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
             return JsonData.fail("维修单已存在，不能重复录入");
         }
         String newMeterCode = param.getNewMeterCode();
-        if (newMeterCode != null && checkNewMeterInstalled(param.getNewMeterCode())) {
+        if (newMeterCode != null && checkNewMeterInstalled(newMeterCode) && checkNewMeterScrapped(newMeterCode)) {
             return JsonData.fail("新表已经被其他用户使用");
         }
-        String oldMeterCode = param.getOldMeterCode();
-        Integer oldMeterId = meterService.getMeterIdByMeterCode(oldMeterCode);
-        Meter oldMeter = meterService.getMeterByMeterId(oldMeterId);
-        oldMeter.setMeterStopCode(param.getOldMeterStopCode());
-        if (param.getNewMeterCode() == null) {
-            oldMeter.setUsable(true);
-            meterService.updateMeter(oldMeter);
-        } else {
-            // 如果是换表则需要更新旧表止码和表具绑定关系
-            oldMeter.setMeterScrapTime(new Date());
-            oldMeter.setUsable(false);
-            meterService.updateMeter(oldMeter);
-            // 更新新表止码
-            Integer newMeterId = meterService.getMeterIdByMeterCode(newMeterCode);
-            Meter newMeter = meterService.getMeterByMeterId(newMeterId);
-            newMeter.setMeterStopCode(param.getNewMeterStopCode());
-            newMeter.setMeterInstallTime(new Date());
-            meterService.updateMeter(newMeter);
-            //更新表具绑定关系
-            Integer userId = param.getUserId();
-            deleteOldMeter(userId);
-            installNewMeter(userId, newMeterId, param.getCreateBy());
+        Integer userId = param.getUserId();
+        if (checkNeedFillGas(param)) {
+            userService.updateServiceTimesByUserId(param.getUserId());
+            String oldMeterCode = param.getOldMeterCode();
+            Integer oldMeterId = meterService.getMeterIdByMeterCode(oldMeterCode);
+            Meter oldMeter = meterService.getMeterByMeterId(oldMeterId);
+            oldMeter.setMeterStopCode(param.getOldMeterStopCode());
+            // 判断是否为换表
+            if (param.getRepairType().equals(0)) {
+                oldMeter.setMeterScrapTime(new Date());
+                oldMeter.setMeterStatus(3);
+                oldMeter.setUsable(false);
+                meterService.updateMeter(oldMeter);
+                // 更新新表止码
+                Integer newMeterId = meterService.getMeterIdByMeterCode(newMeterCode);
+                Meter newMeter = meterService.getMeterByMeterId(newMeterId);
+                newMeter.setMeterStopCode(param.getNewMeterStopCode());
+                newMeter.setMeterInstallTime(new Date());
+                newMeter.setMeterStatus(2);
+                meterService.updateMeter(newMeter);
+                //更新表具绑定关系
+                deleteOldMeter(userId);
+                installNewMeter(userId, newMeterId, param.getCreateBy());
+            } else {
+                oldMeter.setUsable(true);
+                meterService.updateMeter(oldMeter);
+            }
         }
         int resultCount = repairOrderMapper.addRepairOrder(param);
         if (resultCount == 0) {
             return JsonData.fail("新增维修单失败");
         } else {
-            return createFillGasOrder(param);
+            switch (createFillGasOrder(param)) {
+                case 1:
+                    return JsonData.successMsg("新增维修单成功，该用户需要补气");
+                case -1:
+                    return JsonData.successMsg("新增维修单成功，该用户需要补缴");
+                default:
+                    return JsonData.successMsg("新增维修单成功");
+            }
         }
     }
 
@@ -100,37 +112,71 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     @Transactional
     public JsonData editRepairOrder(RepairOrderParam param) {
         BeanValidator.check(param);
-        String newMeterCode = param.getNewMeterCode();
-        if (newMeterCode != null && checkNewMeterInstalled(param.getNewMeterCode())) {
-            return JsonData.fail("新表已经被其他用户使用");
-        }
-        recoverOldRepairOrder(param.getId(), param.getUpdateBy());
-        //更新旧表信息
-        String oldMeterCode = param.getOldMeterCode();
-        Integer oldMeterId = meterService.getMeterIdByMeterCode(oldMeterCode);
-        Meter oldMeter = new Meter();
-        oldMeter.setMeterId(oldMeterId);
-        oldMeter.setMeterStopCode(param.getOldMeterStopCode());
-        oldMeter.setMeterScrapTime(new Date());
-        meterService.updateMeter(oldMeter);
-        //更新新表
-        if (newMeterCode != null) {
-            Integer newMeterId = meterService.getMeterIdByMeterCode(newMeterCode);
-            Meter newMeter = meterService.getMeterByMeterId(newMeterId);
-            newMeter.setMeterStopCode(param.getNewMeterStopCode());
-            newMeter.setMeterInstallTime(new Date());
-            meterService.updateMeter(newMeter);
-            installNewMeter(param.getUserId(),newMeterId, param.getCreateBy());
-        }
-        int resultCount = repairOrderMapper.editRepairOrder(param);
-        if (resultCount == 0) {
-            JsonData.fail("编辑维修单失败");
-        }
-        if (checkNeedFillGas(param)) {
-            createFillGasOrder(param);
-            return JsonData.successMsg("编辑维修单成功,该户可能需要补气");
+        RepairOrderParam old = repairOrderMapper.getRepairOrderById(param.getId());
+        Integer repairType = param.getRepairType();
+        if (repairType.equals(0) || repairType.equals(6) || repairType.equals(7)) {
+            String newMeterCode = param.getNewMeterCode();
+            if (newMeterCode != null && checkNewMeterInstalled(param.getNewMeterCode()) && checkNewMeterScrapped(param.getNewMeterCode())) {
+                return JsonData.fail("新表已经被其他用户使用");
+            }
+            recoverOldRepairOrder(param.getId(), param.getUpdateBy());
+            //更新旧表信息
+            String oldMeterCode = param.getOldMeterCode();
+            Integer oldMeterId = meterService.getMeterIdByMeterCode(oldMeterCode);
+            Meter oldMeter = new Meter();
+            oldMeter.setMeterId(oldMeterId);
+            oldMeter.setMeterStopCode(param.getOldMeterStopCode());
+            oldMeter.setMeterStatus(3);
+            oldMeter.setMeterScrapTime(new Date());
+            meterService.updateMeter(oldMeter);
+            //更新新表
+            if (newMeterCode != null) {
+                Integer newMeterId = meterService.getMeterIdByMeterCode(newMeterCode);
+                Meter newMeter = meterService.getMeterByMeterId(newMeterId);
+                newMeter.setMeterStopCode(param.getNewMeterStopCode());
+                newMeter.setMeterInstallTime(new Date());
+                newMeter.setMeterStatus(2);
+                meterService.updateMeter(newMeter);
+                installNewMeter(param.getUserId(),newMeterId, param.getCreateBy());
+            }
+            int resultCount = repairOrderMapper.editRepairOrder(param);
+            if (resultCount == 0) {
+                return JsonData.fail("编辑维修单失败");
+            }
+            switch (createFillGasOrder(param)) {
+                case 1:
+                    return JsonData.successMsg("编辑维修单成功，该用户需要补气");
+                case -1:
+                    return JsonData.successMsg("编辑维修单成功，该用户需要补缴");
+                default:
+                    return JsonData.successMsg("编辑维修单成功");
+            }
         } else {
-            return JsonData.successMsg("编辑维修单成功");
+            repairOrderMapper.editRepairOrder(param);
+            String oldMeterCode = param.getOldMeterCode();
+            Integer oldMeterId = meterService.getMeterIdByMeterCode(oldMeterCode);
+            Meter oldMeter = new Meter();
+            oldMeter.setMeterId(oldMeterId);
+            oldMeter.setMeterStopCode(param.getOldMeterStopCode());
+            meterService.updateMeter(oldMeter);
+            // 判断是否为补气单
+            if (checkNeedFillGas(param)) {
+                // 判断是否需要增加维修次数
+                if (!checkNeedFillGas(old)) {
+                    userService.updateServiceTimesByUserId(param.getUserId());
+                }
+                // 补气单
+                switch (createFillGasOrder(param)) {
+                    case -1:
+                        return JsonData.successMsg("编辑维修单成功，该用户需要补缴");
+                    case 1:
+                        return JsonData.successMsg("编辑维修单成功，该用户需要补气");
+                    default:
+                        return JsonData.successMsg("编辑维修单成功");
+                }
+            } else {
+                return JsonData.successMsg("编辑维修单成功");
+            }
         }
     }
 
@@ -146,12 +192,28 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         return user == null ? JsonData.successMsg("查询结果为空"): JsonData.successData(user);
     }
 
+    @Override
+    public JsonData hasFillGasOrderResolved(Integer userId, String repairOrderId) {
+        return JsonData.successData(fillGasService.hasFillGasOrderResolved(userId, repairOrderId));
+    }
+
+    @Override
+    public JsonData isLatestFillGasOrder(Integer id, Integer userId) {
+        List<RepairOrderParam> orderParams = repairOrderMapper.searchRepairOrder(null, userId, null, null);
+        for (RepairOrderParam order : orderParams) {
+            if (order.getId().compareTo(id) > 0) {
+                return JsonData.successData(false);
+            }
+        }
+        return JsonData.successData(true);
+    }
+
     private boolean checkRepairOrderExists(String repairOrderId) {
         return repairOrderMapper.checkRepairOrderExists(repairOrderId);
     }
 
     /**
-     * 校验新表是否被使用
+     * 校验新表是否被安装
      *
      * @param meterCode
      * @return
@@ -159,7 +221,18 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     private boolean checkNewMeterInstalled(String meterCode) {
         Integer meterId = meterService.getMeterIdByMeterCode(meterCode);
         Meter meter = meterService.getMeterByMeterId(meterId);
-        return meter.getMeterInstallTime() != null;
+        return meter.getMeterStatus().equals(2);
+    }
+    /**
+     * 校验新表是否报废
+     *
+     * @param meterCode
+     * @return
+     */
+    private boolean checkNewMeterScrapped(String meterCode) {
+        Integer meterId = meterService.getMeterIdByMeterCode(meterCode);
+        Meter meter = meterService.getMeterByMeterId(meterId);
+        return meter.getMeterStatus().equals(3);
     }
 
     /**
@@ -207,14 +280,14 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     /**
      * 新增维修补气单
      */
-    private JsonData createFillGasOrder(RepairOrderParam param) {
+    private int createFillGasOrder(RepairOrderParam param) {
         Integer userId = param.getUserId();
         String repairOrderId = param.getRepairOrderId();
         BigDecimal sumOrderGas = fillGasService.getSumOrderGasByUserId(userId);
         BigDecimal sumMeterStopCode = fillGasService.getSumMeterStopCodeByUserId(userId);
         // 当用户为销户维修单时，走销户流程
         if (checkCloseAccount(param)) {
-            return JsonData.successMsg("新增维修单成功");
+            return 0;
         } else {
             switch (sumOrderGas.compareTo(sumMeterStopCode)) {
                 case 1:
@@ -223,32 +296,42 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                         FillGasOrderParam fillGasOrder = new FillGasOrderParam();
                         fillGasOrder.setUserId(userId);
                         fillGasOrder.setRepairOrderId(repairOrderId);
+                        fillGasOrder.setGasCount(sumOrderGas);
+                        fillGasOrder.setStopCodeCount(sumMeterStopCode);
                         BigDecimal needFillGas = sumOrderGas.subtract(sumMeterStopCode);
                         fillGasService.setFillGasOrderProps(fillGasOrder, needFillGas);
                         fillGasOrder.setFillGasOrderStatus(0);
+                        fillGasOrder.setCreateBy(param.getCreateBy());
+                        fillGasOrder.setUpdateBy(param.getCreateBy());
                         fillGasService.createFillGasOrder(fillGasOrder);
-                        return JsonData.successMsg("新增维修单成功,该户需要补气");
+                        return 1;
                     } else {
-                        return JsonData.successMsg("新增维修单成功");
+                        return 0;
                     }
                 case -1:
                     // 超用补缴
-                    FillGasOrderParam fillGasOrder = new FillGasOrderParam();
-                    fillGasOrder.setUserId(userId);
-                    fillGasOrder.setRepairOrderId(repairOrderId);
-                    BigDecimal overusedGas = sumMeterStopCode.subtract(sumOrderGas);
-                    BigDecimal gasInYear = gasPriceService.findHasUsedGasInYear(userId);
-                    User user = userService.getUserById(userId);
-                    GasPrice gasPrice = gasPriceService.findGasPriceByType(user.getUserType(), user.getUserGasType());
-                    BigDecimal needFillMoney = CalculateUtil.gasToPayment(gasInYear.add(overusedGas), gasPrice).subtract(CalculateUtil.gasToPayment(gasInYear,
-                            gasPrice));
-                    fillGasService.setOveruseOrderProps(fillGasOrder, overusedGas, needFillMoney);
-                    fillGasOrder.setFillGasOrderStatus(0);
-                    fillGasService.createFillGasOrder(fillGasOrder);
-                    return JsonData.successMsg("编辑维修单成功,该户需要补缴费用");
+                    if (checkNeedFillGas(param)) {
+                        FillGasOrderParam fillGasOrder = new FillGasOrderParam();
+                        fillGasOrder.setUserId(userId);
+                        fillGasOrder.setRepairOrderId(repairOrderId);
+                        fillGasOrder.setGasCount(sumOrderGas);
+                        fillGasOrder.setStopCodeCount(sumMeterStopCode);
+                        BigDecimal overusedGas = sumMeterStopCode.subtract(sumOrderGas);
+                        BigDecimal gasInYear = gasPriceService.findHasUsedGasInYear(userId);
+                        User user = userService.getUserById(userId);
+                        GasPrice gasPrice = gasPriceService.findGasPriceByType(user.getUserType(), user.getUserGasType());
+                        BigDecimal needFillMoney = CalculateUtil.gasToPayment(gasInYear.add(overusedGas), gasPrice).subtract(CalculateUtil.gasToPayment(gasInYear,
+                                gasPrice));
+                        fillGasService.setOveruseOrderProps(fillGasOrder, overusedGas, needFillMoney);
+                        fillGasOrder.setFillGasOrderStatus(0);
+                        fillGasService.createFillGasOrder(fillGasOrder);
+                        return -1;
+                    } else {
+                        return 0;
+                    }
                 default:
                     // 不需要补气或超用结算
-                    return JsonData.successMsg("编辑维修单成功");
+                    return 0;
             }
         }
     }

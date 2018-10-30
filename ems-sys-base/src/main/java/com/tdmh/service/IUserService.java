@@ -8,8 +8,6 @@ import com.tdmh.param.CreateArchiveParam;
 import com.tdmh.param.InstallMeterParam;
 import com.tdmh.param.LockAccountParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -222,4 +220,6 @@ public interface IUserService {
      * 查询统计（用户卡相关查询）
      */
     JsonData selectHistoryUserCardQueryService(Integer userId);
+
+    int updateServiceTimesByUserId(Integer userId);
 }

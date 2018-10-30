@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.List;
 
 /**
@@ -37,15 +38,35 @@ public class InvoiceServiceImpl implements IInvoiceService {
     private SysRoleMapper sysRoleMapper;
 
     @Override
-    public JsonData getAllAssignInvoiceList() {
-        List<Invoice> list = invoiceMapper.getAllAssignInvoiceList(null,null);
+    public JsonData getAllAssignInvoiceList(Integer currentEmpId) {
+        EmployeeParam emp = employeeMapper.getEmpById(currentEmpId);
+        if(emp == null){
+            return JsonData.fail("该操作员不存在");
+        }
+        SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+        List<Invoice> list =  Lists.newArrayList();
+        if(role.getIsAdmin() == true) {
+            list = invoiceMapper.getAllAssignInvoiceList(null, null,null);
+        }else{
+            list = invoiceMapper.getAllAssignInvoiceList(null, null, currentEmpId);
+        }
         return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
     }
 
     @Override
-    public JsonData searchAssignInvoiceList(String invoiceCode, String invoiceNumber) {
-        List<Invoice> list = invoiceMapper.getAllAssignInvoiceList(invoiceCode, invoiceNumber);
-        return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
+    public JsonData searchAssignInvoiceList(String invoiceCode, String invoiceNumber, Integer currentEmpId) {
+        EmployeeParam emp = employeeMapper.getEmpById(currentEmpId);
+        if(emp == null){
+            return JsonData.fail("该操作员不存在");
+        }
+        SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+        List<Invoice> list = Lists.newArrayList();
+        if(role.getIsAdmin() == true) {
+            list = invoiceMapper.getAllAssignInvoiceList(invoiceCode, invoiceNumber,null);
+        }else {
+            list = invoiceMapper.getAllAssignInvoiceList(invoiceCode, invoiceNumber, currentEmpId);
+        }
+        return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.success(list,"查询成功");
     }
 
     @Override
@@ -96,10 +117,10 @@ public class InvoiceServiceImpl implements IInvoiceService {
         }
         List<Invoice> invoiceList2 = invoiceMapper.findInvoiceByCodeAndNumber(invoiceCode, invoiceNumberList, 1);
         if (invoiceList2 == null || invoiceList2.size() == 0) {
-            return JsonData.fail("此发票号码段并未生成");
+            return JsonData.fail("此发票代码或者号码段并未生成");
         }
         if (invoiceList2.size() != (eInvoiceNumber - sInvoiceNumber + 1)) {
-            return JsonData.fail("号码段中包括未生成的发票");
+            return JsonData.fail("此代码或号码段中包括未生成的发票");
         }
         int count = invoiceMapper.updateInvoiceToEmployee(invoiceCode,invoiceNumberList,empId, currentEmpId);
         if(count != (eInvoiceNumber - sInvoiceNumber + 1)){
@@ -109,15 +130,35 @@ public class InvoiceServiceImpl implements IInvoiceService {
     }
 
     @Override
-    public JsonData getAllPrintCancelInvoiceList() {
-        List<Invoice> list = invoiceMapper.getAllPrintCancelInvoiceList(null,null,null);
+    public JsonData getAllPrintCancelInvoiceList(Integer currentEmpId) {
+        EmployeeParam emp = employeeMapper.getEmpById(currentEmpId);
+        if(emp == null){
+            return JsonData.fail("该操作员不存在");
+        }
+        SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+        List<Invoice> list = Lists.newArrayList();
+        if(role.getIsAdmin() == true) {
+            list = invoiceMapper.getAllPrintCancelInvoiceList(null, null, null, null);
+        }else {
+            list = invoiceMapper.getAllPrintCancelInvoiceList(null, null, null, currentEmpId);
+        }
         return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
     }
 
     @Override
-    public JsonData searchPrintCancelInvoiceList(String invoiceCode,String invoiceNumber,Integer empId){
-        List<Invoice> list = invoiceMapper.getAllPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId);
-        return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
+    public JsonData searchPrintCancelInvoiceList(String invoiceCode,String invoiceNumber,Integer empId, Integer currentEmpId){
+        EmployeeParam emp = employeeMapper.getEmpById(currentEmpId);
+        if(emp == null){
+            return JsonData.fail("该操作员不存在");
+        }
+        SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+        List<Invoice> list = Lists.newArrayList();
+        if(role.getIsAdmin() == true) {
+            list = invoiceMapper.getAllPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, null);
+        }else {
+            list = invoiceMapper.getAllPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, currentEmpId);
+        }
+        return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.success(list,"查询成功");
     }
 
     @Override
@@ -185,9 +226,18 @@ public class InvoiceServiceImpl implements IInvoiceService {
         }
         int count = invoiceMapper.cancelInvoice(invoiceCode, invoiceNumber, currentEmpId); //撤销之前的
         if(count == 0){
-            return JsonData.fail("注销发票失败");
+            return JsonData.fail("作废发票失败");
         }
-        return JsonData.successMsg("注销发票成功");
+        return JsonData.successMsg("作废发票成功");
+    }
+
+    @Override
+    public JsonData cancelNotPrintInvoice(String invoiceCode, String invoiceNumber, Integer currentEmpId) {
+        int count = invoiceMapper.cancelInvoice(invoiceCode, invoiceNumber, currentEmpId); //撤销之前的
+        if(count == 0){
+            return JsonData.fail("作废发票失败");
+        }
+        return JsonData.successMsg("作废发票成功");
     }
 
 

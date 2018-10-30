@@ -7,15 +7,32 @@ import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.tdmh.common.JsonData;
 import com.tdmh.config.CustomWXPayConfig;
+import com.tdmh.entity.UserOrders;
+import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.entity.mapper.WXMapper;
+import com.tdmh.param.WXOrderParam;
 import com.tdmh.param.WXUserInfoParam;
 import com.tdmh.param.WXUserParam;
+import com.tdmh.service.IGasPriceService;
 import com.tdmh.service.IWXService;
 import com.tdmh.utils.HttpRequestUtil;
+import com.tdmh.utils.IdWorker;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,31 +42,40 @@ import java.util.Map;
  * @author litairan on 2018/10/21.
  */
 @Service("iWXLoginService")
+@Log4j2
 public class WXServiceImpl implements IWXService {
-
-    private static final String WX_APP_ID = "wx3f09eb2829930acb";
-
-    private static final String WX_APP_SECRET = "e8c74540c7beef1e30b83500afef4cea";
-
-    private static final String GRANT_TYPE = "authorization_code";
-
-    private static final String WX_JSON2SESSION_URL = "https://api.weixin.qq.com/sns/jscode2session";
-
-    private static final String WX_RECHARGE_URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-
-    private static final String MCH_ID = "1431092502";
 
     @Autowired
     private WXMapper wxMapper;
 
+    @Autowired
+    private IGasPriceService gasPriceService;
+
+    @Autowired
+    private UserOrdersMapper userOrdersMapper;
+
+    private WXPay wxPay;
+
+    private WXPayConfig config;
+
+    @PostConstruct
+    private void initWXService() {
+        config = new CustomWXPayConfig();
+        wxPay = new WXPay(config, WXPayConstants.SignType.MD5, false);
+    }
+
     @Override
     public JsonData wxLogin(String code) {
-        String params = "appid=" + WX_APP_ID + "&secret=" + WX_APP_SECRET + "&grant_type=" + GRANT_TYPE + "&js_code=" + code;
-        String response = HttpRequestUtil.sendGet(WX_JSON2SESSION_URL, params);
+        String params = "appid=" + CustomWXPayConfig.APP_ID + "&secret=" + CustomWXPayConfig.APP_SECRET + "&grant_type=" + CustomWXPayConfig.GRANT_TYPE +
+                "&js_code=" + code;
+        System.out.println("code:" + code);
+        String response = HttpRequestUtil.sendGet(CustomWXPayConfig.WX_JSON2SESSION_URL, params);
+        System.out.println("response:" + response);
         JSONObject json = JSONObject.parseObject(response);
         Object errorMsg = json.get("errmsg");
         if (errorMsg == null) {
             String wxUserId = (String) json.get("openid");
+            System.out.println(wxUserId);
             return JsonData.successData(wxUserId);
         } else {
             return JsonData.fail("登录失败");
@@ -103,32 +129,29 @@ public class WXServiceImpl implements IWXService {
     }
 
     @Override
-    public JsonData getPayment(Integer userId, BigDecimal gas) {
-        return null;
+    public JsonData getWXOrders(Integer userId) {
+        List<WXOrderParam> wxOrders = userOrdersMapper.getAllWXOrders(userId);
+        return wxOrders == null || wxOrders.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.successData(wxOrders);
     }
 
     @Override
+    @Transactional
     public JsonData recharge(String wxUserId, Integer userId, BigDecimal gas, String ipAddress) {
-        WXPayConfig config;
-        try {
-            config = new CustomWXPayConfig();
-        } catch (Exception e) {
-            throw new RuntimeException("获取配置信息错误");
-        }
-        WXPay wxPay = new WXPay(config, WXPayConstants.SignType.MD5, false);
+        // 查询当前用户的订单列表，如果有未完成的订单则需要支付或取消
         try {
             Map<String, String> data = new HashMap<>();
             data.put("body", "武汉蓝焰天然气充值-充值气量:" + gas + "方");
-            String tradeNo = "100000000001";
-
-            data.put("out_trade_no", tradeNo);
             data.put("fee_type", "CNY");
-            String totalFee = "1";
-            data.put("total_fee", totalFee);
+            BigDecimal payment = getOrderPayment(userId, gas);
+            System.out.println(payment);
+//            data.put("total_fee", String.valueOf(payment.longValue() * 100));
+            data.put("total_fee", "1");
             data.put("spbill_create_ip", ipAddress);
-            data.put("notify_url", "http://39.105.6.33:8081/wx/notify");
-            data.put("trade_type", "JSAPI");
+            data.put("notify_url", CustomWXPayConfig.NOTIFY_URL);
+            data.put("trade_type", CustomWXPayConfig.TRADE_TYPE);
             data.put("openid", wxUserId);
+            Integer orderId = createWXOrder(userId, gas, payment);
+            data.put("out_trade_no", orderId.toString());
             Map<String, String> response = wxPay.unifiedOrder(data);
             String return_code = response.get("return_code");
             if (WXPayConstants.SUCCESS.equals(return_code)) {
@@ -143,15 +166,134 @@ public class WXServiceImpl implements IWXService {
                 responseData.put("paySign", paySign);
                 return JsonData.success(responseData, "微信下单成功");
             } else {
-                return JsonData.fail("微信下单失败");
+                throw new RuntimeException("微信下单失败");
             }
         } catch (Exception e) {
             throw new RuntimeException("微信下单失败");
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println();
-        System.out.println(new Date().getTime());
+    @Override
+    @Transactional
+    public void getOrderNotify(HttpServletRequest request, HttpServletResponse response) {
+        String requestString = parseRequest(request);
+        BufferedOutputStream output = null;
+        try {
+            Map<String, String> requestMap = WXPayUtil.xmlToMap(requestString);
+            String responseXml = null;
+            if (WXPayConstants.SUCCESS.equals(requestMap.get("return_code"))) {
+                Integer orderId = Integer.valueOf(requestMap.get("out_trade_no"));
+                userOrdersMapper.finishWXOrder(orderId);
+                responseXml = "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml> ";
+            } else {
+                responseXml = "<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[报文为空]]></return_msg></xml> ";
+            }
+            response.setCharacterEncoding("utf-8");
+            output = new BufferedOutputStream(response.getOutputStream());
+            output.write(responseXml.getBytes());
+            output.flush();
+        } catch (Exception e) {
+            throw new RuntimeException("解析微信支付回调字符串转OBJ错误");
+        } finally {
+            try {
+                if (output != null) {
+                    output.close();
+                }
+            } catch (IOException ignored) {
+            }
+        }
+    }
+
+    private String parseRequest(HttpServletRequest request) {
+        BufferedReader br = null;
+        try {
+            request.setCharacterEncoding("utf-8");
+            String requestBody = "";
+            ServletInputStream inputStream = request.getInputStream();
+            br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            while (true) {
+                String info = br.readLine();
+                if (info == null) {
+                    break;
+                }
+                if ("".equals(requestBody)) {
+                    requestBody = info;
+                } else {
+                    requestBody += info;
+                }
+            }
+            return requestBody;
+        } catch (IOException e) {
+            throw new RuntimeException("解析微信支付回调错误");
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+    }
+
+    private BigDecimal getOrderPayment(Integer userId, BigDecimal gas) {
+        JsonData jsonData = gasPriceService.calAmount(userId, gas);
+        if (jsonData.isStatus()) {
+            return (BigDecimal) jsonData.getData();
+        } else {
+            throw new RuntimeException("获取充值金额时错误");
+        }
+    }
+
+    private Integer createWXOrder(Integer userId, BigDecimal gas, BigDecimal payment) {
+        UserOrders order = new UserOrders();
+        order.setEmployeeId(1000000000); //微信收银员
+        order.setUserId(userId);
+        order.setOrderGas(gas);
+        order.setOrderPayment(payment);
+        order.setFlowNumber(String.valueOf(IdWorker.getId().nextId()));
+        order.setOrderType(5); //5为微信订单
+        Date date = new Date();
+        order.setOrderCreateTime(date);
+        order.setOrderCloseTime(new Date(date.getTime() + 60 * 60 * 1000));
+        order.setUpdateTime(date);
+        order.setCreateTime(date);
+        order.setCreateBy(1000000000);
+        order.setUpdateBy(1000000000);
+        order.setOrderStatus(3);
+        order.setUsable(true);
+        int resultCount = userOrdersMapper.insert(order);
+        if (resultCount == 0) {
+            throw new RuntimeException("生成订单失败");
+        }
+        return order.getOrderId();
+    }
+
+    /**
+     * 超时订单定时清理任务30min执行一次
+     */
+    @Scheduled(cron = "0 0/30 * * * ?")
+    @Transactional
+    public void scheduled() {
+        // 获取所有已超时的未支付微信订单
+        log.info("开始清理超时订单");
+        List<Integer> orderIds = userOrdersMapper.getAllTimeoutWXOrders();
+        if (orderIds != null && orderIds.size() > 0) {
+            for (Integer orderId : orderIds) {
+                Map<String, String> data = new HashMap<>();
+                data.put("out_trade_no", String.valueOf(orderId));
+                try {
+                    Map<String, String> responseMap = wxPay.closeOrder(data);
+                    if (WXPayConstants.SUCCESS.equals(responseMap.get("return_code"))) {
+                        log.info("微信订单关闭成功");
+                    } else {
+                        throw new RuntimeException("微信订单关闭异常");
+                    }
+                    userOrdersMapper.cancelWxOrder(orderId);
+                } catch (Exception e) {
+                    throw new RuntimeException("微信订单关闭异常");
+                }
+            }
+        }
+        log.info("超时订单清理完毕");
     }
 }

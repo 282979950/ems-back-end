@@ -267,6 +267,43 @@
       WHERE order_id=#{orderId}
 
   </update>
+  <resultMap id="WXOrderParam" type="com.tdmh.param.WXOrderParam">
+    <constructor >
+      <idArg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_payment" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="order_gas" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="order_status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_status_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="order_create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="order_close_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <select id="getAllTimeoutWXOrders" resultType="java.lang.Integer">
+    select
+    order_id
+    from user_orders
+    where order_status = 3 and order_type = 5 and usable = 1 and order_close_time &lt; NOW()
+  </select>
+  <select id="getAllWXOrders" resultMap="WXOrderParam" parameterType="integer">
+    select
+    order_id, order_payment, order_gas, order_status, dict_key as order_status_name, order_create_time, order_close_time
+    from user_orders uo
+    left join sys_dictionary sd on sd.dict_category = "order_status" and sd.dict_value = uo.order_status and sd.usable = 1
+    where user_id = #{userId} and order_type = 5 and uo.usable = 1
+  </select>
+  <update id="finishWXOrder">
+    update user_orders
+    set
+    order_status = 1,
+    order_close_time = NOW()
+    where order_id = #{orderId} and usable = 1
+  </update>
+  <update id="cancelWxOrder" parameterType="integer">
+    update user_orders
+    set
+    order_status = 4
+    where order_id = #{orderId} and usable = 1
+  </update>
 
   <select id="selectBusinessDataQuery" resultType="com.tdmh.entity.UserOrders" parameterType="com.tdmh.entity.UserOrders">
       SELECT

@@ -74,9 +74,16 @@ public class EntryMeterParam extends BaseEntity {
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date meterEntryDate;
 
+    /**
+     * 表具状态
+     */
+    private Integer meterStatus;
+
+    private String meterStatusName;
+
     public EntryMeterParam(Integer meterId, String meterCode, BigDecimal meterStopCode, String meterCategory, String meterType, Boolean meterDirection,
-                           String meterDirectionName, Date meterProdDate, Date meterEntryDate, Date createTime, Integer createBy, Date updateTime, Integer
-                                   updateBy, Boolean usable, String remarks) {
+                           String meterDirectionName, Date meterProdDate, Date meterEntryDate, Integer meterStatus, String meterStatusName, Date createTime,
+                           Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.meterId = meterId;
         this.meterCode = meterCode;
@@ -87,6 +94,8 @@ public class EntryMeterParam extends BaseEntity {
         this.meterDirectionName = meterDirectionName;
         this.meterProdDate = meterProdDate;
         this.meterEntryDate = meterEntryDate;
+        this.meterStatus = meterStatus;
+        this.meterStatusName = meterStatusName;
     }
 
     public EntryMeterParam() {

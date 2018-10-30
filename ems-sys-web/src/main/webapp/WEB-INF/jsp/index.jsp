@@ -14,26 +14,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>表具管理系统</title>
-    <link rel="shortcut icon" href="../../static/custom/img/lanyan-log.ico" type="image/x-icon"/>
-    <link type="text/css" rel="stylesheet" href="../../static/materialize/fonts/material-icons.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../../static/materialize/css/materialize.min.css" media="screen"/>
-    <link type="text/css" rel="stylesheet" href="../../static/fonts/ionicons.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../../static/custom/css/common.css"/>
-    <link type="text/css" rel="stylesheet" href="../../static/custom/css/index.css"/>
-    <link type="text/css" rel="stylesheet" href="../../static/mdui-v0.4.1/css/mdui.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../../static/spop/spop.min.css"/>
-    <link rel="stylesheet" href="../../static/zTree-3.5.16/css/zTreeStyle/zTreeStyle.css" type="text/css">
-    <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap-datetimepicker.min.css"/>
-    <script type="text/javascript" src="../../static/materialize/js/jquery.min.js"></script>
-    <script type="text/javascript" src="../../static/materialize/js/materialize.min.js"></script>
-    <script type="text/javascript" src="../../static/custom/js/index.js"></script>
-    <script type="text/javascript" src="../../static/custom/js/component.js"></script>
-    <script type="text/javascript" src="../../static/mdui-v0.4.1/js/mdui.js"></script>
-    <script type="text/javascript" src="../../static/zTree-3.5.16/js/jquery.ztree.all-3.5.js"></script>
-    <script type="text/javascript" src="../../static/spop/spop.min.js"></script>
-    <script type="text/javascript" src="../../static/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript" src="../../static/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/static/custom/img/lanyan-log.ico" type="image/x-icon"/>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/materialize/fonts/material-icons.min.css"/>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/materialize/css/materialize.min.css" media="screen"/>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/fonts/ionicons.min.css"/>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/custom/css/common.css"/>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/custom/css/index.css"/>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/mdui-v0.4.1/css/mdui.min.css"/>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/spop/spop.min.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/zTree-3.5.16/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/bootstrap/css/bootstrap-datetimepicker.min.css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/materialize/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/custom/js/index.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/custom/js/component.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/mdui-v0.4.1/js/mdui.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/zTree-3.5.16/js/jquery.ztree.all-3.5.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/spop/spop.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
 </head>
 <body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue mdui-loaded">
 <header class="mdui-appbar mdui-appbar-fixed">
@@ -42,7 +42,7 @@
               mdui-drawer="{target: '.mdui-drawer', swipe: true}" mdui-tooltip="{content: '展开/隐藏'}">
             <i class="mdui-icon material-icons">menu</i>
         </span>
-        <img class="no-margin" src="../../static/custom/img/lanyan-logo.jpg">
+        <img class="no-margin" src="${pageContext.request.contextPath}/static/custom/img/lanyan-logo.jpg">
         <span class="mdui-typo-headline no-select no-margin">蓝焰表具管理系统</span>
         <div class="mdui-toolbar-spacer"></div>
         <span onclick="app.lockScreen()" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"

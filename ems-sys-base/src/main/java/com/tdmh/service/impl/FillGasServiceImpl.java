@@ -1,5 +1,6 @@
 package com.tdmh.service.impl;
 
+import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.entity.mapper.FillGasOrderMapper;
@@ -41,19 +42,25 @@ public class FillGasServiceImpl implements IFillGasService {
 
     @Override
     public int createFillGasOrder(FillGasOrderParam param) {
+        // 清理未完成的维修补气单
+        Integer userId = param.getUserId();
+        if (hasUnfinishedFillGasOrder(userId)) {
+            cancelFillGasByUserId(userId);
+        }
         return fillGasOrderMapper.createFillGasOrder(param);
     }
 
     @Override
     @Transactional
     public JsonData editFillGasOrder(FillGasOrderParam param) {
+        BeanValidator.check(param);
         param.setFillGasOrderStatus(1);
         Integer fillGasOrderType = param.getFillGasOrderType();
         if (fillGasOrderType.equals(1)) {
             fillGasOrderMapper.editFillGasOrder(param);
             // 当不是第一笔补气单时不需要更新维修次数
             if (param.getGasCount().subtract(param.getStopCodeCount()).compareTo(param.getFillGas()) == 0) {
-                userMapper.updateServiceTimesByUserId(param.getUserId());
+//                userMapper.updateServiceTimesByUserId(param.getUserId());
             }
             // 剩余气量不为0时还需要生成一笔订单
             BigDecimal leftGas = param.getLeftGas();
@@ -146,6 +153,11 @@ public class FillGasServiceImpl implements IFillGasService {
     }
 
     @Override
+    public boolean hasFillGasOrderResolved(Integer userId, String repairOrderId) {
+        return fillGasOrderMapper.hasFillGasOrderResolved(userId, repairOrderId);
+    }
+
+    @Override
     public JsonData selectHistoryFillGasOrderService(Integer userId) {
         if(userId.intValue()==0){
             return JsonData.fail("操作失败，未获取到相关数据");
@@ -170,5 +182,13 @@ public class FillGasServiceImpl implements IFillGasService {
         userOrders.setCreateBy(empId);
         userOrders.setUpdateBy(empId);
         userOrdersMapper.insert(userOrders);
+    }
+
+    private boolean hasUnfinishedFillGasOrder(Integer userId) {
+        return fillGasOrderMapper.hasUnfinishedFillGasOrder(userId);
+    }
+
+    private int cancelFillGasByUserId(Integer userId) {
+        return fillGasOrderMapper.cancelFillGasByUserId(userId);
     }
 }

@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,9 +117,9 @@ public class UserServiceImpl implements IUserService {
         BeanValidator.check(param);
         Integer meterId = meterService.getMeterIdByMeterCode(param.getMeterCode());
         //更新表具安装时间
-        Meter meter = new Meter();
-        meter.setMeterId(meterId);
+        Meter meter = meterService.getMeterByMeterId(meterId);
         meter.setMeterInstallTime(new Date());
+        meter.setMeterStatus(2);
         meter.setUpdateBy(param.getUpdateBy());
         int resultCount = meterService.updateMeter(meter);
         if (resultCount == 0) {
@@ -247,6 +245,7 @@ public class UserServiceImpl implements IUserService {
         userCard.setCardPassword(param.getIccardPassword());
         userCard.setCardInitialization(true);
         userCard.setOrderId(userOrders.getOrderId());
+        userCard.setCardCost(new BigDecimal(0));
         userCard.setUsable(true);
         userCard.setCreateBy(param.getUpdateBy());
         userCard.setUpdateBy(param.getUpdateBy());
@@ -464,4 +463,8 @@ public class UserServiceImpl implements IUserService {
         return list.size()==0?JsonData.fail("未查询到相关数据，请重新选择或联系管理员"):JsonData.success(list,"查询成功");
     }
 
+    @Override
+    public int updateServiceTimesByUserId(Integer userId) {
+        return userMapper.updateServiceTimesByUserId(userId);
+    }
 }

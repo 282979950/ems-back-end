@@ -68,7 +68,6 @@ public class MeterServiceImpl implements IMeterService {
         }
         Date date = new Date();
         param.setMeterEntryDate(date);
-        // TODO: 2018/8/8 从表具编号中获取生产日期，表具编号只能是12位（IC卡表，4-5位为年份，6-7位为月份）和13位（短信表5-6位为年份，7-8位为月份）
         param.setMeterProdDate(date);
         param.setCreateTime(date);
         param.setUpdateTime(date);

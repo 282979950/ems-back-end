@@ -39,6 +39,9 @@
         <if test="invoiceNumber!=null and invoiceNumber!=''">
             and i.invoice_number like CONCAT('%', #{invoiceNumber}, '%')
         </if>
+        <if test="currentEmpId!=null">
+            and (i.create_by = #{currentEmpId} or i.emp_id = #{currentEmpId})
+        </if>
     </select>
     <insert id="insertSelective" parameterType="com.tdmh.entity.Invoice">
         insert into invoice
@@ -165,10 +168,11 @@
     <select id="getAllPrintCancelInvoiceList" parameterType="map" resultType="com.tdmh.entity.Invoice">
         select i.invoice_id AS invoiceId, i.invoice_code as invoiceCode,i.invoice_number as invoiceNumber,
         sd.dict_key as invoiceStatusName, emp.emp_name as empName, i.invoice_assign_time as invoiceAssignTime,
-        i.invoice_print_time as invoicePrintTime, i.invoice_cancel_time as invoiceCancelTime
+        i.invoice_print_time as invoicePrintTime,e.emp_name as invoiceCancelEmpName, i.invoice_cancel_time as invoiceCancelTime
         from invoice i
         join sys_dictionary sd on i.invoice_status = sd.dict_value
         left join employee emp on i.emp_id = emp.emp_id
+        left join employee e on i.invoice_cancel_emp = e.emp_id
         where sd.dict_category = 'invoice_status' and <![CDATA[ i.invoice_status <> 1 ]]>
         <if test="invoiceCode!=null and invoiceCode!=''">
             and i.invoice_code like CONCAT('%', #{invoiceCode}, '%')
@@ -178,6 +182,9 @@
         </if>
         <if test="empId!=null">
             and i.emp_id = #{empId}
+        </if>
+        <if test="currentEmpId!=null">
+            and (i.create_by = #{currentEmpId} or i.emp_id = #{currentEmpId})
         </if>
     </select>
     <select id="findCurrentInvoice" parameterType="int" resultType="com.tdmh.entity.Invoice">

@@ -53,7 +53,7 @@ public class SysPermissionController {
     @RequiresPermissions("sys:perm:delete")
     @RequestMapping("delete.do")
     @ResponseBody
-    public JsonData Permission(@RequestParam(value = "ids[]")List <Integer> ids) {
+    public JsonData deletePermission(@RequestParam(value = "ids[]")List <Integer> ids) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         return sysPermissionService.deletePermission(ids , currentEmpId);
       }
