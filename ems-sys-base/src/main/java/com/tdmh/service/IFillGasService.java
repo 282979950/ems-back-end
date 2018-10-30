@@ -35,4 +35,7 @@ public interface IFillGasService {
 
     boolean hasFillGasOrderResolved(Integer userId, String repairOrderId);
 
+    boolean hasUnfinishedFillGasOrder(Integer userId);
+
+    int cancelFillGasByUserId(Integer userId);
 }

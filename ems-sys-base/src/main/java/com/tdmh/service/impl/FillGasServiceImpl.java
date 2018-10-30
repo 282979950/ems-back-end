@@ -185,11 +185,13 @@ public class FillGasServiceImpl implements IFillGasService {
         userOrdersMapper.insert(userOrders);
     }
 
-    private boolean hasUnfinishedFillGasOrder(Integer userId) {
+    @Override
+    public boolean hasUnfinishedFillGasOrder(Integer userId) {
         return fillGasOrderMapper.hasUnfinishedFillGasOrder(userId);
     }
 
-    private int cancelFillGasByUserId(Integer userId) {
+    @Override
+    public int cancelFillGasByUserId(Integer userId) {
         return fillGasOrderMapper.cancelFillGasByUserId(userId);
     }
 }

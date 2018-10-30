@@ -467,4 +467,9 @@ public class UserServiceImpl implements IUserService {
     public int updateServiceTimesByUserId(Integer userId) {
         return userMapper.updateServiceTimesByUserId(userId);
     }
+
+    @Override
+    public JsonData getBindNewCardParamByUserId(Integer userId) {
+        return JsonData.successData(userCardMapper.getBindNewCardParamByUserId(userId));
+    }
 }

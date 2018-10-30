@@ -1,6 +1,7 @@
 package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
+import com.tdmh.param.BindNewCardParam;
 import com.tdmh.param.RepairOrderParam;
 
 /**
@@ -41,4 +42,8 @@ public interface IRepairOrderService {
     JsonData hasFillGasOrderResolved(Integer userId, String repairOrderId);
 
     JsonData isLatestFillGasOrder(Integer id, Integer userId);
+
+    JsonData getBindNewCardParamByUserId(Integer userId);
+
+    JsonData bindNewCard(BindNewCardParam param);
 }

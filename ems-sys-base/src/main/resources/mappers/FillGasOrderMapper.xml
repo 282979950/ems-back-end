@@ -65,7 +65,7 @@
         SUM(order_gas)
         from
         user_orders
-        where user_id = #{userId} and usable = 1
+        where user_id = #{userId} and usable = 1 and (order_status = 1 or order_status = 2)
     </select>
     <select id="getSumMeterStopCodeByUserId" resultType="java.math.BigDecimal">
         SELECT
