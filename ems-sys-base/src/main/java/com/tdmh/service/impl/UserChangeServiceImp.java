@@ -2,10 +2,8 @@ package com.tdmh.service.impl;
 
 
 import com.tdmh.common.JsonData;
-import com.tdmh.entity.GasPrice;
-import com.tdmh.entity.User;
-import com.tdmh.entity.UserChange;
-import com.tdmh.entity.UserOrders;
+import com.tdmh.entity.*;
+import com.tdmh.entity.mapper.UserCardMapper;
 import com.tdmh.entity.mapper.UserChangeMapper;
 import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
@@ -37,6 +35,8 @@ public class UserChangeServiceImp implements IUserChangeService {
     private IGasPriceService gasPriceService;
     @Autowired
     private UserOrdersMapper userOrdersMapper;
+    @Autowired
+    private UserCardMapper userCardMapper;
     @Override
     @Transactional(readOnly = false)
     public JsonData userChangeSettlementService(UserChange userChange, User user,Integer currentEmpId,double userMoney,double OrderSupplement){
@@ -141,7 +141,15 @@ public class UserChangeServiceImp implements IUserChangeService {
     @Transactional(readOnly = false)
     public JsonData userEliminationHeadService(User user,BigDecimal userMoney,BigDecimal OrderSupplement,int flage,Integer Id){
 
+
         Integer userId =user.getUserId();
+        UserCard userCard = new UserCard();
+        //查询对应卡信息是否存在
+        int userCardCount = userCardMapper.selectCountUserCard(userId);
+
+        if(userCardCount<=0){
+            return JsonData.fail("销户失败,未查询到卡相关信息");
+        }
         BigDecimal number = new BigDecimal(0);
 
         //根据id获取当前所有购气总量
@@ -155,8 +163,11 @@ public class UserChangeServiceImp implements IUserChangeService {
 
             //执行删除操作（添加状态为不可用）
           int  count = UserMapper.updateUserUsable(userId);
+            userCard.setUserId(userId);
+            userCard.setCardStatus(2);
+          int resultcount =userCardMapper.updateUserCardByUserIdCardStatus(userCard);
 
-            if(count>0){
+            if(count>0 && resultcount>0){
 
                 return JsonData.successMsg("无超用或补缴信息，销户成功");
 
@@ -197,7 +208,10 @@ public class UserChangeServiceImp implements IUserChangeService {
 
             //执行删除操作（添加状态为不可用）
             int  userCleanCount = UserMapper.updateUserUsable(userId);
-            if(userCleanCount>0 && count>0){
+            userCard.setUserId(userId);
+            userCard.setCardStatus(2);
+            int resultcount =userCardMapper.updateUserCardByUserIdCardStatus(userCard);
+            if(userCleanCount>0 && count>0 && resultcount>0){
 
                 return JsonData.successMsg("销户成功");
 
