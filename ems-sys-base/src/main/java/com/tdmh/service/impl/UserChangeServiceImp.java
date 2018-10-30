@@ -81,7 +81,10 @@ public class UserChangeServiceImp implements IUserChangeService {
             return JsonData.successMsg("已成功变更账户,当前可用总量为："+amount+"方");
 
 
-        }else if(userMoney!=0){
+        }
+         /*
+             *此处超用代码屏蔽，不需要在此补缴，也不需要计算金额,提示用户就可
+        else if(userMoney!=0){
             //新增记录
             userChangeMapper.insert(userChange);
             //变更用户信息
@@ -108,6 +111,8 @@ public class UserChangeServiceImp implements IUserChangeService {
             return JsonData.successMsg("已成功变更账户,补缴成功");
 
         }else{
+
+
             GasPrice gasPrice = gasPriceService.findGasPriceByType(user.getUserType() ,user.getUserGasType());
             BigDecimal hasUsedGasNum = gasPriceService.findHasUsedGasInYear(userId);
             if(gasPrice != null){
@@ -119,11 +124,13 @@ public class UserChangeServiceImp implements IUserChangeService {
                 return JsonData.success(res,"超用气量(单位:方):"+amount.negate()+",超用补缴金额(单位:元):"+orderPayment.subtract(hasOrderPayment));
 
             }
+            */
+            return JsonData.fail("此用户超用，无法变更资料");
         }
 
-        return JsonData.fail("服务内部出错");
+      //  return JsonData.fail("服务内部出错");
 
-    }
+  //  }
     /**
      * 标识。1，用户超用补缴，2.燃气公司退钱
      * userMoney 实补金额
@@ -214,7 +221,7 @@ public class UserChangeServiceImp implements IUserChangeService {
                 BigDecimal hasOrderPayment = CalculateUtil.gasToPayment(hasUsedGasNum, gasPrice);
 
                 BigDecimal[] res={orderPayment.subtract(hasOrderPayment),orderPayment.subtract(hasOrderPayment),number};
-                return JsonData.success(res,"超用气量(单位:方):"+amount.negate()+",超用补缴金额(单位:元):"+orderPayment.subtract(hasOrderPayment));
+                return JsonData.success(res,"超用气量(单位:方):"+amount.negate()+",\n超用补缴金额(单位:元):"+orderPayment.subtract(hasOrderPayment)+",\n总购气总量:"+PurchasingAirVolume+"方"+",\n总止码"+HistoryTableCode);
             }
         }
         if(amount.compareTo(BigDecimal.ZERO)>0){
@@ -237,7 +244,7 @@ public class UserChangeServiceImp implements IUserChangeService {
                     BigDecimal orderSurplusPayment = CalculateUtil.gasSurplusToPayment(resultToPayment, gasPrice);
                     resultmoney =  orderPayment.add(orderSurplusPayment);
                     BigDecimal[] res={resultmoney,resultmoney,number};
-                    return JsonData.success(res,"剩余气量(单位:方):"+amount+",应退金额(单位:元):"+resultmoney);
+                    return JsonData.success(res,"剩余气量(单位:方):"+amount+",\n应退金额(单位:元):"+resultmoney+",\n总购气总量:"+PurchasingAirVolume+"方"+",\n总止码"+HistoryTableCode);
 
                 }
 
@@ -255,7 +262,7 @@ public class UserChangeServiceImp implements IUserChangeService {
                     BigDecimal orderSurplusPayment = CalculateUtil.gasToPayment(resultToPayment, gasPrice);
                     resultmoney =  orderPayment.subtract(orderSurplusPayment);
                     BigDecimal[] res={resultmoney,resultmoney,number};
-                    return JsonData.success(res,"剩余气量(单位:方):"+amount+",应退金额(单位:元):"+resultmoney);
+                    return JsonData.success(res,"剩余气量(单位:方):"+amount+",\n应退金额(单位:元):"+resultmoney+",\n总购气总量:"+PurchasingAirVolume+"方"+",\n总止码"+HistoryTableCode);
 
                 }
 

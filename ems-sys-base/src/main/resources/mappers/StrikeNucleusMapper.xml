@@ -76,7 +76,8 @@
             and    order_id = #{orderId}
         </if>
         <if test="userName != null and userName != ''">
-            AND  user_name = #{userName}
+
+            AND LOCATE (#{userName} ,user_name) > 0
         </if>
     </select>
     <update id="updateStrikeNucleusById" parameterType="com.tdmh.entity.StrikeNucleus">

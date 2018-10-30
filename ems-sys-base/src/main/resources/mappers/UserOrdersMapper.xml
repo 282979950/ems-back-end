@@ -257,7 +257,14 @@
           DATE_FORMAT(create_time,'%Y-%m-%d')= #{resltTime}    ORDER BY create_time DESC     LIMIT 1)
   </select>
   <update id="updateUserOrdersByOrderId" parameterType="com.tdmh.entity.UserOrders">
-    UPDATE  user_orders SET account_state=#{accountState}  WHERE order_id=#{orderId}
+    UPDATE  user_orders SET account_state=#{accountState}
+    <if test="orderStrikeTime!=null">
+      ,order_strike_time=#{orderStrikeTime}
+    </if>
+    <if test="orderStatus !=null and orderStatus!=''">
+      ,order_status=#{orderStatus}
+    </if>
+      WHERE order_id=#{orderId}
 
   </update>
 
