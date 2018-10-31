@@ -2032,7 +2032,7 @@ app.initEvent = function () {
                             if (response.status) {
                                 var rdata = response.data;
                                 var wresult = app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.orderGas, rdata.flowNumber);
-                                app.updateOrderStatus(wresult);
+                                app.updateOrderStatus(wresult , rdata.orderId);
                                 var url = app.currentPageName + '/listData.do';
                                 // app.setDataCache(url, null);
                                 console.log("清理" + url + "缓存");
