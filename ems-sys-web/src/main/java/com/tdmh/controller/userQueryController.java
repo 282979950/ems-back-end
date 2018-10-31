@@ -2,10 +2,9 @@ package com.tdmh.controller;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.User;
-import com.tdmh.service.IFillGasService;
-import com.tdmh.service.IOrderService;
-import com.tdmh.service.IUserChangeService;
-import com.tdmh.service.IUserService;
+import com.tdmh.entity.UserOrders;
+import com.tdmh.service.*;
+import com.tdmh.utils.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,8 @@ public class userQueryController {
     private IOrderService orderService;
     @Autowired
     private IFillGasService fillGasService;
+    @Autowired
+    private IRepairOrderService repairOrderService;
 
     /**
      * 查询
@@ -61,7 +62,7 @@ public class userQueryController {
         return orderService.selectHistoryOrdersService(userId);
     }
     /**
-     * 查询维修记录表
+     * 查询补气记录表
      * @return
      */
     @RequiresPermissions("querystats:accountdetail:visit")
@@ -88,5 +89,27 @@ public class userQueryController {
     @ResponseBody
     public JsonData selectHistoryUserCardQueryController(@Param("userId") Integer userId){
         return userService.selectHistoryUserCardQueryService(userId);
+    }
+    /**
+     * 查询维修记录
+     * @return
+     */
+    @RequiresPermissions("querystats:accountdetail:visit")
+    @RequestMapping(value = "/historyRepairOrder.do")
+    @ResponseBody
+    public JsonData selectHistoryRepairOrderController(@Param("userId") Integer userId){
+        return repairOrderService.selectHistoryRepairOrderQueryService(userId);
+    }
+
+    /**
+     * 用户卡相关记录导出
+     */
+    @RequiresPermissions("querystats:accountdetail:visit")
+    @RequestMapping("/export.do")
+    @ResponseBody
+    public void exportUserQueryList(User user){
+
+        ;userService.exportUserQuerySearchService(user);
+
     }
 }

@@ -804,11 +804,13 @@ app.initEvent = function () {
         });
     });
     main.on('link_name', function () {
-        var data = table.getSelectedDatas();
-        if (data.length <= 0){
-            app.message('请至少选择一条数据');
-            return;
-        }
+
+        var data = app.toolbar.getInputsData();
+        console.log(data)
+        app.DownLoadFile({
+            url : app.currentPageName + '/export.do',
+            data : data
+        });
 
     });
     main.on('tranfer', function () {
@@ -1385,9 +1387,9 @@ app.initEvent = function () {
 
     });
     /**
-     * 维修记录
+     * 补气记录
      */
-    main.on('build', function () {
+    main.on('slow_motion_video', function () {
         var data = table.getSelectedDatas();
         if (data.length === 0) {
             app.message('请选择一条数据');
@@ -1413,13 +1415,56 @@ app.initEvent = function () {
                 var data = response.data;
                 console.log(data);
                 var dialog = mdui.dialog({
-                    title: '维修记录',
+                    title: '补气记录',
                     content: ' ',
                     buttons: [{text: '关闭'}]
                 });
                 var table = app.createTable({
                     parent: '.mdui-dialog-content',
                     fields: app.tableFields[app.currentPageName + 'HistoryFillGasOrder'],
+                    data: data
+                });
+                dialog.handleUpdate();
+            }
+        });
+
+    });
+    /**
+     * 维修记录
+     */
+    main.on('build', function () {
+        var data = table.getSelectedDatas();
+        if (data.length === 0) {
+            app.message('请选择一条数据');
+            return;
+        }
+        if (data.length > 1) {
+            app.message('只能选择一条数据');
+            return;
+        }
+        var userId = data[0].userId;
+        $.ajax({
+            async: true,
+            type: 'Post',
+            url: app.currentPageName + '/historyRepairOrder.do',
+            data: {
+                "userId": userId
+            },
+            contentType: 'application/x-www-form-urlencoded',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                var data = response.data;
+                console.log(data);
+                var dialog = mdui.dialog({
+                    title: '维修记录',
+                    content: ' ',
+                    buttons: [{text: '关闭'}]
+                });
+                var table = app.createTable({
+                    parent: '.mdui-dialog-content',
+                    fields: app.tableFields[app.currentPageName + 'HistoryRepairOrder'],
                     data: data
                 });
                 dialog.handleUpdate();
@@ -2825,6 +2870,46 @@ app.tableFields = {
         name: 'fillGasOrderStatusName',
         caption: '订单状态'
     }, {
+        name: 'createTime',
+        caption: '创建时间'
+    }],
+    userQueryHistoryRepairOrder: [{
+        name: 'userId',
+        caption: '用户编号'
+    },{
+        name: 'repairOrderId',
+        caption: '维修单号'
+    },{
+        name: 'repairTypeName',
+        caption: '维修类型'
+    },{
+        name: 'gasEquipmentTypeName',
+        caption: '燃气设备'
+    },{
+        name: 'oldMeterId',
+        caption: '旧表编号'
+    },{
+        name: 'oldMeterStopCode',
+        caption: '旧表止码'
+    },{
+        name: 'oldSafetyCode',
+        caption: '旧安全卡编号'
+    },{
+        name: 'newMeterId',
+        caption: '新表编号'
+    },{
+        name: 'newMeterStopCode',
+        caption: '新表止码'
+    },{
+        name: 'newSafetyCode',
+        caption: '新安全卡编号'
+    },{
+        name: 'repairFaultTypeName',
+        caption: '维修故障类型'
+    },{
+        name: 'repairResultTypeName',
+        caption: '维修处理结果'
+    },{
         name: 'createTime',
         caption: '创建时间'
     }],
@@ -5193,12 +5278,20 @@ app.getToolbarFields = function (name) {
                 caption: '充值信息',
                 perm:'querystats:accountdetail:visit'
             },{
-                name: 'build',
-                caption: '维修信息',
+                name: 'slow_motion_video',
+                caption: '补气信息',
                 perm:'querystats:accountdetail:visit'
             },{
                 name: 'tab',
                 caption: '卡信息',
+                perm:'querystats:accountdetail:visit'
+            },{
+                name: 'build',
+                caption: '维修信息',
+                perm:'querystats:accountdetail:visit'
+            },{
+                name: 'link',
+                caption: 'EXCEL导出',
                 perm:'querystats:accountdetail:visit'
             },{
                 name:'userId',

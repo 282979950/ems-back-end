@@ -222,4 +222,5 @@ public interface IUserService {
     JsonData selectHistoryUserCardQueryService(Integer userId);
 
     int updateServiceTimesByUserId(Integer userId);
+    void exportUserQuerySearchService(User user);
 }

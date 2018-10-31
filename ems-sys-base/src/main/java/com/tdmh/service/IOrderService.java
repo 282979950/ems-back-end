@@ -14,4 +14,5 @@ public interface IOrderService {
     JsonData BusinessDataQueryService(UserOrders orders);
     JsonData BusinessDataQuerySearchListService(UserOrders orders);
     JsonData selectHistoryOrdersService(Integer userId);
+    void exportBusinessDataQueryListService(UserOrders orders);
 }

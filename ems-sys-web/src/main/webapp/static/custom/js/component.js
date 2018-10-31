@@ -698,11 +698,14 @@
                     case 'note' :
                         $field.trigger('note_alt');
                         break;
-                    case 'build' :
-                        $field.trigger('build');
+                    case 'slow_motion_video' :
+                        $field.trigger('slow_motion_video');
                         break;
                     case 'tab' :
                         $field.trigger('userQuery_tab');
+                        break;
+                    case 'build' :
+                        $field.trigger('build');
                         break;
                     default:
                         break;

@@ -6,7 +6,9 @@ import com.tdmh.entity.mapper.OrderMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.param.OrderParam;
 import com.tdmh.service.IOrderService;
+import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.StringUtils;
+import com.tdmh.utils.excel.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,6 +92,23 @@ public class OrderServiceImpl implements IOrderService {
         }
         List<UserOrders> list= userOrdersMapper.selectordersListQuery(userId);
         return list==null?JsonData.fail("未查询到相关数据"):JsonData.success(list,"查询成功!");
+    }
+
+    /**
+     * 数据导出
+     * @param orders
+     */
+
+    @Override
+    public void exportBusinessDataQueryListService(UserOrders orders) {
+
+        List<UserOrders> list= userOrdersMapper.selectBusinessDataQuery(orders);
+        String fileName = "营业数据信息-"+DateUtils.getDate()+".xlsx";
+        try {
+            new ExportExcel("营业数据信息", UserOrders.class).setDataList(list).write(fileName).dispose();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

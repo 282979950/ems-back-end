@@ -181,4 +181,40 @@
         left join sys_dictionary sd on m.meter_direction = sd.dict_value and sd.dict_category = 'meter_direction' and sd.usable = 1
         where u.user_id = #{userId}
     </select>
+    <select id="selectRepairOrderByuserQuery" parameterType="java.lang.Integer" resultType="com.tdmh.param.RepairOrderParam">
+             SELECT
+                  reor.user_id AS userId,
+                  reor.repair_order_id AS repairOrderId,
+                  sd.dict_key AS repairTypeName,
+                  sd2.dict_key AS gasEquipmentTypeName,
+                  reor.old_meter_id AS oldMeterId,
+                  reor.old_meter_stop_code AS oldMeterStopCode,
+                  reor.old_safety_code AS oldSafetyCode,
+                  reor.new_meter_id AS newMeterId,
+                  reor.new_meter_stop_code AS newMeterStopCode,
+                  reor.new_safety_code AS newSafetyCode,
+                  sd3.dict_key AS repairFaultTypeName,
+                  sd4.dict_key AS repairResultTypeName,
+                  reor.create_time AS createTime
+            FROM
+                 repair_order reor
+              LEFT JOIN sys_dictionary sd
+                ON reor.repair_type = sd.dict_value
+                AND sd.dict_category = 'repair_type'
+                AND sd.usable = 1
+              LEFT JOIN sys_dictionary sd2
+                ON reor.gas_equipment_type = sd2.dict_value
+                AND sd2.dict_category = 'gas_equipment_type'
+                AND sd2.usable = 1
+              LEFT JOIN sys_dictionary sd3
+                ON reor.repair_fault_type = sd3.dict_value
+                AND sd3.dict_category = 'repair_fault_type'
+                AND sd3.usable = 1
+              LEFT JOIN sys_dictionary sd4
+                ON reor.repair_result_type = sd4.dict_value
+                AND sd4.dict_category = 'repair_result_type'
+                AND sd4.usable = 1
+            WHERE reor.usable = 1
+              AND reor.user_id =#{userId}
+    </select>
 </mapper>

@@ -29,4 +29,5 @@ public interface RepairOrderMapper {
     boolean checkRepairOrderExists(String repairOrderId);
 
     RepairOrderUserParam getRepairOrderUserById(Integer userId);
+    List<RepairOrderParam> selectRepairOrderByuserQuery(Integer userId);
 }
