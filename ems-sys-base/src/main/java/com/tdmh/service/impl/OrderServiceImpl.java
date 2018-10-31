@@ -65,7 +65,7 @@ public class OrderServiceImpl implements IOrderService {
                 } else if (dt1.getTime() < dt2.getTime()) {
 
                     list= userOrdersMapper.selectBusinessDataQuery(orders);
-                    return list==null?JsonData.fail("未查询到相关数据"):JsonData.success(list,"查询成功!");
+                    return list.size()==0?JsonData.fail("未查询到相关数据"):JsonData.success(list,"查询成功!");
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -80,7 +80,7 @@ public class OrderServiceImpl implements IOrderService {
         }
 
         list= userOrdersMapper.selectBusinessDataQuery(orders);
-        return list==null?JsonData.fail("未查询到相关数据"):JsonData.success(list,"查询成功!");
+        return list.size()==0?JsonData.fail("未查询到相关数据"):JsonData.success(list,"查询成功!");
     }
 
     @Override

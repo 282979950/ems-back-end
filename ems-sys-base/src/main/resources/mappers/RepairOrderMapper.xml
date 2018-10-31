@@ -155,6 +155,7 @@
         <if test="empName != null and empName != ''">
             AND e.emp_name LIKE CONCAT('%', #{empName}, '%')
         </if>
+        order by ro.id desc
     </select>
     <resultMap id="RepairOrderUserParam" type="com.tdmh.param.RepairOrderUserParam">
         <constructor>

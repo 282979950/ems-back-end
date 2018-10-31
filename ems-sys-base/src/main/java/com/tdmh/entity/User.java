@@ -133,6 +133,13 @@ public class User extends BaseEntity {
      */
     private Integer orderId;
 
+    /**
+     * （临时参数）发起冲账时间
+     */
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date orderStrikeTime;
+
 
     public User(Integer userId, String userName, String userPhone, String userIdcard, String userDeed, Integer userDistId, String userAddress, Integer
             userType, Integer userGasType, Integer userStatus, Boolean userLocked, Integer serviceTimes, Date

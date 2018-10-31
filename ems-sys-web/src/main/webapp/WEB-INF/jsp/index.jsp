@@ -183,10 +183,7 @@
                 <div class="mdui-list-item mdui-ripple nav-item input">维修单录入</div>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="repairorder:fillGas:visit">
-                <div class="mdui-list-item mdui-ripple nav-item fillGas">维修补气</div>
-                </shiro:hasPermission>
-                <shiro:hasPermission name="repairorder:overuse:visit">
-                <div class="mdui-list-item mdui-ripple nav-item balance">补缴结算</div>
+                <div class="mdui-list-item mdui-ripple nav-item fillGas">补气补缴结算</div>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="repairorder:iccardinit:visit">
                 <div class="mdui-list-item mdui-ripple nav-item initCard">IC卡初始化</div>

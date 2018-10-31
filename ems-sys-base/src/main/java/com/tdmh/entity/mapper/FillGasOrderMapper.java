@@ -33,4 +33,7 @@ public interface FillGasOrderMapper {
 
     boolean hasFillGasOrderResolved(@Param("userId") Integer userId, @Param("repairOrderId") String repairOrderId);
     List<FillGasOrderParam>selectFillGasOrderQuery(Integer userId);
+
+    List<FillGasOrderParam> searchFillGasOrder(@Param("repairOrderId") String repairOrderId, @Param("userId") Integer userId,
+                             @Param("fillGasOrderType") Integer fillGasOrderType);
 }

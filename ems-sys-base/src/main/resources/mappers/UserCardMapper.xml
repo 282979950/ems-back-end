@@ -88,4 +88,43 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
         AND
             user_id =#{userId}
     </select>
+    <resultMap id="BindNewCardParam" type="com.tdmh.param.BindNewCardParam">
+        <constructor>
+            <idArg column="user_card_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="card_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="old_card_identifier" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="card_password" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="card_initialization" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="card_cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="new_card_identifier" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        </constructor>
+    </resultMap>
+    <select id="getBindNewCardParamByUserId" resultMap="BindNewCardParam" parameterType="integer">
+        select
+        user_card_id, user_id, card_id, card_identifier as old_card_identifier, card_password, card_initialization, card_cost, null as new_card_identifier,
+        create_time, create_by, update_time, update_by, usable
+        from user_card
+        where user_id = #{userId} and usable = 1
+    </select>
+    <select id="checkNewCardIdentifier" resultType="boolean" parameterType="string">
+        select
+        count(1)
+        from user_card
+        where card_identifier = #{newCardIdentifier}
+    </select>
+    <select id="selectCountUserCard" parameterType="Integer" resultType="java.lang.Integer">
+
+        SELECT COUNT(0) FROM user_card WHERE user_id=#{userId}  AND usable=1
+
+    </select>
+    <update id="updateUserCardByUserIdCardStatus" parameterType="com.tdmh.entity.UserCard">
+
+      UPDATE user_card SET card_status=#{cardStatus},usable=0    WHERE user_id=#{userId}  AND usable=1
+</update>
 </mapper>

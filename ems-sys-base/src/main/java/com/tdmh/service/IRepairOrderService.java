@@ -1,6 +1,7 @@
 package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
+import com.tdmh.param.BindNewCardParam;
 import com.tdmh.param.RepairOrderParam;
 
 /**
@@ -34,11 +35,15 @@ public interface IRepairOrderService {
      * 查询维修单
      * @return
      */
-    JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, Integer empName);
+    JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName);
 
     JsonData getRepairOrderUserById(Integer userId);
 
     JsonData hasFillGasOrderResolved(Integer userId, String repairOrderId);
 
     JsonData isLatestFillGasOrder(Integer id, Integer userId);
+
+    JsonData getBindNewCardParamByUserId(Integer userId);
+
+    JsonData bindNewCard(BindNewCardParam param);
 }

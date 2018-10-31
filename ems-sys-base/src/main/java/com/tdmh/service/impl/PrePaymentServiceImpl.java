@@ -89,6 +89,9 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     @Override
     public JsonData selectFindListArdQueryService(PrePaymentParam param) {
         List<PrePaymentParam> list = prePaymentMapper.getOrderInformationCardOrderGas(param);
+        if(list.size()==0){
+            return JsonData.fail("暂无用户记录,或该卡为新卡未查询到数据");
+        }
         //把卡面的气量设置该条数据中
         list.get(0).setCardOrderGas(param.getCardOrderGas());
         return list == null || list.size() == 0 ? JsonData.successMsg("暂无用户记录") : JsonData.success(list,"查询成功");

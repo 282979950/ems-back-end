@@ -41,7 +41,7 @@ public class PreStrikeServiceImp implements IPreStrikeService {
     public  JsonData selectUserByOrderTypeService(User user,Integer currentEmpId){
         user.setEmployeeId(currentEmpId);
         List<User> u = userMapper.selectUserByOrderType(user);
-        return JsonData.success(u,"查询成功");
+        return u.size()==0?JsonData.fail("未查询到相关数据"): JsonData.success(u,"查询成功");
     }
 
     /**
@@ -66,12 +66,16 @@ public class PreStrikeServiceImp implements IPreStrikeService {
         userOrders.setUserId(user.getUserId());
         userOrders.setEmployeeId(user.getEmployeeId());
         userOrders.setOrderId(user.getOrderId());
+        //设置发起冲账时间
+        userOrders.setOrderStrikeTime(new Date());
         int count = orders.countUserOrdersByTimeEmployeeId(userOrders);
         //若查询出一条记录则直接预冲账申请成功
         int updateCount;
         if(count>0){
             //AccountState设置为，已冲帐
             userOrders.setAccountState(3);
+            //设置订单状态为已取消
+            userOrders.setOrderStatus(4);
 
             updateCount =orders.updateUserOrdersByOrderId(userOrders);
             if(updateCount>0){
@@ -118,8 +122,8 @@ public class PreStrikeServiceImp implements IPreStrikeService {
      * @return
      */
 public JsonData selectStrikeNucleusListService(StrikeNucleus strike){
-   List<StrikeNucleus> list =strikeNucleus.selectStrikeNucleusList(strike);
-    return JsonData.success(list,"查询成功");
+    List<StrikeNucleus> list =strikeNucleus.selectStrikeNucleusList(strike);
+    return list.size()==0?JsonData.fail("未查询到相关数据"):JsonData.success(list,"查询成功");
 }
 /**
  * 处理审批流程
@@ -128,11 +132,19 @@ public JsonData selectStrikeNucleusListService(StrikeNucleus strike){
 public JsonData updateStrikeService(StrikeNucleus strike,boolean flag){
     //若通过则直接更新数据,并设置订单表为
     UserOrders userOrders = new UserOrders();
+
+    if(StringUtils.isBlank(strike.getNucleusOpinion())){
+
+        return JsonData.fail("操作有误,请填写不同意理由");
+
+    }
     if(flag){
 
         strike.setNucleusStatus(1);
         userOrders.setAccountState(3);
         userOrders.setOrderId(strike.getOrderId());
+        //若通过则更改此条记录状态为已取消
+        userOrders.setOrderStatus(4);
        int count= strikeNucleus.updateStrikeNucleusById(strike);
        int countOrders =orders.updateUserOrdersByOrderId(userOrders);
        if(count>0 && countOrders>0){
@@ -144,11 +156,6 @@ public JsonData updateStrikeService(StrikeNucleus strike,boolean flag){
 
     }else {
 
-        if(StringUtils.isBlank(strike.getNucleusOpinion())){
-
-            return JsonData.fail("操作有误,请填写不同意理由");
-
-        }
         strike.setNucleusStatus(1);
         userOrders.setAccountState(2);
         userOrders.setOrderId(strike.getOrderId());

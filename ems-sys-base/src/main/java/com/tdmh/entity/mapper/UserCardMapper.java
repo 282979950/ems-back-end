@@ -1,6 +1,7 @@
 package com.tdmh.entity.mapper;
 
 import com.tdmh.entity.UserCard;
+import com.tdmh.param.BindNewCardParam;
 import com.tdmh.param.CreateAccountParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -41,4 +42,10 @@ public interface UserCardMapper {
     int getCardByCardMessage(@Param("userId") Integer userId , @Param("iccardId") Integer iccardId , @Param("iccardIdentifier") String iccardIdentifier);
 
     List<UserCard> selectUserCardQuery(Integer userId);
+    int selectCountUserCard(Integer userId);
+    int updateUserCardByUserIdCardStatus(UserCard card);
+
+    BindNewCardParam getBindNewCardParamByUserId(Integer userId);
+
+    boolean checkNewCardIdentifier(String newCardIdentifier);
 }
