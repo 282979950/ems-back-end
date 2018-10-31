@@ -46,4 +46,5 @@ public interface IRepairOrderService {
     JsonData getBindNewCardParamByUserId(Integer userId);
 
     JsonData bindNewCard(BindNewCardParam param);
+    JsonData selectHistoryRepairOrderQueryService(Integer userId);
 }

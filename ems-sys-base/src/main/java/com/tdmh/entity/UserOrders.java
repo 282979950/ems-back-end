@@ -1,6 +1,7 @@
 package com.tdmh.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tdmh.utils.excel.annotation.ExcelField;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,6 +22,7 @@ public class UserOrders extends BaseEntity {
     /**
      * 订单ID
      */
+    @ExcelField(title="订单编号", type=1, align=2, sort=1)
     private Integer orderId;
 
     /**
@@ -30,26 +32,32 @@ public class UserOrders extends BaseEntity {
     /**
      * 用户姓名
      */
+    @ExcelField(title="用户姓名", type=1, align=2, sort=2)
     private String userName;
     /**
      * 用户电话
      */
+    @ExcelField(title="用户电话", type=1, align=2, sort=4)
     private String userPhone;
     /**
      * 用户身份证号
      */
+    @ExcelField(title="用户身份证号", type=1, align=2, sort=5, length=5000)
     private String userIdcard;
     /**
      * 用户地址
      */
+    @ExcelField(title="用户地址", type=1, align=2, sort=6, length=5000)
     private String userAddress;
     /**
      * 维修次数
      */
+    @ExcelField(title="维修次数", type=1, align=2, sort=7)
     private Integer serviceTimes;
     /**
      * 员工名称
      */
+    @ExcelField(title="操作人姓名", type=1, align=2, sort=11)
     private String empName;
     /**
      * 员工id
@@ -66,12 +74,14 @@ public class UserOrders extends BaseEntity {
      * 支付金额
      */
     @NotNull(message = "充值金额不能为空")
+    @ExcelField(title="支付金额", type=1, align=2, sort=8)
     private BigDecimal orderPayment;
 
     /**
      * 支付气量
      */
     @NotNull(message = "充值气量不能为空")
+    @ExcelField(title="充值气量(单位:方)", type=1, align=2, sort=9, length=5000)
     private BigDecimal orderGas;
 
     /**
@@ -116,6 +126,7 @@ public class UserOrders extends BaseEntity {
     /**
      * 账务状态名称
      */
+    @ExcelField(title="账务状态", type=1, align=2, sort=3)
     private String accountStateName;
 
     /**
@@ -127,6 +138,7 @@ public class UserOrders extends BaseEntity {
      */
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @ExcelField(title="充值时间", type=1, align=2, sort=10, length=5000)
     private Date rechargeTime;
     /**
      * 临时参数（筛选条件开始时间）

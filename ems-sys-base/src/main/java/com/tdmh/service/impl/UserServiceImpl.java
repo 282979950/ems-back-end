@@ -475,4 +475,16 @@ public class UserServiceImpl implements IUserService {
     public JsonData getBindNewCardParamByUserId(Integer userId) {
         return JsonData.successData(userCardMapper.getBindNewCardParamByUserId(userId));
     }
+
+    @Override
+    public void exportUserQuerySearchService(User user) {
+
+        List<User> list = userMapper.userQuerySearch(user);
+        String fileName = "用户数据信息-"+DateUtils.getDate()+".xlsx";
+        try {
+            new ExportExcel("用户数据信息", UserExport.class).setDataList(list).write(fileName).dispose();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
