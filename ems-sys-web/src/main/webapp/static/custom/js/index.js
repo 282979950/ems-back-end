@@ -2616,10 +2616,10 @@ app.tableFields = {
         caption: '维修结果'
     }, {
         name: 'empNumber',
-        caption: '员工编号'
+        caption: '维修员编号'
     }, {
         name: 'empName',
-        caption: '员工姓名'
+        caption: '维修员姓名'
     }, {
         name: 'repairStartTime',
         caption: '维修开始时间'
