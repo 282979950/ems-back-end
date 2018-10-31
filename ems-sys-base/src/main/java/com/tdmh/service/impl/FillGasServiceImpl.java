@@ -113,6 +113,8 @@ public class FillGasServiceImpl implements IFillGasService {
         FillGasOrderParam newOrder = new FillGasOrderParam();
         newOrder.setUserId(old.getUserId());
         newOrder.setRepairOrderId(old.getRepairOrderId());
+        newOrder.setGasCount(old.getGasCount());
+        newOrder.setStopCodeCount(old.getStopCodeCount());
         BigDecimal needFillGas = old.getLeftGas();
         setFillGasOrderProps(newOrder, needFillGas);
         newOrder.setFillGasOrderStatus(0);
