@@ -570,7 +570,7 @@ app.initEvent = function () {
                     return;
                 }
             }
-            if(result[2] != table.getSelectedDatas()[0].iccardIdentifier || result[3] != table.getSelectedDatas()[0].cardId){
+            if(result[2] != table.getSelectedDatas()[0].iccardIdentifier || result[3] != table.getSelectedDatas()[0].iccardId){
                 app.warningMessage("该卡不是与该用户绑定的卡");
                 return;
             }
