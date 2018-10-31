@@ -125,6 +125,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
         if (sInvoiceNumber > eInvoiceNumber) {
             return JsonData.fail("发票起始号码不能大于终止号码");
         }
+        if(empId == null){
+            return JsonData.fail("发票所属员工不能为空");
+        }
         List<String> invoiceNumberList = Lists.newArrayListWithCapacity(eInvoiceNumber - sInvoiceNumber + 1);
         for (int i = sInvoiceNumber; i <= eInvoiceNumber; i++) {
             invoiceNumberList.add(String.format("%08d",i));
