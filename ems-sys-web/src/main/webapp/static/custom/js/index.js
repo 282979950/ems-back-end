@@ -155,7 +155,7 @@ app.initIndex = function () {
         $('body').on('keyup', '[name="orderGas"]', function (res) {
             var val = $(this).val();
             if (/^\d+(\.\d+)?$/.test(val)) {
-                if(val = 0){
+                if(val <= 0){
                     app.warningMessage("充值气量必须大于0");
                     app.editForm.setValue('orderGas', null);
                     app.editForm.setValue('orderPayment', null);
