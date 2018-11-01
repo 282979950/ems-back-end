@@ -147,6 +147,6 @@ public class SysDictionaryController {
     public JsonData selectFindListByDict(SysDictionary sdy, HttpServletRequest request, HttpServletResponse respose){
         List<SysDictionary> list = sysDictionaryService.findListByService(sdy);
 
-        return JsonData.success(list,"查询成功");
+        return list.size()==0?JsonData.fail("未查询到相关数据请重试"):JsonData.success(list,"查询成功");
     }
 }
