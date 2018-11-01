@@ -135,7 +135,7 @@ public JsonData updateStrikeService(StrikeNucleus strike,boolean flag){
 
     if(StringUtils.isBlank(strike.getNucleusOpinion())){
 
-        return JsonData.fail("操作有误,请填写不同意理由");
+        return JsonData.fail("操作有误,请填写理由");
 
     }
     if(flag){

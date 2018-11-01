@@ -123,6 +123,15 @@ public class SysOrganizationController {
 			sysz.setUpdateTime(new Date());
 			sysz.setUsable(true);
 
+			if(StringUtils.isBlank(sysz.getOrgName())){
+
+                return JsonData.fail("新增失败，请填写机构名称");
+            }
+            int countOrgName =sysOrganizationService.selectCountByorgNameService(sysz.getOrgName());
+			if(countOrgName>0){
+                return JsonData.fail("该机构名称已存在，请重新填写机构名称");
+            }
+
 			sysOrganizationService.insertOrganizationOnPc(sysz);
 
 		}

@@ -245,4 +245,7 @@
           AND locate (#{orgCode} ,org_code) > 0
       </if>
   </select>
+  <select id="selectCountByorgName" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(0) FROM sys_organization WHERE usable=1 AND org_name=#{orgName}
+  </select>
 </mapper>

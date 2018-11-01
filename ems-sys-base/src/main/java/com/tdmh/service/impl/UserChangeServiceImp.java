@@ -44,6 +44,11 @@ public class UserChangeServiceImp implements IUserChangeService {
         if(userChange == null){
             return JsonData.fail("未获取录入的相关信息");
         }
+        if(userChange.getUserChangeIdcard().length()<18){
+
+            return JsonData.fail("录入信息失败，身份证号最少18位");
+
+        }
         BigDecimal  code = userChange.getTableCode();
         Integer userId= user.getUserId();
 
