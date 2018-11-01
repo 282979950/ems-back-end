@@ -1262,7 +1262,7 @@
         //增加\t为了不让表格显示科学计数法或者其他格式
         for(var i = 0 ; i < data.length ; i++ ){
             for(var item in data[i]){
-                str+='${data[i][item] + \'\\t\'},';
+                str+=data[i][item] + '\t'+',';
             }
             str+='\n';
         }
