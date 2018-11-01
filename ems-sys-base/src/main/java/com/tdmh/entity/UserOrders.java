@@ -136,8 +136,8 @@ public class UserOrders extends BaseEntity {
     /**
      * 临时参数，充值时间
      */
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @ExcelField(title="充值时间", type=1, align=2, sort=10, length=5000)
     private Date rechargeTime;
     /**
