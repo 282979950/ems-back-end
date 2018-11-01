@@ -35,4 +35,6 @@ public interface SysOrganizationMapper {
     int deleteOrganization(SysOrganization record);
     //查看所有数据
     List<SysOrganization>findListOrganization(SysOrganization record);
+    //根据名称查看是否存在同名数据
+    Integer selectCountByorgName(String orgName);
 }
