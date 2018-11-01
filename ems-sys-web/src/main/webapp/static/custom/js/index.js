@@ -2616,10 +2616,10 @@ app.tableFields = {
         caption: '维修结果'
     }, {
         name: 'empNumber',
-        caption: '员工编号'
+        caption: '维修员编号'
     }, {
         name: 'empName',
-        caption: '员工姓名'
+        caption: '维修员姓名'
     }, {
         name: 'repairStartTime',
         caption: '维修开始时间'
@@ -4259,7 +4259,7 @@ app.getEditFormFields = function (name) {
                 caption: '用户地址',
                 disabled: true
             }, {
-                name: 'userStatus',
+                name: 'userStatusName',
                 caption: '用户状态',
                 disabled: true
             }, {
