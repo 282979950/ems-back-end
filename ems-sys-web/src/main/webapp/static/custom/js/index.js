@@ -2001,12 +2001,77 @@ app.initEvent = function () {
             return data;
         }
 
-        if (table.getSelectedDatas().length === 0) {
+        /**
+         * 判断补气单是否被处理
+         */
+        function hasFillGasOrderResolved(userId, repairOrderId) {
+            var result;
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: 'input/hasFillGasOrderResolved.do',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    userId: userId,
+                    repairOrderId: repairOrderId
+                },
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (response) {
+                    if (response.status) {
+                        result = response.data;
+                    }
+                }
+            });
+            return result;
+        }
+
+        /**
+         * 判断是否为最近的一条订单
+         */
+        function isLatestFillGasOrder(id, userId) {
+            var result;
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: 'input/isLatestFillGasOrder.do',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    id: id,
+                    userId: userId
+                },
+                beforeSend: function (xhr) {
+                    xhr.withCredentials = true;
+                },
+                success: function (response) {
+                    if (response.status) {
+                        result = response.data;
+                    }
+                }
+            });
+            return result;
+        }
+        var selectDatas = table.getSelectedDatas();
+        if (selectDatas.length === 0) {
             app.message('请选择一条数据');
             return;
         }
-        if (table.getSelectedDatas().length > 1) {
+        if (selectDatas.length > 1) {
             app.message('只能选择一条数据');
+            return;
+        }
+        if (selectDatas[0].repairType !== 0 && selectDatas[0].repairType !== 6 && selectDatas[0].repairType !== 7
+            && selectDatas[0].repairResultType !== 4 && selectDatas[0].repairResultType !== 9) {
+            app.message("该订单不需要补气，不需要绑定新卡");
+            return;
+        }
+        if (!isLatestFillGasOrder(selectDatas[0].id, selectDatas[0].userId)) {
+            app.message("该维修单不是最新的，不能绑定新卡");
+            return;
+        }
+        if (hasFillGasOrderResolved(selectDatas[0].userId, selectDatas[0].repairOrderId)) {
+            app.message("该维修单的补气单或超用单已被处理，不能绑定新卡");
             return;
         }
         var dialog = mdui.dialog({
