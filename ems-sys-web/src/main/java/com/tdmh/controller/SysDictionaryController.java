@@ -54,6 +54,16 @@ public class SysDictionaryController {
         sdy.setCreateBy(22223);
         sdy.setUpdateTime(new Date());
         sdy.setUpdateBy(465642);
+        if(StringUtils.isBlank(sdy.getDictKey())){
+
+            return JsonData.fail("字典键不能为空");
+        }
+        if(StringUtils.isBlank(sdy.getDictValue())){
+            return JsonData.fail("字典值不能为空");
+        }
+        if(StringUtils.isBlank(sdy.getDictCategory())){
+            return JsonData.fail("字典类型不能为空");
+        }
         sysDictionaryService.insertDictionaryOnPc(sdy);
 
         return JsonData.successMsg(msg);
