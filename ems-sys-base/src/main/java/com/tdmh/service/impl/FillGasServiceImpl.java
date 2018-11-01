@@ -58,10 +58,6 @@ public class FillGasServiceImpl implements IFillGasService {
         Integer fillGasOrderType = param.getFillGasOrderType();
         if (fillGasOrderType.equals(1)) {
             fillGasOrderMapper.editFillGasOrder(param);
-            // 当不是第一笔补气单时不需要更新维修次数
-            if (param.getGasCount().subtract(param.getStopCodeCount()).compareTo(param.getFillGas()) == 0) {
-//                userMapper.updateServiceTimesByUserId(param.getUserId());
-            }
             // 剩余气量不为0时还需要生成一笔订单
             BigDecimal leftGas = param.getLeftGas();
             if (leftGas.compareTo(BigDecimal.ZERO) > 0) {
