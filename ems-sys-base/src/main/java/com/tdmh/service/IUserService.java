@@ -2,7 +2,6 @@ package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.User;
-import com.tdmh.entity.UserCard;
 import com.tdmh.param.CreateAccountParam;
 import com.tdmh.param.CreateArchiveParam;
 import com.tdmh.param.InstallMeterParam;
@@ -222,5 +221,7 @@ public interface IUserService {
     JsonData selectHistoryUserCardQueryService(Integer userId);
 
     int updateServiceTimesByUserId(Integer userId);
+
+    JsonData getBindNewCardParamByUserId(Integer userId);
     void exportUserQuerySearchService(User user);
 }

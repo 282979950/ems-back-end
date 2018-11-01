@@ -42,8 +42,9 @@ public class FillGasController {
      */
     @RequestMapping(value = "search.do")
     @ResponseBody
-    public JsonData searchFillGasOrder(@Param("userId") Integer userId) {
-        return fillGasService.searchFillGasOrder(userId);
+    public JsonData searchFillGasOrder(@Param("repairOrderId") String repairOrderId, @Param("userId") Integer userId,
+                                       @Param("fillGasOrderType") Integer fillGasOrderType) {
+        return fillGasService.searchFillGasOrder(repairOrderId, userId ,fillGasOrderType);
     }
 
     @RequestMapping(value = "getFlowNum.do")

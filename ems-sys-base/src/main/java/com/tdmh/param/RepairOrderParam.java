@@ -25,13 +25,13 @@ public class RepairOrderParam extends BaseEntity {
     /**
      * 维修单号
      */
-    @NotNull
+    @NotNull(message = "维修单号")
     private String repairOrderId;
 
     /**
      * 用户Id
      */
-    @NotNull
+    @NotNull(message = "户号不能为空")
     private Integer userId;
 
     /**
@@ -47,13 +47,13 @@ public class RepairOrderParam extends BaseEntity {
     /**
      * 用户Id
      */
-    @NotNull
+    @NotNull(message = "用户地址不能为空")
     private String userAddress;
 
     /**
      * 维修类型
      */
-    @NotNull
+    @NotNull(message = "维修类型不能为空")
     private Integer repairType;
 
     /**
@@ -64,7 +64,7 @@ public class RepairOrderParam extends BaseEntity {
     /**
      * 燃气设备类型
      */
-    @NotNull
+    @NotNull(message = "燃气设备类型不能为空")
     private Integer gasEquipmentType;
 
     /**
@@ -146,7 +146,7 @@ public class RepairOrderParam extends BaseEntity {
     /**
      * 维修故障类型
      */
-    @NotNull
+    @NotNull(message = "维修故障类型不能为空")
     private Integer repairFaultType;
 
     /**
@@ -157,7 +157,7 @@ public class RepairOrderParam extends BaseEntity {
     /**
      * 维修处理结果
      */
-    @NotNull
+    @NotNull(message = "维修处理结果不能为空")
     private Integer repairResultType;
 
     /**
@@ -168,6 +168,7 @@ public class RepairOrderParam extends BaseEntity {
     /**
      * 维修员Id
      */
+    @NotNull(message = "维修员工号为空或不存在")
     private Integer empId;
 
     /**

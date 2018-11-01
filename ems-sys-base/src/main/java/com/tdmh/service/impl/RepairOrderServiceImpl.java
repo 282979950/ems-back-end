@@ -2,12 +2,11 @@ package com.tdmh.service.impl;
 
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
-import com.tdmh.entity.GasPrice;
-import com.tdmh.entity.Meter;
-import com.tdmh.entity.User;
-import com.tdmh.entity.UserMeters;
+import com.tdmh.entity.*;
 import com.tdmh.entity.mapper.RepairOrderMapper;
+import com.tdmh.entity.mapper.UserCardMapper;
 import com.tdmh.entity.mapper.UserMetersMapper;
+import com.tdmh.param.BindNewCardParam;
 import com.tdmh.param.FillGasOrderParam;
 import com.tdmh.param.RepairOrderParam;
 import com.tdmh.param.RepairOrderUserParam;
@@ -34,6 +33,9 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
 
     @Autowired
     private UserMetersMapper userMetersMapper;
+
+    @Autowired
+    private UserCardMapper userCardMapper;
 
     @Autowired
     private IUserService userService;
@@ -92,18 +94,27 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 oldMeter.setUsable(true);
                 meterService.updateMeter(oldMeter);
             }
-        }
-        int resultCount = repairOrderMapper.addRepairOrder(param);
-        if (resultCount == 0) {
-            return JsonData.fail("新增维修单失败");
+            int resultCount = repairOrderMapper.addRepairOrder(param);
+            if (resultCount == 0) {
+                return JsonData.fail("新增维修单失败");
+            } else {
+                switch (createFillGasOrder(param)) {
+                    case 1:
+                        return JsonData.successMsg("新增维修单成功，该用户需要补气");
+                    case -1:
+                        return JsonData.successMsg("新增维修单成功，该用户需要补缴");
+                    case 2:
+                        return JsonData.successMsg("新增维修单成功，请前往\"账户\"->\"账户变更\"->\"账户销户\"进行销户处理");
+                    default:
+                        return JsonData.successMsg("新增维修单成功，请前往IC卡初始化页面将卡片初始化");
+                }
+            }
         } else {
-            switch (createFillGasOrder(param)) {
-                case 1:
-                    return JsonData.successMsg("新增维修单成功，该用户需要补气");
-                case -1:
-                    return JsonData.successMsg("新增维修单成功，该用户需要补缴");
-                default:
-                    return JsonData.successMsg("新增维修单成功");
+            int resultCount = repairOrderMapper.addRepairOrder(param);
+            if (resultCount == 0) {
+                return JsonData.fail("新增维修单失败");
+            } else {
+                return JsonData.successMsg("新增维修单成功");
             }
         }
     }
@@ -148,8 +159,10 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                     return JsonData.successMsg("编辑维修单成功，该用户需要补气");
                 case -1:
                     return JsonData.successMsg("编辑维修单成功，该用户需要补缴");
+                case 2:
+                    return JsonData.successMsg("编辑维修单成功，请前往\"账户\"->\"账户变更\"->\"账户销户\"进行销户处理");
                 default:
-                    return JsonData.successMsg("编辑维修单成功");
+                    return JsonData.successMsg("编辑维修单成功，请前往IC卡初始化页面将卡片初始化");
             }
         } else {
             repairOrderMapper.editRepairOrder(param);
@@ -171,8 +184,10 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                         return JsonData.successMsg("编辑维修单成功，该用户需要补缴");
                     case 1:
                         return JsonData.successMsg("编辑维修单成功，该用户需要补气");
+                    case 2:
+                        return JsonData.successMsg("编辑维修单成功，请前往\"账户\"->\"账户变更\"->\"账户销户\"进行销户处理");
                     default:
-                        return JsonData.successMsg("编辑维修单成功");
+                        return JsonData.successMsg("编辑维修单成功，请前往IC卡初始化页面将卡片初始化");
                 }
             } else {
                 return JsonData.successMsg("编辑维修单成功");
@@ -181,7 +196,7 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     }
 
     @Override
-    public JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, Integer empName) {
+    public JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName) {
         List<RepairOrderParam> orderParams = repairOrderMapper.searchRepairOrder(repairOrderId, userId, repairType, empName);
         return orderParams == null || orderParams.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.success(orderParams, "查询成功");
     }
@@ -206,6 +221,54 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
             }
         }
         return JsonData.successData(true);
+    }
+
+    @Override
+    public JsonData getBindNewCardParamByUserId(Integer userId) {
+        return userService.getBindNewCardParamByUserId(userId);
+    }
+
+    @Override
+    @Transactional
+    public JsonData bindNewCard(BindNewCardParam param) {
+        BeanValidator.check(param);
+        String newCardIdentifier = param.getNewCardIdentifier();
+        if (checkNewCardIdentifier(newCardIdentifier)) {
+            return JsonData.fail("该卡已被其他用户使用");
+        }
+        UserCard oldCard = new UserCard();
+        oldCard.setUserCardId(param.getUserCardId());
+        oldCard.setUserId(param.getUserId());
+        oldCard.setCardId(param.getCardId());
+        oldCard.setCardIdentifier(param.getOldCardIdentifier());
+        oldCard.setCardPassword(param.getCardPassword());
+        oldCard.setUsable(false);
+        oldCard.setUpdateBy(param.getUpdateBy());
+        userCardMapper.update(oldCard);
+        UserCard newCard = new UserCard();
+        newCard.setUserId(param.getUserId());
+        newCard.setCardId(param.getCardId());
+        newCard.setCardIdentifier(param.getNewCardIdentifier());
+        newCard.setCardPassword(param.getCardPassword());
+        newCard.setCardInitialization(true);
+        newCard.setCardCost(param.getCardCost());
+        newCard.setCreateBy(param.getUpdateBy());
+        newCard.setUpdateBy(param.getUpdateBy());
+        newCard.setUsable(true);
+        int resultCount = userCardMapper.insert(newCard);
+        if (resultCount == 0) {
+            return JsonData.fail("绑定新卡失败");
+        }
+        return JsonData.successMsg("绑定新卡成功 ");
+    }
+
+    /**
+     * 判断卡片是否被使用过
+     * @param newCardIdentifier
+     * @return
+     */
+    private boolean checkNewCardIdentifier(String newCardIdentifier) {
+        return userCardMapper.checkNewCardIdentifier(newCardIdentifier);
     }
 
     @Override
@@ -281,8 +344,9 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
      * @param param
      * @return
      */
-    private boolean checkNeedFillGas(RepairOrderParam param){
-        return param.getRepairType().equals(0) || param.getRepairResultType().equals(4) || param.getRepairResultType().equals(9);
+    private boolean checkNeedFillGas(RepairOrderParam param) {
+        return param.getRepairType().equals(0) || param.getRepairType().equals(6) || param.getRepairType().equals(7) || param.getRepairResultType().equals(4)
+                || param.getRepairResultType().equals(9);
     }
 
     private boolean checkCloseAccount(RepairOrderParam param) {
@@ -299,7 +363,7 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         BigDecimal sumMeterStopCode = fillGasService.getSumMeterStopCodeByUserId(userId);
         // 当用户为销户维修单时，走销户流程
         if (checkCloseAccount(param)) {
-            return 0;
+            return 2;
         } else {
             switch (sumOrderGas.compareTo(sumMeterStopCode)) {
                 case 1:
@@ -343,6 +407,9 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                     }
                 default:
                     // 不需要补气或超用结算
+                    if (fillGasService.hasUnfinishedFillGasOrder(userId)) {
+                        fillGasService.cancelFillGasByUserId(userId);
+                    }
                     return 0;
             }
         }

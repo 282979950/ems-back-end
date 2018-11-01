@@ -28,7 +28,7 @@ public class EntryMeterParam extends BaseEntity {
     /**
      * 表具编号
      */
-    @NotNull
+    @NotNull(message = "表具编号不能为空")
     @Length(min = 12, max = 13, message = "表具编号只能是12位或13位")
     private String meterCode;
 
@@ -40,19 +40,19 @@ public class EntryMeterParam extends BaseEntity {
     /**
      * 表具类别
      */
-    @NotNull
+    @NotNull(message = "表具类别不能为空")
     private String meterCategory;
 
     /**
      * 表具型号
      */
-    @NotNull
+    @NotNull(message = "表具型号不能为空")
     private String meterType;
 
     /**
      * 表向(ture为左表，false为右表)
      */
-    @NotNull
+    @NotNull(message = "表向不能为空")
     private Boolean meterDirection;
 
     /**

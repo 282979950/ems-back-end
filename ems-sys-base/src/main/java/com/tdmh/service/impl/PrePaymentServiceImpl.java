@@ -1,6 +1,7 @@
 package com.tdmh.service.impl;
 
 
+import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserCard;
 import com.tdmh.entity.UserOrders;
@@ -54,6 +55,7 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     @Transactional
     @Override
     public JsonData createUserOrder(UserOrders userOrders) {
+        BeanValidator.check(userOrders);
         userOrders.setUsable(true);
         userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
         userOrders.setOrderType(2); //2为普通充值类型

@@ -84,8 +84,9 @@ public class FillGasServiceImpl implements IFillGasService {
     }
 
     @Override
-    public JsonData searchFillGasOrder(Integer userId) {
-        return null;
+    public JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType) {
+        List<FillGasOrderParam> fillGasOrders = fillGasOrderMapper.searchFillGasOrder(repairOrderId, userId, fillGasOrderType);
+        return fillGasOrders == null || fillGasOrders.size() == 0 ? JsonData.successMsg("查询结果为空"): JsonData.success(fillGasOrders, "查询成功");
     }
 
     @Override
@@ -112,6 +113,8 @@ public class FillGasServiceImpl implements IFillGasService {
         FillGasOrderParam newOrder = new FillGasOrderParam();
         newOrder.setUserId(old.getUserId());
         newOrder.setRepairOrderId(old.getRepairOrderId());
+        newOrder.setGasCount(old.getGasCount());
+        newOrder.setStopCodeCount(old.getStopCodeCount());
         BigDecimal needFillGas = old.getLeftGas();
         setFillGasOrderProps(newOrder, needFillGas);
         newOrder.setFillGasOrderStatus(0);
@@ -184,11 +187,13 @@ public class FillGasServiceImpl implements IFillGasService {
         userOrdersMapper.insert(userOrders);
     }
 
-    private boolean hasUnfinishedFillGasOrder(Integer userId) {
+    @Override
+    public boolean hasUnfinishedFillGasOrder(Integer userId) {
         return fillGasOrderMapper.hasUnfinishedFillGasOrder(userId);
     }
 
-    private int cancelFillGasByUserId(Integer userId) {
+    @Override
+    public int cancelFillGasByUserId(Integer userId) {
         return fillGasOrderMapper.cancelFillGasByUserId(userId);
     }
 }

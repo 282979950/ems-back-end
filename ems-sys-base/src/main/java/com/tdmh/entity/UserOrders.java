@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -72,12 +73,14 @@ public class UserOrders extends BaseEntity {
     /**
      * 支付金额
      */
+    @NotNull(message = "充值金额不能为空")
     @ExcelField(title="支付金额", type=1, align=2, sort=8)
     private BigDecimal orderPayment;
 
     /**
      * 支付气量
      */
+    @NotNull(message = "充值气量不能为空")
     @ExcelField(title="充值气量(单位:方)", type=1, align=2, sort=9, length=5000)
     private BigDecimal orderGas;
 

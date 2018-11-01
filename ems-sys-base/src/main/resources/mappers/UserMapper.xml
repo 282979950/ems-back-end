@@ -650,7 +650,7 @@ WHERE orders.order_type IN ( '2','4')
             AND u.user_dist_id IN (${distIds})
         </if>
         <if test="userAddress!=null and userAddress!=''">
-            AND u.user_address like CONTACT('%',#{userAddress},'%')
+            AND u.user_address like CONCAT('%',#{userAddress},'%')
         </if>
         ORDER BY u.open_time DESC
     </select>
@@ -680,7 +680,7 @@ WHERE orders.order_type IN ( '2','4')
             AND u.user_dist_id IN (${distIds})
         </if>
         <if test="userAddress!=null and userAddress!=''">
-            AND u.user_address like CONTACT('%',#{userAddress},'%')
+            AND u.user_address like CONCAT('%',#{userAddress},'%')
         </if>
     </select>
     <select id="userListByUserQuery" resultMap="BaseResultMap">

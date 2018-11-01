@@ -22,14 +22,14 @@ public class SysPermission extends BaseEntity {
     /**
      * 权限名称
      */
-    @NotNull
+    @NotNull(message = "权限名称不能为空")
     @Length(max = 50, message = "权限名称不能超过50个字")
     private String permName;
 
     /**
      * 权限标题
      */
-    @NotNull
+    @NotNull(message = "权限标题不能为空")
     private String permCaption;
 
     /**
@@ -40,13 +40,13 @@ public class SysPermission extends BaseEntity {
     /**
      * 权限父级ID
      */
-    @NotNull
+    @NotNull(message = "菜单名称不能为空")
     private Integer permParentId;
 
     /**
      * 是否按钮
      */
-    @NotNull
+    @NotNull(message = "是否是按钮不能为空")
     private Boolean isButton;
 
     private String permParentCaption;

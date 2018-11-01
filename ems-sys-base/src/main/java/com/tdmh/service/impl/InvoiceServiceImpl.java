@@ -72,6 +72,15 @@ public class InvoiceServiceImpl implements IInvoiceService {
     @Override
     @Transactional
     public JsonData addInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer currentEmpId) {
+        if(invoiceCode == null || invoiceCode == ""){
+            return JsonData.fail("发票代码不能为空");
+        }
+        if(sInvoiceNumber == null){
+            return JsonData.fail("发票起始号码不能为空");
+        }
+        if(eInvoiceNumber == null){
+            return JsonData.fail("发票终止号码不能为空");
+        }
         if (sInvoiceNumber > eInvoiceNumber) {
             return JsonData.fail("发票起始号码不能大于终止号码");
         }
@@ -104,8 +113,20 @@ public class InvoiceServiceImpl implements IInvoiceService {
     @Override
     @Transactional
     public JsonData assignInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer empId, Integer currentEmpId) {
+        if(invoiceCode == null || invoiceCode == ""){
+            return JsonData.fail("发票代码不能为空");
+        }
+        if(sInvoiceNumber == null){
+            return JsonData.fail("发票起始号码不能为空");
+        }
+        if(eInvoiceNumber == null){
+            return JsonData.fail("发票终止号码不能为空");
+        }
         if (sInvoiceNumber > eInvoiceNumber) {
             return JsonData.fail("发票起始号码不能大于终止号码");
+        }
+        if(empId == null){
+            return JsonData.fail("发票所属员工不能为空");
         }
         List<String> invoiceNumberList = Lists.newArrayListWithCapacity(eInvoiceNumber - sInvoiceNumber + 1);
         for (int i = sInvoiceNumber; i <= eInvoiceNumber; i++) {

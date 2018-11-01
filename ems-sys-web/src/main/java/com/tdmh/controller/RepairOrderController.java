@@ -1,6 +1,7 @@
 package com.tdmh.controller;
 
 import com.tdmh.common.JsonData;
+import com.tdmh.param.BindNewCardParam;
 import com.tdmh.param.RepairOrderParam;
 import com.tdmh.service.IRepairOrderService;
 import com.tdmh.util.ShiroUtils;
@@ -51,6 +52,8 @@ public class RepairOrderController {
     @RequestMapping(value = "edit.do")
     @ResponseBody
     public JsonData updateRepairOrder(RepairOrderParam param) {
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        param.setUpdateBy(currentEmpId);
         return repairOrderService.editRepairOrder(param);
     }
 
@@ -61,7 +64,7 @@ public class RepairOrderController {
     @RequestMapping(value = "search.do")
     @ResponseBody
     public JsonData searchRepairOrder(@Param("repairOrderId")String repairOrderId, @Param("userId")Integer userId, @Param("repairType")Integer repairType,
-                                      @Param("empName") Integer empName) {
+                                      @Param("empName") String empName) {
         return repairOrderService.searchRepairOrder(repairOrderId, userId, repairType, empName);
     }
 
@@ -84,5 +87,19 @@ public class RepairOrderController {
     @ResponseBody
     public JsonData isLatestFillGasOrder(@Param("id")Integer id, @Param("userId")Integer userId) {
         return repairOrderService.isLatestFillGasOrder(id, userId);
+    }
+
+    @RequestMapping(value = "getBindNewCardParamByUserId.do")
+    @ResponseBody
+    public JsonData getBindNewCardParamByUserId(@Param("userId")Integer userId) {
+        return repairOrderService.getBindNewCardParamByUserId(userId);
+    }
+
+    @RequestMapping(value = "bindNewCard.do")
+    @ResponseBody
+    public JsonData bindNewCard(BindNewCardParam param) {
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        param.setUpdateBy(currentEmpId);
+        return repairOrderService.bindNewCard(param);
     }
 }

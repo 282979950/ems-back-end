@@ -20,7 +20,7 @@ public interface RepairOrderMapper {
     int editRepairOrder(RepairOrderParam param);
 
     List<RepairOrderParam> searchRepairOrder(@Param("repairOrderId")String repairOrderId, @Param("userId")Integer userId, @Param("repairType")Integer repairType,
-                                             @Param("empName") Integer empName);
+                                             @Param("empName") String empName);
 
     List<RepairOrderParam> listData();
 

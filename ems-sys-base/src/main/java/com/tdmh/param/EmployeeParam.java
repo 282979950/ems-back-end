@@ -23,7 +23,7 @@ public class EmployeeParam extends BaseEntity {
     /**
      * 员工工号
      */
-    @NotNull
+    @NotNull(message = "员工工号不能为空")
     @Length(max = 50, message = "员工工号不能超过50个字")
     private String empNumber;
 
@@ -37,7 +37,7 @@ public class EmployeeParam extends BaseEntity {
     /**
      * 员工所属机构
      */
-    @NotNull
+    @NotNull(message = "员工所属机构不能为空")
     private Integer empOrgId;
 
     /**
@@ -58,7 +58,7 @@ public class EmployeeParam extends BaseEntity {
     /**
      * 登录名
      */
-    @NotNull
+    @NotNull(message = "登录名不能为空")
     @Length(max = 20, message = "员工登录名不能超过20个字")
     private String empLoginName;
 
@@ -91,7 +91,7 @@ public class EmployeeParam extends BaseEntity {
     /**
      * 员工所属角色
      */
-    @NotNull
+    @NotNull(message = "员工角色不能为空")
     private Integer roleId;
 
     /**
@@ -102,7 +102,7 @@ public class EmployeeParam extends BaseEntity {
     /**
      * 员工类型
      */
-    @NotNull
+    @NotNull(message = "员工类型不能为空")
     private Integer empType;
 
     /**
@@ -113,7 +113,7 @@ public class EmployeeParam extends BaseEntity {
     /**
      * 员工负责片区
      */
-    @NotNull
+    @NotNull(message = "员工负责片区不能为空")
     private String empManagementDistId;
 
     /**
