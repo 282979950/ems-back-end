@@ -4259,7 +4259,7 @@ app.getEditFormFields = function (name) {
                 caption: '用户地址',
                 disabled: true
             }, {
-                name: 'userStatus',
+                name: 'userStatusName',
                 caption: '用户状态',
                 disabled: true
             }, {
