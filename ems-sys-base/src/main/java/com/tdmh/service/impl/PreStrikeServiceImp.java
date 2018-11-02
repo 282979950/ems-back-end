@@ -71,11 +71,11 @@ public class PreStrikeServiceImp implements IPreStrikeService {
         int count = orders.countUserOrdersByTimeEmployeeId(userOrders);
         //若查询出一条记录则直接预冲账申请成功
         int updateCount;
+        //设置订单状态为已取消
+        userOrders.setOrderStatus(4);
         if(count>0){
             //AccountState设置为，已冲帐
             userOrders.setAccountState(3);
-            //设置订单状态为已取消
-            userOrders.setOrderStatus(4);
 
             updateCount =orders.updateUserOrdersByOrderId(userOrders);
             if(updateCount>0){
@@ -155,7 +155,8 @@ public JsonData updateStrikeService(StrikeNucleus strike,boolean flag){
        }
 
     }else {
-
+        //设置订单状态为已写卡
+        userOrders.setOrderStatus(2);
         strike.setNucleusStatus(1);
         userOrders.setAccountState(2);
         userOrders.setOrderId(strike.getOrderId());
