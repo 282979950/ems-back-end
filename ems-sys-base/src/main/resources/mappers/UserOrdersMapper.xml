@@ -363,10 +363,10 @@
           ON orders.order_type = sd1.dict_value
           AND sd1.dict_category = 'order_type' AND sd1.usable = 1
 	      LEFT JOIN sys_dictionary sd2
-          ON orders.order_type = sd2.dict_value
+          ON orders.order_status = sd2.dict_value
           AND sd2.dict_category = 'order_status' AND sd2.usable = 1
           LEFT JOIN sys_dictionary sd3
-          ON orders.order_type = sd3.dict_value
+          ON orders.account_state = sd3.dict_value
           AND sd3.dict_category = 'account_state' AND sd3.usable = 1
 
       WHERE orders.usable = 1

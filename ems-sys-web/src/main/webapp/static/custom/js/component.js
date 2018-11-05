@@ -305,8 +305,10 @@
                         format: field.formatter,
                         autoclose: true,
                         minView : field.minView,
+                        maxView: field.maxView,
+                        startView: field.startView,
                         todayHighlight:true,
-                        todayBtn : true,
+                        todayBtn : field.todayBtn || false,
                         pickerPosition : 'top-right'
                     });
                     break;
@@ -371,6 +373,14 @@
                                 $('<div></div>').addClass('mdui-textfield-error').text('该数字必须为正数').appendTo($field);
                             }
                             $input.attr('pattern', '^\\d+(\\.\\d+)?$');
+                            break;
+                        case 'alphanumeric':
+                            if ($error) {
+                                $error.text('只能包含字母和数字');
+                            } else {
+                                $('<div></div>').addClass('mdui-textfield-error').text('只能包含字母和数字').appendTo($field);
+                            }
+                            $input.attr('pattern', '^[a-zA-Z0-9]+$');
                             break;
                         default:
                             break
@@ -587,7 +597,16 @@
                 $('<span class="mdui-text-color-blue">' + field.caption + ':</span>').appendTo($field);
                 var $input = $('<input type="text" class="field">').addClass(field.name).attr('name', field.name);
                 $input.appendTo($field);
-                $input.datetimepicker({language: 'zh-CN',format: field.formatter,autoclose: true,minView :field.minView,todayBtn : true,bootcssVer:3});
+                $input.datetimepicker({
+                    language: 'zh-CN',
+                    format: field.formatter,
+                    autoclose: true,
+                    minView: field.minView,
+                    maxView: field.maxView,
+                    startView: field.startView,
+                    todayBtn: field.todayBtn || false,
+                    bootcssVer: 3
+                });
                 break;
             default :
                 var perm = field.perm;
@@ -701,11 +720,14 @@
                     case 'note' :
                         $field.trigger('note_alt');
                         break;
-                    case 'build' :
-                        $field.trigger('build');
+                    case 'slow_motion_video' :
+                        $field.trigger('slow_motion_video');
                         break;
                     case 'tab' :
                         $field.trigger('userQuery_tab');
+                        break;
+                    case 'build' :
+                        $field.trigger('build');
                         break;
                     default:
                         break;
@@ -1138,7 +1160,7 @@
             template: message,
             position: 'top-center',
             style: 'default',
-            autoclose: 2000
+            autoclose: 5000
         });
     };
     app.successMessage = function (message) {
@@ -1146,7 +1168,7 @@
             template: message,
             position: 'top-center',
             style: 'success',
-            autoclose: 2000
+            autoclose: 5000
         });
     };
     app.errorMessage = function (message) {
@@ -1154,7 +1176,7 @@
             template: message,
             position: 'top-center',
             style: 'error',
-            autoclose: 2000
+            autoclose: 5000
         });
     };
     app.warningMessage = function (message) {
@@ -1162,7 +1184,7 @@
             template: message,
             position: 'top-center',
             style: 'warning',
-            autoclose: 2000
+            autoclose: 5000
         });
     };
 
@@ -1240,7 +1262,7 @@
         //增加\t为了不让表格显示科学计数法或者其他格式
         for(var i = 0 ; i < data.length ; i++ ){
             for(var item in data[i]){
-                str+='${data[i][item] + \'\\t\'},';
+                str+=data[i][item] + '\t'+',';
             }
             str+='\n';
         }

@@ -2,6 +2,7 @@ package com.tdmh.service;
 
 import com.tdmh.entity.SysOrganization;
 import com.tdmh.entity.mapper.SysOrganizationMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,4 +67,8 @@ public class SysOrganizationService {
 	public List<SysOrganization> findListOrganizationService(SysOrganization sysz){
 		return dao.findListOrganization(sysz);
 	}
+    //根据名称查看是否存在同名数据
+   public Integer selectCountByorgNameService(@Param("orgName") String orgName){
+	    return dao.selectCountByorgName(orgName);
+    }
 }

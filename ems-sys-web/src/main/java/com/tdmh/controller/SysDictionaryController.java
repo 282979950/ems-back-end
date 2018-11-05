@@ -54,6 +54,16 @@ public class SysDictionaryController {
         sdy.setCreateBy(22223);
         sdy.setUpdateTime(new Date());
         sdy.setUpdateBy(465642);
+        if(StringUtils.isBlank(sdy.getDictKey())){
+
+            return JsonData.fail("字典键不能为空");
+        }
+        if(StringUtils.isBlank(sdy.getDictValue())){
+            return JsonData.fail("字典值不能为空");
+        }
+        if(StringUtils.isBlank(sdy.getDictCategory())){
+            return JsonData.fail("字典类型不能为空");
+        }
         sysDictionaryService.insertDictionaryOnPc(sdy);
 
         return JsonData.successMsg(msg);
@@ -147,6 +157,6 @@ public class SysDictionaryController {
     public JsonData selectFindListByDict(SysDictionary sdy, HttpServletRequest request, HttpServletResponse respose){
         List<SysDictionary> list = sysDictionaryService.findListByService(sdy);
 
-        return JsonData.success(list,"查询成功");
+        return list.size()==0?JsonData.fail("未查询到相关数据请重试"):JsonData.success(list,"查询成功");
     }
 }

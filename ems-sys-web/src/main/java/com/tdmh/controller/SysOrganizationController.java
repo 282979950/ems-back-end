@@ -92,6 +92,9 @@ public class SysOrganizationController {
 
 				return JsonData.fail("操作失败，上级机构类别与新增时机构类别一致");
 			}
+			if(StringUtils.isBlank(sysz.getOrgCategory())){
+                return JsonData.fail("请填写机构类别");
+            }
 			sys_type=Integer.parseInt(sds.getOrgCategory());
             type = Integer.parseInt(sysz.getOrgCategory());
 
@@ -122,6 +125,18 @@ public class SysOrganizationController {
 			sysz.setUpdateBy(12324);
 			sysz.setUpdateTime(new Date());
 			sysz.setUsable(true);
+			if(StringUtils.isBlank(sysz.getOrgCode())){
+                return JsonData.fail("操作失败，请填写机构编码");
+            }
+
+			if(StringUtils.isBlank(sysz.getOrgName())){
+
+                return JsonData.fail("新增失败，请填写机构名称");
+            }
+            int countOrgName =sysOrganizationService.selectCountByorgNameService(sysz.getOrgName());
+			if(countOrgName>0){
+                return JsonData.fail("该机构名称已存在，请重新填写机构名称");
+            }
 
 			sysOrganizationService.insertOrganizationOnPc(sysz);
 

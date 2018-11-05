@@ -223,4 +223,5 @@ public interface IUserService {
     int updateServiceTimesByUserId(Integer userId);
 
     JsonData getBindNewCardParamByUserId(Integer userId);
+    void exportUserQuerySearchService(User user);
 }

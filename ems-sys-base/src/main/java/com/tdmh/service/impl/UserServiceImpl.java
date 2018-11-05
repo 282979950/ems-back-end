@@ -118,6 +118,9 @@ public class UserServiceImpl implements IUserService {
         Integer meterId = meterService.getMeterIdByMeterCode(param.getMeterCode());
         //更新表具安装时间
         Meter meter = meterService.getMeterByMeterId(meterId);
+        if (!meter.getMeterStatus().equals(1)) {
+            return JsonData.fail("该表具已被使用");
+        }
         meter.setMeterInstallTime(new Date());
         meter.setMeterStatus(2);
         meter.setUpdateBy(param.getUpdateBy());
@@ -471,5 +474,17 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonData getBindNewCardParamByUserId(Integer userId) {
         return JsonData.successData(userCardMapper.getBindNewCardParamByUserId(userId));
+    }
+
+    @Override
+    public void exportUserQuerySearchService(User user) {
+
+        List<User> list = userMapper.userQuerySearch(user);
+        String fileName = "用户数据信息-"+DateUtils.getDate()+".xlsx";
+        try {
+            new ExportExcel("用户数据信息", UserExport.class).setDataList(list).write(fileName).dispose();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
