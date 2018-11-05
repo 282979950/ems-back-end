@@ -34,4 +34,39 @@ public class CalculateUtil {
         }
         return sum;
     }
+
+    public static String showGasPrice(BigDecimal orderGas, BigDecimal hasUsedGasNum, GasPrice gasPrice) {
+        StringBuilder sb = new StringBuilder();
+        BigDecimal totalGas = hasUsedGasNum.add(orderGas);
+        if ( (hasUsedGasNum.compareTo(gasPrice.getGasRangeOne()) >= 0 && gasPrice.getGasRangeTwo() == null) || (hasUsedGasNum.compareTo(gasPrice.getGasRangeOne()) >= 0 && hasUsedGasNum.compareTo(gasPrice.getGasRangeTwo()) < 0)){
+            if ( (totalGas.compareTo(gasPrice.getGasRangeOne()) >= 0 && gasPrice.getGasRangeTwo() == null) || (totalGas.compareTo(gasPrice.getGasRangeOne()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeTwo()) < 0)){
+                sb.append(orderGas+"*"+gasPrice.getGasPriceOne());
+            } else if ( (totalGas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && gasPrice.getGasRangeThree() == null) || (totalGas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeThree()) < 0) ){
+                sb.append(gasPrice.getGasRangeTwo().subtract(hasUsedGasNum)+"*"+gasPrice.getGasPriceOne()+"+"+totalGas.subtract(gasPrice.getGasRangeTwo())+"*"+gasPrice.getGasPriceTwo());
+            } else if ( (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && gasPrice.getGasRangeFour() == null) || (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeFour()) < 0) ){
+                sb.append(gasPrice.getGasRangeTwo().subtract(hasUsedGasNum)+"*"+gasPrice.getGasPriceOne()+"+"+gasPrice.getGasRangeThree().subtract(gasPrice.getGasRangeTwo())+"*"+gasPrice.getGasPriceTwo()+"+"+totalGas.subtract(gasPrice.getGasRangeThree())+"*"+gasPrice.getGasPriceThree());
+            } else if (totalGas.compareTo(gasPrice.getGasRangeFour()) >= 0) {
+                sb.append(gasPrice.getGasRangeTwo().subtract(hasUsedGasNum)+"*"+gasPrice.getGasPriceOne()+"+"+gasPrice.getGasRangeThree().subtract(gasPrice.getGasRangeTwo())+"*"+gasPrice.getGasPriceTwo()+"+"+gasPrice.getGasRangeFour().subtract(gasPrice.getGasRangeThree())+"*"+gasPrice.getGasPriceThree()+"+"+totalGas.subtract(gasPrice.getGasRangeFour())+"*"+gasPrice.getGasPriceFour());
+            }
+        } else if ( (hasUsedGasNum.compareTo(gasPrice.getGasRangeTwo()) >= 0 && gasPrice.getGasRangeThree() == null) || (hasUsedGasNum.compareTo(gasPrice.getGasRangeTwo()) >= 0 && hasUsedGasNum.compareTo(gasPrice.getGasRangeThree()) < 0) ){
+           if ( (totalGas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && gasPrice.getGasRangeThree() == null) || (totalGas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeThree()) < 0) ){
+               sb.append(orderGas+"*"+gasPrice.getGasPriceTwo());
+           } else if ( (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && gasPrice.getGasRangeFour() == null) || (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeFour()) < 0) ){
+               sb.append(gasPrice.getGasRangeThree().subtract(hasUsedGasNum)+"*"+gasPrice.getGasPriceTwo()+"+"+totalGas.subtract(gasPrice.getGasRangeThree())+"*"+gasPrice.getGasPriceThree());
+           } else if (totalGas.compareTo(gasPrice.getGasRangeFour()) >= 0) {
+               sb.append(gasPrice.getGasRangeThree().subtract(hasUsedGasNum)+"*"+gasPrice.getGasPriceTwo()+"+"+gasPrice.getGasRangeFour().subtract(gasPrice.getGasRangeThree())+"*"+gasPrice.getGasPriceThree()+"+"+totalGas.subtract(gasPrice.getGasRangeFour())+"*"+gasPrice.getGasPriceFour());
+           }
+        } else if ( (hasUsedGasNum.compareTo(gasPrice.getGasRangeThree()) >= 0 && gasPrice.getGasRangeFour() == null) || (hasUsedGasNum.compareTo(gasPrice.getGasRangeThree()) >= 0 && hasUsedGasNum.compareTo(gasPrice.getGasRangeFour()) < 0) ){
+           if ( (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && gasPrice.getGasRangeFour() == null) || (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeFour()) < 0) ){
+               sb.append(orderGas+"*"+gasPrice.getGasPriceThree());
+            } else if (totalGas.compareTo(gasPrice.getGasRangeFour()) >= 0) {
+               sb.append(gasPrice.getGasRangeFour().subtract(hasUsedGasNum)+"*"+gasPrice.getGasPriceThree()+"+"+totalGas.subtract(gasPrice.getGasRangeFour())+"*"+gasPrice.getGasPriceFour());
+            }
+        } else if (hasUsedGasNum.compareTo(gasPrice.getGasRangeFour()) >= 0) {
+            if (totalGas.compareTo(gasPrice.getGasRangeFour()) >= 0) {
+                sb.append(orderGas+"*"+gasPrice.getGasPriceFour());
+            }
+        }
+        return sb.toString();
+    }
 }

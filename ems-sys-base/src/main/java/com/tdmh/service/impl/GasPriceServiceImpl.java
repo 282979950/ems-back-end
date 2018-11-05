@@ -70,7 +70,8 @@ public class GasPriceServiceImpl implements IGasPriceService {
             if(hasUsedGasNum == null) hasUsedGasNum = new BigDecimal(0);
             BigDecimal orderPayment = CalculateUtil.gasToPayment(orderGas.add(hasUsedGasNum), gasPrice);
             BigDecimal hasOrderPayment = CalculateUtil.gasToPayment(hasUsedGasNum, gasPrice);
-            return JsonData.success(orderPayment.subtract(hasOrderPayment),"查询成功");
+            String msg = CalculateUtil.showGasPrice(orderGas,hasUsedGasNum,gasPrice);
+            return JsonData.success(orderPayment.subtract(hasOrderPayment),msg);
         }
         return JsonData.successMsg("暂未配置天然气区间价格");
     }

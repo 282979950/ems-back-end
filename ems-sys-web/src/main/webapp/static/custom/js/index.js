@@ -165,6 +165,7 @@ app.initIndex = function () {
                     app.warningMessage("充值气量不能大于900");
                     app.editForm.setValue('orderGas', null);
                     app.editForm.setValue('orderPayment', null);
+                    app.editForm.setValue('calFunc',null);
                     return;
                 }
                 $.ajax({
@@ -184,11 +185,13 @@ app.initIndex = function () {
                         // response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                         if (response.status) {
                             app.editForm.setValue('orderPayment', response.data);
+                            app.editForm.setValue('calFunc',response.message);
                         }
                     }
                 });
             } else {
                 app.editForm.setValue('orderPayment', null);
+                app.editForm.setValue('calFunc',null);
             }
         });
         $(document).on('blur', '.queryField', function (e) {
@@ -4271,6 +4274,10 @@ app.getEditFormFields = function (name) {
                 name: 'orderPayment',
                 caption: '充值金额',
                 disabled: true
+            }, {
+                name: 'calFunc',
+                caption: '计算方法',
+                disabled: true
             }];
         case 'prePaymentMessAndUnion':
             return [{
@@ -4311,6 +4318,10 @@ app.getEditFormFields = function (name) {
             }, {
                 name: 'orderPayment',
                 caption: '充值金额',
+                disabled: true
+            }, {
+                name: 'calFunc',
+                caption: '计算方法',
                 disabled: true
             }];
         case 'input':
