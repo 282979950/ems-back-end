@@ -20,7 +20,7 @@
         left join sys_dictionary sd on i.invoice_status = sd.dict_value and sd.dict_category = 'invoice_status'
         LEFT JOIN employee e1 ON i.invoice_print_emp = e1.emp_id
         left join employee e2 on i.invoice_cancel_emp = e2.emp_id
-        where uo.usable = 1
+        where uo.usable = 1 and <![CDATA[ uo.order_status <> 4 ]]>
         <if test="userName!=null and userName!=''">
             and u.user_name like CONCAT('%', #{userName}, '%')
         </if>

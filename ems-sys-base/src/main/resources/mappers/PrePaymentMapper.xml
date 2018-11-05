@@ -13,7 +13,7 @@
         JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value
         JOIN (
         SELECT user_id, COUNT(order_id) AS totalOrderTimes, SUM(order_gas) AS totalOrderGas,SUM(order_payment) AS
-        totalOrderPayment FROM user_orders GROUP BY user_id
+        totalOrderPayment FROM user_orders where <![CDATA[ order_status <> 4 ]]> GROUP BY user_id
         ) uo ON u.user_id = uo.user_id
         LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
         LEFT JOIN meter m ON um.meter_id=m.meter_id and m.usable=1
