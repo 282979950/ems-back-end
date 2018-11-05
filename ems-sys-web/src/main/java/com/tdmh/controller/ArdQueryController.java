@@ -1,10 +1,9 @@
 package com.tdmh.controller;
 
 import com.tdmh.common.JsonData;
-
 import com.tdmh.param.PrePaymentParam;
 import com.tdmh.service.IPrePaymentService;
-import org.apache.ibatis.annotations.Param;
+import com.tdmh.utils.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * qh,2018-10-22
@@ -33,6 +31,10 @@ public class ArdQueryController {
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData selectFindListArdQueryByIccardIdentifier(PrePaymentParam param){
+        //屏蔽掉默认查询按钮
+        if(StringUtils.isBlank(param.getIccardIdentifier())){
+            return JsonData.fail("请点击'识别IC卡'按钮");
+        }
         return prePaymentService.selectFindListArdQueryService(param);
     }
     /**
