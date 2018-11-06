@@ -223,5 +223,8 @@ public interface IUserService {
     int updateServiceTimesByUserId(Integer userId);
 
     JsonData getBindNewCardParamByUserId(Integer userId);
+
     void exportUserQuerySearchService(User user);
+
+    void exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress);
 }

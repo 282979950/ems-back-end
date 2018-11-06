@@ -5470,6 +5470,10 @@ app.getToolbarFields = function (name) {
             }];
         case 'exceptionQuery':
             return [{
+                name: 'arrow_downward',
+                caption: '导出',
+                perm: 'querystats:abnormaluser:export'
+            }, {
                 name: 'userDistId',
                 caption: '用户区域',
                 type: 'treecombobox',

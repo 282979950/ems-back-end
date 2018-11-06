@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.math.BigDecimal;
 
 /**
- * @author Administrator on 2018/10/23.
+ * @author Liuxia on 2018/10/23.
  */
 @Controller
 @RequestMapping("/exceptionQuery")
@@ -38,5 +38,12 @@ public class AbnormalUserController {
     @ResponseBody
     public JsonData searchAbnormalUserList(@Param("notBuyDayCount") Integer notBuyDayCount, @Param("monthAveGas") BigDecimal monthAveGas, @Param("monthAvePayment") BigDecimal monthAvePayment, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress){
         return userService.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress);
+    }
+
+    @RequiresPermissions("querystats:abnormaluser:export")
+    @RequestMapping("/export.do")
+    @ResponseBody
+    public void exportAbnormalUserList(@Param("notBuyDayCount") Integer notBuyDayCount, @Param("monthAveGas") BigDecimal monthAveGas, @Param("monthAvePayment") BigDecimal monthAvePayment, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress){
+        userService.exportAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress);
     }
 }

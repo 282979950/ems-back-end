@@ -487,4 +487,16 @@ public class UserServiceImpl implements IUserService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {
+        String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
+        List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
+        String fileName = "异常用户信息-"+DateUtils.getDate()+".xlsx";
+        try {
+            new ExportExcel("异常用户信息", AbnormalUser.class).setDataList(list).write(fileName).dispose();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
