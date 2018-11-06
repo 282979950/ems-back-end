@@ -36,7 +36,7 @@
             <!--<h1 class="login-title">登录</h1>-->
             <div class="illustration">
                 <%--<i class="ion-ios-navigate"></i>--%>
-               <img  src="${pageContext.request.contextPath}/static/custom/img/lanyan-login.png">
+               <img  src="${pageContext.request.contextPath}/static/custom/img/lanyan-logo-1.svg" style="width: 96px;height: 96px">
             </div>
             <div class="row">
                 <div class="input-field col s12">

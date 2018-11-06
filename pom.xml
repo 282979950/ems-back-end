@@ -11,6 +11,7 @@
         <module>ems-common-base</module>
         <module>ems-sys-base</module>
         <module>ems-sys-web</module>
+        <module>scripts</module>
     </modules>
     <packaging>pom</packaging>
 

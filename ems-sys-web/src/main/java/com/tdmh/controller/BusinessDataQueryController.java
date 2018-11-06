@@ -26,7 +26,7 @@ public class BusinessDataQueryController {
     @Resource
     private IOrderService orderService;
 
-    @RequiresPermissions("businessDataQuery:data:visit")
+    @RequiresPermissions("querystats:businessDataQuery:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData BusinessDataQueryList(UserOrders orders){
@@ -35,7 +35,7 @@ public class BusinessDataQueryController {
     /**
      * 按条件查询
      */
-    @RequiresPermissions("businessDataQuery:data:visit")
+    @RequiresPermissions("querystats:businessDataQuery:visit")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData BusinessDataQuerySearchList(UserOrders orders){
@@ -50,7 +50,7 @@ public class BusinessDataQueryController {
      * @param accountState 账务状态
      * @return
      */
-    @RequiresPermissions("businessDataQuery:data:visit")
+    @RequiresPermissions("querystats:businessDataQuery:visit")
     @RequestMapping("/export.do")
     @ResponseBody
     public JsonData exportBusinessDataQueryList(@Param("startTime") String startTime, @Param("endTime") String endTime,@Param("empId") String empId,@Param("accountState") String accountState){

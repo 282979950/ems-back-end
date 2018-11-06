@@ -118,6 +118,9 @@ public class UserServiceImpl implements IUserService {
         Integer meterId = meterService.getMeterIdByMeterCode(param.getMeterCode());
         //更新表具安装时间
         Meter meter = meterService.getMeterByMeterId(meterId);
+        if(meter == null) {
+            return JsonData.fail("表号不存在");
+        }
         if (!meter.getMeterStatus().equals(1)) {
             return JsonData.fail("该表具已被使用");
         }

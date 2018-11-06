@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ems</artifactId>
+        <groupId>com.tdmh.ems</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>scripts</artifactId>
+    <packaging>pom</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!--MySQL-->
+        <profile>
+            <id>script.local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <flyway.locations>
+                    filesystem:${project.basedir}/schema,
+                    filesystem:${project.basedir}/constraint,
+                    filesystem:${project.basedir}/data,
+                    filesystem:${project.basedir}/test
+                </flyway.locations>
+                <flyway.url>jdbc:mysql://localhost:3306/ems?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;autoReconnect=true</flyway.url>
+                <flyway.user>root</flyway.user>
+                <flyway.password>root</flyway.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>script.dev</id>
+            <properties>
+                <flyway.locations>
+                    filesystem:${project.basedir}/schema,
+                    filesystem:${project.basedir}/data,
+                    filesystem:${project.basedir}/test
+                </flyway.locations>
+                <flyway.url>jdbc:mysql://192.168.0.20:3306/ems?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useSSL=false</flyway.url>
+                <flyway.user>root</flyway.user>
+                <flyway.password>root</flyway.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>script.test</id>
+            <properties>
+                <flyway.locations>
+                    filesystem:${project.basedir}/schema,
+                    filesystem:${project.basedir}/data
+                </flyway.locations>
+                <flyway.url>jdbc:mysql://212.64.100.15:3306/ems?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useSSL=false</flyway.url>
+                <flyway.user>root</flyway.user>
+                <flyway.password>123456</flyway.password>
+            </properties>
+        </profile>
+    </profiles>
+</project>
