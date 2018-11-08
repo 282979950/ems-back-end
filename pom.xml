@@ -13,6 +13,7 @@
         <module>ems-sys-web</module>
         <module>scripts</module>
         <module>ems-configuration</module>
+        <module>ems-business-service</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -209,9 +210,15 @@
             </activation>
         </profile>
         <profile>
-            <id>ems.prod</id>
+            <id>ems.local</id>
             <properties>
-                <active_profile>prod</active_profile>
+                <active_profile>local</active_profile>
+            </properties>
+        </profile>
+        <profile>
+            <id>ems.test</id>
+            <properties>
+                <active_profile>test</active_profile>
             </properties>
         </profile>
     </profiles>
