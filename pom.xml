@@ -204,6 +204,7 @@
             <id>ems.dev</id>
             <properties>
                 <active_profile>dev</active_profile>
+                <need_filtered>vprs</need_filtered>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -213,12 +214,35 @@
             <id>ems.local</id>
             <properties>
                 <active_profile>local</active_profile>
+                <need_filtered>vprs</need_filtered>
             </properties>
         </profile>
         <profile>
             <id>ems.test</id>
             <properties>
                 <active_profile>test</active_profile>
+                <need_filtered>vprs</need_filtered>
+            </properties>
+        </profile>
+        <profile>
+            <id>vprs.dev</id>
+            <properties>
+                <active_profile>dev</active_profile>
+                <need_filtered>ems</need_filtered>
+            </properties>
+        </profile>
+        <profile>
+            <id>vprs.local</id>
+            <properties>
+                <active_profile>local</active_profile>
+                <need_filtered>ems</need_filtered>
+            </properties>
+        </profile>
+        <profile>
+            <id>vprs.test</id>
+            <properties>
+                <active_profile>test</active_profile>
+                <need_filtered>ems</need_filtered>
             </properties>
         </profile>
     </profiles>
