@@ -12,6 +12,7 @@
         <module>ems-sys-base</module>
         <module>ems-sys-web</module>
         <module>scripts</module>
+        <module>ems-configuration</module>
     </modules>
     <packaging>pom</packaging>
 
