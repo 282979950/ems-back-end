@@ -1,12 +1,12 @@
-package com.tdmh.emscommonbase;
+package com.tdmh;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EmsCommonBaseApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(EmsCommonBaseApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }

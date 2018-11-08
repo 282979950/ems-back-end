@@ -46,7 +46,7 @@
             <!--<version>3.1.0</version>-->
             <!--<configuration>-->
             <!--<excludes>-->
-            <!--<exclude>com.tdmh.emssysweb.EmsSysWebApplication</exclude>-->
+            <!--<exclude>com.tdmh.EmsSysWebApplication</exclude>-->
             <!--</excludes>-->
             <!--</configuration>-->
             <!--</plugin>-->

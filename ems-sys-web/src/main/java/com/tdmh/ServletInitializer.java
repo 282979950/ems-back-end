@@ -1,4 +1,4 @@
-package com.tdmh.emssysweb;
+package com.tdmh;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -7,7 +7,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(EmsSysWebApplication.class);
+        return application.sources(Application.class);
     }
 
 }

@@ -29,7 +29,7 @@
                 <version>3.1.0</version>
                 <configuration>
                     <excludes>
-                        <exclude>com.tdmh.emscommonbase.EmsCommonBaseApplication</exclude>
+                        <exclude>com/tdmh/Application.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>
