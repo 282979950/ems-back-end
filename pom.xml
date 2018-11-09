@@ -13,7 +13,6 @@
         <module>ems-sys-web</module>
         <module>scripts</module>
         <module>ems-configuration</module>
-        <module>ems-business-service</module>
     </modules>
     <packaging>pom</packaging>
 

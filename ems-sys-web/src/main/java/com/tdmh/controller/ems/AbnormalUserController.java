@@ -1,7 +1,7 @@
 package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
-import com.tdmh.service.IUserService;
+import com.tdmh.service.impl.IUserService;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

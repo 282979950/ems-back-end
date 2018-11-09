@@ -2,8 +2,8 @@ package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.param.InstallMeterParam;
-import com.tdmh.service.IMeterService;
-import com.tdmh.service.IUserService;
+import com.tdmh.service.impl.IMeterService;
+import com.tdmh.service.impl.IUserService;
 import com.tdmh.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

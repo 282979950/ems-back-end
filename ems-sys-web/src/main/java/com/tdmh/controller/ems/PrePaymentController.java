@@ -3,7 +3,7 @@ package com.tdmh.controller.ems;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.param.PrePaymentParam;
-import com.tdmh.service.IPrePaymentService;
+import com.tdmh.service.impl.IPrePaymentService;
 import com.tdmh.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

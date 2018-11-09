@@ -6,8 +6,6 @@ import com.tdmh.common.JsonData;
 import com.tdmh.entity.*;
 import com.tdmh.entity.mapper.*;
 import com.tdmh.param.*;
-import com.tdmh.service.IMeterService;
-import com.tdmh.service.IUserService;
 import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RandomUtils;

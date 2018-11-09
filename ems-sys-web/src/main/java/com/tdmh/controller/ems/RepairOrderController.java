@@ -3,7 +3,7 @@ package com.tdmh.controller.ems;
 import com.tdmh.common.JsonData;
 import com.tdmh.param.BindNewCardParam;
 import com.tdmh.param.RepairOrderParam;
-import com.tdmh.service.IRepairOrderService;
+import com.tdmh.service.impl.IRepairOrderService;
 import com.tdmh.util.ShiroUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

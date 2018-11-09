@@ -7,7 +7,6 @@ import com.tdmh.entity.MeterType;
 import com.tdmh.entity.mapper.MeterMapper;
 import com.tdmh.entity.mapper.MeterTypeMapper;
 import com.tdmh.param.EntryMeterParam;
-import com.tdmh.service.IMeterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

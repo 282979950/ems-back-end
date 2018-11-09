@@ -11,7 +11,6 @@ import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.param.PrePaymentParam;
 import com.tdmh.param.WriteCardParam;
-import com.tdmh.service.IPrePaymentService;
 import com.tdmh.utils.IdWorker;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;

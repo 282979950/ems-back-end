@@ -13,8 +13,6 @@ import com.tdmh.entity.mapper.WXMapper;
 import com.tdmh.param.WXOrderParam;
 import com.tdmh.param.WXUserInfoParam;
 import com.tdmh.param.WXUserParam;
-import com.tdmh.service.IGasPriceService;
-import com.tdmh.service.IWXService;
 import com.tdmh.utils.HttpRequestUtil;
 import com.tdmh.utils.IdWorker;
 import lombok.extern.log4j.Log4j2;
