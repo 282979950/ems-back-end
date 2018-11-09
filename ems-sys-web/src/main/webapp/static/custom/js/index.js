@@ -159,6 +159,7 @@ app.initIndex = function () {
                     app.warningMessage("充值气量必须大于0");
                     app.editForm.setValue('orderGas', null);
                     app.editForm.setValue('orderPayment', null);
+                    app.editForm.setValue('calFunc',null);
                     return;
                 }
                 if (val > 900) {
@@ -191,6 +192,7 @@ app.initIndex = function () {
                 });
             } else {
                 app.editForm.setValue('orderPayment', null);
+                app.editForm.setValue('calFunc',null);
                 app.editForm.setValue('calFunc',null);
             }
         });

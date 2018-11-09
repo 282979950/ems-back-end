@@ -70,7 +70,7 @@ public class AbnormalUser {
      * 初次购气日期
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "初次购气日期", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ExcelField(title="初次购气日期", type=1, align=2, sort=10)
     private Date startBuyDay;
     /**
