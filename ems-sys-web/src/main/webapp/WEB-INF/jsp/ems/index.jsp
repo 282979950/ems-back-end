@@ -27,7 +27,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/bootstrap/css/bootstrap-datetimepicker.min.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/materialize/js/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/materialize/js/materialize.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/custom/js/index.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/custom/js/common.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/custom/js/ems.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/custom/js/component.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/mdui-v0.4.1/js/mdui.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/zTree-3.5.16/js/jquery.ztree.all-3.5.js"></script>
@@ -88,14 +89,14 @@
                         <div class="mdui-list-item mdui-ripple nav-item dic">字典管理</div>
                     </shiro:hasPermission>
                     <shiro:hasPermission name="sys:gasPrice:visit">
-                    <div class="mdui-list-item mdui-ripple nav-item gasPrice">气价管理</div>
+                        <div class="mdui-list-item mdui-ripple nav-item gasPrice">气价管理</div>
                     </shiro:hasPermission>
-                    <shiro:hasPermission name="sys:log:visit">
-                        <div class="mdui-list-item mdui-ripple nav-item log">日志管理</div>
-                    </shiro:hasPermission>
-                    <shiro:hasPermission name="sys:notice:visit">
-                        <div class="mdui-list-item mdui-ripple nav-item announcement">公告管理</div>
-                    </shiro:hasPermission>
+                    <%--<shiro:hasPermission name="sys:log:visit">--%>
+                        <%--<div class="mdui-list-item mdui-ripple nav-item log">日志管理</div>--%>
+                    <%--</shiro:hasPermission>--%>
+                    <%--<shiro:hasPermission name="sys:notice:visit">--%>
+                        <%--<div class="mdui-list-item mdui-ripple nav-item announcement">公告管理</div>--%>
+                    <%--</shiro:hasPermission>--%>
                 </div>
             </div>
         </shiro:hasPermission>
