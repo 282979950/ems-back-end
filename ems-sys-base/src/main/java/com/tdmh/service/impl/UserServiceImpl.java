@@ -416,10 +416,6 @@ public class UserServiceImpl implements IUserService {
     public JsonData searchAccountQueryList(String startDate,String endDate, Integer userDistId, String userAddress) {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
         List<AccountQueryParam> list = userMapper.searchAccountQueryList(DateUtils.parseDate(startDate),DateUtils.parseDate(endDate),distIds,userAddress);
-        AccountQueryParam param = new AccountQueryParam();
-        param.setUserAddress("<strong>总开户数:</strong>");
-        param.setUserTypeName("<strong>共<font color=\"#FF0000\">"+list.size()+"</font>条</strong>");
-        list.add(param);
         return  list == null || list.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(list,"查询成功");
     }
 
