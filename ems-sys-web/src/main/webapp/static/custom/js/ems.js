@@ -1,16 +1,3 @@
-/* global app, M */
-var app = {
-    DEFAULT_TEMPLATE: '<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
-    dataCache: {}
-};
-
-app.getDataCache = function (name) {
-    return this.dataCache[name] ? JSON.parse(JSON.stringify(this.dataCache[name])) : null;
-};
-app.setDataCache = function (name, value) {
-    this.dataCache[name] = JSON.parse(JSON.stringify(value));
-};
-
 app.getPanelContent = function (name) {
     var panelContent = '';
     switch (name) {
@@ -141,7 +128,7 @@ app.initIndex = function () {
             if (app.editForm) {
                 var res = app.ReadCard();
                 if (res instanceof Array) {
-                    if (res[1] != 0) {
+                    if (res[1] !== 0) {
                         app.warningMessage("只能用新卡进行补卡");
                         app.editForm.setValue('nIcCardIdentifier', '');
                         return;
@@ -305,75 +292,41 @@ app.initIndex = function () {
     });
 };
 
-app.lockScreen = function () {
-    // todo
-};
-
-app.refresh = function () {
-    if (app.currentPageName) {
-        app.toolbar.clearInputsData();
-        app.render({
-            url: app.currentPageName + '/listData.do'
-        });
-    }
-};
-
-app.logout = function () {
-    $.ajax({
-        async: true,
-        type: 'POST',
-        url: 'logout',
-        contentType: 'application/x-www-form-urlencoded',
-        beforeSend: function (xhr) {
-            xhr.withCredentials = true;
-        },
-        success: function (response) {
-            setTimeout(function () {
-                window.location.href = 'login.html';
-            }, 2000);
-        }
-    });
-};
-/*
-    初始化卡事件（卡）
+/**
+ * 初始化卡事件（卡）
  */
 app.InitializationCard = function () {
     var res = app.ReadCard();
-    if (res == 'IC卡未插入写卡器.' || res == '卡类型不正确.' || res == '写卡器连接错误.') {
-        app.errorMessage(res)
+    if (res === 'IC卡未插入写卡器.' || res === '卡类型不正确.' || res === '写卡器连接错误.') {
+        app.errorMessage(res);
         return;
     }
     //数据转换
-    if (res[0] && res[0] == 'S') {
-
+    if (res[0] && res[0] === 'S') {
         res[0] = "读卡成功"
     } else {
-
         res[0] = "读卡失败"
     }
-    if (res[1] && res[1] == '0') {
-
+    if (res[1] && res[1] === '0') {
         res[1] = "新卡"
-    } else if (res[1] && res[1] == '1') {
-
+    } else if (res[1] && res[1] === '1') {
         res[1] = "密码传递卡"
-    } else if (res[1] && res[1] == '2') {
-
+    } else if (res[1] && res[1] === '2') {
         res[1] = "一般充值卡"
     }
     //生成标题
-    var cardTitle = ["执行结果", "卡类型", "卡序列号", "IC卡编号", "卡内气量(单位:0.1方)", "维修次数", "流水号"]
+    var cardTitle = ["执行结果", "卡类型", "卡序列号", "IC卡编号", "卡内气量(单位:0.1方)", "维修次数", "流水号"];
     app.initCardList(res, cardTitle);
-}
-/*
-读取卡面数据,初始化（卡）
+};
+
+/**
+ * 读取卡面数据,初始化（卡）
  */
 app.initCardList = function (res, cardTitle) {
     var password;
     var cardListDialog = mdui.dialog({
         title: '卡面数据',
         modal: true,
-        content: ' ',
         buttons: [{
             text: '初始化卡',
             onClick: function () {
@@ -391,7 +344,7 @@ app.initCardList = function (res, cardTitle) {
                         if (response.status) {
                             password = response.data.cardPassword;
                             var result = app.initCard(password);
-                            if (result == 'S') {
+                            if (result === 'S') {
                                 $.ajax({
                                     type: 'POST',
                                     url: 'account' + '/initCard.do',
@@ -405,7 +358,7 @@ app.initCardList = function (res, cardTitle) {
                                 });
                                 app.successMessage("已成功初始化")
 
-                            } else if (result == 'ocx.ErrorDesc') {
+                            } else if (result === 'ocx.ErrorDesc') {
 
                                 app.errorMessage("初始化失败")
                             }
@@ -415,7 +368,6 @@ app.initCardList = function (res, cardTitle) {
                     }
                 });
             }
-
         }, {
             text: '取消'
         }],
@@ -428,66 +380,13 @@ app.initCardList = function (res, cardTitle) {
             cardTitle[6] + ":" + "&nbsp;&nbsp;&nbsp;&nbsp;" + res[6]
     });
     $(".tree-combobox-panel").remove();
-
-
-};
-app.render = function (context) {
-    // 从缓存中读取数据
-    // var data = app.getDataCache(context.url);
-    var data = null;
-    if (data) {
-        console.log("依据缓存渲染页面");
-        _render(data);
-    } else {
-        console.log("通过ajax获取数据");
-        $.ajax({
-            async: false,
-            type: 'GET',
-            url: context.url,
-            contentType: 'application/json;charset=utf-8',
-            beforeSend: function (xhr) {
-                xhr.withCredentials = true;
-            },
-            success: function (response) {
-                var data = response.data;
-                // app.setDataCache(context.url, data);
-                console.log("更新" + context.url + "缓存");
-                _render(data);
-            }
-        });
-    }
-
-    function _render(data) {
-        if (app.table) {
-            app.table.refresh(data);
-        } else {
-            var names = app.currentPageName;
-            app.table = context.table = app.createTable({
-                parent: '.mdui-table-fluid',
-                fields: app.tableFields[names],
-                data: data
-            });
-        }
-    }
-};
-
-app.initPane = function (context) {
-    var self = this;
-    app.toolbar = app.createToolbar({
-        parent: '.container-main',
-        fields: app.getToolbarFields(app.currentPageName)
-    });
-    self.render({
-        url: context.url,
-        pane: context.pane
-    });
 };
 
 app.initEvent = function () {
     var formNames = app.currentPageName;
     var main = $('.container-main');
     var table = app.table;
-    if (table != null) {
+    if (table !== null) {
         var fields = table.getFields();
     }
     main.on('add', function () {
@@ -547,38 +446,38 @@ app.initEvent = function () {
             app.message('只能选择一条数据');
             return;
         }
-        if (app.currentPageName == 'account') {
+        if (app.currentPageName === 'account') {
             var result = app.ReadCard();
             if (result[0] !== 'S') {
                 app.errorMessage(result);
                 return;
             }
-            if (result[1] != '0') {
+            if (result[1] !== '0') {
                 app.warningMessage('只能对新卡进行开户');
                 return;
             }
         }
-        if (app.currentPageName == 'prePayment') {
+        if (app.currentPageName === 'prePayment') {
             var result = app.ReadCard();
             if (result[0] !== 'S') {
                 app.errorMessage(result);
                 return;
             }
-            if (result[1] == '0') {
+            if (result[1] === '0') {
                 app.warningMessage('该卡为新卡，请使用发卡充值');
                 return;
             }
-            if (result[1] == '1') {
+            if (result[1] === '1') {
                 app.warningMessage('该卡为密码传递卡，不能充值');
                 return;
             }
-            if (result[4] != '0') {
+            if (result[4] !== '0') {
                 var msg = "卡内已有未圈存的气量,确认覆盖已有气量继续充值吗";
-                if (confirm(msg) == false) {
+                if (confirm(msg) === false) {
                     return;
                 }
             }
-            if(result[2] != table.getSelectedDatas()[0].iccardIdentifier || result[3] != table.getSelectedDatas()[0].iccardId){
+            if(result[2] !== table.getSelectedDatas()[0].iccardIdentifier || result[3] !== table.getSelectedDatas()[0].iccardId){
                 app.warningMessage("该卡不是与该用户绑定的卡");
                 return;
             }
@@ -609,7 +508,7 @@ app.initEvent = function () {
                             response.status ? app.successMessage(response.message) : app.errorMessage(response.message.replace(/[{}a-zA-Z=]/g, ""));
                             if (response.status) {
                                 var rdata = response.data;
-                                if (app.currentPageName == "account" || app.currentPageName == 'replaceCard' || app.currentPageName == 'prePayment') {
+                                if (app.currentPageName === "account" || app.currentPageName === 'replaceCard' || app.currentPageName === 'prePayment') {
                                     app.WriteCard(rdata);
                                 }
                                 var url = app.currentPageName + '/listData.do';
@@ -631,14 +530,14 @@ app.initEvent = function () {
             }]
         });
         $(".tree-combobox-panel").remove();
-        if (app.currentPageName == 'account' || app.currentPageName == 'prePayment') {
-            if (table.getSelectedDatas()[0]['meterCategory'] == 'IC卡表')
+        if (app.currentPageName === 'account' || app.currentPageName === 'prePayment') {
+            if (table.getSelectedDatas()[0]['meterCategory'] === 'IC卡表')
                 formNames = app.currentPageName + 'IC';
             else
                 formNames = app.currentPageName + 'MessAndUnion';
         }
-        if (app.currentPageName == 'lockAccount') {
-            if (table.getSelectedDatas()[0]['isLock'] == 'true')
+        if (app.currentPageName === 'lockAccount') {
+            if (table.getSelectedDatas()[0]['isLock'] === 'true')
                 formNames = app.currentPageName + 'UnLock';
             else
                 formNames = app.currentPageName + 'Lock';
@@ -830,14 +729,11 @@ app.initEvent = function () {
         });
     });
     main.on('link_name', function () {
-
         var data = app.toolbar.getInputsData();
-        console.log(data)
         app.DownLoadFile({
             url : app.currentPageName + '/export.do',
             data : data
         });
-
     });
     main.on('tranfer', function () {
         var data = table.getSelectedDatas();
@@ -851,7 +747,6 @@ app.initEvent = function () {
         }
         var userMoney = 0;
         var OrderSupplement = 0;
-
         var dialog = mdui.dialog({
             title: '录入新用户信息',
             content: ' ',
@@ -861,7 +756,6 @@ app.initEvent = function () {
                     var data = form.getData();
                     data.userMoney = userMoney;
                     data.OrderSupplement = OrderSupplement;
-                    console.log(data)
                     $.ajax({
                         type: 'POST',
                         url: app.currentPageName + '/userChangeSettlement.do',
@@ -871,52 +765,11 @@ app.initEvent = function () {
                             xhr.withCredentials = true;
                         },
                         success: function (response) {
-                            console.log(response)
                             if (response.status) {
                                 //成功变更账户，无超用信息
                                 if (response.data == null) {
                                     mdui.alert(response.message);
-
                                 }
-                                /*
-                                 *超用费用结清代码屏蔽
-
-                                else {
-                                    //实际补缴超用userMoney
-                                    console.log(data)
-                                    var userMoney = prompt(response.message, response.data[0]);
-                                    if (userMoney) {
-
-                                        data.userMoney = userMoney;
-                                        //应补缴超用
-                                        data.OrderSupplement = response.data[1];
-                                        console.log(data.OrderSupplement)
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: app.currentPageName + '/userChangeSettlement.do',
-                                            contentType: 'application/x-www-form-urlencoded',
-                                            data: data,
-                                            beforeSend: function (xhr) {
-                                                xhr.withCredentials = true;
-                                            },
-                                            success: function (response) {
-                                                response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
-                                                if (response.status) {
-                                                    var url = app.currentPageName + '/listData.do';
-                                                    // app.setDataCache(url, null);
-                                                    console.log("清理" + url + "缓存");
-                                                    app.render({
-                                                        url: url
-                                                    });
-                                                }
-                                            }
-                                        });
-
-                                    }
-
-                                }
-                                */
-
                             } else {
                                 app.errorMessage(response.message);
                             }
@@ -1201,7 +1054,7 @@ app.initEvent = function () {
         }, '', {
             modal: true
         });
-    })
+    });
     //查看历史变更记录
     main.on('mail_outline', function () {
         var data = table.getSelectedDatas();
@@ -1241,7 +1094,7 @@ app.initEvent = function () {
                 dialog.handleUpdate();
             }
         });
-    })
+    });
     main.on('credit_card', function () {
         var data = table.getSelectedDatas();
         if (data.length === 0) {
@@ -1252,7 +1105,7 @@ app.initEvent = function () {
             app.message('请选择一条数据');
             return;
         }
-        if (data[0].orderStatus == 2) {
+        if (data[0].orderStatus === 2) {
             app.message('该订单已写卡成功，不能补写');
             return;
         }
@@ -1303,7 +1156,7 @@ app.initEvent = function () {
             return;
         }
 
-        if (data[0].accountState != undefined) {
+        if (data[0].accountState !== undefined) {
 
             app.errorMessage("已经发起过的账单不可再次发起")
             return;
@@ -1334,7 +1187,7 @@ app.initEvent = function () {
             });
 
         }
-    })
+    });
     /**
      * 用户变更信息查询
      */
@@ -1506,7 +1359,6 @@ app.initEvent = function () {
                 dialog.handleUpdate();
             }
         });
-
     });
     /**
      * 用户,卡相关记录
@@ -1549,8 +1401,6 @@ app.initEvent = function () {
                 dialog.handleUpdate();
             }
         });
-
-
     });
     /**
      * 发起审批--冲账
@@ -1576,8 +1426,6 @@ app.initEvent = function () {
                 onClick: function () {
                     var data = form.getData();
                     data.flag = true;
-                    console.log(data)
-
                     $.ajax({
                         type: 'POST',
                         url: app.currentPageName + '/edit.do',
@@ -1653,7 +1501,7 @@ app.initEvent = function () {
             app.message('请选择一条数据');
             return;
         }
-        if (data[0].invoiceStatusName != undefined) {
+        if (data[0].invoiceStatusName !== undefined) {
             app.message('该订单已有打印记录，请选择补打');
             return;
         }
@@ -1671,11 +1519,11 @@ app.initEvent = function () {
             app.message('请选择一条数据');
             return;
         }
-        if (data[0].invoiceStatusName == undefined) {
+        if (data[0].invoiceStatusName === undefined) {
             app.message('该订单还没打印过，无法补打');
             return;
         }
-        if (data[0].invoiceStatusName == '已作废') {
+        if (data[0].invoiceStatusName === '已作废') {
             app.message('该订单已作废过，无法原票补打');
             return;
         }
@@ -1692,7 +1540,7 @@ app.initEvent = function () {
             app.message('请选择一条数据');
             return;
         }
-        if (data[0].invoiceStatusName == undefined) {
+        if (data[0].invoiceStatusName === undefined) {
             app.message('该订单还没打印过，无法补打');
             return;
         }
@@ -1709,8 +1557,8 @@ app.initEvent = function () {
             app.message('请选择一条数据');
             return;
         }
-        if (app.currentPageName == 'order') {
-            if (data[0].invoiceStatusName == undefined) {
+        if (app.currentPageName === 'order') {
+            if (data[0].invoiceStatusName === undefined) {
                 app.message('该订单还没打印过，无法作废');
                 return;
             }
@@ -1741,8 +1589,8 @@ app.initEvent = function () {
                 }
             });
         }
-        if (app.currentPageName == 'printCancel') {
-            if (data[0].invoiceStatusName == '已作废') {
+        if (app.currentPageName === 'printCancel') {
+            if (data[0].invoiceStatusName === '已作废') {
                 app.message('该发票已作废过，无法再作废');
                 return;
             }
@@ -2129,11 +1977,11 @@ app.initEvent = function () {
             app.errorMessage(result);
             return;
         }
-        if (result[1] != '0') {
+        if (result[1] !== '0') {
             app.warningMessage('只能对新卡进行发卡充值');
             return;
         }
-        if (result[2] != table.getSelectedDatas()[0].iccardIdentifier) {
+        if (result[2] !== table.getSelectedDatas()[0].iccardIdentifier) {
             app.warningMessage("该卡不是与该用户绑定的卡");
             return;
         }
@@ -2177,7 +2025,7 @@ app.initEvent = function () {
                 }
             }]
         });
-        if (table.getSelectedDatas()[0]['meterCategory'] == 'IC卡表')
+        if (table.getSelectedDatas()[0]['meterCategory'] === 'IC卡表')
             formNames = app.currentPageName + 'IC';
         else
             formNames = app.currentPageName + 'MessAndUnion';
@@ -2189,14 +2037,15 @@ app.initEvent = function () {
         dialog.handleUpdate();
     });
 };
+
 app.verifyCard = function (result, data) {
-    if (result[2] != data.iccardIdentifier || result[3] != data.cardId) {
+    if (result[2] !== data.iccardIdentifier || result[3] !== data.cardId) {
         app.warningMessage("该卡不是与该用户绑定的卡");
         return false;
     }
     return true;
 
-}
+};
 app.DownLoadFile = function (options) {
     var config = $.extend(true, {method: 'post'}, options);
     var $iframe = $('<iframe id="down-file-iframe" />');
@@ -2209,7 +2058,8 @@ app.DownLoadFile = function (options) {
     $(document.body).append($iframe);
     $form[0].submit();
     $iframe.remove();
-}
+};
+
 app.findInvoice = function (data, printType) {
     $.ajax({
         async: true,
@@ -2233,7 +2083,8 @@ app.findInvoice = function (data, printType) {
             }
         }
     });
-}
+};
+
 app.PrintInvoice = function (data, sdata) {
     $.ajax({
         async: true,
@@ -2252,57 +2103,51 @@ app.PrintInvoice = function (data, sdata) {
             response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
             if (response.status) {
                 var url = app.currentPageName + '/listData.do';
-                // app.setDataCache(url, null);
-                console.log("清理" + url + "缓存");
                 app.render({
                     url: url
                 });
             }
         }
     });
-    console.log("打印");
-}
-app.removeEvent = function () {
-    $('.container-main').off();
 };
 
 app.WriteCard = function (rdata) {
     var wresult;
-    if (app.currentPageName == 'account') {
+    if (app.currentPageName === 'account') {
         wresult = app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
     }
-    if (app.currentPageName == 'prePayment') {
+    if (app.currentPageName === 'prePayment') {
         wresult = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
     }
-    if (app.currentPageName == 'replaceCard') {
+    if (app.currentPageName === 'replaceCard') {
         app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
         wresult = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
     }
-    if (app.currentPageName == 'order') {
+    if (app.currentPageName === 'order') {
         var result = app.ReadCard();
         if (result[0] !== 'S') {
             app.errorMessage(result);
             return;
         }
-        if (rdata.orderStatus == 2) {
+        if (rdata.orderStatus === 2) {
             app.warningMessage("该订单已经写卡成功，不能补写");
         }
-        if (rdata.orderType == 1) {
+        if (rdata.orderType === 1) {
             wresult = app.WritePCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, 0, rdata.orderGas, rdata.flowNumber);
         }
-        if (rdata.orderType == 2) {
+        if (rdata.orderType === 2) {
             wresult = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
         }
-        if (rdata.orderType == 3) {
+        if (rdata.orderType === 3) {
             app.WritePCard(rdata.iccardId, rdata.iccardPassword, 0, rdata.serviceTimes, 0, rdata.flowNumber);
             wresult = app.WriteUCard(rdata.iccardId, rdata.iccardPassword, rdata.orderGas, rdata.serviceTimes, rdata.flowNumber);
         }
     }
     app.updateOrderStatus(wresult, rdata.orderId);
-}
+};
 
 app.updateOrderStatus = function (wresult, orderId) {
-    if (wresult == '写卡成功') {
+    if (wresult === '写卡成功') {
         $.ajax({
             type: 'POST',
             async: false,
@@ -2330,7 +2175,8 @@ app.updateOrderStatus = function (wresult, orderId) {
     } else {
         app.errorMessage("充值成功，写卡失败，请前往订单页面写卡");
     }
-}
+};
+
 /**
  * 获取流水号
  */
@@ -2370,9 +2216,10 @@ app.getServiceTimesByUserId = function (userId) {
     });
     return result;
 };
-/*
-* table fields
-*/
+
+/**
+ * 表格字段
+ */
 app.tableFields = {
     dist: [{
         name: 'distName',
@@ -3304,36 +3151,9 @@ app.tableFields = {
         caption: '创建时间'
     }]
 };
-/*
- *数据字典
- */
-app.getDictionaryByCategory = function (category) {
-    var dataArray = [];
-    $.ajax({
-        async: false,
-        type: 'POST',
-        url: 'dic/dictByType.do',
-        contentType: 'application/x-www-form-urlencoded',
-        data: {
-            category: category
-        },
-        success: function (response) {
-            if (response.data != null) {
-                var datas = response.data;
-                for (var i = 0; i < datas.length; i++) {
-                    dataArray.push({
-                        key: datas[i].dictKey,
-                        value: datas[i].dictValue
-                    });
-                }
-            }
-        }
-    });
-    return dataArray;
-};
 
-/*
- *新增时弹出框,列显示
+/**
+ * 新增时弹出框,列显示
  */
 app.getAddFormFields = function (name) {
     switch (name) {
@@ -3850,74 +3670,9 @@ app.getAddFormFields = function (name) {
     }
 };
 
-app.getTreeComboboxNodes = function (url) {
-    // var data = this.getDataCache(url);
-    var data = null;
-    if (data) {
-        console.log("从缓存中获取数据");
-        return data;
-    } else {
-        $.ajax({
-            async: false,
-            type: 'POST',
-            url: url,
-            contentType: 'application/json;charset=utf-8',
-            beforeSend: function (xhr) {
-                xhr.withCredentials = true;
-            },
-            success: function (response) {
-                data = response.data;
-                // app.setDataCache(url, data);
-                console.log("更新" + url + "缓存");
-            }
-        });
-        return data;
-    }
-};
-
-app.getListComboboxOptions = function (url, k, v) {
-    var result = [];
-    // var data = this.getDataCache(url);
-    var data = null;
-    if (data) {
-        console.log("从缓存中获取数据");
-        for (var i = 0; i < data.length; i++) {
-            result.push({
-                key: data[i][k],
-                value: data[i][v]
-            });
-        }
-    } else {
-        $.ajax({
-            async: false,
-            type: 'POST',
-            url: url,
-            contentType: 'application/json;charset=utf-8',
-            beforeSend: function (xhr) {
-                xhr.withCredentials = true;
-            },
-            success: function (response) {
-                data = response.data;
-                // app.setDataCache(url, data);
-                console.log("更新" + url + "缓存");
-                if (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        result.push({
-                            key: data[i][k],
-                            value: data[i][v]
-                        });
-                    }
-                }
-            }
-        });
-    }
-    return result;
-};
-
-/*
- *修改时弹出框,列显示
+/**
+ * 修改时弹出框,列显示
  */
-
 app.getEditFormFields = function (name) {
     switch (name) {
         case 'dist':
@@ -4797,8 +4552,8 @@ app.getEditFormFields = function (name) {
     }
 };
 
-/*
- *头部筛选查询列
+/**
+ * 头部筛选查询列
  */
 app.getToolbarFields = function (name) {
     switch (name) {
@@ -5555,3 +5310,4 @@ app.deleteNames = {
     'emp': 'empId',
     'input': 'id'
 };
+

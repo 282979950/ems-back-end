@@ -27,7 +27,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/bootstrap/css/bootstrap-datetimepicker.min.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/materialize/js/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/materialize/js/materialize.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/custom/js/index.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/custom/js/common.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/custom/js/vprs.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/custom/js/component.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/mdui-v0.4.1/js/mdui.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/zTree-3.5.16/js/jquery.ztree.all-3.5.js"></script>
