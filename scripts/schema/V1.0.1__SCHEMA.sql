@@ -31,13 +31,19 @@ CREATE TABLE `service_outlet` (
 `service_outlet_id`  int(11) NOT NULL ,
 `service_outlet_name`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '网点名称' ,
 `service_outlet_address`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '网点地址' ,
-`service_outlet_time`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '营业时间' ,
+`service_outlet_open_time`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '营业时间' ,
 `service_outlet_phone`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '服务电话' ,
 `service_outlet_content`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '营业范围' ,
 `tx_longitude`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '腾讯地图经度' ,
 `tx_latitude`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '腾讯地图纬度' ,
 `bd_longitude`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '百度地图经度' ,
 `bd_latitude`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '百度地图纬度' ,
+`create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+`create_by`  int(10) NULL DEFAULT NULL COMMENT '创建人' ,
+`update_time`  datetime NULL DEFAULT NULL COMMENT '修改时间' ,
+`update_by`  int(10) NULL DEFAULT NULL COMMENT '修改人' ,
+`usable`  tinyint(1) NULL DEFAULT NULL ,
+`remark`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL ,
 PRIMARY KEY (`service_outlet_id`)
 )
 ENGINE=InnoDB
