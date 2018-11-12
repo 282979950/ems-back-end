@@ -20,7 +20,12 @@ public class ApplyRepairParam {
     /**
      * 报修类型
      */
-    private String applyRepairTypeName;
+    private String applyRepairType;
+
+    /**
+     * 报修状态
+     */
+    private Integer applyRepairStatus;
 
     /**
      * 户号
@@ -85,7 +90,7 @@ public class ApplyRepairParam {
     /**
      * 购气量
      */
-    private String orderGas;
+    private String currentOrderGasCount;
 
     /**
      * 预约开始时间
@@ -96,6 +101,4 @@ public class ApplyRepairParam {
      * 预约截止时间
      */
     private Date endTime;
-
-
 }

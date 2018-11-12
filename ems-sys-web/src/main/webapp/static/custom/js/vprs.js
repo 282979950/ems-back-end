@@ -16,6 +16,9 @@ app.getPanelContent = function (name) {
         case 'log':
         case 'announcement':
             break;
+        case 'entryApplyRepair':
+            panelContent = this.DEFAULT_TEMPLATE;
+            break;
     }
     return panelContent;
 };

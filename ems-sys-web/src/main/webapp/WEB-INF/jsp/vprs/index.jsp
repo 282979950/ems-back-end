@@ -91,6 +91,20 @@
                 </div>
             </div>
         </shiro:hasPermission>
+        <shiro:hasPermission name="applyRepair:visit">
+            <div class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">assignment</i>
+                    <div class="mdui-list-item-content mdui-text-color-blue">报修单管理</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
+                </div>
+                <div class="mdui-collapse-item-body mdui-list" style="">
+                    <shiro:hasPermission name="applyRepair:entryApplyRepair:visit">
+                        <div class="mdui-list-item mdui-ripple nav-item entryApplyRepair">报修单录入</div>
+                    </shiro:hasPermission>
+                </div>
+            </div>
+        </shiro:hasPermission>
     </div>
 </div>
 <div class="mdui-container">
