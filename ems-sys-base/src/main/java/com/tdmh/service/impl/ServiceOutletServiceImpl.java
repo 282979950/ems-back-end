@@ -4,9 +4,8 @@ import com.google.common.collect.Lists;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.ServiceOutlet;
-import com.tdmh.entity.SysRole;
 import com.tdmh.entity.mapper.ServiceOutletMapper;
-import com.tdmh.exception.ParameterException;
+import com.tdmh.service.IServiceOutletService;
 import com.tdmh.utils.map.BaiDuMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import java.util.Map;
  * @author Liuxia on 2018/11/12.
  */
 @Service
-public class ServiceOutletServiceImpl implements IServiceOutletService{
+public class ServiceOutletServiceImpl implements IServiceOutletService {
 
     @Autowired
     private ServiceOutletMapper serviceOutletMapper;

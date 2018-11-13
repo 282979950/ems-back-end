@@ -2,7 +2,7 @@ package com.tdmh.controller.system;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.ServiceOutlet;
-import com.tdmh.service.impl.IServiceOutletService;
+import com.tdmh.service.IServiceOutletService;
 import com.tdmh.util.ShiroUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

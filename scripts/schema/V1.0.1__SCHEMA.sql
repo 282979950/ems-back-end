@@ -20,7 +20,7 @@ CREATE TABLE `apply_repair` (
   `usable` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `remarks` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`apply_repair_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000000000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=1000000000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- 服务网点
 CREATE TABLE `service_outlet` (
