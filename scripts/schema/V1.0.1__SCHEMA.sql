@@ -28,7 +28,7 @@ ROW_FORMAT=DYNAMIC
 
 -- 服务网点
 CREATE TABLE `service_outlet` (
-`service_outlet_id`  int(11) NOT NULL ,
+`service_outlet_id`  int(11) NOT NULL AUTO_INCREMENT,
 `service_outlet_name`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '网点名称' ,
 `service_outlet_address`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '网点地址' ,
 `service_outlet_open_time`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '营业时间' ,
@@ -43,7 +43,7 @@ CREATE TABLE `service_outlet` (
 `update_time`  datetime NULL DEFAULT NULL COMMENT '修改时间' ,
 `update_by`  int(10) NULL DEFAULT NULL COMMENT '修改人' ,
 `usable`  tinyint(1) NULL DEFAULT NULL ,
-`remark`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL ,
+`remarks`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL ,
 PRIMARY KEY (`service_outlet_id`)
 )
 ENGINE=InnoDB

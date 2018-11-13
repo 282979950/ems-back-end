@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.ServiceOutletMapper">
+    <resultMap id="BaseResultMap" type="com.tdmh.entity.ServiceOutlet">
+        <constructor>
+            <idArg column="service_outlet_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="service_outlet_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="service_outlet_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="service_outlet_open_time" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="service_outlet_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="service_outlet_content" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="tx_longitude" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="tx_latitude" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="bd_longitude" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="bd_latitude" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        service_outlet_id, service_outlet_name, service_outlet_address,
+        service_outlet_open_time, service_outlet_phone, service_outlet_content,
+        tx_longitude, tx_latitude, bd_longitude, bd_latitude
+
+    </sql>
+    <select id="getAllSOLet" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from service_outlet where usable = 1
+    </select>
+    <insert id="insert" parameterType="com.tdmh.entity.ServiceOutlet">
+      insert into service_outlet(service_outlet_name, service_outlet_address,
+      service_outlet_open_time, service_outlet_phone, service_outlet_content,tx_longitude, tx_latitude,
+       bd_longitude, bd_latitude, create_by, create_time, update_by, update_time, usable, remarks)
+       values (#{serviceOutletName,jdbcType=VARCHAR}, #{serviceOutletAddress,jdbcType=VARCHAR},#{serviceOutletOpenTime,jdbcType=VARCHAR},
+        #{serviceOutletPhone,jdbcType=VARCHAR}, #{serviceOutletContent,jdbcType=VARCHAR},
+        #{txLongitude,jdbcType=VARCHAR}, #{txLatitude,jdbcType=VARCHAR},#{bdLongitude,jdbcType=VARCHAR}, #{bdLatitude,jdbcType=VARCHAR},
+         #{createBy,jdbcType=INTEGER},Now(),#{updateBy,jdbcType=INTEGER},Now(), #{usable,jdbcType=BIT},
+        #{remarks,jdbcType=VARCHAR}
+      )
+    </insert>
+    <update id="update" parameterType="com.tdmh.entity.ServiceOutlet">
+    update service_outlet
+    set service_outlet_name = #{serviceOutletName,jdbcType=VARCHAR},
+    service_outlet_address = #{serviceOutletAddress,jdbcType=VARCHAR},
+    service_outlet_open_time = #{serviceOutletOpenTime,jdbcType=VARCHAR},
+    service_outlet_phone = #{serviceOutletPhone,jdbcType=VARCHAR},
+    service_outlet_content = #{serviceOutletContent,jdbcType=VARCHAR},
+    tx_longitude = #{txLongitude,jdbcType=VARCHAR},
+    tx_latitude = #{txLatitude,jdbcType=VARCHAR},
+    bd_longitude = #{bdLongitude,jdbcType=VARCHAR},
+    bd_latitude = #{bdLatitude,jdbcType=VARCHAR},
+    update_by = #{updateBy,jdbcType=INTEGER},
+    update_time = Now()
+    where service_outlet_id = #{serviceOutletId}
+    </update>
+    <select id="selectSOLet" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from service_outlet where usable = 1
+        <if test="serviceOutletName!=null and serviceOutletName!=''">
+            and service_outlet_name like CONCAT('%', #{serviceOutletName},'%')
+        </if>
+        <if test="serviceOutletAddress!=null and serviceOutletAddress!=''">
+            and service_outlet_address like CONCAT('%', #{serviceOutletAddress},'%')
+        </if>
+    </select>
+    <update id="deleteBatch" parameterType="list">
+        update service_outlet
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_by = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateBy != null">
+                        when service_outlet_id = #{i.serviceOutletId} then #{i.updateBy}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateTime != null">
+                        when service_outlet_id = #{i.serviceOutletId} then NOW()
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="usable =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.usable != null">
+                        when service_outlet_id =#{i.serviceOutletId} then 0
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index">
+            service_outlet_id = #{i.serviceOutletId}
+        </foreach>
+    </update>
+
+    <select id="getSOLetById" parameterType="int" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from service_outlet
+        where service_outlet_id = #{serviceOutletId}
+    </select>
+</mapper>

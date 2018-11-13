@@ -10,7 +10,7 @@ app.getPanelContent = function (name) {
         case 'role':
         case 'permission':
         case 'dic':
-        case 'gasPrice':
+        case 'solet':
             panelContent = this.DEFAULT_TEMPLATE;
             break;
         case 'log':
@@ -345,6 +345,22 @@ app.tableFields = {
     }, {
         name: 'remarks',
         caption: '备注'
+    }],
+    solet: [{
+        name: 'serviceOutletName',
+        caption: '网点名称'
+    }, {
+        name: 'serviceOutletAddress',
+        caption: '网点地址'
+    }, {
+        name: 'serviceOutletOpenTime',
+        caption: '网点营业时间'
+    }, {
+        name: 'serviceOutletPhone',
+        caption: '网点联系方式'
+    }, {
+        name: 'serviceOutletContent',
+        caption: '网点营业范围'
     }]
 };
 
@@ -628,6 +644,27 @@ app.getAddFormFields = function (name) {
                 name: 'remarks',
                 caption: '备注'
             }];
+        case 'solet':
+            return [{
+                name: 'serviceOutletName',
+                caption: '网点名称',
+                required: true
+            }, {
+                name: 'serviceOutletAddress',
+                caption: '网点地址',
+                required: true
+            }, {
+                name: 'serviceOutletOpenTime',
+                caption: '网点营业时间',
+                required: true
+            }, {
+                name: 'serviceOutletPhone',
+                caption: '网点联系方式',
+                required: true
+            }, {
+                name: 'serviceOutletContent',
+                caption: '网点营业范围'
+            }];
     }
 };
 
@@ -910,6 +947,27 @@ app.getEditFormFields = function (name) {
                 name: 'remarks',
                 caption: '备注'
             }];
+        case 'solet':
+            return [{
+                name: 'serviceOutletName',
+                caption: '网点名称',
+                required: true
+            }, {
+                name: 'serviceOutletAddress',
+                caption: '网点地址',
+                required: true
+            }, {
+                name: 'serviceOutletOpenTime',
+                caption: '网点营业时间',
+                required: true
+            }, {
+                name: 'serviceOutletPhone',
+                caption: '网点联系方式',
+                required: true
+            }, {
+                name: 'serviceOutletContent',
+                caption: '网点营业范围'
+            }];
     }
 };
 
@@ -1091,6 +1149,28 @@ app.getToolbarFields = function (name) {
                 caption: '角色名称',
                 type: 'input'
             }];
+        case 'solet':
+            return [{
+                name: 'add',
+                caption: '新增',
+                perm: 'sys:solet:create'
+            }, {
+                name: 'edit',
+                caption: '编辑',
+                perm: 'sys:solet:update'
+            }, {
+                name: 'delete',
+                caption: '删除',
+                perm: 'sys:solet:delete'
+            }, {
+                name: 'serviceOutletName',
+                caption: '网点名称',
+                type: 'input'
+            }, {
+                name: 'serviceOutletAddress',
+                caption: '网点地址',
+                type: 'input'
+            }];
     }
 };
 
@@ -1100,5 +1180,6 @@ app.deleteNames = {
     'role': 'roleId',
     'dic': 'dictId',
     'dist': 'distId',
-    'emp': 'empId'
+    'emp': 'empId',
+    'solet' : 'serviceOutletId'
 };
