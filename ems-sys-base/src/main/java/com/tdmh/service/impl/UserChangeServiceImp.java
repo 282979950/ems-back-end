@@ -7,6 +7,8 @@ import com.tdmh.entity.mapper.UserCardMapper;
 import com.tdmh.entity.mapper.UserChangeMapper;
 import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
+import com.tdmh.service.IGasPriceService;
+import com.tdmh.service.IUserChangeService;
 import com.tdmh.util.CalculateUtil;
 import com.tdmh.utils.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;

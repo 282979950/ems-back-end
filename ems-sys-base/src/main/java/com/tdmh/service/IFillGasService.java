@@ -1,4 +1,4 @@
-package com.tdmh.service.impl;
+package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.param.FillGasOrderParam;
@@ -21,6 +21,8 @@ public interface IFillGasService {
     JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType);
 
     BigDecimal getSumOrderGasByUserId(Integer userId);
+
+    BigDecimal getHistoryMeterStopCodeByUserId(Integer userId);
 
     BigDecimal getSumMeterStopCodeByUserId(Integer userId);
 

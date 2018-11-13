@@ -54,6 +54,48 @@ app.initIndex = function () {
             $(".tree-combobox-panel").hide();
             app.isTreeComboboxPanelShow = false;
         });
+        $(document).on('blur', '.queryField', function (e) {
+            var queryFieldName = $(e.target).attr('name');
+            var value = e.target.value;
+            if (value) {
+                switch (queryFieldName) {
+                    case 'userId':
+                        $.ajax({
+                            async: true,
+                            type: 'POST',
+                            url: 'entryApplyRepair/getApplyRepairUserInfoById.do',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: {
+                                "userId": value
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.withCredentials = true;
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                if (response.status) {
+                                    var data = response.data;
+                                    if (app.addForm) {
+                                        app.addForm.setValue('userName', data ? data.userName : null);
+                                        app.addForm.setValue('userPhone', data ? data.userPhone : null);
+                                        app.addForm.setValue('distName', data ? data.distName : null);
+                                        app.addForm.setValue('userAddress', data ? data.userAddress : null);
+                                    }
+                                    if (app.editForm) {
+                                        app.editForm.setValue('userName', data ? data.userName : null);
+                                        app.editForm.setValue('userPhone', data ? data.userPhone : null);
+                                        app.editForm.setValue('distName', data ? data.distName : null);
+                                        app.editForm.setValue('userAddress', data ? data.userAddress : null);
+                                    }
+                                }
+                            }
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     });
 };
 
@@ -167,6 +209,14 @@ app.initEvent = function () {
             fields: app.getEditFormFields(formNames),
             data: table.getSelectedDatas()[0]
         });
+        switch (app.currentPageName) {
+            case 'entryApplyRepair':
+                form.disableField('applyRepairType');
+                // todo 订单被处理后不可编辑
+                break;
+            default:
+                break;
+        }
         dialog.handleUpdate();
     });
     main.on('delete', function () {
@@ -345,6 +395,49 @@ app.tableFields = {
     }, {
         name: 'createTime',
         caption: '创建时间'
+    }, {
+        name: 'remarks',
+        caption: '备注'
+    }],
+    entryApplyRepair: [{
+        name: 'applyRepairFlowNumber',
+        caption: '报修单编号'
+    }, {
+        name: 'applyRepairTypeName',
+        caption: '报修类型'
+    }, {
+        name: 'applyRepairStatusName',
+        caption: '报修状态'
+    }, {
+        name: 'userId',
+        caption: '户号'
+    }, {
+        name: 'userName',
+        caption: '用户姓名'
+    }, {
+        name: 'distName',
+        caption: '用户区域'
+    }, {
+        name: 'userAddress',
+        caption: '用户地址'
+    }, {
+        name: 'userPhone',
+        caption: '用户电话'
+    }, {
+        name: 'userTelPhone',
+        caption: '主叫号码'
+    }, {
+        name: 'applyRepairFaultDesc',
+        caption: '故障说明'
+    }, {
+        name: 'applyRepairAppealContent',
+        caption: '诉求内容'
+    }, {
+        name: 'startTime',
+        caption: '预约开始时间'
+    }, {
+        name: 'endTime',
+        caption: '预约截止时间'
     }, {
         name: 'remarks',
         caption: '备注'
@@ -631,6 +724,62 @@ app.getAddFormFields = function (name) {
                 name: 'remarks',
                 caption: '备注'
             }];
+        case 'entryApplyRepair':
+            return [{
+                name: 'applyRepairType',
+                caption: '报修类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("apply_repair_type")
+            }, {
+                name: 'userId',
+                caption: '户号',
+                maxlength: 10,
+                required: true,
+                queryField: true
+            }, {
+                name: 'userName',
+                caption: '用户姓名',
+                disabled: true
+            }, {
+                name: 'userAddress',
+                caption: '用户地址',
+                disabled: true
+            }, {
+                name: 'distName',
+                caption: '用户区域',
+                disabled: true
+            }, {
+                name: 'userPhone',
+                caption: '用户电话',
+                disabled: true
+            }, {
+                name: 'userTelPhone',
+                caption: '主叫号码',
+                inputType: 'mobile'
+            }, {
+                name: 'applyRepairFaultDesc',
+                caption: '故障说明',
+                required: true,
+                maxlength: 255
+            }, {
+                name: 'applyRepairAppealContent',
+                caption: '诉求内容',
+                maxlength: 255
+            }, {
+                name: 'startTime',
+                caption: '预约开始时间',
+                type: 'date',
+                required: true
+            }, {
+                name: 'endTime',
+                caption: '预约截止时间',
+                type: 'date',
+                required: true
+            }, {
+                name: 'remarks',
+                caption: '备注',
+                maxlength: 255
+            }];
     }
 };
 
@@ -913,6 +1062,61 @@ app.getEditFormFields = function (name) {
                 name: 'remarks',
                 caption: '备注'
             }];
+        case 'entryApplyRepair':
+            return [{
+                name: 'applyRepairType',
+                caption: '报修类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("apply_repair_type")
+            }, {
+                name: 'userId',
+                caption: '户号',
+                maxlength: 10,
+                disabled: true
+            }, {
+                name: 'userName',
+                caption: '用户姓名',
+                disabled: true
+            }, {
+                name: 'userAddress',
+                caption: '用户地址',
+                disabled: true
+            }, {
+                name: 'distName',
+                caption: '用户区域',
+                disabled: true
+            }, {
+                name: 'userPhone',
+                caption: '用户电话',
+                disabled: true
+            }, {
+                name: 'userTelPhone',
+                caption: '主叫号码',
+                inputType: 'mobile'
+            }, {
+                name: 'applyRepairFaultDesc',
+                caption: '故障说明',
+                required: true,
+                maxlength: 255
+            }, {
+                name: 'applyRepairAppealContent',
+                caption: '诉求内容',
+                maxlength: 255
+            }, {
+                name: 'startTime',
+                caption: '预约开始时间',
+                type: 'date',
+                required: true
+            }, {
+                name: 'endTime',
+                caption: '预约截止时间',
+                type: 'date',
+                required: true
+            }, {
+                name: 'remarks',
+                caption: '备注',
+                maxlength: 255
+            }];
     }
 };
 
@@ -1094,6 +1298,36 @@ app.getToolbarFields = function (name) {
                 caption: '角色名称',
                 type: 'input'
             }];
+        case 'entryApplyRepair':
+            return [{
+                name: 'add',
+                caption: '新增',
+                perm: 'applyRepair:entryApplyRepair:create'
+            }, {
+                name: 'edit',
+                caption: '编辑',
+                perm: 'applyRepair:entryApplyRepair:update'
+            }, {
+                name: 'delete',
+                caption: '删除',
+                perm: 'applyRepair:entryApplyRepair:delete'
+            }, {
+                name: 'userId',
+                caption: '户号',
+                type: 'input'
+            }, {
+                name: 'userName',
+                caption: '用户姓名',
+                type: 'input'
+            }, {
+                name: 'userPhone',
+                caption: '用户电话',
+                type: 'input'
+            }, {
+                name: 'userTelPhone',
+                caption: '主叫号码',
+                type: 'input'
+            }];
     }
 };
 
@@ -1103,5 +1337,6 @@ app.deleteNames = {
     'role': 'roleId',
     'dic': 'dictId',
     'dist': 'distId',
-    'emp': 'empId'
+    'emp': 'empId',
+    'entryApplyRepair': 'applyRepairId'
 };

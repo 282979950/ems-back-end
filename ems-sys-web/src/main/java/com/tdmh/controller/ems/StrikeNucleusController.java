@@ -2,7 +2,7 @@ package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.StrikeNucleus;
-import com.tdmh.service.impl.IPreStrikeService;
+import com.tdmh.service.IPreStrikeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -2,7 +2,7 @@ package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.param.CreateArchiveParam;
-import com.tdmh.service.impl.IUserService;
+import com.tdmh.service.IUserService;
 import com.tdmh.util.ShiroUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

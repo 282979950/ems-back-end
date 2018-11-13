@@ -7,6 +7,7 @@ import com.tdmh.entity.mapper.FillGasOrderMapper;
 import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.param.FillGasOrderParam;
+import com.tdmh.service.IFillGasService;
 import com.tdmh.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,9 +91,16 @@ public class FillGasServiceImpl implements IFillGasService {
     }
 
     @Override
+    public BigDecimal getHistoryMeterStopCodeByUserId(Integer userId) {
+        BigDecimal historyMeterStopCode = fillGasOrderMapper.getHistoryMeterStopCodeByUserId(userId);
+        return historyMeterStopCode == null ? BigDecimal.ZERO : historyMeterStopCode;
+    }
+
+    @Override
     public BigDecimal getSumMeterStopCodeByUserId(Integer userId) {
         return fillGasOrderMapper.getSumMeterStopCodeByUserId(userId);
     }
+
 
     @Override
     public JsonData getFlowNum() {

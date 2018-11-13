@@ -2,7 +2,7 @@ package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.param.EntryMeterParam;
-import com.tdmh.service.impl.IMeterService;
+import com.tdmh.service.IMeterService;
 import com.tdmh.util.ShiroUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

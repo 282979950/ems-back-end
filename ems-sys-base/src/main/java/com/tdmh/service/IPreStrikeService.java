@@ -1,4 +1,4 @@
-package com.tdmh.service.impl;
+package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.StrikeNucleus;

@@ -1,7 +1,7 @@
 package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
-import com.tdmh.service.impl.IInvoiceService;
+import com.tdmh.service.IInvoiceService;
 import com.tdmh.util.ShiroUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.Logical;

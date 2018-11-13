@@ -419,4 +419,10 @@
         from meter
         where meter_id = #{meterId,jdbcType=INTEGER} and usable = 1
     </select>
+    <select id="getMeterIdByUserId" resultType="integer" parameterType="integer">
+        select
+        meter_id
+        from user_meters
+        where user_id = #{userId} and usable = 1
+    </select>
 </mapper>

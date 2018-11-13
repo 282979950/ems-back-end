@@ -1,4 +1,4 @@
-package com.tdmh.service.impl;
+package com.tdmh.service;
 
 
 import com.tdmh.common.JsonData;
@@ -41,6 +41,13 @@ public interface IMeterService {
      * @param meterId
      */
     Meter getMeterByMeterId(Integer meterId);
+
+    /**
+     * 获取表具信息
+     * @param userId
+     */
+    Integer getMeterIdByUserId(Integer userId);
+
     /**
      * 获取表具ID
      *

@@ -1,7 +1,7 @@
 package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
-import com.tdmh.service.impl.IWXService;
+import com.tdmh.service.IWXService;
 import com.tdmh.utils.HttpRequestUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;

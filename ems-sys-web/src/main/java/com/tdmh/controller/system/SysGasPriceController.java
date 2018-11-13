@@ -2,7 +2,7 @@ package com.tdmh.controller.system;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.param.GasPriceParam;
-import com.tdmh.service.impl.IGasPriceService;
+import com.tdmh.service.IGasPriceService;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

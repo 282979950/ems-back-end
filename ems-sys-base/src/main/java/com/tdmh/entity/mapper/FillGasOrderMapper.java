@@ -36,4 +36,6 @@ public interface FillGasOrderMapper {
 
     List<FillGasOrderParam> searchFillGasOrder(@Param("repairOrderId") String repairOrderId, @Param("userId") Integer userId,
                                                @Param("fillGasOrderType") Integer fillGasOrderType);
+
+    BigDecimal getHistoryMeterStopCodeByUserId(@Param("userId") Integer userId);
 }

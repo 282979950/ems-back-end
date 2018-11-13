@@ -1,8 +1,13 @@
 package com.tdmh.param;
 
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tdmh.entity.BaseEntity;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -10,7 +15,12 @@ import java.util.Date;
  */
 @Setter
 @Getter
-public class ApplyRepairParam {
+public class ApplyRepairParam extends BaseEntity {
+
+    /**
+     * 报修单ID
+     */
+    private Integer applyRepairId;
 
     /**
      * 报修单号
@@ -18,19 +28,10 @@ public class ApplyRepairParam {
     private String applyRepairFlowNumber;
 
     /**
-     * 报修类型
-     */
-    private String applyRepairType;
-
-    /**
-     * 报修状态
-     */
-    private Integer applyRepairStatus;
-
-    /**
      * 户号
      */
-    private String userId;
+    @NotNull(message = "户号不能为空")
+    private Integer userId;
 
     /**
      *户名
@@ -38,9 +39,10 @@ public class ApplyRepairParam {
     private String userName;
 
     /**
-     * 用户地址（全地址）
+     * 区域ID
      */
-    private String userAddress;
+
+    private Integer distId;
 
     /**
      * 区域名(地址1)
@@ -48,34 +50,31 @@ public class ApplyRepairParam {
     private String distName;
 
     /**
-     *联系电话
+     * 用户地址（全地址）
+     */
+    private String userAddress;
+
+    /**
+     * 用户电话
      */
     private String userPhone;
 
     /**
-     * 主叫号码
+     * 报修类型
      */
-    private String telPhone;
+    @NotNull(message = "报修类型不能为空")
+    private Integer applyRepairType;
+
+    /**
+     * 报修类型名称
+     */
+    private String applyRepairTypeName;
 
     /**
      * 故障说明
      */
+    @NotNull(message = "故障说明不能为空")
     private String applyRepairFaultDesc;
-
-    /**
-     * 表号
-     */
-    private String meterCode;
-
-    /**
-     * 表向
-     */
-    private String meterDirection;
-
-    /**
-     * 表具类型
-     */
-    private String meterTypeName;
 
     /**
      * 诉求内容
@@ -85,20 +84,111 @@ public class ApplyRepairParam {
     /**
      * 报修时间
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date applyRepairTime;
+
+    /**
+     *
+     */
+    private Integer meterId;
+
+    /**
+     * 表号
+     */
+    private String meterCode;
+
+    /**
+     * 表向
+     */
+    private Boolean meterDirection;
+
+    /**
+     * 表向名称
+     */
+    private String meterDirectionName;
+
+    /**
+     * 表具型号ID
+     */
+    private Integer meterTypeId;
+
+    /**
+     * 表具类型
+     */
+    private String meterType;
 
     /**
      * 购气量
      */
-    private String currentOrderGasCount;
+    private BigDecimal currentOrderGasCount;
+
+    /**
+     * 报修状态
+     */
+    private Integer applyRepairStatus;
+
+    /**
+     * 报修状态名称
+     */
+    private String applyRepairStatusName;
 
     /**
      * 预约开始时间
      */
+    @NotNull(message = "预约开始时间不能为空")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private Date startTime;
 
     /**
      * 预约截止时间
      */
+    @NotNull(message = "预约结束时间不能为空")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private Date endTime;
+
+    /**
+     * 主叫号码
+     */
+    private String userTelPhone;
+
+    public ApplyRepairParam() {
+        super();
+    }
+
+    public ApplyRepairParam(Integer applyRepairId, String applyRepairFlowNumber, Integer userId, String userName, Integer distId, String distName,
+                            String userAddress, String userPhone, Integer applyRepairType, String applyRepairTypeName, String applyRepairFaultDesc,
+                            String applyRepairAppealContent, Date applyRepairTime, Integer meterId, String meterCode, Boolean meterDirection,
+                            String meterDirectionName, Integer meterTypeId, String meterType, BigDecimal currentOrderGasCount, Integer applyRepairStatus,
+                            String applyRepairStatusName, Date startTime, Date endTime, String userTelPhone, Date createTime, Integer createBy, Date updateTime,
+                            Integer updateBy, Boolean usable, String remarks) {
+        super(createTime, createBy, updateTime, updateBy, usable, remarks);
+        this.applyRepairId = applyRepairId;
+        this.applyRepairFlowNumber = applyRepairFlowNumber;
+        this.userId = userId;
+        this.userName = userName;
+        this.distId = distId;
+        this.distName = distName;
+        this.userAddress = userAddress;
+        this.userPhone = userPhone;
+        this.applyRepairType = applyRepairType;
+        this.applyRepairTypeName = applyRepairTypeName;
+        this.applyRepairFaultDesc = applyRepairFaultDesc;
+        this.applyRepairAppealContent = applyRepairAppealContent;
+        this.applyRepairTime = applyRepairTime;
+        this.meterId = meterId;
+        this.meterCode = meterCode;
+        this.meterDirection = meterDirection;
+        this.meterDirectionName = meterDirectionName;
+        this.meterTypeId = meterTypeId;
+        this.meterType = meterType;
+        this.currentOrderGasCount = currentOrderGasCount;
+        this.applyRepairStatus = applyRepairStatus;
+        this.applyRepairStatusName = applyRepairStatusName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.userTelPhone = userTelPhone;
+    }
 }

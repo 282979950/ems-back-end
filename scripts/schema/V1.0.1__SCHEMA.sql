@@ -1,30 +1,26 @@
 -- 报修数据
 CREATE TABLE `apply_repair` (
-`apply_repair_id`  int(11) NOT NULL ,
-`apply_repair_flow_number`  varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '报修单编号' ,
-`apply_repair_type`  int(2) NULL DEFAULT NULL COMMENT '报修类型' ,
-`user_id`  int(10) NULL DEFAULT NULL COMMENT '户号' ,
-`user_name`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名' ,
-`user_address`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户地址' ,
-`dist_name`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL ,
-`user_phone`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户手机号' ,
-`user_tel_phone`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '主叫号码' ,
-`apply_repair_fault_desc`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '故障描述' ,
-`meter_code`  int(10) NULL DEFAULT NULL COMMENT '表编号' ,
-`meter_direction`  tinyint(1) NULL DEFAULT NULL COMMENT '表向' ,
-`meter_type_id`  int(8) NULL DEFAULT NULL COMMENT '表具类型' ,
-`apply_repair_appeal_content`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '诉求内容' ,
-`apply_repair_time`  datetime NULL DEFAULT NULL COMMENT '申请报修时间' ,
-`order_gas`  decimal(10,0) NULL DEFAULT NULL COMMENT '购气量' ,
-`start_time`  datetime NULL DEFAULT NULL COMMENT '预约开始时间' ,
-`end_time`  datetime NULL DEFAULT NULL COMMENT '预约截止时间' ,
-`apply_repair_status` int(2) NULL DEFAULT NULL COMMENT '报修状态' ,
-PRIMARY KEY (`apply_repair_id`)
-)
-ENGINE=InnoDB
-DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci
-ROW_FORMAT=DYNAMIC
-;
+  `apply_repair_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `apply_repair_flow_number` varchar(32) DEFAULT NULL COMMENT '报修单编号',
+  `user_id` int(10) unsigned NOT NULL COMMENT '户号',
+  `apply_repair_type` int(4) NOT NULL COMMENT '报修类型',
+  `apply_repair_status` int(4) NOT NULL COMMENT '报修状态',
+  `apply_repair_fault_desc` varchar(255) NOT NULL COMMENT '故障描述',
+  `apply_repair_appeal_content` varchar(255) DEFAULT NULL COMMENT '诉求内容',
+  `apply_repair_time` datetime NOT NULL COMMENT '申请报修时间',
+  `meter_id` int(10) unsigned NOT NULL COMMENT '表具ID',
+  `current_order_gas_count` decimal(10,1) unsigned NOT NULL COMMENT '当前表购气量',
+  `start_time` datetime DEFAULT NULL COMMENT '预约开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '预约截止时间',
+  `user_tel_phone` varchar(20) DEFAULT NULL COMMENT '主叫号码',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` int(10) DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `update_by` int(10) DEFAULT NULL COMMENT '修改人',
+  `usable` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `remarks` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`apply_repair_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000000000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- 服务网点
 CREATE TABLE `service_outlet` (

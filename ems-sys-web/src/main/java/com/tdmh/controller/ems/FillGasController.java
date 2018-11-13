@@ -2,7 +2,7 @@ package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.param.FillGasOrderParam;
-import com.tdmh.service.impl.IFillGasService;
+import com.tdmh.service.IFillGasService;
 import com.tdmh.util.ShiroUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;

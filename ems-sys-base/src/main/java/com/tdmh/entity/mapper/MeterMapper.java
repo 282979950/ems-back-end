@@ -43,4 +43,5 @@ public interface MeterMapper {
 
     Meter getMeterByMeterId(@Param("meterId") Integer meterId);
 
+    Integer getMeterIdByUserId(@Param("userId") Integer userId);
 }

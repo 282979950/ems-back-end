@@ -169,7 +169,12 @@ INSERT INTO `sys_dictionary` VALUES ('1123', 'user_status', '已开户', '3', nu
 INSERT INTO `sys_dictionary` VALUES ('1124', 'user_status', '已销户', '4', null, null, null, null, null, '1', '');
 INSERT INTO `sys_dictionary` VALUES ('1125', 'user_type', '民用用户', '1', null, null, null, null, null, '1', '');
 INSERT INTO `sys_dictionary` VALUES ('1126', 'user_type', '商用用户', '2', null, null, null, null, null, '1', '');
-
+INSERT INTO `sys_dictionary` VALUES ('1127', 'apply_repair_status', '待处理', '1', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1128', 'apply_repair_status', '已接单', '2', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1129', 'apply_repair_status', '已完成', '3', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1130', 'apply_repair_status', '已撤销', '4', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1131', 'apply_repair_type', '微信报修', '1', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1132', 'apply_repair_type', '电话报修', '2', null, null, null, null, null, '1', null);
 -- 区域数据
 INSERT INTO `sys_district` VALUES ('1000', '石门市', 'SMS', '1', '', null, null, null, null, null, '1', '');
 INSERT INTO `sys_district` VALUES ('1001', '楚江镇', 'CJZ', '2', '', '1000', null, null, null, null, '0', '');
@@ -295,7 +300,8 @@ INSERT INTO `sys_permission` VALUES ('1041', 'querystats:accountdetail:visit', '
 INSERT INTO `sys_permission` VALUES ('1042', 'querystats:abnormaluser:visit', '异常用户查询', '/querystats/abnormaluser', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1043', 'querystats:businessDataQuery:visit', '营业数据查询', '/businessDataQuery/data', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1044', 'querystats:report:visit', '营业报表统计', '/querystats/report', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-
+INSERT INTO `sys_permission` VALUES ('1045', 'applyRepair:visit', '报修单管理', '/applyRepair/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1046', 'applyRepair:entryApplyRepair:visit', '报修单录入', '/applyRepair/entryApplyRepair', '1045', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
 INSERT INTO `sys_permission` (`perm_name`, `perm_caption`, `perm_href`, `perm_parent_id`, `is_button` , `create_time` ,  `create_by` , `update_time` , `update_by`, `usable` , `remarks`)
 VALUES
@@ -402,6 +408,10 @@ VALUES
 ('sys:role:export', '导出', '', '1005', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
 ('sys:role:import', '导入', '', '1005', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
 ('sys:role:retrieve', '查询', '', '1005', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:role:update', '修改', '', '1005', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+('sys:role:update', '修改', '', '1005', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
+('applyRepair:entryApplyRepair:create', '增加', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
+('applyRepair:entryApplyRepair:delete', '删除', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
+('applyRepair:entryApplyRepair:update', '修改', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
+('applyRepair:entryApplyRepair:retrieve', '查询', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 -- 角色数据
 INSERT INTO `sys_role` VALUES ('1001', 'admin', '1000', '1000', '1', null, null, null, null, '1', '');
