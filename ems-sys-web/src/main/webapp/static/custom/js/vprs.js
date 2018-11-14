@@ -11,6 +11,7 @@ app.getPanelContent = function (name) {
         case 'permission':
         case 'dic':
         case 'solet':
+        case 'evalItem':
             panelContent = this.DEFAULT_TEMPLATE;
             break;
         case 'log':
@@ -457,6 +458,19 @@ app.tableFields = {
     }, {
         name: 'serviceOutletContent',
         caption: '网点营业范围'
+    }],
+    evalItem:[{
+        name: 'evalItemContent',
+        caption: '评价项内容'
+    },{
+        name: 'createByName',
+        caption: '创建人'
+    },{
+        name: 'createTime',
+        caption: '创建时间'
+    },{
+        name: 'remarks',
+        caption: '备注'
     }]
 };
 
@@ -817,6 +831,15 @@ app.getAddFormFields = function (name) {
                 name: 'serviceOutletContent',
                 caption: '网点营业范围'
             }];
+        case 'evalItem':
+            return [{
+                name: 'evalItemContent',
+                caption: '评价项内容',
+                required: true
+            },{
+                name: 'remarks',
+                caption: '备注'
+            }];
     }
 };
 
@@ -1175,6 +1198,15 @@ app.getEditFormFields = function (name) {
                 name: 'serviceOutletContent',
                 caption: '网点营业范围'
             }];
+        case 'evalItem':
+            return [{
+                name: 'evalItemContent',
+                caption: '评价项内容',
+                required: true
+            },{
+                name: 'remarks',
+                caption: '备注'
+            }];
     }
 };
 
@@ -1408,6 +1440,24 @@ app.getToolbarFields = function (name) {
                 caption: '网点地址',
                 type: 'input'
             }];
+        case 'evalItem':
+            return [{
+                name: 'add',
+                caption: '新增',
+                perm: 'sys:evalItem:create'
+            }, {
+                name: 'edit',
+                caption: '编辑',
+                perm: 'sys:evalItem:update'
+            }, {
+                name: 'delete',
+                caption: '删除',
+                perm: 'sys:evalItem:delete'
+            }, {
+                name: 'evalItemContent',
+                caption: '评价项内容',
+                type: 'input'
+            }];
     }
 };
 
@@ -1419,5 +1469,6 @@ app.deleteNames = {
     'dist': 'distId',
     'emp': 'empId',
     'entryApplyRepair': 'applyRepairId',
-    'solet' : 'serviceOutletId'
+    'solet' : 'serviceOutletId',
+    'evalItem': 'evalItemId'
 };

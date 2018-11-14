@@ -75,6 +75,7 @@ CREATE TABLE `evaluation_item` (
 `update_time`  datetime NULL DEFAULT NULL ,
 `update_by`  int(10) NULL DEFAULT NULL ,
 `usable`  tinyint(1) NULL DEFAULT NULL ,
+`remarks`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL ,
 PRIMARY KEY (`evaluation_item_id`)
 )
 ENGINE=InnoDB

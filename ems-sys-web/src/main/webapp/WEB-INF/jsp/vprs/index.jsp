@@ -91,6 +91,9 @@
                     <shiro:hasPermission name="sys:solet:visit">
                         <div class="mdui-list-item mdui-ripple nav-item solet">网点管理</div>
                     </shiro:hasPermission>
+                    <shiro:hasPermission name="sys:evalItem:visit">
+                        <div class="mdui-list-item mdui-ripple nav-item evalItem">评价项管理</div>
+                    </shiro:hasPermission>
                 </div>
             </div>
         </shiro:hasPermission>

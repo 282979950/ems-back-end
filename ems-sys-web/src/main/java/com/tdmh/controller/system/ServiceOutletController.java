@@ -26,7 +26,7 @@ public class ServiceOutletController {
     private IServiceOutletService serviceOutletService;
 
     /**
-     * 显示已经绑定了表具的未开户的用户信息
+     * 显示所有的网点信息
      * @return
      */
     @RequiresPermissions("sys:solet:visit")

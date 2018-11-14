@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.EvalItemMapper">
+
+
+    <select id="getAllEvalItem" resultType="com.tdmh.param.EvalItemParam">
+        select
+        evaluation_item_id as evalItemId, evaluation_item_content as evalItemContent,
+        e.emp_name as createByName, ei.create_time as createTime, ei.remarks as remarks
+        from evaluation_item ei
+        join employee e on ei.create_by=e.emp_id
+        where ei.usable = 1
+    </select>
+    <insert id="insert" parameterType="com.tdmh.entity.EvalItem">
+      insert into evaluation_item(evaluation_item_content, create_by, create_time, update_by, update_time, usable, remarks)
+       values (#{evalItemContent,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER},Now(),
+       #{updateBy,jdbcType=INTEGER},Now(), #{usable,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}
+      )
+    </insert>
+    <update id="update" parameterType="com.tdmh.entity.EvalItem">
+    update evaluation_item
+    set evaluation_item_content = #{evalItemContent,jdbcType=VARCHAR},
+    update_by = #{updateBy,jdbcType=INTEGER},
+    update_time = Now(),
+    remarks = #{remarks,jdbcType=VARCHAR}
+    where evaluation_item_id = #{evalItemId}
+    </update>
+    <select id="selectEvalItem" parameterType="map" resultType="com.tdmh.param.EvalItemParam">
+        select
+        evaluation_item_id as evalItemId, evaluation_item_content as evalItemContent,
+        e.emp_name as createByName, ei.create_time as createTime, ei.remarks as remarks
+        from evaluation_item ei
+        join employee e on ei.create_by=e.emp_id
+        where ei.usable = 1
+        <if test="evalItemContent!=null and evalItemContent!=''">
+            and evaluation_item_content like CONCAT('%', #{evalItemContent},'%')
+        </if>
+    </select>
+    <update id="deleteBatch" parameterType="list">
+        update evaluation_item
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_by = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateBy != null">
+                        when evaluation_item_id = #{i.evalItemId} then #{i.updateBy}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateTime != null">
+                        when evaluation_item_id = #{i.evalItemId} then NOW()
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="usable =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.usable != null">
+                        when evaluation_item_id =#{i.evalItemId} then 0
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index">
+            evaluation_item_id = #{i.evalItemId}
+        </foreach>
+    </update>
+
+    <select id="getEvalItemById" parameterType="int" resultType="com.tdmh.entity.EvalItem">
+        select evaluation_item_id as evalItemId, evaluation_item_content as evalItemContent
+        from evaluation_item
+        where evaluation_item_id = #{evalItemId}
+    </select>
+</mapper>
