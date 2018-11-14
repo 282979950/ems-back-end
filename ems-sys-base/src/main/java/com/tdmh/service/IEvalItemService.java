@@ -18,4 +18,6 @@ public interface IEvalItemService {
     JsonData updateEvalItem(EvalItemParam evalItemParam);
 
     JsonData selectEvalItem(String evalItemContent);
+
+    JsonData getWXEvalItem();
 }

@@ -11,14 +11,12 @@
             <arg column="service_outlet_content" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="tx_longitude" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="tx_latitude" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="bd_longitude" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="bd_latitude" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
         service_outlet_id, service_outlet_name, service_outlet_address,
         service_outlet_open_time, service_outlet_phone, service_outlet_content,
-        tx_longitude, tx_latitude, bd_longitude, bd_latitude
+        tx_longitude, tx_latitude
 
     </sql>
     <select id="getAllSOLet" resultMap="BaseResultMap">

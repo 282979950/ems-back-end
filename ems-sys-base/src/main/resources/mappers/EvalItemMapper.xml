@@ -72,4 +72,9 @@
         from evaluation_item
         where evaluation_item_id = #{evalItemId}
     </select>
+
+    <select id="getWXEvalItem" resultType="com.tdmh.param.EvalItemParam">
+         select evaluation_item_id as evalItemId, evaluation_item_content as evalItemContent
+        from evaluation_item
+    </select>
 </mapper>

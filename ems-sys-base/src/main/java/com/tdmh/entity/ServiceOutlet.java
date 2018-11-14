@@ -3,7 +3,7 @@ package com.tdmh.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author Liuxia on 2018/11/12.
@@ -19,25 +19,25 @@ public class ServiceOutlet extends BaseEntity{
     /**
      * 网点名称
      */
-    @NotNull(message = "网点名称不能为空")
+    @NotBlank(message = "网点名称不能为空")
     private String serviceOutletName;
 
     /**
      * 网点地址
      */
-    @NotNull(message = "网点地址不能为空")
+    @NotBlank(message = "网点地址不能为空")
     private String serviceOutletAddress;
 
     /**
      * 网点营业时间
      */
-    @NotNull(message = "网点营业时间不能为空")
+    @NotBlank(message = "网点营业时间不能为空")
     private String serviceOutletOpenTime;
 
     /**
      * 网点联系方式
      */
-    @NotNull(message = "网点联系方式不能为空")
+    @NotBlank(message = "网点联系方式不能为空")
     private String serviceOutletPhone;
 
     /**
@@ -65,7 +65,7 @@ public class ServiceOutlet extends BaseEntity{
      */
     private String bdLatitude;
 
-    public ServiceOutlet(Integer serviceOutletId, String serviceOutletName, String serviceOutletAddress, String serviceOutletOpenTime, String serviceOutletPhone, String serviceOutletContent, String txLongitude, String txLatitude, String bdLongitude, String bdLatitude) {
+    public ServiceOutlet(Integer serviceOutletId, String serviceOutletName, String serviceOutletAddress, String serviceOutletOpenTime, String serviceOutletPhone, String serviceOutletContent, String txLongitude, String txLatitude) {
         this.serviceOutletId = serviceOutletId;
         this.serviceOutletName = serviceOutletName;
         this.serviceOutletAddress = serviceOutletAddress;
@@ -74,7 +74,5 @@ public class ServiceOutlet extends BaseEntity{
         this.serviceOutletContent = serviceOutletContent;
         this.txLongitude = txLongitude;
         this.txLatitude = txLatitude;
-        this.bdLongitude = bdLongitude;
-        this.bdLatitude = bdLatitude;
     }
 }

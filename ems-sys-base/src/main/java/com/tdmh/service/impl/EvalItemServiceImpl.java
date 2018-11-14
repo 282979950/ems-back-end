@@ -78,4 +78,11 @@ public class EvalItemServiceImpl implements IEvalItemService {
         return list == null || list.size()==0 ? JsonData.successMsg("暂无评价项"):JsonData.success(list,"查询成功");
 
     }
+
+    @Override
+    public JsonData getWXEvalItem() {
+        List<EvalItemParam> list = evalItemMapper.getWXEvalItem();
+        return list == null || list.size()==0 ? JsonData.successMsg("暂无评价项"):JsonData.successData(list);
+
+    }
 }

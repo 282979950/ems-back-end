@@ -25,4 +25,6 @@ public interface EvalItemMapper {
     int update(EvalItem evalItem);
 
     List<EvalItemParam> selectEvalItem(@Param("evalItemContent") String evalItemContent);
+
+    List<EvalItemParam> getWXEvalItem();
 }
