@@ -302,6 +302,7 @@ INSERT INTO `sys_permission` VALUES ('1043', 'querystats:businessDataQuery:visit
 INSERT INTO `sys_permission` VALUES ('1044', 'querystats:report:visit', '营业报表统计', '/querystats/report', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1045', 'applyRepair:visit', '报修单管理', '/applyRepair/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1046', 'applyRepair:entryApplyRepair:visit', '报修单录入', '/applyRepair/entryApplyRepair', '1045', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1047', 'sys:solet:visit', '网点管理', '/sys/solet', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
 INSERT INTO `sys_permission` (`perm_name`, `perm_caption`, `perm_href`, `perm_parent_id`, `is_button` , `create_time` ,  `create_by` , `update_time` , `update_by`, `usable` , `remarks`)
 VALUES
@@ -412,6 +413,10 @@ VALUES
 ('applyRepair:entryApplyRepair:create', '增加', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
 ('applyRepair:entryApplyRepair:delete', '删除', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
 ('applyRepair:entryApplyRepair:update', '修改', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('applyRepair:entryApplyRepair:retrieve', '查询', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+('applyRepair:entryApplyRepair:retrieve', '查询', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
+('sys:solet:create', '增加', '', '1047', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
+('sys:solet:delete', '删除', '', '1047', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
+('sys:solet:update', '修改', '', '1047', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
+('sys:solet:retrieve', '查询', '', '1047', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 -- 角色数据
 INSERT INTO `sys_role` VALUES ('1001', 'admin', '1000', '1000', '1', null, null, null, null, '1', '');
