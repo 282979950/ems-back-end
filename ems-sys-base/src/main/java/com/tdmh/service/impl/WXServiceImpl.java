@@ -10,9 +10,11 @@ import com.tdmh.config.CustomWXPayConfig;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.entity.mapper.WXMapper;
+import com.tdmh.param.ApplyRepairParam;
 import com.tdmh.param.WXOrderParam;
 import com.tdmh.param.WXUserInfoParam;
 import com.tdmh.param.WXUserParam;
+import com.tdmh.service.IApplyRepairService;
 import com.tdmh.service.IGasPriceService;
 import com.tdmh.service.IWXService;
 import com.tdmh.utils.HttpRequestUtil;
@@ -53,6 +55,9 @@ public class WXServiceImpl implements IWXService {
 
     @Autowired
     private UserOrdersMapper userOrdersMapper;
+
+    @Autowired
+    private IApplyRepairService applyRepairService;
 
     private WXPay wxPay;
 
@@ -295,5 +300,20 @@ public class WXServiceImpl implements IWXService {
             }
         }
         log.info("超时订单清理完毕");
+    }
+
+    @Override
+    public JsonData getWXApplyRepairByUserId(Integer userId) {
+        return applyRepairService.getWXApplyRepairByUserId(userId);
+    }
+
+    @Override
+    public JsonData createWXApplyRepair(ApplyRepairParam param) {
+        return applyRepairService.createWXApplyRepair(param);
+    }
+
+    @Override
+    public JsonData cancelWXApplyRepair() {
+        return null;
     }
 }

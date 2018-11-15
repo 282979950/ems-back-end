@@ -12,14 +12,14 @@ public class CustomWXPayConfig implements WXPayConfig {
     /**
      * 小程序ID
      */
-//    public static final String APP_ID = "wx5a0f9d772e934b2f";// TD
-    public static final String APP_ID = "wx3f09eb2829930acb";// LY
+    public static final String APP_ID = "wxcb4b102a910ebcab";// TD
+//    public static final String APP_ID = "wx3f09eb2829930acb";// LY
 
     /**
      * 小程序秘钥
      */
-//    public static final String APP_SECRET = "4bffcda4baa71c306c052dcd54a015c5";//TD
-    public static final String APP_SECRET = "e8c74540c7beef1e30b83500afef4cea";//LY
+    public static final String APP_SECRET = "0daa322b212d11b684d4ad2afffea9b7";//TD
+//    public static final String APP_SECRET = "e8c74540c7beef1e30b83500afef4cea";//LY
 
     /**
      * 商户ID

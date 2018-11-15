@@ -79,7 +79,9 @@ app.initIndex = function () {
                                         app.addForm.setValue('userName', data ? data.userName : null);
                                         app.addForm.setValue('userPhone', data ? data.userPhone : null);
                                         app.addForm.setValue('distName', data ? data.distName : null);
+                                        app.addForm.setValue('distCode', data ? data.distCode : null);
                                         app.addForm.setValue('userAddress', data ? data.userAddress : null);
+                                        app.addForm.getData().distId = data ? data.distId : null;
                                     }
                                     if (app.editForm) {
                                         app.editForm.setValue('userName', data ? data.userName : null);
@@ -150,13 +152,28 @@ app.initEvent = function () {
         dialog.handleUpdate();
     });
     main.on('edit', function () {
-        if (table.getSelectedDatas().length === 0) {
+        var selectDatas = table.getSelectedDatas();
+        if (selectDatas.length === 0) {
             app.message('请选择一条数据');
             return;
         }
-        if (table.getSelectedDatas().length > 1) {
+        if (selectDatas.length > 1) {
             app.message('只能选择一条数据');
             return;
+        }
+        switch (app.currentPageName) {
+            case 'dist':
+                if (!selectDatas[0].distParentId) {
+                    app.message("该节点为根节点不可编辑");
+                    return;
+                }
+                break;
+            case 'entryApplyRepair':
+                if (selectDatas[0].applyRepairType === 1) {
+                    app.message("微信报修单不能编辑");
+                    return;
+                }
+                break;
         }
         if (app.currentPageName === 'dist') {
             if (!table.getSelectedDatas()[0].distParentId) {
@@ -417,6 +434,9 @@ app.tableFields = {
     }, {
         name: 'distName',
         caption: '用户区域'
+    }, {
+        name: 'distCode',
+        caption: '用户区域编码'
     }, {
         name: 'userAddress',
         caption: '用户地址'
@@ -742,11 +762,6 @@ app.getAddFormFields = function (name) {
             }];
         case 'entryApplyRepair':
             return [{
-                name: 'applyRepairType',
-                caption: '报修类型',
-                type: 'listcombobox',
-                options: app.getDictionaryByCategory("apply_repair_type")
-            }, {
                 name: 'userId',
                 caption: '户号',
                 maxlength: 10,
@@ -763,6 +778,10 @@ app.getAddFormFields = function (name) {
             }, {
                 name: 'distName',
                 caption: '用户区域',
+                disabled: true
+            }, {
+                name: 'distCode',
+                caption: '用户区域编码',
                 disabled: true
             }, {
                 name: 'userPhone',
@@ -1121,6 +1140,10 @@ app.getEditFormFields = function (name) {
             }, {
                 name: 'distName',
                 caption: '用户区域',
+                disabled: true
+            }, {
+                name: 'distCode',
+                caption: '用户区域编码',
                 disabled: true
             }, {
                 name: 'userPhone',

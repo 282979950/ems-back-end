@@ -22,4 +22,6 @@ public interface MeterTypeMapper {
     Integer getMeterTypeId(@Param("meterCategory") String meterCategory, @Param("meterType") String meterType);
 
     List<MeterType> getAllMeterTypes();
+
+    String getMeterTypeByMeterTypeId(@Param("meterTypeId") Integer meterTypeId);
 }

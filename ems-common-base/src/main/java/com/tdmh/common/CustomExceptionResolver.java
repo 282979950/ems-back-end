@@ -1,6 +1,7 @@
 package com.tdmh.common;
 
 
+import com.tdmh.exception.CustomException;
 import com.tdmh.exception.ParameterException;
 import com.tdmh.exception.PermissionException;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,8 @@ public class CustomExceptionResolver implements HandlerExceptionResolver {
 
         // 这里我们要求项目中所有请求json数据，都使用.json结尾
         if (url.endsWith(".do")) {
-            if (e instanceof PermissionException || e instanceof ParameterException || e instanceof AuthenticationException || e instanceof AuthorizationException) {
+            if (e instanceof PermissionException || e instanceof ParameterException || e instanceof AuthenticationException ||
+                    e instanceof AuthorizationException || e instanceof CustomException) {
                 JsonData result = JsonData.fail(e.getMessage());
                 mv = new ModelAndView("jsonView", result.toMap());
             } else {

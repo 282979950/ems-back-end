@@ -57,4 +57,20 @@ public interface IApplyRepairService {
      * @return
      */
     JsonData getApplyRepairUserInfoById(Integer userId);
+
+    /**
+     * 获取微信报修单
+     *
+     * @param userId
+     * @return
+     */
+    JsonData getWXApplyRepairByUserId(Integer userId);
+
+    /**
+     * 新建维修报修单
+     *
+     * @param param
+     * @return
+     */
+    JsonData createWXApplyRepair(ApplyRepairParam param);
 }

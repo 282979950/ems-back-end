@@ -63,4 +63,8 @@ public class SysDictionaryService {
 
         return sysDictionaryMapper.keyCountRecord(record);
     }
+
+    public String getDictKeyByCategoryAndDictValue(String category, String dictValue) {
+		return sysDictionaryMapper.getDictKeyByCategoryAndDictValue(category, dictValue);
+	}
 }
