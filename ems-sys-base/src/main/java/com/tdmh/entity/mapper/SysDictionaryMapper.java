@@ -37,4 +37,6 @@ public interface SysDictionaryMapper {
     int selectCountRecord(SysDictionary record);
     //修改时查看记录数
     int keyCountRecord(SysDictionary record);
+
+    String getDictKeyByCategoryAndDictValue(@Param("dictCategory") String dictCategory, @Param("dictValue") String dictValue);
 }

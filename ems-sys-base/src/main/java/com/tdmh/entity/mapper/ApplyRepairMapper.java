@@ -29,4 +29,10 @@ public interface ApplyRepairMapper {
     ApplyRepairUserInfo getApplyRepairUserInfoById(@Param("userId") Integer userId);
 
     ApplyRepairParam getApplyRepairParamById(@Param("applyRepairId") Integer applyRepairId);
+
+    List<ApplyRepairParam> getWXApplyRepairByUserId(@Param("userId") Integer userId);
+
+    boolean hasUnsolvedApplyRepair(@Param("userId") Integer userId);
+
+    boolean checkUserIdExists(@Param("userId") Integer userId);
 }

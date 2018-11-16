@@ -1,6 +1,7 @@
-package com.tdmh.controller.ems;
+package com.tdmh.controller.system;
 
 import com.tdmh.common.JsonData;
+import com.tdmh.param.ApplyRepairParam;
 import com.tdmh.service.IWXService;
 import com.tdmh.utils.HttpRequestUtil;
 import org.apache.ibatis.annotations.Param;
@@ -20,6 +21,11 @@ import java.math.BigDecimal;
 @Controller
 @RequestMapping("/wx/")
 public class WeChatController {
+
+    /**
+     * 微信收银员ID
+     */
+    private static final Integer WX_CASHIER_ID = 1000000000;
 
     @Autowired
     private IWXService wxService;
@@ -90,5 +96,25 @@ public class WeChatController {
     public void getOrderNotify(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("接收到订单回调");
         wxService.getOrderNotify(request, response);
+    }
+
+    @RequestMapping(value = "getWXApplyRepairByUserId")
+    @ResponseBody
+    public JsonData getWXApplyRepairByUserId(@Param("userId") Integer userId) {
+        return wxService.getWXApplyRepairByUserId(userId);
+    }
+
+    @RequestMapping(value = "createWXApplyRepair")
+    @ResponseBody
+    public JsonData createWXApplyRepair(ApplyRepairParam param) {
+        param.setCreateBy(WX_CASHIER_ID);
+        param.setUpdateBy(WX_CASHIER_ID);
+        return wxService.createWXApplyRepair(param);
+    }
+
+    @RequestMapping(value = "cancelWXApplyRepair")
+    @ResponseBody
+    public JsonData cancelWXApplyRepair(ApplyRepairParam param) {
+        return null;
     }
 }

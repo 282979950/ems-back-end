@@ -240,4 +240,10 @@
 
 
     </select>
+    <select id="getDictKeyByCategoryAndDictValue" resultType="java.lang.String" parameterType="map">
+      select
+      dict_key
+      from sys_dictionary
+      where dict_category = #{dictCategory} and dict_value = #{dictValue} and usable = 1
+    </select>
 </mapper>

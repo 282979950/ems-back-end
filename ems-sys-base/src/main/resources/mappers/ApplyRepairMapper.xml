@@ -9,6 +9,7 @@
             <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="dist_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="dist_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="apply_repair_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
@@ -38,7 +39,7 @@
     </resultMap>
     <select id="selectAll" resultMap="ApplyRepairParam">
         select
-        ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, u.user_address,
+        ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, dist.dist_code, u.user_address,
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
@@ -54,12 +55,15 @@
         where ar.usable = 1
     </select>
     <insert id="create" parameterType="com.tdmh.param.ApplyRepairParam">
+        <selectKey keyProperty="applyRepairId" order="AFTER" resultType="integer">
+            select LAST_INSERT_ID()
+        </selectKey>
         INSERT INTO apply_repair
         (apply_repair_flow_number, apply_repair_type, user_id, user_tel_phone, apply_repair_fault_desc, meter_id, apply_repair_appeal_content,
         apply_repair_time, current_order_gas_count, apply_repair_status, start_time, end_time,
         create_time, create_by, update_time, update_by, remarks)
         VALUES (#{applyRepairFlowNumber}, #{applyRepairType}, #{userId}, #{userTelPhone}, #{applyRepairFaultDesc}, #{meterId}, #{applyRepairAppealContent},
-        NOW(), #{currentOrderGasCount}, #{applyRepairStatus}, #{startTime}, #{endTime},
+        #{applyRepairTime}, #{currentOrderGasCount}, #{applyRepairStatus}, #{startTime}, #{endTime},
         NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks}
         )
     </insert>
@@ -109,7 +113,7 @@
     </delete>
     <select id="search" parameterType="map" resultMap="ApplyRepairParam">
         select
-        ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, u.user_address,
+        ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, dist.dist_code, u.user_address,
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
@@ -141,20 +145,21 @@
             <idArg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="dist_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
     </resultMap>
     <select id="getApplyRepairUserInfoById" resultMap="ApplyRepairUserInfo" parameterType="integer">
         select
-        u.user_id, u.user_name, sd.dist_name, u.user_address, u.user_phone
+        u.user_id, u.user_name, sd.dist_name, sd.dist_code, u.user_address, u.user_phone
         from user u
         left join sys_district sd on sd.dist_id = u.user_dist_id and sd.usable = 1
         where u.user_id = #{userId} and u.usable = 1
     </select>
     <select id="getApplyRepairParamById" resultMap="ApplyRepairParam" parameterType="integer">
         select
-        ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, u.user_address,
+        ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, dist.dist_code, u.user_address,
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
@@ -168,5 +173,34 @@
         left join meter_type mt on m.meter_type_id = mt.meter_type_id and mt.usable = 1
         left join sys_dictionary dict3 on dict3.dict_category = 'apply_repair_status' and ar.apply_repair_status = dict3.dict_value and dict3.usable = 1
         where ar.apply_repair_id = #{applyRepairId} and ar.usable = 1
+    </select>
+    <select id="getWXApplyRepairByUserId" resultMap="ApplyRepairParam" parameterType="integer">
+        select
+        ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, dist.dist_code, u.user_address,
+        u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
+        ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
+        ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
+        ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
+        from apply_repair ar
+        left join user u on ar.user_id = u.user_id and u.usable = 1
+        left join sys_district dist on u.user_dist_id = dist.dist_id and dist.usable = 1
+        left join sys_dictionary dict1 on dict1.dict_category = 'apply_repair_type' and ar.apply_repair_type = dict1.dict_value and dict1.usable = 1
+        left join meter m on ar.meter_id = m.meter_id
+        left join sys_dictionary dict2 on dict2.dict_category = 'meter_direction' and m.meter_direction = dict2.dict_value and dict2.usable = 1
+        left join meter_type mt on m.meter_type_id = mt.meter_type_id and mt.usable = 1
+        left join sys_dictionary dict3 on dict3.dict_category = 'apply_repair_status' and ar.apply_repair_status = dict3.dict_value and dict3.usable = 1
+        where ar.user_id = #{userId} and ar.apply_repair_type = 1 and ar.usable = 1
+    </select>
+    <select id="hasUnsolvedApplyRepair" resultType="java.lang.Boolean">
+        select
+        count(1)
+        from apply_repair
+        where user_id = #{userId} and (apply_repair_status = 1 or apply_repair_status = 2) and usable = 1
+    </select>
+    <select id="checkUserIdExists" resultType="java.lang.Boolean" parameterType="int">
+        select
+        count(1)
+        from `user`
+        where user_id = #{userId} and usable = 1
     </select>
 </mapper>

@@ -149,4 +149,10 @@
         from meter_type
         where usable = 1
     </select>
+    <select id="getMeterTypeByMeterTypeId" resultType="java.lang.String">
+        select
+        meter_type
+        from meter_type
+        where meter_type_id = #{meterTypeId} and usable = 1
+    </select>
 </mapper>

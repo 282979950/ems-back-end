@@ -1,6 +1,7 @@
 package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
+import com.tdmh.param.ApplyRepairParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -89,4 +90,27 @@ public interface IWXService {
      * @param response
      */
     void getOrderNotify(HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 获取用户的报修单列表
+     *
+     * @param userId
+     * @return
+     */
+    JsonData getWXApplyRepairByUserId(Integer userId);
+
+    /**
+     * 新增微信报修单
+     *
+     * @param param
+     * @return
+     */
+    JsonData createWXApplyRepair(ApplyRepairParam param);
+
+    /**
+     * 撤销微信订单
+     *
+     * @return
+     */
+    JsonData cancelWXApplyRepair();
 }

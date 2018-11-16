@@ -117,6 +117,11 @@ public class MeterServiceImpl implements IMeterService {
     }
 
     @Override
+    public String getMeterTypeByMeterTypeId(Integer meterTypeId) {
+        return meterTypeMapper.getMeterTypeByMeterTypeId(meterTypeId);
+    }
+
+    @Override
     public JsonData selectAll() {
         List<Meter> meters = meterMapper.selectAll();
         if (meters == null || meters.size() == 0) {
@@ -157,6 +162,7 @@ public class MeterServiceImpl implements IMeterService {
     public int clearInstallInfo(Meter meter) {
         return meterMapper.clearInstallInfo(meter);
     }
+
     /**
      * 校验表具是否已经入库
      *

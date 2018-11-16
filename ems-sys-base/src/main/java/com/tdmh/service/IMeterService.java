@@ -113,4 +113,6 @@ public interface IMeterService {
      * @return
      */
     JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection, Date meterProdDate);
+
+    String getMeterTypeByMeterTypeId(Integer meterTypeId);
 }

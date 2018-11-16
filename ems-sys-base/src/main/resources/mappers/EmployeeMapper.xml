@@ -464,7 +464,7 @@
         where e.usable = 1
     </select>
     <insert id="addEmployee" parameterType="com.tdmh.param.EmployeeParam">
-        <selectKey keyColumn="empId" order="AFTER" resultType="int">
+        <selectKey keyProperty="empId" order="AFTER" resultType="int">
             select LAST_INSERT_ID()
         </selectKey>
         insert into employee (emp_number, emp_name,

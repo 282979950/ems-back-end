@@ -50,6 +50,11 @@ public class ApplyRepairParam extends BaseEntity {
     private String distName;
 
     /**
+     * 区域编码
+     */
+    private String distCode;
+
+    /**
      * 用户地址（全地址）
      */
     private String userAddress;
@@ -62,7 +67,6 @@ public class ApplyRepairParam extends BaseEntity {
     /**
      * 报修类型
      */
-    @NotNull(message = "报修类型不能为空")
     private Integer applyRepairType;
 
     /**
@@ -159,11 +163,11 @@ public class ApplyRepairParam extends BaseEntity {
     }
 
     public ApplyRepairParam(Integer applyRepairId, String applyRepairFlowNumber, Integer userId, String userName, Integer distId, String distName,
-                            String userAddress, String userPhone, Integer applyRepairType, String applyRepairTypeName, String applyRepairFaultDesc,
-                            String applyRepairAppealContent, Date applyRepairTime, Integer meterId, String meterCode, Boolean meterDirection,
-                            String meterDirectionName, Integer meterTypeId, String meterType, BigDecimal currentOrderGasCount, Integer applyRepairStatus,
-                            String applyRepairStatusName, Date startTime, Date endTime, String userTelPhone, Date createTime, Integer createBy, Date updateTime,
-                            Integer updateBy, Boolean usable, String remarks) {
+                            String distCode, String userAddress, String userPhone, Integer applyRepairType, String applyRepairTypeName,
+                            String applyRepairFaultDesc, String applyRepairAppealContent, Date applyRepairTime, Integer meterId, String meterCode,
+                            Boolean meterDirection, String meterDirectionName, Integer meterTypeId, String meterType, BigDecimal currentOrderGasCount,
+                            Integer applyRepairStatus, String applyRepairStatusName, Date startTime, Date endTime, String userTelPhone, Date createTime,
+                            Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.applyRepairId = applyRepairId;
         this.applyRepairFlowNumber = applyRepairFlowNumber;
@@ -171,6 +175,7 @@ public class ApplyRepairParam extends BaseEntity {
         this.userName = userName;
         this.distId = distId;
         this.distName = distName;
+        this.distCode = distCode;
         this.userAddress = userAddress;
         this.userPhone = userPhone;
         this.applyRepairType = applyRepairType;
@@ -190,5 +195,28 @@ public class ApplyRepairParam extends BaseEntity {
         this.startTime = startTime;
         this.endTime = endTime;
         this.userTelPhone = userTelPhone;
+    }
+
+    @Override
+    public String toString() {
+        return "applyRepairFlowNumber=" + applyRepairFlowNumber +
+                "&applyRepairType=" + applyRepairTypeName +
+                "&userId=" + userId +
+                "&userName=" + userName +
+                "&distName=" + distName +
+                "&distCode=" + distCode +
+                "&userAddress=" + userAddress +
+                "&userPhone=" + userPhone +
+                "&applyRepairFaultDesc=" + applyRepairFaultDesc +
+                "&applyRepairAppealContent=" + applyRepairAppealContent +
+                "&applyRepairTime=" + applyRepairTime +
+                "&meterCode=" + meterCode +
+                "&meterDirection=" + meterDirectionName +
+                "&meterType=" + meterType +
+                "&currentOrderGasCount=" + currentOrderGasCount +
+                "&startTime=" + startTime +
+                "&endTime=" + endTime +
+                "&userTelPhone=" + userTelPhone +
+                "&remarks=" + getRemarks();
     }
 }

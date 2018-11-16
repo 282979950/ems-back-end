@@ -20,6 +20,8 @@ public class ApplyRepairUserInfo {
 
     private String distName;
 
+    private String distCode;
+
     private String userAddress;
 
     private String userPhone;
