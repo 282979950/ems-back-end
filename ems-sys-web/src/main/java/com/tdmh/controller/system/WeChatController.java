@@ -2,14 +2,15 @@ package com.tdmh.controller.system;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.param.ApplyRepairParam;
+import com.tdmh.param.WxEvalParam;
+import com.tdmh.service.IEvalItemService;
+import com.tdmh.service.IServiceOutletService;
 import com.tdmh.service.IWXService;
 import com.tdmh.utils.HttpRequestUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,12 @@ public class WeChatController {
 
     @Autowired
     private IWXService wxService;
+
+    @Autowired
+    private IServiceOutletService serviceOutletService;
+
+    @Autowired
+    private IEvalItemService evalItemService;
 
     @RequestMapping(value = "wxLogin", method = RequestMethod.GET)
     @ResponseBody
@@ -116,5 +123,33 @@ public class WeChatController {
     @ResponseBody
     public JsonData cancelWXApplyRepair(ApplyRepairParam param) {
         return null;
+    }
+
+    /**
+     * 获取网点信息
+     * @return
+     */
+    @GetMapping("/getAllServiceOutlet")
+    public JsonData getAllServiceOutlet(){
+        return serviceOutletService.getAllSOLet();
+    }
+
+    /**
+     * 获取评价项信息
+     * @return
+     */
+    @GetMapping("/getEvalItem")
+    public JsonData getEvalItem(){
+        return evalItemService.getWXEvalItem();
+    }
+
+    /**
+     * 保存评价
+     * @param evalParam
+     * @return
+     */
+    @PostMapping("/saveEval")
+    public JsonData saveEval(@RequestBody WxEvalParam evalParam){
+        return evalItemService.saveEval(evalParam);
     }
 }
