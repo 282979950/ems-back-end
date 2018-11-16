@@ -38,9 +38,10 @@ public class CustomExceptionResolver implements HandlerExceptionResolver {
         ModelAndView mv;
 
         // 这里我们要求项目中所有请求json数据，都使用.json结尾
+
         if (url.endsWith(".do")) {
             if (e instanceof PermissionException || e instanceof ParameterException || e instanceof AuthenticationException ||
-                    e instanceof AuthorizationException || e instanceof CustomException) {
+                    e instanceof AuthorizationException) {
                 JsonData result = JsonData.fail(e.getMessage());
                 mv = new ModelAndView("jsonView", result.toMap());
             } else {
@@ -53,9 +54,15 @@ public class CustomExceptionResolver implements HandlerExceptionResolver {
             JsonData result = JsonData.fail(DEFAULT_ERROR_MESSAGE);
             mv = new ModelAndView("exception", result.toMap());
         } else {
-            log.error("unknow exception, url:" + url, e);
-            JsonData result = JsonData.fail(DEFAULT_ERROR_MESSAGE);
-            mv = new ModelAndView("jsonView", result.toMap());
+            if (e instanceof CustomException) {
+                log.error("custom exception, url:" + url, e);
+                JsonData result = JsonData.fail(e.getMessage());
+                mv = new ModelAndView("jsonView", result.toMap());
+            } else {
+                log.error("unknow exception, url:" + url, e);
+                JsonData result = JsonData.fail(DEFAULT_ERROR_MESSAGE);
+                mv = new ModelAndView("jsonView", result.toMap());
+            }
         }
 
         return mv;
