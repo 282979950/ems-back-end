@@ -1516,7 +1516,7 @@ app.getToolbarFields = function (name) {
                 type: 'input'
             }, {
                 name: 'applyRepairFlowNumber',
-                caption: '报修单号',
+                caption: '报修流水号',
                 type: 'input'
             }];
     }

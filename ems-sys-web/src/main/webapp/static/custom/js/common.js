@@ -84,10 +84,12 @@ app.render = function (context) {
                         if(response.status) {
                             var data = response.data;
                             data.forEach(function (item) {
-                                app.tableFields[names].splice(app.tableFields[names].length-2, 0, {
-                                    name: '评价项'+item.evalItemId,
+                            if(JSON.stringify(app.tableFields[names]).indexOf('评价项'+item.evalItemId) === -1) {
+                                app.tableFields[names].splice(app.tableFields[names].length - 2, 0, {
+                                    name: '评价项' + item.evalItemId,
                                     caption: item.evalItemContent
                                 });
+                            }
                             });
                         }
                     }
