@@ -71,6 +71,28 @@ app.render = function (context) {
             app.table.refresh(data);
         } else {
             var names = app.currentPageName;
+            if(names == 'eval'){
+                $.ajax({
+                    async: false,
+                    type: 'GET',
+                    url: 'evalItem/listData.do',
+                    contentType: 'application/json;charset=utf-8',
+                    beforeSend: function (xhr) {
+                        xhr.withCredentials = true;
+                    },
+                    success: function (response) {
+                        if(response.status) {
+                            var data = response.data;
+                            data.forEach(function (item) {
+                                app.tableFields[names].splice(app.tableFields[names].length-2, 0, {
+                                    name: '评价项'+item.evalItemId,
+                                    caption: item.evalItemContent
+                                });
+                            });
+                        }
+                    }
+                });
+             }
             app.table = context.table = app.createTable({
                 parent: '.mdui-table-fluid',
                 fields: app.tableFields[names],

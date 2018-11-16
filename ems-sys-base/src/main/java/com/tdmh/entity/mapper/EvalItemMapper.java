@@ -1,6 +1,8 @@
 package com.tdmh.entity.mapper;
 
+import com.tdmh.entity.Eval;
 import com.tdmh.entity.EvalItem;
+import com.tdmh.entity.FixedEval;
 import com.tdmh.param.EvalItemParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -27,4 +29,8 @@ public interface EvalItemMapper {
     List<EvalItemParam> selectEvalItem(@Param("evalItemContent") String evalItemContent);
 
     List<EvalItemParam> getWXEvalItem();
+
+    int insertEvalBatch(@Param("evals") List<Eval> evals);
+
+    int insertFixedEval(FixedEval fixedEval);
 }

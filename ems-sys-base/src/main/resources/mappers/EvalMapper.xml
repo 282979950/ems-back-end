@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.EvalMapper">
+    <resultMap id="evalMap" type="com.tdmh.param.EvalParam">
+        <id column="apply_repair_id" jdbcType="INTEGER" property="applyRepairId" javaType="java.lang.Integer"/>
+        <result column="apply_repair_flow_number" jdbcType="VARCHAR" property="applyRepairFlowNumber" javaType="java.lang.String"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId" javaType="java.lang.Integer"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName" javaType="java.lang.String"/>
+        <result column="fixed_evaluation_select" jdbcType="VARCHAR" property="fixedEvalSelect" javaType="java.lang.String"/>
+        <result column="fixed_evaluation_content" jdbcType="VARCHAR" property="fixedEvalContent" javaType="java.lang.String"/>
+        <result column="fixed_evaluation_time" jdbcType="TIMESTAMP" property="evalTime" javaType="java.util.Date"/>
+        <collection property="evalList" ofType="com.tdmh.entity.Eval">
+            <result column="evaluation_item_id" jdbcType="INTEGER" property="evalItemId" javaType="java.lang.Integer"/>
+            <result column="evaluation_content" jdbcType="BIT" property="evalContent" javaType="java.lang.Boolean"/>
+        </collection>
+    </resultMap>
+
+    <select id="getAllEvals" parameterType="map" resultMap="evalMap">
+        SELECT ar.apply_repair_id,ar.apply_repair_flow_number, u.user_id, u.user_name, ei.evaluation_item_id,e.evaluation_content,
+        fe.fixed_evaluation_select,fe.fixed_evaluation_content,fe.fixed_evaluation_time
+        FROM apply_repair ar
+        JOIN `user` u ON ar.user_id = u.user_id
+        JOIN evaluation e ON ar.apply_repair_id = e.apply_repair_id
+        JOIN evaluation_item ei ON e.evaluation_item_id = ei.evaluation_item_id
+        JOIN fixed_evaluation fe ON ar.apply_repair_id = fe.apply_repair_id
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userName!=null and userName!=''">
+                 u.user_name like CONCAT('%',#{userName},'%')
+            </if>
+            <if test="applyRepairFlowNumber!=null and applyRepairFlowNumber!=''">
+                 and ar.apply_repair_flow_number like CONCAT('%',#{applyRepairFlowNumber},'%')
+            </if>
+        </trim>
+    </select>
+
+</mapper>

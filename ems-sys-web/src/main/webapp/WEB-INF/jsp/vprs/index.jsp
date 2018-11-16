@@ -111,6 +111,20 @@
                 </div>
             </div>
         </shiro:hasPermission>
+        <shiro:hasPermission name="querystats:visit">
+            <div class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">assessment</i>
+                    <div class="mdui-list-item-content mdui-text-color-blue">查询统计</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-text-color-blue">keyboard_arrow_down</i>
+                </div>
+                <div class="mdui-collapse-item-body mdui-list" style="">
+                    <shiro:hasPermission name="querystats:eval:visit">
+                        <div class="mdui-list-item mdui-ripple nav-item eval">评价查询</div>
+                    </shiro:hasPermission>
+                </div>
+            </div>
+        </shiro:hasPermission>
     </div>
 </div>
 <div class="mdui-container">

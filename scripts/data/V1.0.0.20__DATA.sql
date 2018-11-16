@@ -303,7 +303,8 @@ INSERT INTO `sys_permission` VALUES ('1044', 'querystats:report:visit', '营业�
 INSERT INTO `sys_permission` VALUES ('1045', 'applyRepair:visit', '报修单管理', '/applyRepair/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1046', 'applyRepair:entryApplyRepair:visit', '报修单录入', '/applyRepair/entryApplyRepair', '1045', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1047', 'sys:solet:visit', '网点管理', '/sys/solet', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1048', 'sys:evalItem:visit', '评价项管理', '/sys/eval', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1048', 'sys:evalItem:visit', '评价项管理', '/sys/evalItem', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1049', 'sys:eval:visit', '评价查询', '/sys/eval', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
 INSERT INTO `sys_permission` (`perm_name`, `perm_caption`, `perm_href`, `perm_parent_id`, `is_button` , `create_time` ,  `create_by` , `update_time` , `update_by`, `usable` , `remarks`)
 VALUES
@@ -423,6 +424,7 @@ VALUES
 ('sys:evalItem:delete', '删除', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
 ('sys:evalItem:update', '修改', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
 ('sys:evalItem:retrieve', '查询', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+('sys:eval:retrieve', '查询', '', '1049', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
 -- 角色数据
 INSERT INTO `sys_role` VALUES ('1001', 'admin', '1000', '1000', '1', null, null, null, null, '1', '');

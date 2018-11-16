@@ -9,6 +9,7 @@ import com.tdmh.service.IServiceOutletService;
 import com.tdmh.utils.map.BaiDuMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import java.util.Map;
  * @author Liuxia on 2018/11/12.
  */
 @Service
+@Transactional(readOnly = true)
 public class ServiceOutletServiceImpl implements IServiceOutletService {
 
     @Autowired
@@ -29,6 +31,7 @@ public class ServiceOutletServiceImpl implements IServiceOutletService {
     }
 
     @Override
+    @Transactional
     public JsonData createSOLet(ServiceOutlet serviceOutlet) {
         BeanValidator.check(serviceOutlet);
         getBdAndTxMap(serviceOutlet);
@@ -39,6 +42,7 @@ public class ServiceOutletServiceImpl implements IServiceOutletService {
     }
 
     @Override
+    @Transactional
     public JsonData deleteSOLet(List<Integer> soletids, Integer currentEmpId) {
         List<ServiceOutlet> soletList = Lists.newArrayList();
         for(Integer sId : soletids) {
@@ -55,6 +59,7 @@ public class ServiceOutletServiceImpl implements IServiceOutletService {
     }
 
     @Override
+    @Transactional
     public JsonData updateSOLet(ServiceOutlet serviceOutlet) {
         BeanValidator.check(serviceOutlet);
         getBdAndTxMap(serviceOutlet);

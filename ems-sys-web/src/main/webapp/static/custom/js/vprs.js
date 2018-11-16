@@ -20,6 +20,12 @@ app.getPanelContent = function (name) {
         case 'entryApplyRepair':
             panelContent = this.DEFAULT_TEMPLATE;
             break;
+        /*
+        * 查询统计：订单查询
+        */
+        case 'eval':
+           panelContent = this.DEFAULT_TEMPLATE;
+           break;
     }
     return panelContent;
 };
@@ -471,6 +477,28 @@ app.tableFields = {
     },{
         name: 'remarks',
         caption: '备注'
+    }],
+    eval:[{
+        name: 'applyRepairId',
+        caption:'报修单号'
+    },{
+        name: 'applyRepairFlowNumber',
+        caption:'报修流水号'
+    },{
+        name: 'userId',
+        caption:'报修用户ID'
+    },{
+        name: 'userName',
+        caption:'报修用户名'
+    },{
+        name: 'fixedEvalSelect',
+        caption:'是否满意本次服务'
+    },{
+        name: 'fixedEvalContent',
+        caption:'评价内容'
+    },{
+        name: 'evalTime',
+        caption:'评价时间'
     }]
 };
 
@@ -1456,6 +1484,16 @@ app.getToolbarFields = function (name) {
             }, {
                 name: 'evalItemContent',
                 caption: '评价项内容',
+                type: 'input'
+            }];
+        case 'eval':
+            return [{
+                name: 'userName',
+                caption: '用户名',
+                type: 'input'
+            }, {
+                name: 'applyRepairFlowNumber',
+                caption: '报修单号',
                 type: 'input'
             }];
     }

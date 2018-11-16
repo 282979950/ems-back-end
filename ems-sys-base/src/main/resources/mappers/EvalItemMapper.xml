@@ -77,4 +77,17 @@
          select evaluation_item_id as evalItemId, evaluation_item_content as evalItemContent
         from evaluation_item
     </select>
+
+    <insert id="insertEvalBatch" parameterType="list">
+        INSERT INTO evaluation (apply_repair_id,evaluation_item_id,evaluation_content,evaluation_time)
+        VALUES
+        <foreach collection="evals" item="item" index="index" separator="," >
+            (#{item.applyRepairId},#{item.evalItemId},#{item.evalContent},NOW())
+        </foreach>
+    </insert>
+
+    <insert id="insertFixedEval" parameterType="com.tdmh.entity.FixedEval">
+        INSERT INTO fixed_evaluation (apply_repair_id,fixed_evaluation_select,fixed_evaluation_content,fixed_evaluation_time)
+        VALUES  (#{applyRepairId},#{fixedEvalSelect},#{fixedEvalContent},NOW())
+  </insert>
 </mapper>

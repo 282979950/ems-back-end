@@ -40,7 +40,7 @@
         data == null ? '' : data.forEach(function (item) {
             var tdRow = $('<tr></tr>').appendTo(tbody);
             fields.forEach(function (field) {
-                $('<td>' + (item[field.name] != undefined ? item[field.name] : '') + '</td>').appendTo(tdRow);
+                $('<td>' + (item[field.name] != undefined ? ((item[field.name] === true? '是':item[field.name])||(item[field.name] === false? '否':item[field.name])) : '') + '</td>').appendTo(tdRow);
             });
         });
         _this.init();
