@@ -173,6 +173,7 @@
         left join meter_type mt on m.meter_type_id = mt.meter_type_id and mt.usable = 1
         left join sys_dictionary dict3 on dict3.dict_category = 'apply_repair_status' and ar.apply_repair_status = dict3.dict_value and dict3.usable = 1
         where ar.apply_repair_id = #{applyRepairId} and ar.usable = 1
+        order by ar.apply_repair_id desc
     </select>
     <select id="getWXApplyRepairByUserId" resultMap="ApplyRepairParam" parameterType="integer">
         select
@@ -189,7 +190,8 @@
         left join sys_dictionary dict2 on dict2.dict_category = 'meter_direction' and m.meter_direction = dict2.dict_value and dict2.usable = 1
         left join meter_type mt on m.meter_type_id = mt.meter_type_id and mt.usable = 1
         left join sys_dictionary dict3 on dict3.dict_category = 'apply_repair_status' and ar.apply_repair_status = dict3.dict_value and dict3.usable = 1
-        where ar.user_id = #{userId} and ar.apply_repair_type = 1 and ar.usable = 1
+        where ar.user_id = #{userId} and ar.usable = 1
+        order by ar.apply_repair_id desc
     </select>
     <select id="hasUnsolvedApplyRepair" resultType="java.lang.Boolean">
         select

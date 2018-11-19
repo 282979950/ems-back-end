@@ -12,6 +12,7 @@ app.getPanelContent = function (name) {
         case 'dic':
         case 'solet':
         case 'evalItem':
+        case 'wxNotice':
             panelContent = this.DEFAULT_TEMPLATE;
             break;
         case 'log':
@@ -519,6 +520,19 @@ app.tableFields = {
     },{
         name: 'evalTime',
         caption:'评价时间'
+    }],
+    wxNotice: [{
+        name: 'wxNoticeTitle',
+        caption: '微信公告标题'
+    }, {
+        name: 'wxNoticeTypeName',
+        caption: '微信公告类型'
+    }, {
+        name: 'wxNoticeContent',
+        caption: '微信公告内容'
+    }, {
+        name: 'createTime',
+        caption: '发布时间'
     }]
 };
 
@@ -886,6 +900,19 @@ app.getAddFormFields = function (name) {
             },{
                 name: 'remarks',
                 caption: '备注'
+            }];
+        case 'wxNotice':
+            return [{
+                name: 'wxNoticeTitle',
+                caption: '微信公告标题'
+            }, {
+                name: 'wxNoticeType',
+                caption: '微信公告类型',
+                type: 'listcombobox',
+                options: app.getDictionaryByCategory("wx_notice_type")
+            }, {
+                name: 'wxNoticeContent',
+                caption: '微信公告内容'
             }];
     }
 };
@@ -1519,6 +1546,20 @@ app.getToolbarFields = function (name) {
                 caption: '报修流水号',
                 type: 'input'
             }];
+        case 'wxNotice':
+            return [{
+                name: 'add',
+                caption: '新增',
+                perm: 'sys:wxNotice:create'
+            }, {
+                name: 'delete',
+                caption: '删除',
+                perm: 'sys:wxNotice:delete'
+            }, {
+                name: 'wxNoticeTitle',
+                caption: '微信公告标题',
+                type: 'input'
+            }];
     }
 };
 
@@ -1531,5 +1572,6 @@ app.deleteNames = {
     'emp': 'empId',
     'entryApplyRepair': 'applyRepairId',
     'solet' : 'serviceOutletId',
-    'evalItem': 'evalItemId'
+    'evalItem': 'evalItemId',
+    'wxNotice': 'wxNoticeId'
 };

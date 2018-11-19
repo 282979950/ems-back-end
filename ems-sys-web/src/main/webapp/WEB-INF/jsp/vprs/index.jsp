@@ -94,11 +94,14 @@
                     <shiro:hasPermission name="sys:evalItem:visit">
                         <div class="mdui-list-item mdui-ripple nav-item evalItem">评价项管理</div>
                     </shiro:hasPermission>
+                    <shiro:hasPermission name="sys:wxNotice:visit">
+                        <div class="mdui-list-item mdui-ripple nav-item wxNotice">微信公告管理</div>
+                    </shiro:hasPermission>
                 </div>
             </div>
         </shiro:hasPermission>
         <shiro:hasPermission name="applyRepair:visit">
-            <div class="mdui-collapse-item mdui-collapse-item-open">
+            <div class="mdui-collapse-item">
                 <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
                     <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">assignment</i>
                     <div class="mdui-list-item-content mdui-text-color-blue">报修单管理</div>

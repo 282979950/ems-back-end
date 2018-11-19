@@ -175,6 +175,9 @@ INSERT INTO `sys_dictionary` VALUES ('1129', 'apply_repair_status', '已完成',
 INSERT INTO `sys_dictionary` VALUES ('1130', 'apply_repair_status', '已撤销', '4', null, null, null, null, null, '1', null);
 INSERT INTO `sys_dictionary` VALUES ('1131', 'apply_repair_type', '微信报修', '1', null, null, null, null, null, '1', null);
 INSERT INTO `sys_dictionary` VALUES ('1132', 'apply_repair_type', '电话报修', '2', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1133', 'wx_notice_type', '通知', '1', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1134', 'wx_notice_type', '提醒', '2', null, null, null, null, null, '1', null);
+
 -- 区域数据
 INSERT INTO `sys_district` VALUES ('1000', '石门市', 'SMS', '1', '', null, null, null, null, null, '1', '');
 INSERT INTO `sys_district` VALUES ('1001', '楚江镇', 'CJZ', '2', '', '1000', null, null, null, null, '0', '');
@@ -305,6 +308,7 @@ INSERT INTO `sys_permission` VALUES ('1046', 'applyRepair:entryApplyRepair:visit
 INSERT INTO `sys_permission` VALUES ('1047', 'sys:solet:visit', '网点管理', '/sys/solet', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1048', 'sys:evalItem:visit', '评价项管理', '/sys/evalItem', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 INSERT INTO `sys_permission` VALUES ('1049', 'sys:eval:visit', '评价查询', '/sys/eval', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1050', 'sys:wxNotice:visit', '微信公告管理', '/sys/wxNotice', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
 INSERT INTO `sys_permission` (`perm_name`, `perm_caption`, `perm_href`, `perm_parent_id`, `is_button` , `create_time` ,  `create_by` , `update_time` , `update_by`, `usable` , `remarks`)
 VALUES
@@ -423,8 +427,11 @@ VALUES
 ('sys:evalItem:create', '增加', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
 ('sys:evalItem:delete', '删除', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
 ('sys:evalItem:update', '修改', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:evalItem:retrieve', '查询', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+('sys:evalItem:retrieve', '查询', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
 ('sys:eval:retrieve', '查询', '', '1049', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+('sys:wxNotice:create', '新增', '', '1050', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+('sys:wxNotice:delete', '删除', '', '1050', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+('sys:wxNotice:retrieve', '查询', '', '1050', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
 
 -- 角色数据
 INSERT INTO `sys_role` VALUES ('1001', 'admin', '1000', '1000', '1', null, null, null, null, '1', '');

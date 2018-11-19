@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.WXNoticeMapper" >
+    <resultMap id="WXUserParam" type="com.tdmh.param.WXNoticeParam" >
+        <constructor >
+            <idArg column="wx_notice_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="wx_notice_title" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="wx_notice_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="wx_notice_type_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="wx_notice_content" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean" />
+            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
+        </constructor>
+    </resultMap>
+    <select id="listData" resultMap="WXUserParam">
+        select
+        wn.wx_notice_id, wn.wx_notice_title, wn.wx_notice_type, sd.dict_key as wx_notice_type_name, wn.wx_notice_content,
+        wn.create_time, wn.create_by, wn.update_time, wn.update_by, wn.usable, wn.remarks
+        from wx_notice wn
+        left join sys_dictionary sd on sd.dict_category = 'wx_notice_type' and sd.dict_value = wn.wx_notice_type and sd.usable = 1
+        where wn.usable = 1
+    </select>
+    <insert id="create" parameterType="com.tdmh.param.WXNoticeParam">
+        insert into wx_notice (wx_notice_title, wx_notice_type, wx_notice_content, create_time, create_by, update_time, update_by, remarks)
+        values (#{wxNoticeTitle}, #{wxNoticeType}, #{wxNoticeContent}, NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks})
+    </insert>
+    <select id="getWXNoticeById" resultMap="WXUserParam">
+        select
+        wn.wx_notice_id, wn.wx_notice_title, wn.wx_notice_type, sd.dict_key as wx_notice_type_name, wn.wx_notice_content,
+        wn.create_time, wn.create_by, wn.update_time, wn.update_by, wn.usable, wn.remarks
+        from wx_notice wn
+        left join sys_dictionary sd on sd.dict_category = 'wx_notice_type' and sd.dict_value = wn.wx_notice_type and sd.usable = 1
+        where wn.wx_notice_id = #{wxNoticeId} and wn.usable = 1
+    </select>
+    <update id="delete" parameterType="list">
+        update wx_notice
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_by = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateBy != null">
+                        when wx_notice_id = #{i.wxNoticeId} then #{i.updateBy}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time = case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateTime != null">
+                        when wx_notice_id = #{i.wxNoticeId} then NOW()
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="usable =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.usable != null">
+                        when wx_notice_id = #{i.wxNoticeId} then 0
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index">
+            wx_notice_id = #{i.wxNoticeId}
+        </foreach>
+    </update>
+    <select id="search" resultMap="WXUserParam" parameterType="map">
+        select
+        wn.wx_notice_id, wn.wx_notice_title, wn.wx_notice_type, sd.dict_key as wx_notice_type_name, wn.wx_notice_content,
+        wn.create_time, wn.create_by, wn.update_time, wn.update_by, wn.usable, wn.remarks
+        from wx_notice wn
+        left join sys_dictionary sd on sd.dict_category = 'wx_notice_type' and sd.dict_value = wn.wx_notice_type and sd.usable = 1
+        where wn.usable = 1
+        <if test="wxNoticeTitle != null and wxNoticeTitle != ''">
+            AND wn.wx_notice_title LIKE CONCAT('%', #{wxNoticeTitle}, '%')
+        </if>
+    </select>
+</mapper>
