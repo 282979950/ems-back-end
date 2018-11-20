@@ -73,4 +73,19 @@ public interface IApplyRepairService {
      * @return
      */
     JsonData createWXApplyRepair(ApplyRepairParam param);
+
+    /**
+     * 撤销报修单
+     * @param param
+     * @return
+     */
+    JsonData cancelWXApplyRepair(ApplyRepairParam param);
+
+    /**
+     * 修改报修单状态
+     * @param applyRepairFlowNumber
+     * @param applyRepairStatus
+     * @return
+     */
+    JsonData updateApplyRepair(String applyRepairFlowNumber, Integer applyRepairStatus);
 }

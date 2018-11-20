@@ -112,5 +112,5 @@ public interface IWXService {
      *
      * @return
      */
-    JsonData cancelWXApplyRepair();
+    JsonData cancelWXApplyRepair(ApplyRepairParam param);
 }

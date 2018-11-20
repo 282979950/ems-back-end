@@ -313,7 +313,7 @@ public class WXServiceImpl implements IWXService {
     }
 
     @Override
-    public JsonData cancelWXApplyRepair() {
-        return null;
+    public JsonData cancelWXApplyRepair(ApplyRepairParam param) {
+        return applyRepairService.cancelWXApplyRepair(param);
     }
 }

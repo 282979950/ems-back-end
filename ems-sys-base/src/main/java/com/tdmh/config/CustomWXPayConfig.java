@@ -1,8 +1,17 @@
 package com.tdmh.config;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.wxpay.sdk.WXPayConfig;
+import com.sun.deploy.net.HttpResponse;
+import com.tdmh.utils.HttpRequestUtil;
+import org.springframework.http.HttpStatus;
+import sun.net.www.http.HttpClient;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author litairan on 2018/10/23.
@@ -44,6 +53,50 @@ public class CustomWXPayConfig implements WXPayConfig {
 
     public static final String TRADE_TYPE = "JSAPI";
 
+
+    /**
+     * TOKEN_URL
+     */
+    public static final String TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token";
+
+    /**
+     * 模板消息URL
+     */
+    public static final String MBXX_URL = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send";
+
+    /**
+     * 模板消息ID
+     */
+    public static final String MBXX_ID = "vsHFsT9PVfs0ChZcrguSqKOEDqEApjam2WrCmPcEqCQ";
+
+    /**全局token 所有与微信有交互的前提 */
+    public static String ACCESS_TOKEN;
+
+    /**全局token上次获取事件 */
+    public static long LASTTOKENTIME;
+
+    /**
+     * 获取全局token方法
+     * 该方法通过使用HttpClient发送http请求，HttpGet()发送请求
+     * 微信返回的json中access_token是我们的全局token
+     */
+    public static synchronized String getAccess_token(){
+        if(ACCESS_TOKEN == null || System.currentTimeMillis() - LASTTOKENTIME > 7000*1000){
+            try {
+                String responseString = HttpRequestUtil.sendGet(TOKEN_URL,"grant_type=client_credential&appid=" + APP_ID +"&secret="+APP_SECRET);
+                JSONObject json = JSONObject.parseObject(responseString);
+                //给静态变量赋值，获取到access_token
+                ACCESS_TOKEN = (String) json.get("access_token");
+                //给获取access_token时间赋值，方便下此次获取时进行判断
+                LASTTOKENTIME = System.currentTimeMillis();
+            }catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return ACCESS_TOKEN;
+    }
+
     public CustomWXPayConfig() {
     }
 
@@ -75,5 +128,26 @@ public class CustomWXPayConfig implements WXPayConfig {
     @Override
     public int getHttpReadTimeoutMs() {
         return 10000;
+    }
+
+    public static void main(String[] args){
+//        String token = CustomWXPayConfig.getAccess_token();
+//        System.out.println(token);
+//        JSONObject jo = new JSONObject();
+//        jo.put("touser","oUwsg5bySSU6liLaIiH22tK6Tev0");
+//        jo.put("template_id",CustomWXPayConfig.MBXX_ID);
+//        jo.put("page","pages/index/index");
+//        jo.put("form_id","7423ef320545be7cbffddffad6d8b6e3");
+//        JSONObject jsonObject = new JSONObject();
+//        for (int i = 0; i < 4; i++) {
+//            JSONObject dataInfo = new JSONObject();
+//            dataInfo.put("value", "111");
+//            dataInfo.put("color", "#ffffff");
+//            jsonObject.put("keyword" + (i + 1), dataInfo);
+//        }
+//
+//        jo.put("data", jsonObject);
+//        String reponse = HttpRequestUtil.sendTemplateMessage(CustomWXPayConfig.MBXX_URL+"?access_token="+token,jo);
+//        System.out.println(reponse);
     }
 }

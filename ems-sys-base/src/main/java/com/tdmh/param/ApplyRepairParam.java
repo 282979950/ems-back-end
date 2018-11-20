@@ -158,6 +158,11 @@ public class ApplyRepairParam extends BaseEntity {
      */
     private String userTelPhone;
 
+    /**
+     *撤销小程序表单ID
+     */
+    private String formId;
+
     public ApplyRepairParam() {
         super();
     }

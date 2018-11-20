@@ -122,7 +122,8 @@ public class WeChatController {
     @RequestMapping(value = "cancelWXApplyRepair")
     @ResponseBody
     public JsonData cancelWXApplyRepair(ApplyRepairParam param) {
-        return null;
+        param.setUpdateBy(WX_CASHIER_ID);
+        return wxService.cancelWXApplyRepair(param);
     }
 
     /**

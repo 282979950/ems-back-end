@@ -1,12 +1,11 @@
 package com.tdmh.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.tdmh.exception.CustomException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -151,5 +150,43 @@ public class HttpRequestUtil {
             XFor = request.getRemoteAddr();
         }
         return XFor;
+    }
+
+    public static String sendTemplateMessage(String mbxxUrl, JSONObject jsonObject) {
+        String info = "";
+        try {
+            //创建连接
+            URL url = new URL(mbxxUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setRequestMethod("POST");
+            connection.setUseCaches(false);
+            connection.setInstanceFollowRedirects(true);
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Content-Type", "utf-8");
+            connection.connect();
+            //POST请求
+            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+            out.write(jsonObject.toString().getBytes());
+            out.flush();
+            out.close();
+
+            //读取响应
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String lines;
+            StringBuffer sb = new StringBuffer("");
+            while ((lines = reader.readLine()) != null) {
+                lines = new String(lines.getBytes(), "utf-8");
+                sb.append(lines);
+            }
+            info = sb.toString();
+            reader.close();
+            // 断开连接
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return info;
     }
 }

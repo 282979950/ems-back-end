@@ -203,4 +203,19 @@
         from `user`
         where user_id = #{userId} and usable = 1
     </select>
+    <update id="updateRepairStatus" parameterType="map">
+        update apply_repair set apply_repair_status = #{applyRepairStatus}
+        <if test="formId!=null and formId!=''">
+            ,form_id = #{formId}
+        </if>
+        where apply_repair_flow_number = #{applyRepairFlowNumber}
+    </update>
+    <select id="findOpenidByFlownumber" parameterType="string" resultType="string">
+        SELECT wu.wx_user_id FROM apply_repair ar join wx_user wu on ar.user_id = wu.user_id
+        where apply_repair_flow_number = #{applyRepairFlowNumber}
+    </select>
+    <select id="findFormidByFlownumber" parameterType="string" resultType="string">
+        SELECT form_id FROM apply_repair
+        where apply_repair_flow_number = #{applyRepairFlowNumber}
+    </select>
 </mapper>

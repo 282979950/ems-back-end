@@ -3,9 +3,11 @@ package com.tdmh.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
+import com.tdmh.config.CustomWXPayConfig;
 import com.tdmh.entity.Meter;
 import com.tdmh.entity.mapper.ApplyRepairMapper;
 import com.tdmh.exception.CustomException;
+import com.tdmh.exception.ParameterException;
 import com.tdmh.param.ApplyRepairParam;
 import com.tdmh.service.IApplyRepairService;
 import com.tdmh.service.IFillGasService;
@@ -13,23 +15,25 @@ import com.tdmh.service.IMeterService;
 import com.tdmh.service.SysDictionaryService;
 import com.tdmh.utils.HttpRequestUtil;
 import com.tdmh.utils.IdWorker;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author litairan on 2018/11/12.
  */
 @Service("iApplyRepairService")
 @Transactional(readOnly = true)
+@Slf4j
 public class ApplyRepairServiceImpl implements IApplyRepairService {
 
     private static final String LYIMS_STANDARD_URL = "http://192.168.0.117:8080/lyimsstandard/save/workorderSaveByEms";
+
+    private static final String LYIMS_REVOKE_URL = "http://192.168.0.142:8080/lyimsstandard/revoke/workorderRevokeByEms";
 
     @Autowired
     private ApplyRepairMapper applyRepairMapper;
@@ -107,6 +111,82 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
     public JsonData createWXApplyRepair(ApplyRepairParam param) {
         // 设置报修类型为微信报修
         return create0(param, 1);
+    }
+
+    @Override
+    @Transactional
+    public JsonData cancelWXApplyRepair(ApplyRepairParam param) {
+        if(param==null || param.getApplyRepairId() == null){
+            return JsonData.fail("请选择可用的报修单");
+        }
+        ApplyRepairParam applyRepairParam = getApplyRepairParamById(param.getApplyRepairId());
+        if(applyRepairParam == null){
+            return JsonData.fail("找不到可用的报修单");
+        }
+        if(applyRepairParam.getApplyRepairStatus() == 3){
+            return JsonData.fail("该报修单已完成，无法撤销");
+        }
+        if(applyRepairParam.getApplyRepairStatus() == 4){
+            return JsonData.fail("该报修单已是撤消状态");
+        }
+        if(applyRepairParam.getApplyRepairStatus() == 5){
+            return JsonData.fail("该报修单正在撤销中，请等待");
+        }
+        int resultCount = applyRepairMapper.updateRepairStatus(applyRepairParam.getApplyRepairFlowNumber(),5, param.getFormId());
+        if (resultCount == 0) {
+            return JsonData.fail("撤销报修单失败，请重新撤销");
+        }
+
+        String responseString = HttpRequestUtil.sendGet(LYIMS_REVOKE_URL, "userId="+applyRepairParam.getUserId()+"&userName="+applyRepairParam.getUserName()+"&applyRepairFlowNumber="+applyRepairParam.getApplyRepairFlowNumber());
+        log.info("撤销报修单流水号: "+applyRepairParam.getApplyRepairFlowNumber()+",调度系统回复: "+responseString);
+        JSONObject json = JSONObject.parseObject(responseString);
+        if(json.getBoolean("success")){
+            if(json.getString("msg").equals("撤销中...")){
+                return JsonData.successMsg("正在撤销中");
+            }else {
+                int resultCount1 = applyRepairMapper.updateRepairStatus(applyRepairParam.getApplyRepairFlowNumber(),4,null);
+                if (resultCount1 == 0) {
+                    return JsonData.fail("撤销报修单失败，请重新撤销");
+                }
+                return JsonData.successMsg("撤销报修单成功");
+            }
+        }
+        return JsonData.fail("系统异常");
+    }
+
+    @Override
+    @Transactional
+    public JsonData updateApplyRepair(String applyRepairFlowNumber, Integer applyRepairStatus) {
+        if(applyRepairStatus == 11) {
+            int resultCount = applyRepairMapper.updateRepairStatus(applyRepairFlowNumber, 4, null);
+            if (resultCount== 0) {
+                return JsonData.fail("撤销报修单失败，请重新撤销");
+            }
+            String openid = applyRepairMapper.findOpenidByFlownumber(applyRepairFlowNumber);
+            String formid = applyRepairMapper.findFormidByFlownumber(applyRepairFlowNumber);
+            String token = CustomWXPayConfig.getAccess_token();
+            JSONObject jo = new JSONObject();
+            jo.put("access_token",token);
+            jo.put("touser",openid);
+            jo.put("template_id",CustomWXPayConfig.MBXX_ID);
+            jo.put("page","index");
+            jo.put("form_id",formid);
+            String[] val = {"撤销报修单",applyRepairFlowNumber,"撤销成功",new Date().toString()};
+            JSONObject jsonObject = new JSONObject();
+            for (int i = 0; i < 4; i++) {
+                JSONObject dataInfo = new JSONObject();
+                dataInfo.put("value", val[i]);
+                dataInfo.put("color", "#ffffff");
+                jsonObject.put("keyword" + (i + 1), dataInfo);
+            }
+            jo.put("data", jsonObject);
+            String response = HttpRequestUtil.sendTemplateMessage(CustomWXPayConfig.MBXX_URL+"?access_token="+token,jo);
+            JSONObject json = JSONObject.parseObject(response);
+            if(json.getInteger("errcode") != 0){
+                throw new ParameterException("参数错误");
+            }
+        }
+        return JsonData.successMsg("撤销报修单成功");
     }
 
     private JsonData create0(ApplyRepairParam param, Integer applyRepairType) {

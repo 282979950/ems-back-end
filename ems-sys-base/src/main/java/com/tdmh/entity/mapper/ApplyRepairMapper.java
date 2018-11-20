@@ -35,4 +35,10 @@ public interface ApplyRepairMapper {
     boolean hasUnsolvedApplyRepair(@Param("userId") Integer userId);
 
     boolean checkUserIdExists(@Param("userId") Integer userId);
+
+    int updateRepairStatus(@Param("applyRepairFlowNumber") String applyRepairFlowNumber, @Param("applyRepairStatus") Integer applyRepairStatus,  @Param("formId") String formId);
+
+    String findOpenidByFlownumber(String applyRepairFlowNumber);
+
+    String findFormidByFlownumber(String applyRepairFlowNumber);
 }
