@@ -5,6 +5,7 @@ import com.tdmh.param.ApplyRepairParam;
 import com.tdmh.param.WxEvalParam;
 import com.tdmh.service.IEvalItemService;
 import com.tdmh.service.IServiceOutletService;
+import com.tdmh.service.IWXNoticeService;
 import com.tdmh.service.IWXService;
 import com.tdmh.utils.HttpRequestUtil;
 import org.apache.ibatis.annotations.Param;
@@ -36,6 +37,9 @@ public class WeChatController {
 
     @Autowired
     private IEvalItemService evalItemService;
+
+    @Autowired
+    private IWXNoticeService wxNoticeService;
 
     @RequestMapping(value = "wxLogin", method = RequestMethod.GET)
     @ResponseBody
@@ -152,5 +156,11 @@ public class WeChatController {
     @PostMapping("/saveEval")
     public JsonData saveEval(@RequestBody WxEvalParam evalParam){
         return evalItemService.saveEval(evalParam);
+    }
+
+    @RequestMapping("/getWXNotice")
+    @ResponseBody
+    public JsonData getWXNotice() {
+        return wxNoticeService.listData();
     }
 }

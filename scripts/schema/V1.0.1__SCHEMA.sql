@@ -111,4 +111,17 @@ DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci
 ROW_FORMAT=DYNAMIC
 ;
 
-
+-- 微信公告
+CREATE TABLE `wx_notice` (
+  `wx_notice_id` int(4) unsigned NOT NULL AUTO_INCREMENT COMMENT '微信公告ID',
+  `wx_notice_title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '微信公告标题',
+  `wx_notice_type` int(4) NOT NULL COMMENT '微信公告类型',
+  `wx_notice_content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '微信公告内容',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` int(10) unsigned DEFAULT NULL COMMENT '创建者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_by` int(10) unsigned DEFAULT NULL COMMENT '更新者',
+  `usable` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用',
+  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '备注',
+  PRIMARY KEY (`wx_notice_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
