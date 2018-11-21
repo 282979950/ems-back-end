@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Liuxia on 2018/11/19.
  */
 @Controller
-@RequestMapping("/lyims")
+@RequestMapping("/lyimsstandard")
 public class LyimsController {
 
     @Autowired

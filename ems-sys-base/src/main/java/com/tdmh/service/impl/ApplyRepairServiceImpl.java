@@ -9,10 +9,12 @@ import com.tdmh.entity.mapper.ApplyRepairMapper;
 import com.tdmh.exception.CustomException;
 import com.tdmh.exception.ParameterException;
 import com.tdmh.param.ApplyRepairParam;
+import com.tdmh.param.ApplyRepairUserInfo;
 import com.tdmh.service.IApplyRepairService;
 import com.tdmh.service.IFillGasService;
 import com.tdmh.service.IMeterService;
 import com.tdmh.service.SysDictionaryService;
+import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.HttpRequestUtil;
 import com.tdmh.utils.IdWorker;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +33,7 @@ import java.util.*;
 @Slf4j
 public class ApplyRepairServiceImpl implements IApplyRepairService {
 
-    private static final String LYIMS_STANDARD_URL = "http://192.168.0.117:8080/lyimsstandard/save/workorderSaveByEms";
+    private static final String LYIMS_STANDARD_URL = "http://192.168.0.142:8080/lyimsstandard/save/workorderSaveByEms";
 
     private static final String LYIMS_REVOKE_URL = "http://192.168.0.142:8080/lyimsstandard/revoke/workorderRevokeByEms";
 
@@ -50,7 +52,7 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
     @Override
     public JsonData listData() {
         List<ApplyRepairParam> applyRepairs = applyRepairMapper.selectAll();
-        return applyRepairs == null || applyRepairs.size() == 0 ? JsonData.successMsg("查询结果为空"): JsonData.successData(applyRepairs);
+        return applyRepairs == null || applyRepairs.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.successData(applyRepairs);
     }
 
     @Override
@@ -92,7 +94,7 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
     @Override
     public JsonData search(Integer userId, String userName, String userPhone, String userTelPhone) {
         List<ApplyRepairParam> applyRepairs = applyRepairMapper.search(userId, userName, userPhone, userTelPhone);
-        return applyRepairs == null || applyRepairs.size() == 0 ? JsonData.successMsg("查询结果为空"): JsonData.success(applyRepairs, "查询成功");
+        return applyRepairs == null || applyRepairs.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.success(applyRepairs, "查询成功");
     }
 
     @Override
@@ -116,35 +118,35 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
     @Override
     @Transactional
     public JsonData cancelWXApplyRepair(ApplyRepairParam param) {
-        if(param==null || param.getApplyRepairId() == null){
+        if (param == null || param.getApplyRepairId() == null) {
             return JsonData.fail("请选择可用的报修单");
         }
         ApplyRepairParam applyRepairParam = getApplyRepairParamById(param.getApplyRepairId());
-        if(applyRepairParam == null){
+        if (applyRepairParam == null) {
             return JsonData.fail("找不到可用的报修单");
         }
-        if(applyRepairParam.getApplyRepairStatus() == 3){
+        if (applyRepairParam.getApplyRepairStatus() == 3) {
             return JsonData.fail("该报修单已完成，无法撤销");
         }
-        if(applyRepairParam.getApplyRepairStatus() == 4){
+        if (applyRepairParam.getApplyRepairStatus() == 4) {
             return JsonData.fail("该报修单已是撤消状态");
         }
-        if(applyRepairParam.getApplyRepairStatus() == 5){
+        if (applyRepairParam.getApplyRepairStatus() == 5) {
             return JsonData.fail("该报修单正在撤销中，请等待");
         }
-        int resultCount = applyRepairMapper.updateRepairStatus(applyRepairParam.getApplyRepairFlowNumber(),5, param.getFormId());
+        int resultCount = applyRepairMapper.updateRepairStatus(applyRepairParam.getApplyRepairFlowNumber(), 5, param.getFormId());
         if (resultCount == 0) {
             return JsonData.fail("撤销报修单失败，请重新撤销");
         }
-
-        String responseString = HttpRequestUtil.sendGet(LYIMS_REVOKE_URL, "userId="+applyRepairParam.getUserId()+"&userName="+applyRepairParam.getUserName()+"&applyRepairFlowNumber="+applyRepairParam.getApplyRepairFlowNumber());
-        log.info("撤销报修单流水号: "+applyRepairParam.getApplyRepairFlowNumber()+",调度系统回复: "+responseString);
+        log.info("userId=" + applyRepairParam.getUserId() + "&userName=" + applyRepairParam.getUserName() + "&applyRepairFlowNumber=" + applyRepairParam.getApplyRepairFlowNumber());
+        String responseString = HttpRequestUtil.sendGet(LYIMS_REVOKE_URL, "userId=" + applyRepairParam.getUserId() + "&userName=" + applyRepairParam.getUserName() + "&applyRepairFlowNumber=" + applyRepairParam.getApplyRepairFlowNumber());
+        log.info("撤销报修单流水号: " + applyRepairParam.getApplyRepairFlowNumber() + ",调度系统回复: " + responseString);
         JSONObject json = JSONObject.parseObject(responseString);
-        if(json.getBoolean("success")){
-            if(json.getString("msg").equals("撤销中...")){
+        if (json.getBoolean("success")) {
+            if (json.getString("msg").equals("撤销中...")) {
                 return JsonData.successMsg("正在撤销中");
-            }else {
-                int resultCount1 = applyRepairMapper.updateRepairStatus(applyRepairParam.getApplyRepairFlowNumber(),4,null);
+            } else {
+                int resultCount1 = applyRepairMapper.updateRepairStatus(applyRepairParam.getApplyRepairFlowNumber(), 4, null);
                 if (resultCount1 == 0) {
                     return JsonData.fail("撤销报修单失败，请重新撤销");
                 }
@@ -157,21 +159,22 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
     @Override
     @Transactional
     public JsonData updateApplyRepair(String applyRepairFlowNumber, Integer applyRepairStatus) {
-        if(applyRepairStatus == 11) {
-            int resultCount = applyRepairMapper.updateRepairStatus(applyRepairFlowNumber, 4, null);
-            if (resultCount== 0) {
-                return JsonData.fail("撤销报修单失败，请重新撤销");
-            }
+        if (applyRepairFlowNumber == null) {
+            return JsonData.fail("流水号不能为空");
+        }
+        int resultCount = applyRepairMapper.updateRepairStatus(applyRepairFlowNumber, applyRepairStatus == 11 ? 4 : applyRepairStatus , null);
+        if (resultCount == 0) {
+            return JsonData.fail("撤销报修单失败，请重新撤销");
+        }
+        if (applyRepairStatus == 11) {
             String openid = applyRepairMapper.findOpenidByFlownumber(applyRepairFlowNumber);
             String formid = applyRepairMapper.findFormidByFlownumber(applyRepairFlowNumber);
-            String token = CustomWXPayConfig.getAccess_token();
             JSONObject jo = new JSONObject();
-            jo.put("access_token",token);
-            jo.put("touser",openid);
-            jo.put("template_id",CustomWXPayConfig.MBXX_ID);
-            jo.put("page","index");
-            jo.put("form_id",formid);
-            String[] val = {"撤销报修单",applyRepairFlowNumber,"撤销成功",new Date().toString()};
+            jo.put("touser", openid);
+            jo.put("template_id", CustomWXPayConfig.MBXX_ID);
+            jo.put("page", "pages/login/login");
+            jo.put("form_id", formid);
+            String[] val = {"撤销报修单", applyRepairFlowNumber, "撤销成功", DateUtils.formatDate(new Date(), "yyyy-MM-dd HH:mm:ss")};
             JSONObject jsonObject = new JSONObject();
             for (int i = 0; i < 4; i++) {
                 JSONObject dataInfo = new JSONObject();
@@ -180,11 +183,15 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
                 jsonObject.put("keyword" + (i + 1), dataInfo);
             }
             jo.put("data", jsonObject);
-            String response = HttpRequestUtil.sendTemplateMessage(CustomWXPayConfig.MBXX_URL+"?access_token="+token,jo);
+            log.info("token: "+CustomWXPayConfig.getAccess_token()+" , 传参: "+jo.toString());
+            String response = HttpRequestUtil.sendTemplateMessage(CustomWXPayConfig.MBXX_URL + "?access_token=" + CustomWXPayConfig.getAccess_token(), jo);
+            log.info("token: "+CustomWXPayConfig.getAccess_token());
+            log.info("撤销通知微信端回复: "+response);
             JSONObject json = JSONObject.parseObject(response);
-            if(json.getInteger("errcode") != 0){
+            if (json.getInteger("errcode") != 0) {
                 throw new ParameterException("参数错误");
             }
+
         }
         return JsonData.successMsg("撤销报修单成功");
     }
@@ -220,13 +227,21 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
         param.setApplyRepairFlowNumber(String.valueOf(IdWorker.getId().nextId()));
         Date date = new Date();
         param.setApplyRepairTime(date);
+        if(applyRepairType == 1){
+            ApplyRepairUserInfo userInfo = applyRepairMapper.getApplyRepairUserInfoById(userId);
+            param.setUserName(userInfo.getUserName());
+            param.setDistName(userInfo.getDistName());
+            param.setDistCode(userInfo.getDistCode());
+            param.setUserAddress(userInfo.getUserAddress());
+            param.setUserPhone(userInfo.getUserPhone());
+        }
         int resultCount = applyRepairMapper.create(param);
         if (resultCount == 0) {
             return JsonData.fail("新建报修单失败");
         }
         String responseString = HttpRequestUtil.sendGet(LYIMS_STANDARD_URL, param.toString());
         JSONObject json = JSONObject.parseObject(responseString);
-        if (!json.getBoolean("success")){
+        if (!json.getBoolean("success")) {
             throw new CustomException("向调度系统传输报修单时失败，请联系管理员");
         }
         return JsonData.successMsg("新建报修单成功");

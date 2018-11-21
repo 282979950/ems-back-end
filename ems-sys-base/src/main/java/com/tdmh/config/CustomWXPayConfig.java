@@ -130,24 +130,4 @@ public class CustomWXPayConfig implements WXPayConfig {
         return 10000;
     }
 
-    public static void main(String[] args){
-//        String token = CustomWXPayConfig.getAccess_token();
-//        System.out.println(token);
-//        JSONObject jo = new JSONObject();
-//        jo.put("touser","oUwsg5bySSU6liLaIiH22tK6Tev0");
-//        jo.put("template_id",CustomWXPayConfig.MBXX_ID);
-//        jo.put("page","pages/index/index");
-//        jo.put("form_id","7423ef320545be7cbffddffad6d8b6e3");
-//        JSONObject jsonObject = new JSONObject();
-//        for (int i = 0; i < 4; i++) {
-//            JSONObject dataInfo = new JSONObject();
-//            dataInfo.put("value", "111");
-//            dataInfo.put("color", "#ffffff");
-//            jsonObject.put("keyword" + (i + 1), dataInfo);
-//        }
-//
-//        jo.put("data", jsonObject);
-//        String reponse = HttpRequestUtil.sendTemplateMessage(CustomWXPayConfig.MBXX_URL+"?access_token="+token,jo);
-//        System.out.println(reponse);
-    }
 }

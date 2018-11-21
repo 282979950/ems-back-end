@@ -164,16 +164,15 @@ public class HttpRequestUtil {
             connection.setUseCaches(false);
             connection.setInstanceFollowRedirects(true);
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            connection.setRequestProperty("Content-Type", "utf-8");
             connection.connect();
             //POST请求
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.write(jsonObject.toString().getBytes());
+            out.write(jsonObject.toString().getBytes("UTF-8"));
             out.flush();
             out.close();
 
             //读取响应
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
             String lines;
             StringBuffer sb = new StringBuffer("");
             while ((lines = reader.readLine()) != null) {

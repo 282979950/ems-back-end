@@ -206,7 +206,7 @@
         where user_id = #{userId} and usable = 1
     </select>
     <update id="updateRepairStatus" parameterType="map">
-        update apply_repair set apply_repair_status = #{applyRepairStatus}
+        update apply_repair set apply_repair_status = #{applyRepairStatus},update_time = NOW()
         <if test="formId!=null and formId!=''">
             ,form_id = #{formId}
         </if>
