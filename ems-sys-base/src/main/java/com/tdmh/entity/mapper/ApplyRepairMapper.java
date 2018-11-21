@@ -30,6 +30,8 @@ public interface ApplyRepairMapper {
 
     ApplyRepairParam getApplyRepairParamById(@Param("applyRepairId") Integer applyRepairId);
 
+    ApplyRepairParam getApplyRepairParamByFlowNumber(@Param("applyRepairFlowNumber") String applyRepairFlowNumber);
+
     List<ApplyRepairParam> getWXApplyRepairByUserId(@Param("userId") Integer userId);
 
     boolean hasUnsolvedApplyRepair(@Param("userId") Integer userId);

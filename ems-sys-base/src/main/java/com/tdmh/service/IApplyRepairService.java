@@ -88,4 +88,13 @@ public interface IApplyRepairService {
      * @return
      */
     JsonData updateApplyRepair(String applyRepairFlowNumber, Integer applyRepairStatus);
+
+    /**
+     * 催单
+     *
+     * @param userId
+     * @param applyRepairFlowNumber
+     * @return
+     */
+    JsonData remindWXApplyRepair(Integer userId, String applyRepairFlowNumber);
 }

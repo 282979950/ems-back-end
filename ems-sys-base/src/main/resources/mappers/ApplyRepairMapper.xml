@@ -197,7 +197,7 @@
         select
         count(1)
         from apply_repair
-        where user_id = #{userId} and (apply_repair_status = 1 or apply_repair_status = 2) and usable = 1
+        where user_id = #{userId} and (apply_repair_status = 1 or apply_repair_status = 2 or apply_repair_status = 5) and usable = 1
     </select>
     <select id="checkUserIdExists" resultType="java.lang.Boolean" parameterType="int">
         select
@@ -219,5 +219,22 @@
     <select id="findFormidByFlownumber" parameterType="string" resultType="string">
         SELECT form_id FROM apply_repair
         where apply_repair_flow_number = #{applyRepairFlowNumber}
+    </select>
+    <select id="getApplyRepairParamByFlowNumber" resultMap="ApplyRepairParam" parameterType="string">
+        select
+        ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, dist.dist_code, u.user_address,
+        u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
+        ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
+        ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
+        ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
+        from apply_repair ar
+        left join user u on ar.user_id = u.user_id and u.usable = 1
+        left join sys_district dist on u.user_dist_id = dist.dist_id and dist.usable = 1
+        left join sys_dictionary dict1 on dict1.dict_category = 'apply_repair_type' and ar.apply_repair_type = dict1.dict_value and dict1.usable = 1
+        left join meter m on ar.meter_id = m.meter_id
+        left join sys_dictionary dict2 on dict2.dict_category = 'meter_direction' and m.meter_direction = dict2.dict_value and dict2.usable = 1
+        left join meter_type mt on m.meter_type_id = mt.meter_type_id and mt.usable = 1
+        left join sys_dictionary dict3 on dict3.dict_category = 'apply_repair_status' and ar.apply_repair_status = dict3.dict_value and dict3.usable = 1
+        where ar.apply_repair_flow_number = #{applyRepairFlowNumber} and ar.apply_repair_type = 1 and ar.usable = 1
     </select>
 </mapper>

@@ -18,6 +18,7 @@ import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.HttpRequestUtil;
 import com.tdmh.utils.IdWorker;
 import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,8 @@ import java.util.*;
 public class ApplyRepairServiceImpl implements IApplyRepairService {
 
     private static final String LYIMS_STANDARD_URL = "http://192.168.0.142:8080/lyimsstandard/save/workorderSaveByEms";
+
+    private static final String LYIMS_REMIND_URL = "http://192.168.0.142:8080/lyimsstandard/save/workorderSaveByEms";
 
     private static final String LYIMS_REVOKE_URL = "http://192.168.0.142:8080/lyimsstandard/revoke/workorderRevokeByEms";
 
@@ -194,6 +197,21 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
 
         }
         return JsonData.successMsg("撤销报修单成功");
+    }
+
+    @Override
+    public JsonData remindWXApplyRepair(Integer userId, String applyRepairFlowNumber) {
+        String params = "userId=" + userId + "&applyRepairFlowNumber=" + applyRepairFlowNumber;
+        ApplyRepairParam applyRepair = applyRepairMapper.getApplyRepairParamByFlowNumber(applyRepairFlowNumber);
+        if (applyRepair.getApplyRepairStatus().equals(1)) {
+            return JsonData.successMsg("订单未签收，不能进行催单操作");
+        }
+        String responseString = HttpRequestUtil.sendGet(LYIMS_STANDARD_URL, params);
+        JSONObject response = JSONObject.parseObject(responseString);
+        if (!response.getBoolean("success")) {
+            return JsonData.fail("催单失败");
+        }
+        return JsonData.successMsg("催单成功");
     }
 
     private JsonData create0(ApplyRepairParam param, Integer applyRepairType) {
