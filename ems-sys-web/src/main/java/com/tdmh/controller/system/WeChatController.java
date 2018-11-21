@@ -135,6 +135,7 @@ public class WeChatController {
      * @return
      */
     @GetMapping("/getAllServiceOutlet")
+    @ResponseBody
     public JsonData getAllServiceOutlet(){
         return serviceOutletService.getAllSOLet();
     }
@@ -144,6 +145,7 @@ public class WeChatController {
      * @return
      */
     @GetMapping("/getEvalItem")
+    @ResponseBody
     public JsonData getEvalItem(){
         return evalItemService.getWXEvalItem();
     }
@@ -154,6 +156,7 @@ public class WeChatController {
      * @return
      */
     @PostMapping("/saveEval")
+    @ResponseBody
     public JsonData saveEval(@RequestBody WxEvalParam evalParam){
         return evalItemService.saveEval(evalParam);
     }
