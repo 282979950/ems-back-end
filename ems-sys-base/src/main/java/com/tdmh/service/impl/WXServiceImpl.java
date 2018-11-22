@@ -316,4 +316,9 @@ public class WXServiceImpl implements IWXService {
     public JsonData cancelWXApplyRepair(ApplyRepairParam param) {
         return applyRepairService.cancelWXApplyRepair(param);
     }
+
+    @Override
+    public JsonData remindWXApplyRepair(Integer applyRepairId) {
+        return applyRepairService.remindWXApplyRepair(applyRepairId);
+    }
 }

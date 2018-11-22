@@ -43,4 +43,6 @@ public interface ApplyRepairMapper {
     String findOpenidByFlownumber(String applyRepairFlowNumber);
 
     String findFormidByFlownumber(String applyRepairFlowNumber);
+
+    int setApplyRepairReminded(Integer applyRepairId);
 }

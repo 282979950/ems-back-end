@@ -113,4 +113,12 @@ public interface IWXService {
      * @return
      */
     JsonData cancelWXApplyRepair(ApplyRepairParam param);
+
+    /**
+     * 微信催单
+     *
+     * @param applyRepairId
+     * @return
+     */
+    JsonData remindWXApplyRepair(Integer applyRepairId);
 }

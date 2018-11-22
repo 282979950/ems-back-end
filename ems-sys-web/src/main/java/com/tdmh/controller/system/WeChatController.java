@@ -130,6 +130,12 @@ public class WeChatController {
         return wxService.cancelWXApplyRepair(param);
     }
 
+    @RequestMapping(value = "remindWXApplyRepair")
+    @ResponseBody
+    public JsonData remindWXApplyRepair(@Param("applyRepairId") Integer applyRepairId) {
+        return wxService.remindWXApplyRepair(applyRepairId);
+    }
+
     /**
      * 获取网点信息
      * @return

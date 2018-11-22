@@ -92,9 +92,8 @@ public interface IApplyRepairService {
     /**
      * 催单
      *
-     * @param userId
-     * @param applyRepairFlowNumber
+     * @param applyRepairId
      * @return
      */
-    JsonData remindWXApplyRepair(Integer userId, String applyRepairFlowNumber);
+    JsonData remindWXApplyRepair(Integer applyRepairId);
 }

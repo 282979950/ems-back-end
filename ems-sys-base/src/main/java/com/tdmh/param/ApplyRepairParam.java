@@ -163,6 +163,11 @@ public class ApplyRepairParam extends BaseEntity {
      */
     private String formId;
 
+    /**
+     * 是否显示催单
+     */
+    private Boolean isDisplayRemind;
+
     public ApplyRepairParam() {
         super();
     }
@@ -171,8 +176,8 @@ public class ApplyRepairParam extends BaseEntity {
                             String distCode, String userAddress, String userPhone, Integer applyRepairType, String applyRepairTypeName,
                             String applyRepairFaultDesc, String applyRepairAppealContent, Date applyRepairTime, Integer meterId, String meterCode,
                             Boolean meterDirection, String meterDirectionName, Integer meterTypeId, String meterType, BigDecimal currentOrderGasCount,
-                            Integer applyRepairStatus, String applyRepairStatusName, Date startTime, Date endTime, String userTelPhone, Date createTime,
-                            Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+                            Integer applyRepairStatus, String applyRepairStatusName, Date startTime, Date endTime, String userTelPhone, Boolean isDisplayRemind,
+                            Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.applyRepairId = applyRepairId;
         this.applyRepairFlowNumber = applyRepairFlowNumber;
@@ -200,6 +205,7 @@ public class ApplyRepairParam extends BaseEntity {
         this.startTime = startTime;
         this.endTime = endTime;
         this.userTelPhone = userTelPhone;
+        this.isDisplayRemind = isDisplayRemind;
     }
 
     @Override
