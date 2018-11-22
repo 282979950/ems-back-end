@@ -125,6 +125,9 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
         if (applyRepairParam == null) {
             return JsonData.fail("找不到可用的报修单");
         }
+        if (applyRepairParam.getApplyRepairStatus() == 2) {
+            return JsonData.fail("该报修单已签收，无法撤销");
+        }
         if (applyRepairParam.getApplyRepairStatus() == 3) {
             return JsonData.fail("该报修单已完成，无法撤销");
         }
