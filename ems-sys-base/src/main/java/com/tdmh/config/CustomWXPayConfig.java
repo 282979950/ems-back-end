@@ -2,16 +2,8 @@ package com.tdmh.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.wxpay.sdk.WXPayConfig;
-import com.sun.deploy.net.HttpResponse;
 import com.tdmh.utils.HttpRequestUtil;
-import org.springframework.http.HttpStatus;
-import sun.net.www.http.HttpClient;
-
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author litairan on 2018/10/23.
