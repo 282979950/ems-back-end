@@ -6,6 +6,7 @@ import com.tdmh.common.JsonData;
 import com.tdmh.entity.Eval;
 import com.tdmh.entity.EvalItem;
 import com.tdmh.entity.FixedEval;
+import com.tdmh.entity.mapper.ApplyRepairMapper;
 import com.tdmh.entity.mapper.EvalItemMapper;
 import com.tdmh.param.EvalItemParam;
 import com.tdmh.param.WxEvalParam;
@@ -25,6 +26,9 @@ public class EvalItemServiceImpl implements IEvalItemService {
 
     @Autowired
     private EvalItemMapper evalItemMapper;
+
+    @Autowired
+    private ApplyRepairMapper applyRepairMapper;
 
     @Override
     public JsonData getAllEvalItem() {
@@ -98,6 +102,10 @@ public class EvalItemServiceImpl implements IEvalItemService {
     @Transactional
     public JsonData saveEval(WxEvalParam eval) {
         BeanValidator.check(eval);
+        boolean hasEval = applyRepairMapper.checkRepairHasEval(eval.getApplyRepairId());
+        if(hasEval){
+            return JsonData.fail("该报修单已被评价");
+        }
         List<Eval> evals = eval.getEvalList();
         if(evals!=null&&evals.size()>0){
             for(Eval e : evals){
@@ -112,6 +120,8 @@ public class EvalItemServiceImpl implements IEvalItemService {
         fixedEval.setFixedEvalContent(eval.getFixedEvalContent());
         int resultCount1 = evalItemMapper.insertFixedEval(fixedEval);
         if(resultCount1==0) return JsonData.fail("保存评价失败");
+        int resultCount2 = applyRepairMapper.updateEvalStatus(eval.getApplyRepairId(),true);
+        if(resultCount2==0) return JsonData.fail("保存评价失败");
         return JsonData.successMsg("保存评价成功");
     }
 }

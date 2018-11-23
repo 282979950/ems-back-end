@@ -14,6 +14,8 @@ CREATE TABLE `apply_repair` (
   `end_time` datetime DEFAULT NULL COMMENT '预约截止时间',
   `user_tel_phone` varchar(20) DEFAULT NULL COMMENT '主叫号码',
   `has_reminded` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `has_eval` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否评价',
+  `wx_open_id` varchar(30) DEFAULT NULL COMMENT '微信openId',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` int(10) DEFAULT NULL COMMENT '创建人',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
