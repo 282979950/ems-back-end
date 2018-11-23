@@ -168,6 +168,11 @@ public class ApplyRepairParam extends BaseEntity {
      */
     private Boolean isDisplayRemind;
 
+    /**
+     * 申请报修单微信openId
+     */
+    private String wxOpenId;
+
     public ApplyRepairParam() {
         super();
     }

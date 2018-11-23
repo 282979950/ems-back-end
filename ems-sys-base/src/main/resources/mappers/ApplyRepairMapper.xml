@@ -62,10 +62,10 @@
         </selectKey>
         INSERT INTO apply_repair
         (apply_repair_flow_number, apply_repair_type, user_id, user_tel_phone, apply_repair_fault_desc, meter_id, apply_repair_appeal_content,
-        apply_repair_time, current_order_gas_count, apply_repair_status, start_time, end_time,
+        apply_repair_time, current_order_gas_count, apply_repair_status, start_time, end_time, wx_open_id,
         create_time, create_by, update_time, update_by, remarks)
         VALUES (#{applyRepairFlowNumber}, #{applyRepairType}, #{userId}, #{userTelPhone}, #{applyRepairFaultDesc}, #{meterId}, #{applyRepairAppealContent},
-        #{applyRepairTime}, #{currentOrderGasCount}, #{applyRepairStatus}, #{startTime}, #{endTime},
+        #{applyRepairTime}, #{currentOrderGasCount}, #{applyRepairStatus}, #{startTime}, #{endTime}, #{wxOpenId},
         NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks}
         )
     </insert>
@@ -225,7 +225,7 @@
         apply_repair_id = #{applyRepairId}
     </update>
     <select id="findOpenidByFlownumber" parameterType="string" resultType="string">
-        SELECT wu.wx_user_id FROM apply_repair ar join wx_user wu on ar.user_id = wu.user_id
+        SELECT wx_open_id FROM apply_repair
         where apply_repair_flow_number = #{applyRepairFlowNumber}
     </select>
     <select id="findFormidByFlownumber" parameterType="string" resultType="string">
