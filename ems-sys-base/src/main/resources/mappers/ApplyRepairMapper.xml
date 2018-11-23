@@ -29,6 +29,7 @@
             <arg column="start_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="end_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="user_tel_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="has_eval" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -42,7 +43,7 @@
         ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, dist.dist_code, u.user_address,
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
-        ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
+        ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone, ar.has_eval,
         ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
@@ -116,7 +117,7 @@
         ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, dist.dist_code, u.user_address,
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
-        ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
+        ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone, ar.has_eval,
         ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
@@ -162,7 +163,7 @@
         ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, dist.dist_code, u.user_address,
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
-        ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
+        ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone, ar.has_eval,
         ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
@@ -180,7 +181,7 @@
         ar.apply_repair_id, ar.apply_repair_flow_number, ar.user_id, u.user_name, u.user_dist_id as dist_id, dist.dist_name, dist.dist_code, u.user_address,
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
-        ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
+        ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone, ar.has_eval,
         ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
@@ -219,5 +220,11 @@
     <select id="findFormidByFlownumber" parameterType="string" resultType="string">
         SELECT form_id FROM apply_repair
         where apply_repair_flow_number = #{applyRepairFlowNumber}
+    </select>
+    <update id="updateEvalStatus" parameterType="map">
+        update apply_repair set has_eval = #{hasEval} where apply_repair_id = #{applyRepairId}
+    </update>
+    <select id="checkRepairHasEval" parameterType="int" resultType="boolean">
+        select has_eval from apply_repair where apply_repair_id = #{applyRepairId}
     </select>
 </mapper>

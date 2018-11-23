@@ -159,6 +159,11 @@ public class ApplyRepairParam extends BaseEntity {
     private String userTelPhone;
 
     /**
+     * 是否评价过
+     */
+    private Boolean hasEval;
+
+    /**
      *撤销小程序表单ID
      */
     private String formId;
@@ -176,7 +181,7 @@ public class ApplyRepairParam extends BaseEntity {
                             String distCode, String userAddress, String userPhone, Integer applyRepairType, String applyRepairTypeName,
                             String applyRepairFaultDesc, String applyRepairAppealContent, Date applyRepairTime, Integer meterId, String meterCode,
                             Boolean meterDirection, String meterDirectionName, Integer meterTypeId, String meterType, BigDecimal currentOrderGasCount,
-                            Integer applyRepairStatus, String applyRepairStatusName, Date startTime, Date endTime, String userTelPhone, Date createTime,
+                            Integer applyRepairStatus, String applyRepairStatusName, Date startTime, Date endTime, String userTelPhone, Boolean hasEval, Date createTime,
                             Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.applyRepairId = applyRepairId;
@@ -205,6 +210,7 @@ public class ApplyRepairParam extends BaseEntity {
         this.startTime = startTime;
         this.endTime = endTime;
         this.userTelPhone = userTelPhone;
+        this.hasEval = hasEval;
     }
 
     @Override

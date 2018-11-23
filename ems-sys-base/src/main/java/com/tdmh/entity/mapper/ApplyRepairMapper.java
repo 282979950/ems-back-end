@@ -41,4 +41,8 @@ public interface ApplyRepairMapper {
     String findOpenidByFlownumber(String applyRepairFlowNumber);
 
     String findFormidByFlownumber(String applyRepairFlowNumber);
+
+    int updateEvalStatus(@Param("applyRepairId")Integer applyRepairId, @Param("hasEval") Boolean hasEval);
+
+    boolean checkRepairHasEval(@Param("applyRepairId")Integer applyRepairId);
 }
