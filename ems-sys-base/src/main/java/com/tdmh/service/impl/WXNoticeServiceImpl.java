@@ -1,5 +1,6 @@
 package com.tdmh.service.impl;
 
+import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.mapper.WXNoticeMapper;
 import com.tdmh.param.WXNoticeParam;
@@ -30,6 +31,7 @@ public class WXNoticeServiceImpl implements IWXNoticeService {
     @Override
     @Transactional
     public JsonData create(WXNoticeParam param) {
+        BeanValidator.check(param);
         int resultCount = wxNoticeMapper.create(param);
         if (resultCount == 0) {
             return JsonData.fail("新建公告失败");
