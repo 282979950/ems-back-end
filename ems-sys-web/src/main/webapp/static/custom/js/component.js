@@ -1310,7 +1310,7 @@
                 text: '50条/页'
             }, {
                 value: 100,
-                text: '10条/页'
+                text: '100条/页'
             }],
             totalSize: params.totalSize,
             totalPage: params.totalPage,

@@ -110,6 +110,9 @@ app.initIndex = function () {
                 }
             }
         });
+        $(document).on('blur', 'input[type=text]', function () {
+            this.value = $.trim(this.value);
+        });
     });
 };
 
@@ -872,7 +875,8 @@ app.getAddFormFields = function (name) {
             }, {
                 name: 'userTelPhone',
                 caption: '主叫号码',
-                inputType: 'mobile'
+                inputType: 'mobile',
+                required: true
             }, {
                 name: 'applyRepairFaultDesc',
                 caption: '故障说明',
@@ -881,7 +885,8 @@ app.getAddFormFields = function (name) {
             }, {
                 name: 'applyRepairAppealContent',
                 caption: '诉求内容',
-                maxlength: 255
+                maxlength: 255,
+                required: true
             }, {
                 name: 'startTime',
                 caption: '预约开始时间',

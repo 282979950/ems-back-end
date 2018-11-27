@@ -83,6 +83,7 @@ public class ApplyRepairParam extends BaseEntity {
     /**
      * 诉求内容
      */
+    @NotNull(message = "诉求内容不能为空")
     private String applyRepairAppealContent;
 
     /**
@@ -156,6 +157,7 @@ public class ApplyRepairParam extends BaseEntity {
     /**
      * 主叫号码
      */
+    @NotNull(message = "主叫号码不能为空")
     private String userTelPhone;
 
     /**
