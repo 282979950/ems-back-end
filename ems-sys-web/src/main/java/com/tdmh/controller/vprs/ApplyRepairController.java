@@ -31,8 +31,8 @@ public class ApplyRepairController {
      */
     @RequiresPermissions("applyRepair:entryApplyRepair:visit")
     @RequestMapping("listData.do")
-    public JsonData listData() {
-        return applyRepairService.listData();
+    public JsonData listData(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
+        return applyRepairService.listData(pageNum, pageSize);
     }
 
     /**
@@ -75,8 +75,8 @@ public class ApplyRepairController {
     @RequiresPermissions("applyRepair:entryApplyRepair:retrieve")
     @RequestMapping("search.do")
     public JsonData search(@Param("userId") Integer userId, @Param("userName") String userName, @Param("userPhone") String userPhone,
-                           @Param("userTelPhone") String userTelPhone) {
-        return applyRepairService.search(userId, userName, userPhone, userTelPhone);
+                           @Param("userTelPhone") String userTelPhone, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
+        return applyRepairService.search(userId, userName, userPhone, userTelPhone, pageNum, pageSize);
     }
 
     /**
