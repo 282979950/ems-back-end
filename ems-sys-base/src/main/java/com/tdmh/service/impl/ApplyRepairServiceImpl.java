@@ -1,11 +1,12 @@
 package com.tdmh.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.Meter;
 import com.tdmh.entity.mapper.ApplyRepairMapper;
-import com.tdmh.exception.CustomException;
 import com.tdmh.param.ApplyRepairParam;
 import com.tdmh.service.IApplyRepairService;
 import com.tdmh.service.IFillGasService;
@@ -29,7 +30,9 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ApplyRepairServiceImpl implements IApplyRepairService {
 
-    private static final String LYIMS_STANDARD_URL = "http://192.168.0.117:8080/lyimsstandard/save/workorderSaveByEms";
+    private static final String LYIMS_STANDARD_URL = "http://192.168.0.142:8080/lyimsstandard/save/workorderSaveByEms";
+
+    private static final String LYIMS_REMIND_URL = "http://192.168.0.142:8080/lyimsstandard/save/workorderSaveByEms";
 
     @Autowired
     private ApplyRepairMapper applyRepairMapper;
@@ -44,9 +47,11 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
     private SysDictionaryService sysDictionaryService;
 
     @Override
-    public JsonData listData() {
+    public JsonData listData(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<ApplyRepairParam> applyRepairs = applyRepairMapper.selectAll();
-        return applyRepairs == null || applyRepairs.size() == 0 ? JsonData.successMsg("查询结果为空"): JsonData.successData(applyRepairs);
+        PageInfo<ApplyRepairParam> page = new PageInfo<>(applyRepairs);
+        return JsonData.successData(page);
     }
 
     @Override
@@ -86,9 +91,11 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
     }
 
     @Override
-    public JsonData search(Integer userId, String userName, String userPhone, String userTelPhone) {
+    public JsonData search(Integer userId, String userName, String userPhone, String userTelPhone, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<ApplyRepairParam> applyRepairs = applyRepairMapper.search(userId, userName, userPhone, userTelPhone);
-        return applyRepairs == null || applyRepairs.size() == 0 ? JsonData.successMsg("查询结果为空"): JsonData.success(applyRepairs, "查询成功");
+        PageInfo<ApplyRepairParam> page = new PageInfo<>(applyRepairs);
+        return applyRepairs.size() == 0 ? JsonData.successMsg("查询结果为空"): JsonData.success(page, "查询成功");
     }
 
     @Override
@@ -107,6 +114,21 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
     public JsonData createWXApplyRepair(ApplyRepairParam param) {
         // 设置报修类型为微信报修
         return create0(param, 1);
+    }
+
+    @Override
+    public JsonData remindWXApplyRepair(Integer userId, String applyRepairFlowNumber) {
+        String params = "userId=" + userId + "&applyRepairFlowNumber=" + applyRepairFlowNumber;
+        ApplyRepairParam applyRepair = applyRepairMapper.getApplyRepairParamByFlowNumber(applyRepairFlowNumber);
+        if (applyRepair.getApplyRepairStatus().equals(1)) {
+            return JsonData.successMsg("订单未签收，不能进行催单操作");
+        }
+        String responseString = HttpRequestUtil.sendGet(LYIMS_STANDARD_URL, params);
+        JSONObject response = JSONObject.parseObject(responseString);
+        if (!response.getBoolean("success")) {
+            return JsonData.fail("催单失败");
+        }
+        return JsonData.successMsg("催单成功");
     }
 
     private JsonData create0(ApplyRepairParam param, Integer applyRepairType) {
@@ -144,11 +166,11 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
         if (resultCount == 0) {
             return JsonData.fail("新建报修单失败");
         }
-        String responseString = HttpRequestUtil.sendGet(LYIMS_STANDARD_URL, param.toString());
-        JSONObject json = JSONObject.parseObject(responseString);
-        if (!json.getBoolean("success")){
-            throw new CustomException("向调度系统传输报修单时失败，请联系管理员");
-        }
+//        String responseString = HttpRequestUtil.sendGet(LYIMS_STANDARD_URL, param.toString());
+//        JSONObject json = JSONObject.parseObject(responseString);
+//        if (!json.getBoolean("success")){
+//            throw new CustomException("向调度系统传输报修单时失败，请联系管理员");
+//        }
         return JsonData.successMsg("新建报修单成功");
     }
 

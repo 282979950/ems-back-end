@@ -17,7 +17,7 @@ public interface IApplyRepairService {
      *
      * @return
      */
-    JsonData listData();
+    JsonData listData(Integer pageNum, Integer pageSize);
 
     /**
      * 新增报修单
@@ -48,7 +48,7 @@ public interface IApplyRepairService {
      *
      * @return
      */
-    JsonData search(Integer userId, String userName, String userPhone, String userTelPhone);
+    JsonData search(Integer userId, String userName, String userPhone, String userTelPhone, Integer pageNum, Integer pageSize);
 
     /**
      * 获取报修用户信息
@@ -73,4 +73,13 @@ public interface IApplyRepairService {
      * @return
      */
     JsonData createWXApplyRepair(ApplyRepairParam param);
+
+    /**
+     * 催单
+     *
+     * @param userId
+     * @param applyRepairFlowNumber
+     * @return
+     */
+    JsonData remindWXApplyRepair(Integer userId, String applyRepairFlowNumber);
 }

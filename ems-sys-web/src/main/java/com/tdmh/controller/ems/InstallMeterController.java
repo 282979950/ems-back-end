@@ -5,6 +5,7 @@ import com.tdmh.param.InstallMeterParam;
 import com.tdmh.service.IMeterService;
 import com.tdmh.service.IUserService;
 import com.tdmh.util.ShiroUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -88,7 +89,7 @@ public class InstallMeterController {
     @RequiresPermissions("account:installation:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData searchInstallMeter(@RequestParam("userId") Integer userId, @RequestParam("userDistId") Integer userDistId, @RequestParam("userAddress") String
+    public JsonData searchInstallMeter(@Param("userId") Integer userId, @Param("userDistId") Integer userDistId, @Param("userAddress") String
             userAddress) {
         return userService.searchInstallMeter(userId, userDistId, userAddress);
     }

@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/zTree-3.5.16/css/zTreeStyle/zTreeStyle.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/bootstrap/css/bootstrap-datetimepicker.min.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/pagination/pagination.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/materialize/js/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/materialize/js/materialize.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/custom/js/common.js"></script>
@@ -35,6 +36,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/spop/spop.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/pagination/pagination.min.js"></script>
 </head>
 <body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue mdui-loaded">
 <header class="mdui-appbar mdui-appbar-fixed">
@@ -130,8 +132,7 @@
             return true;
         }
         </c:forEach>
-    }
-
+    };
 </script>
 </body>
 </html>

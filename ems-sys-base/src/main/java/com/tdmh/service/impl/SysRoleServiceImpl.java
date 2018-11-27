@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -194,6 +193,9 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     @Override
     public JsonData selectRole(String roleName) {
+        if (roleName == null) {
+            return JsonData.success(sysRoleList, "查询成功");
+        }
         List<SysRoleParam> roleList = Lists.newArrayList();
         for (SysRole sysRole : sysRoleList) {
             if (sysRole.getRoleName().contains(roleName)) {

@@ -1,5 +1,6 @@
 app.getPanelContent = function (name) {
     var panelContent = '';
+    this.hasPaginator = false;
     switch (name) {
         /*
          * 系统管理：区域管理 机构管理 用户管理 角色管理 权限管理 字典管理 气价管理 日志管理 公告管理
@@ -17,7 +18,10 @@ app.getPanelContent = function (name) {
         case 'announcement':
             break;
         case 'entryApplyRepair':
-            panelContent = this.DEFAULT_TEMPLATE;
+            this.hasPaginator = true;
+            this.pageNum = this.DEFAULT_PAGE_NUM;
+            this.pageSize = this.DEFAULT_PAGE_SIZE;
+            panelContent = this.DEFAULT_PAGE_TEMPLATE;
             break;
     }
     return panelContent;
@@ -277,8 +281,21 @@ app.initEvent = function () {
             }]
         });
     });
-    main.on('search', function () {
+    main.on('search', function (e) {
         var data = app.toolbar.getInputsData();
+        if(app.hasPaginator) {
+            if (e.target.className !== 'custom-pagination') {
+                app.pageNum = app.DEFAULT_PAGE_NUM;
+            }
+            data.push({
+                name: 'pageSize',
+                value: app.pageSize
+            });
+            data.push({
+                name: 'pageNum',
+                value: app.pageNum
+            })
+        }
         $.ajax({
             type: 'POST',
             url: app.currentPageName + '/search.do',
@@ -289,7 +306,16 @@ app.initEvent = function () {
             },
             success: function (response) {
                 response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
-                app.table.refresh(response.data)
+                if (app.hasPaginator) {
+                    app.table.refresh(response.data.list);
+                    app.pagination.setProperties({
+                        currPage: app.pageNum,
+                        totalPage: response.data.pages,
+                        totalSize: response.data.total
+                    });
+                } else {
+                    app.table.refresh(response.data);
+                }
             }
         });
     });
@@ -1384,10 +1410,6 @@ app.getToolbarFields = function (name) {
                 name: 'add',
                 caption: '新增',
                 perm: 'applyRepair:entryApplyRepair:create'
-            }, {
-                name: 'edit',
-                caption: '编辑',
-                perm: 'applyRepair:entryApplyRepair:update'
             }, {
                 name: 'delete',
                 caption: '删除',

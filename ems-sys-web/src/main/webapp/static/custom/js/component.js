@@ -743,17 +743,21 @@
         var inputsData = [];
         var $inputs = this.$dom.find('input');
         $inputs.each(function (index, input) {
-            inputsData.push({
-                name: $(input).attr('name'),
-                value: $(input).attr('text')? $(input).attr('text') : $(input).val()
-            })
+            if ($(input).attr('text') || $(input).val()) {
+                inputsData.push({
+                    name: $(input).attr('name'),
+                    value: $(input).attr('text') ? $(input).attr('text') : $(input).val()
+                });
+            }
         });
         var $selects = this.$dom.find('select');
         $selects.each(function (index, select) {
-            inputsData.push({
-                name: $(select).attr('name'),
-                value: $(select).val()
-            })
+            if ($(select).val()) {
+                inputsData.push({
+                    name: $(select).attr('name'),
+                    value: $(select).val()
+                });
+            }
         });
         return inputsData;
     };
@@ -1276,5 +1280,62 @@
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    };
+
+    /**
+     * 分页控件
+     * @constructor
+     */
+    function Pagination(params) {
+        this._init(params);
     }
+
+    Pagination.prototype._init = function (params) {
+        this._initDom(params);
+    };
+
+    Pagination.prototype._initDom = function (params) {
+        var $parent = this.$parent = $(params.parent);
+        $parent.whjPaging({
+            css: 'css-2',
+            pageSizeOpt: [{
+                value: 10,
+                text: '10条/页',
+                selected: true
+            }, {
+                value: 20,
+                text: '20条/页'
+            }, {
+                value: 50,
+                text: '50条/页'
+            }, {
+                value: 100,
+                text: '10条/页'
+            }],
+            totalSize: params.totalSize,
+            totalPage: params.totalPage,
+            isShowRefresh: false,
+            confirm: '前往',
+            callBack: params.callBack
+        });
+    };
+
+    Pagination.prototype.setProperty = function (k,v) {
+        var props = {};
+        props[k] = v;
+        this.$parent.whjPaging("setPage", props);
+    };
+
+    Pagination.prototype.setProperties = function (props) {
+        this.$parent.whjPaging("setPage", props);
+    };
+
+    /**
+     * 新建分页控件
+     * @param params
+     * @return {Pagination}
+     */
+    app.createPagination = function (params) {
+        return new Pagination(params);
+    };
 })();
