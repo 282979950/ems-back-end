@@ -123,13 +123,14 @@ public class ShiroConfig {
         // 配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/wx/*", "anon");
-        filterChainDefinitionMap.put("/lyims/*", "anon");
+        filterChainDefinitionMap.put("/lyimsstandard/*", "anon");
         // authc:所有url都必须认证通过才可以访问
         filterChainDefinitionMap.put("/*", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         Map<String, Filter> filterMap = new LinkedHashMap<String, Filter>();
         filterMap.put("authc",new CustomFormAuthenticationFilter());
         filterMap.put("user",new CustomAuthorizationFilter());
+        filterMap.put("anon",new LogFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
         return shiroFilterFactoryBean;
     }
