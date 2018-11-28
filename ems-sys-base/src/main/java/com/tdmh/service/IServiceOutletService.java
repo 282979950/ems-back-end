@@ -11,11 +11,13 @@ import java.util.List;
 public interface IServiceOutletService {
     JsonData getAllSOLet();
 
+    JsonData getAllSOLetWithPagination(Integer pageNum, Integer pageSize);
+
     JsonData createSOLet(ServiceOutlet serviceOutlet);
 
     JsonData deleteSOLet(List<Integer> ids, Integer currentEmpId);
 
     JsonData updateSOLet(ServiceOutlet serviceOutlet);
 
-    JsonData selectSOLet(String serviceOutletName, String serviceOutletAddress);
+    JsonData selectSOLet(String serviceOutletName, String serviceOutletAddress, Integer pageNum, Integer pageSize);
 }

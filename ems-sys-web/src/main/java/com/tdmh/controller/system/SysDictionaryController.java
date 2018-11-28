@@ -3,6 +3,8 @@ package com.tdmh.controller.system;
  * 字典Controller
  */
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.SysDictionary;
 import com.tdmh.service.SysDictionaryService;
@@ -29,11 +31,11 @@ public class SysDictionaryController {
     @RequestMapping(value = {"/listData.do"})
     @ResponseBody
     //获取字典数据列(List)
-    public JsonData selectFindListOnPc(HttpServletRequest request, HttpServletResponse respose) {
-
+    public JsonData selectFindListOnPc(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<SysDictionary> list = sysDictionaryService.findListOnPc();
-        return JsonData.successData(list);
-
+        PageInfo<SysDictionary> page = new PageInfo<>(list);
+        return JsonData.successData(page);
     }
 
     //新增数据
@@ -154,9 +156,10 @@ public class SysDictionaryController {
     @RequiresPermissions("sys:dic:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData selectFindListByDict(SysDictionary sdy, HttpServletRequest request, HttpServletResponse respose){
+    public JsonData selectFindListByDict(SysDictionary sdy, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<SysDictionary> list = sysDictionaryService.findListByService(sdy);
-
-        return list.size()==0?JsonData.fail("未查询到相关数据请重试"):JsonData.success(list,"查询成功");
+        PageInfo<SysDictionary> page = new PageInfo<>(list);
+        return list.size() == 0 ? JsonData.fail("未查询到相关数据请重试") : JsonData.success(page, "查询成功");
     }
 }

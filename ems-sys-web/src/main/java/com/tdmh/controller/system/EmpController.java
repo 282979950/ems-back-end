@@ -4,7 +4,6 @@ import com.tdmh.common.JsonData;
 import com.tdmh.param.EmployeeParam;
 import com.tdmh.service.IEmployeeService;
 import com.tdmh.util.ShiroUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,8 +29,8 @@ public class EmpController {
     @RequiresPermissions("sys:emp:visit")
     @RequestMapping(value = "listData.do")
     @ResponseBody
-    public JsonData listData() {
-        return employeeService.getAllEmployees();
+    public JsonData listData(Integer pageNum, Integer pageSize) {
+        return employeeService.getAllEmployees(pageNum, pageSize);
     }
 
     /**
@@ -77,13 +76,14 @@ public class EmpController {
     @RequestMapping(value = "search.do")
     @ResponseBody
     public JsonData searchEmployee(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone,
-                                   String empMobile, String empType) {
-        return employeeService.searchEmployee(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
+                                   String empMobile, String empType, Integer pageNum, Integer pageSize) {
+        return employeeService.searchEmployee(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType, pageNum, pageSize);
     }
 
     @RequestMapping(value = "getEmpByEmpNumber.do")
     @ResponseBody
-    public JsonData getEmpByEmpNumber(@Param("empNumber") String empNumber) {
-        return employeeService.searchEmployee(empNumber, null, null, null, null, null, null, null);
+    public JsonData getEmpByEmpNumber(String empNumber) {
+//        return employeeService.searchEmployee(empNumber, null, null, null, null, null, null, null);
+        return employeeService.getEmpByEmpNumber(empNumber);
     }
 }

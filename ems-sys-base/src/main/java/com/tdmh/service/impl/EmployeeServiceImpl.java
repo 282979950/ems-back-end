@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.Employee;
@@ -10,13 +12,10 @@ import com.tdmh.param.EmployeeParam;
 import com.tdmh.service.IEmployeeService;
 import com.tdmh.utils.MD5Utils;
 import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +57,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public JsonData getAllEmployees() {
+    public JsonData getAllEmployees(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<EmployeeParam> employees = employeeMapper.getAllEmployees();
         if (employees == null || employees.size() == 0) {
             return JsonData.successMsg("搜索结果为空");
@@ -66,7 +66,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
         for (EmployeeParam employee : employees) {
             employee.setEmpPassword(null);
         }
-        return JsonData.success(employees, "查询成功");
+        PageInfo<EmployeeParam> page = new PageInfo<>(employees);
+        return JsonData.success(page, "查询成功");
     }
 
     @Override
@@ -166,24 +167,19 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public JsonData searchEmployee(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone, String
-            empMobile, String empType) {
-//        PageHelper.startPage(1, 10);
-//        List<Employee> employeeList = employeeMapper.select(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
-//        if (employeeList == null || employeeList.size() == 0) {
-//            return JsonData.successMsg("查询结果为空");
-//        }
-//        PageInfo pageInfo = new PageInfo(employeeList);
-//        Map<String, Object> result = new HashMap<>(8);
-//        result.put("isHasNextPage", pageInfo.isHasNextPage());
-//        result.put("isHasPreviousPage", pageInfo.isHasPreviousPage());
-//        result.put("isIsFirstPage", pageInfo.isIsFirstPage());
-//        result.put("isIsLastPage", pageInfo.isIsLastPage());
-//        result.put("total", pageInfo.getTotal());
-//        result.put("pageNum", pageInfo.getPageNum());
-//        result.put("pageSize", pageInfo.getPageSize());
-//        result.put("empList", employeeList);
-//        return JsonData.successData(result);
-        List<Employee> employees = employeeMapper.searchEmployee(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
-        return employees == null || employees.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.success(employees, "查询成功");
+            empMobile, String empType, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<EmployeeParam> employees = employeeMapper.searchEmployee(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
+        if (employees == null) {
+            return JsonData.successMsg("查询结果为空");
+        }
+        PageInfo<EmployeeParam> page = new PageInfo<>(employees);
+        return employees.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.success(page, "查询成功");
+    }
+
+    @Override
+    public JsonData getEmpByEmpNumber(String empNumber) {
+        EmployeeParam employee = employeeMapper.getEmpByEmpNumber(empNumber);
+        return employee == null ? JsonData.successMsg("查询结果为空") : JsonData.success(employee, "查询成功");
     }
 }

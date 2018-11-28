@@ -597,4 +597,18 @@
         LEFT JOIN sys_dictionary sd3 on e.emp_login_flag = sd3.dict_value and sd3.dict_category = 'emp_login_flag' and sd3.usable = 1
         where e.usable = 1 and e.emp_id = #{empId,jdbcType=INTEGER}
     </select>
+    <select id="getEmpByEmpNumber" parameterType="string" resultMap="EmployeeParam">
+        select
+        e.emp_id, e.emp_number, e.emp_name, e.emp_org_id, o.org_name, e.emp_district_id, sd.dist_name, e.emp_login_name, e.emp_password, e.emp_email,
+        e.emp_phone, e.emp_mobile, e.emp_address, er.role_id, sr.role_name, e.emp_type , sd2.dict_key AS emp_type_name, e.emp_management_dist_id,e.emp_login_ip, e.emp_login_date, e
+        .emp_login_flag, sd3.dict_key AS emp_login_flag_name, e.create_time, e .create_by, e.update_time, e.update_by, e.usable, e.remarks
+        from
+        employee e left join sys_district sd on e.emp_district_id = sd.dist_id
+        left join sys_organization o on e.emp_org_id = o.org_id
+        left join employee_role er on e.emp_id = er.emp_id
+        left join sys_role sr on er.role_id = sr.role_id
+        LEFT JOIN sys_dictionary sd2 on e.emp_type = sd2.dict_value and sd2.dict_category = 'emp_type' and sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 on e.emp_login_flag = sd3.dict_value and sd3.dict_category = 'emp_login_flag' and sd3.usable = 1
+        where e.usable = 1 and e.emp_number = #{empNumber}
+    </select>
 </mapper>

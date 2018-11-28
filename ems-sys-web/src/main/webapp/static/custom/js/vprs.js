@@ -7,19 +7,19 @@ app.getPanelContent = function (name) {
          */
         case 'dist':
         case 'org':
-        case 'emp':
         case 'role':
-        case 'permission':
-        case 'dic':
-        case 'solet':
         case 'evalItem':
-        case 'wxNotice':
             panelContent = this.DEFAULT_TEMPLATE;
             break;
         case 'log':
         case 'announcement':
             break;
+        case 'emp':
+        case 'permission':
+        case 'dic':
         case 'entryApplyRepair':
+        case 'solet':
+        case 'wxNotice':
             this.hasPaginator = true;
             this.pageNum = this.DEFAULT_PAGE_NUM;
             this.pageSize = this.DEFAULT_PAGE_SIZE;
@@ -29,8 +29,8 @@ app.getPanelContent = function (name) {
         * 查询统计：订单查询
         */
         case 'eval':
-           panelContent = this.DEFAULT_TEMPLATE;
-           break;
+            panelContent = this.DEFAULT_TEMPLATE;
+            break;
     }
     return panelContent;
 };
@@ -318,12 +318,21 @@ app.initEvent = function () {
             success: function (response) {
                 response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
                 if (app.hasPaginator) {
-                    app.table.refresh(response.data.list);
-                    app.pagination.setProperties({
-                        currPage: app.pageNum,
-                        totalPage: response.data.pages,
-                        totalSize: response.data.total
-                    });
+                    if (response.data) {
+                        app.table.refresh(response.data.list);
+                        app.pagination.setProperties({
+                            currPage: app.pageNum,
+                            totalPage: response.data.pages,
+                            totalSize: response.data.total
+                        });
+                    } else {
+                        app.table.refresh(response.data);
+                        app.pagination.setProperties({
+                            currPage: app.pageNum,
+                            totalPage: 1,
+                            totalSize: 0
+                        });
+                    }
                 } else {
                     app.table.refresh(response.data);
                 }

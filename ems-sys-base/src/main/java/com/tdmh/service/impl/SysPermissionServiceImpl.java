@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.SysPermission;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -134,14 +135,14 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
     }
 
     @Override
-    public JsonData selectPermission(String permName, String permCaption, String menuName) {
+    public JsonData selectPermission(String permName, String permCaption, String menuName, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<SysPermission> permissions = permissionMapper.select(permName, permCaption, menuName);
-        if (permissions == null || permissions.size()==0) {
+        if (permissions == null || permissions.size() == 0) {
             return JsonData.successMsg("查询结果为空");
         }
-        else {
-            return JsonData.success(permissions,"查询成功");
-        }
+        PageInfo<SysPermission> page = new PageInfo<>(permissions);
+        return JsonData.success(page, "查询成功");
     }
 
     @Override

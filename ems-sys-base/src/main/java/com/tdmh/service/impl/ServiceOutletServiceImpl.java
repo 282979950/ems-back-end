@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
@@ -28,6 +30,17 @@ public class ServiceOutletServiceImpl implements IServiceOutletService {
     public JsonData getAllSOLet() {
         List<ServiceOutlet> list = serviceOutletMapper.getAllSOLet();
         return list == null || list.size()==0 ? JsonData.successMsg("暂无营业网点"):JsonData.successData(list);
+    }
+
+    @Override
+    public JsonData getAllSOLetWithPagination(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<ServiceOutlet> list = serviceOutletMapper.getAllSOLet();
+        if (list == null || list.size() == 0) {
+            return JsonData.successMsg("暂无营业网点");
+        }
+        PageInfo<ServiceOutlet> page = new PageInfo<>(list);
+        return JsonData.successData(page);
     }
 
     @Override
@@ -86,9 +99,13 @@ public class ServiceOutletServiceImpl implements IServiceOutletService {
     }
 
     @Override
-    public JsonData selectSOLet(String serviceOutletName, String serviceOutletAddress) {
-        List<ServiceOutlet> list = serviceOutletMapper.selectSOLet(serviceOutletName,serviceOutletAddress);
-        return list == null || list.size()==0 ? JsonData.successMsg("暂无营业网点"):JsonData.success(list,"查询成功");
-
+    public JsonData selectSOLet(String serviceOutletName, String serviceOutletAddress, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<ServiceOutlet> list = serviceOutletMapper.selectSOLet(serviceOutletName, serviceOutletAddress);
+        if (list == null || list.size() == 0) {
+            return JsonData.successMsg("暂无营业网点");
+        }
+        PageInfo<ServiceOutlet> page = new PageInfo<>(list);
+        return JsonData.success(page, "查询成功");
     }
 }
