@@ -147,7 +147,7 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
         if (applyRepairParam.getApplyRepairStatus() == 5) {
             return JsonData.fail("该报修单正在撤销中，请等待");
         }
-        int resultCount = applyRepairMapper.updateRepairStatus(applyRepairParam.getApplyRepairFlowNumber(), 5, param.getFormId());
+        int resultCount = applyRepairMapper.updateRepairStatus(applyRepairParam.getApplyRepairFlowNumber(), 5, param.getFormId(),null,null);
         if (resultCount == 0) {
             return JsonData.fail("撤销报修单失败，请重新撤销");
         }
@@ -159,7 +159,7 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
             if (json.getString("msg").equals("撤销中...")) {
                 return JsonData.successMsg("正在撤销中");
             } else {
-                int resultCount1 = applyRepairMapper.updateRepairStatus(applyRepairParam.getApplyRepairFlowNumber(), 4, null);
+                int resultCount1 = applyRepairMapper.updateRepairStatus(applyRepairParam.getApplyRepairFlowNumber(), 4, null,null,null);
                 if (resultCount1 == 0) {
                     return JsonData.fail("撤销报修单失败，请重新撤销");
                 }
@@ -171,11 +171,11 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
 
     @Override
     @Transactional
-    public JsonData updateApplyRepair(String applyRepairFlowNumber, Integer applyRepairStatus) {
+    public JsonData updateApplyRepair(String applyRepairFlowNumber, Integer applyRepairStatus, String signPersonId, String repairmanPhone) {
         if (applyRepairFlowNumber == null) {
             return JsonData.fail("流水号不能为空");
         }
-        int resultCount = applyRepairMapper.updateRepairStatus(applyRepairFlowNumber, applyRepairStatus == 11 ? 4 : applyRepairStatus , null);
+        int resultCount = applyRepairMapper.updateRepairStatus(applyRepairFlowNumber, applyRepairStatus == 11 ? 4 : applyRepairStatus , null, signPersonId, repairmanPhone);
         if (resultCount == 0) {
             log.info("更新订单状态失败，订单流水号:"+applyRepairFlowNumber+",订单状态:"+ applyRepairStatus);
             return JsonData.fail("更新订单状态失败");

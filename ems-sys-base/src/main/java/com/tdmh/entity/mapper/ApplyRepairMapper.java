@@ -38,7 +38,7 @@ public interface ApplyRepairMapper {
 
     boolean checkUserIdExists(@Param("userId") Integer userId);
 
-    int updateRepairStatus(@Param("applyRepairFlowNumber") String applyRepairFlowNumber, @Param("applyRepairStatus") Integer applyRepairStatus,  @Param("formId") String formId);
+    int updateRepairStatus(@Param("applyRepairFlowNumber") String applyRepairFlowNumber, @Param("applyRepairStatus") Integer applyRepairStatus,  @Param("formId") String formId, @Param("signPersonId") String signPersonId, @Param("repairmanPhone") String repairmanPhone);
 
     String findOpenidByFlownumber(String applyRepairFlowNumber);
 

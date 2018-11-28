@@ -31,6 +31,8 @@
             <arg column="user_tel_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="is_display_remind" jdbcType="BIT" javaType="java.lang.Boolean"/>
             <arg column="has_eval" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="sign_person_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="repair_man_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -46,7 +48,7 @@
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
         (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0) AS is_display_remind,
-        ar.has_eval, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
+        ar.has_eval, ar.sign_person_id, ar.repair_man_phone, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
         left join sys_district dist on u.user_dist_id = dist.dist_id and dist.usable = 1
@@ -122,7 +124,7 @@
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
         (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0) AS is_display_remind,
-        ar.has_eval, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
+        ar.has_eval, ar.sign_person_id, ar.repair_man_phone, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
         left join sys_district dist on u.user_dist_id = dist.dist_id and dist.usable = 1
@@ -170,7 +172,7 @@
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
         (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0) AS is_display_remind,
-        ar.has_eval, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
+        ar.has_eval, ar.sign_person_id, ar.repair_man_phone, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
         left join sys_district dist on u.user_dist_id = dist.dist_id and dist.usable = 1
@@ -189,7 +191,7 @@
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
         (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0) AS is_display_remind,
-        ar.has_eval, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
+        ar.has_eval, ar.sign_person_id, ar.repair_man_phone, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
         left join sys_district dist on u.user_dist_id = dist.dist_id and dist.usable = 1
@@ -217,6 +219,12 @@
         update apply_repair set apply_repair_status = #{applyRepairStatus},update_time = NOW()
         <if test="formId!=null and formId!=''">
             ,form_id = #{formId}
+        </if>
+        <if test="signPersonId!=null and signPersonId!=''">
+            ,sign_person_id = #{signPersonId}
+        </if>
+        <if test="repairmanPhone!=null and repairmanPhone!=''">
+            ,repair_man_phone = #{repairmanPhone}
         </if>
         where apply_repair_flow_number = #{applyRepairFlowNumber}
     </update>
@@ -248,7 +256,7 @@
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
         (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0) AS is_display_remind,
-        ar.has_eval, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
+        ar.has_eval, ar.sign_person_id, ar.repair_man_phone, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
         left join sys_district dist on u.user_dist_id = dist.dist_id and dist.usable = 1

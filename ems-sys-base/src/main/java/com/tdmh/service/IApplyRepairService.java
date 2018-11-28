@@ -85,9 +85,11 @@ public interface IApplyRepairService {
      * 修改报修单状态
      * @param applyRepairFlowNumber
      * @param applyRepairStatus
+     * @param signPersonId
+     * @param repairmanPhone
      * @return
      */
-    JsonData updateApplyRepair(String applyRepairFlowNumber, Integer applyRepairStatus);
+    JsonData updateApplyRepair(String applyRepairFlowNumber, Integer applyRepairStatus, String signPersonId, String repairmanPhone);
 
     /**
      * 催单

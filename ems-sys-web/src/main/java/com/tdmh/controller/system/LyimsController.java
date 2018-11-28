@@ -19,7 +19,7 @@ public class LyimsController {
 
     @RequestMapping("/updateApplyRepair")
     @ResponseBody
-    public JsonData updateApplyRepair(String applyRepairFlowNumber, Integer applyRepairStatus){
-        return applyRepairService.updateApplyRepair(applyRepairFlowNumber,applyRepairStatus);
+    public JsonData updateApplyRepair(String applyRepairFlowNumber, Integer applyRepairStatus, String signPersonId, String repairmanPhone){
+        return applyRepairService.updateApplyRepair(applyRepairFlowNumber,applyRepairStatus,signPersonId,repairmanPhone);
     }
 }

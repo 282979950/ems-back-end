@@ -180,6 +180,16 @@ public class ApplyRepairParam extends BaseEntity {
      */
     private String wxOpenId;
 
+    /**
+     * 维修人员ID
+     */
+    private String signPersonId;
+
+    /**
+     * 维修人员电话
+     */
+    private String repairmanPhone;
+
     public ApplyRepairParam() {
         super();
     }
@@ -189,7 +199,7 @@ public class ApplyRepairParam extends BaseEntity {
                             String applyRepairFaultDesc, String applyRepairAppealContent, Date applyRepairTime, Integer meterId, String meterCode,
                             Boolean meterDirection, String meterDirectionName, Integer meterTypeId, String meterType, BigDecimal currentOrderGasCount,
                             Integer applyRepairStatus, String applyRepairStatusName, Date startTime, Date endTime, String userTelPhone, Boolean isDisplayRemind,
-                            Boolean hasEval, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+                            Boolean hasEval, String signPersonId, String repairmanPhone, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.applyRepairId = applyRepairId;
         this.applyRepairFlowNumber = applyRepairFlowNumber;
@@ -219,6 +229,8 @@ public class ApplyRepairParam extends BaseEntity {
         this.userTelPhone = userTelPhone;
         this.isDisplayRemind = isDisplayRemind;
         this.hasEval = hasEval;
+        this.signPersonId = signPersonId;
+        this.repairmanPhone = repairmanPhone;
     }
 
     @Override
