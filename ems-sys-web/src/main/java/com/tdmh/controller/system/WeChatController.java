@@ -172,4 +172,14 @@ public class WeChatController {
     public JsonData getWXNotice() {
         return wxNoticeService.listData();
     }
+
+    /**
+     * 获取报修单号的信息
+     * @return
+     */
+    @RequestMapping("/getRepairManTrack")
+    @ResponseBody
+    public JsonData getRepairManTrack(@Param("applyRepairFlowNumber") String applyRepairFlowNumber) {
+        return wxService.getRepairManTrack(applyRepairFlowNumber);
+    }
 }
