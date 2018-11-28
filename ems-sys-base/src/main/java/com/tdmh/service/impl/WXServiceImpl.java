@@ -321,4 +321,9 @@ public class WXServiceImpl implements IWXService {
     public JsonData remindWXApplyRepair(Integer applyRepairId) {
         return applyRepairService.remindWXApplyRepair(applyRepairId);
     }
+
+    @Override
+    public JsonData getRepairManTrack(String applyRepairFlowNumber) {
+        return null;
+    }
 }

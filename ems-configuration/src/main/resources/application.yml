@@ -13,7 +13,5 @@ mybatis:
   config-location: classpath:mybatis-config.xml
   type-aliases-package: com.tdmh.entity
   mapper-locations: classpath:mappers/*Mapper.xml
-logging:
-  config: classpath:logback-${spring.profiles.active}.xml
 
 

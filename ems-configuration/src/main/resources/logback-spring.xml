@@ -20,6 +20,14 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
     <logger name="org.springframework" level="OFF"/>
     <logger name="net.sf.ehcache" level="OFF"/>
     <logger name="org.apache.shiro" level="OFF"/>
@@ -27,7 +35,17 @@
     <logger name="java.sql" level="OFF"/>
     <logger name="org.mybatis.spring" level="OFF"/>
     <logger name="org.apache.ibatis" level="OFF"/>
-    <root level="DEBUG">
-        <appender-ref ref="FILE" />
-    </root>
+    <!-- 开发环境下的日志配置 -->
+    <springProfile name="local,dev">
+        <root level="DEBUG">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+
+    <!-- 生产环境下的日志配置 -->
+    <springProfile name="dev">
+        <root level="DEBUG">
+            <appender-ref ref="FILE" />
+        </root>
+    </springProfile>
 </configuration>

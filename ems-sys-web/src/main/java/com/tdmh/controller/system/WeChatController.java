@@ -174,7 +174,7 @@ public class WeChatController {
     }
 
     /**
-     * 获取报修单号的信息
+     * 获取维修人员轨迹信息
      * @return
      */
     @RequestMapping("/getRepairManTrack")

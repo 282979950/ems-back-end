@@ -121,4 +121,11 @@ public interface IWXService {
      * @return
      */
     JsonData remindWXApplyRepair(Integer applyRepairId);
+
+    /**
+     * 获取维修人员轨迹
+     * @param applyRepairFlowNumber
+     * @return
+     */
+    JsonData getRepairManTrack(String applyRepairFlowNumber);
 }
