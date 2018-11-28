@@ -247,21 +247,6 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
         return JsonData.success(false, "催单成功");
     }
 
-    @Override
-    public JsonData remindWXApplyRepair(Integer userId, String applyRepairFlowNumber) {
-        String params = "userId=" + userId + "&applyRepairFlowNumber=" + applyRepairFlowNumber;
-        ApplyRepairParam applyRepair = applyRepairMapper.getApplyRepairParamByFlowNumber(applyRepairFlowNumber);
-        if (applyRepair.getApplyRepairStatus().equals(1)) {
-            return JsonData.successMsg("订单未签收，不能进行催单操作");
-        }
-        String responseString = HttpRequestUtil.sendGet(LYIMS_STANDARD_URL, params);
-        JSONObject response = JSONObject.parseObject(responseString);
-        if (!response.getBoolean("success")) {
-            return JsonData.fail("催单失败");
-        }
-        return JsonData.successMsg("催单成功");
-    }
-
     private JsonData create0(ApplyRepairParam param, Integer applyRepairType) {
         BeanValidator.check(param);
         Integer userId = param.getUserId();

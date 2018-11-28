@@ -47,7 +47,7 @@
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
-        (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0) AS is_display_remind,
+        (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0 AND ar.apply_repair_type = 1) AS is_display_remind,
         ar.has_eval, ar.sign_person_id, ar.repair_man_phone, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
@@ -123,7 +123,7 @@
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
-        (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0) AS is_display_remind,
+        (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0 AND ar.apply_repair_type = 1) AS is_display_remind,
         ar.has_eval, ar.sign_person_id, ar.repair_man_phone, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
@@ -171,7 +171,7 @@
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
-        (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0) AS is_display_remind,
+        (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0 AND ar.apply_repair_type = 1) AS is_display_remind,
         ar.has_eval, ar.sign_person_id, ar.repair_man_phone, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
@@ -190,7 +190,7 @@
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
-        (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0) AS is_display_remind,
+        (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0 AND ar.apply_repair_type = 1) AS is_display_remind,
         ar.has_eval, ar.sign_person_id, ar.repair_man_phone, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
@@ -255,7 +255,7 @@
         u.user_phone, ar.apply_repair_type, dict1.dict_key as apply_repair_type_name, ar.apply_repair_fault_desc, ar.apply_repair_appeal_content,
         ar.apply_repair_time, ar.meter_id, m.meter_code, m.meter_direction, dict2.dict_key as meter_direction_name, m.meter_type_id, mt.meter_type,
         ar.current_order_gas_count, ar.apply_repair_status, dict3.dict_key as apply_repair_status_name, ar.start_time, ar.end_time, ar.user_tel_phone,
-        (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0) AS is_display_remind,
+        (TIMESTAMPDIFF(SECOND, ar.apply_repair_time, NOW())>1800 AND ar.apply_repair_status = 2 AND ar.has_reminded = 0 AND ar.apply_repair_type = 1) AS is_display_remind,
         ar.has_eval, ar.sign_person_id, ar.repair_man_phone, ar.create_time, ar.create_by, ar.update_time, ar.update_by, ar.usable, ar.remarks
         from apply_repair ar
         left join user u on ar.user_id = u.user_id and u.usable = 1
