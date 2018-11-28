@@ -4,7 +4,6 @@ import com.tdmh.common.JsonData;
 import com.tdmh.param.WXNoticeParam;
 import com.tdmh.service.IWXNoticeService;
 import com.tdmh.util.ShiroUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +26,8 @@ public class WXNoticeController {
 
     @RequiresPermissions("sys:wxNotice:visit")
     @RequestMapping("listData.do")
-    public JsonData listData() {
-        return wxNoticeService.listData();
+    public JsonData listData(Integer pageNum, Integer pageSize) {
+        return wxNoticeService.listDataWithPagination(pageNum, pageSize);
     }
 
     @RequiresPermissions("sys:wxNotice:create")
@@ -49,7 +48,7 @@ public class WXNoticeController {
 
     @RequiresPermissions("sys:wxNotice:create")
     @RequestMapping("search.do")
-    public JsonData search(@Param("wxNoticeTitle") String wxNoticeTitle) {
-        return wxNoticeService.search(wxNoticeTitle);
+    public JsonData search(String wxNoticeTitle, Integer pageNum, Integer pageSize) {
+        return wxNoticeService.search(wxNoticeTitle, pageNum, pageSize);
     }
 }

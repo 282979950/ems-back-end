@@ -43,7 +43,7 @@ public interface ISysPermissionService {
      * @param menuName
      * @return
      */
-    JsonData selectPermission(String permName, String permCaption, String menuName);
+    JsonData selectPermission(String permName, String permCaption, String menuName, Integer pageNum, Integer pageSize);
 
     /**
      * 查询所有菜单列表

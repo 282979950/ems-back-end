@@ -1,6 +1,8 @@
 package com.tdmh.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.config.CustomWXPayConfig;
@@ -54,9 +56,11 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
     private SysDictionaryService sysDictionaryService;
 
     @Override
-    public JsonData listData() {
+    public JsonData listData(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<ApplyRepairParam> applyRepairs = applyRepairMapper.selectAll();
-        return applyRepairs == null || applyRepairs.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.successData(applyRepairs);
+        PageInfo<ApplyRepairParam> page = new PageInfo<>(applyRepairs);
+        return JsonData.successData(page);
     }
 
     @Override
@@ -96,9 +100,11 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
     }
 
     @Override
-    public JsonData search(Integer userId, String userName, String userPhone, String userTelPhone) {
+    public JsonData search(Integer userId, String userName, String userPhone, String userTelPhone, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<ApplyRepairParam> applyRepairs = applyRepairMapper.search(userId, userName, userPhone, userTelPhone);
-        return applyRepairs == null || applyRepairs.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.success(applyRepairs, "查询成功");
+        PageInfo<ApplyRepairParam> page = new PageInfo<>(applyRepairs);
+        return applyRepairs.size() == 0 ? JsonData.successMsg("查询结果为空"): JsonData.success(page, "查询成功");
     }
 
     @Override
@@ -239,6 +245,21 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
             return JsonData.fail("修改催单状态失败");
         }
         return JsonData.success(false, "催单成功");
+    }
+
+    @Override
+    public JsonData remindWXApplyRepair(Integer userId, String applyRepairFlowNumber) {
+        String params = "userId=" + userId + "&applyRepairFlowNumber=" + applyRepairFlowNumber;
+        ApplyRepairParam applyRepair = applyRepairMapper.getApplyRepairParamByFlowNumber(applyRepairFlowNumber);
+        if (applyRepair.getApplyRepairStatus().equals(1)) {
+            return JsonData.successMsg("订单未签收，不能进行催单操作");
+        }
+        String responseString = HttpRequestUtil.sendGet(LYIMS_STANDARD_URL, params);
+        JSONObject response = JSONObject.parseObject(responseString);
+        if (!response.getBoolean("success")) {
+            return JsonData.fail("催单失败");
+        }
+        return JsonData.successMsg("催单成功");
     }
 
     private JsonData create0(ApplyRepairParam param, Integer applyRepairType) {

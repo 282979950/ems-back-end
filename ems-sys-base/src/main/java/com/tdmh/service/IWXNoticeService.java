@@ -11,9 +11,11 @@ import java.util.List;
 public interface IWXNoticeService {
     JsonData listData();
 
+    JsonData listDataWithPagination(Integer pageNum, Integer pageSize);
+
     JsonData create(WXNoticeParam param);
 
     JsonData delete(List<Integer> ids, Integer currentEmpId);
 
-    JsonData search(String wxNoticeTitle);
+    JsonData search(String wxNoticeTitle, Integer pageNum, Integer pageSize);
 }

@@ -1,32 +1,36 @@
 app.getPanelContent = function (name) {
     var panelContent = '';
+    this.hasPaginator = false;
     switch (name) {
         /*
          * 系统管理：区域管理 机构管理 用户管理 角色管理 权限管理 字典管理 气价管理 日志管理 公告管理
          */
         case 'dist':
         case 'org':
-        case 'emp':
         case 'role':
-        case 'permission':
-        case 'dic':
-        case 'solet':
         case 'evalItem':
-        case 'wxNotice':
             panelContent = this.DEFAULT_TEMPLATE;
             break;
         case 'log':
         case 'announcement':
             break;
+        case 'emp':
+        case 'permission':
+        case 'dic':
         case 'entryApplyRepair':
-            panelContent = this.DEFAULT_TEMPLATE;
+        case 'solet':
+        case 'wxNotice':
+            this.hasPaginator = true;
+            this.pageNum = this.DEFAULT_PAGE_NUM;
+            this.pageSize = this.DEFAULT_PAGE_SIZE;
+            panelContent = this.DEFAULT_PAGE_TEMPLATE;
             break;
         /*
         * 查询统计：订单查询
         */
         case 'eval':
-           panelContent = this.DEFAULT_TEMPLATE;
-           break;
+            panelContent = this.DEFAULT_TEMPLATE;
+            break;
     }
     return panelContent;
 };
@@ -105,6 +109,9 @@ app.initIndex = function () {
                         break;
                 }
             }
+        });
+        $(document).on('blur', 'input[type=text]', function () {
+            this.value = $.trim(this.value);
         });
     });
 };
@@ -285,8 +292,21 @@ app.initEvent = function () {
             }]
         });
     });
-    main.on('search', function () {
+    main.on('search', function (e) {
         var data = app.toolbar.getInputsData();
+        if(app.hasPaginator) {
+            if (e.target.className !== 'custom-pagination') {
+                app.pageNum = app.DEFAULT_PAGE_NUM;
+            }
+            data.push({
+                name: 'pageSize',
+                value: app.pageSize
+            });
+            data.push({
+                name: 'pageNum',
+                value: app.pageNum
+            })
+        }
         $.ajax({
             type: 'POST',
             url: app.currentPageName + '/search.do',
@@ -297,7 +317,25 @@ app.initEvent = function () {
             },
             success: function (response) {
                 response.status ? app.successMessage(response.message) : app.errorMessage(response.message);
-                app.table.refresh(response.data)
+                if (app.hasPaginator) {
+                    if (response.data) {
+                        app.table.refresh(response.data.list);
+                        app.pagination.setProperties({
+                            currPage: app.pageNum,
+                            totalPage: response.data.pages,
+                            totalSize: response.data.total
+                        });
+                    } else {
+                        app.table.refresh(response.data);
+                        app.pagination.setProperties({
+                            currPage: app.pageNum,
+                            totalPage: 1,
+                            totalSize: 0
+                        });
+                    }
+                } else {
+                    app.table.refresh(response.data);
+                }
             }
         });
     });
@@ -846,7 +884,8 @@ app.getAddFormFields = function (name) {
             }, {
                 name: 'userTelPhone',
                 caption: '主叫号码',
-                inputType: 'mobile'
+                inputType: 'mobile',
+                required: true
             }, {
                 name: 'applyRepairFaultDesc',
                 caption: '故障说明',
@@ -855,7 +894,8 @@ app.getAddFormFields = function (name) {
             }, {
                 name: 'applyRepairAppealContent',
                 caption: '诉求内容',
-                maxlength: 255
+                maxlength: 255,
+                required: true
             }, {
                 name: 'startTime',
                 caption: '预约开始时间',
@@ -1471,10 +1511,6 @@ app.getToolbarFields = function (name) {
                 name: 'add',
                 caption: '新增',
                 perm: 'applyRepair:entryApplyRepair:create'
-            }, {
-                name: 'edit',
-                caption: '编辑',
-                perm: 'applyRepair:entryApplyRepair:update'
             }, {
                 name: 'delete',
                 caption: '删除',

@@ -29,8 +29,8 @@ public class EmpController {
     @RequiresPermissions("sys:emp:visit")
     @RequestMapping(value = "listData.do")
     @ResponseBody
-    public JsonData listData() {
-        return employeeService.getAllEmployees();
+    public JsonData listData(Integer pageNum, Integer pageSize) {
+        return employeeService.getAllEmployees(pageNum, pageSize);
     }
 
     /**
@@ -75,15 +75,15 @@ public class EmpController {
     @RequiresPermissions("sys:emp:retrieve")
     @RequestMapping(value = "search.do")
     @ResponseBody
-    public JsonData searchEmployee(@RequestParam("empNumber") String empNumber, @RequestParam("empName") String empName, @RequestParam("empOrgId") Integer
-            empOrgId, @RequestParam("empDistrictId") Integer empDistrictId, @RequestParam("empLoginName") String empLoginName, @RequestParam("empPhone") String
-            empPhone, @RequestParam("empMobile") String empMobile, @RequestParam("empType") String empType) {
-        return employeeService.searchEmployee(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
+    public JsonData searchEmployee(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone,
+                                   String empMobile, String empType, Integer pageNum, Integer pageSize) {
+        return employeeService.searchEmployee(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType, pageNum, pageSize);
     }
 
     @RequestMapping(value = "getEmpByEmpNumber.do")
     @ResponseBody
-    public JsonData getEmpByEmpNumber(@RequestParam("empNumber") String empNumber) {
-        return employeeService.searchEmployee(empNumber, null, null, null, null, null, null, null);
+    public JsonData getEmpByEmpNumber(String empNumber) {
+//        return employeeService.searchEmployee(empNumber, null, null, null, null, null, null, null);
+        return employeeService.getEmpByEmpNumber(empNumber);
     }
 }

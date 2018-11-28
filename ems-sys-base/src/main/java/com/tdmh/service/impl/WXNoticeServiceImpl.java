@@ -1,5 +1,8 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.mapper.WXNoticeMapper;
 import com.tdmh.param.WXNoticeParam;
@@ -28,8 +31,20 @@ public class WXNoticeServiceImpl implements IWXNoticeService {
     }
 
     @Override
+    public JsonData listDataWithPagination(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<WXNoticeParam> wxNotices = wxNoticeMapper.listData();
+        if (wxNotices == null || wxNotices.size() == 0) {
+            return JsonData.successMsg("查询结果为空");
+        }
+        PageInfo<WXNoticeParam> page = new PageInfo<>(wxNotices);
+        return JsonData.successData(page);
+    }
+
+    @Override
     @Transactional
     public JsonData create(WXNoticeParam param) {
+        BeanValidator.check(param);
         int resultCount = wxNoticeMapper.create(param);
         if (resultCount == 0) {
             return JsonData.fail("新建公告失败");
@@ -59,9 +74,14 @@ public class WXNoticeServiceImpl implements IWXNoticeService {
     }
 
     @Override
-    public JsonData search(String wxNoticeTitle) {
+    public JsonData search(String wxNoticeTitle, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<WXNoticeParam> wxNotices = wxNoticeMapper.search(wxNoticeTitle);
-        return wxNotices == null || wxNotices.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.success(wxNotices, "查询成功");
+        if (wxNotices == null || wxNotices.size() == 0) {
+            return JsonData.successMsg("查询结果为空");
+        }
+        PageInfo<WXNoticeParam> page = new PageInfo<>(wxNotices);
+        return JsonData.success(page, "查询成功");
     }
 
     public WXNoticeParam getWXNoticeById(Integer id) {

@@ -29,8 +29,8 @@ public class SysPermissionController {
     @RequiresPermissions("sys:perm:visit")
     @RequestMapping("listData.do")
     @ResponseBody
-    public JsonData getPermissionList() {
-        return sysPermissionService.selectPermission(null,null,null);
+    public JsonData getPermissionList(Integer pageNum, Integer pageSize) {
+        return sysPermissionService.selectPermission(null,null,null, pageNum, pageSize);
     }
 
     /**
@@ -76,8 +76,8 @@ public class SysPermissionController {
     @RequiresPermissions("sys:perm:retrieve")
     @RequestMapping("search.do")
     @ResponseBody
-    public JsonData selectPermission(String permName, String permCaption, String menuName) {
-        return sysPermissionService.selectPermission(permName, permCaption, menuName);
+    public JsonData selectPermission(String permName, String permCaption, String menuName, Integer pageNum, Integer pageSize) {
+        return sysPermissionService.selectPermission(permName, permCaption, menuName, pageNum, pageSize);
     }
 
     /**

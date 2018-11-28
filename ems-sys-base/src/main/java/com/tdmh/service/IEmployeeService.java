@@ -51,7 +51,7 @@ public interface IEmployeeService {
      *
      * @return
      */
-    JsonData getAllEmployees();
+    JsonData getAllEmployees(Integer pageNum, Integer pageSize);
 
     /**
      * 新建员工
@@ -100,5 +100,7 @@ public interface IEmployeeService {
      * @return
      */
     JsonData searchEmployee(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone, String
-            empMobile, String empType);
+            empMobile, String empType, Integer pageNum, Integer pageSize);
+
+    JsonData getEmpByEmpNumber(String empNumber);
 }

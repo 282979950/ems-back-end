@@ -1,7 +1,10 @@
 /* global app, M */
 var app = {
     DEFAULT_TEMPLATE: '<div class="mdui-table-fluid mdui-theme-accent-blue"></div>',
-    dataCache: {}
+    DEFAULT_PAGE_TEMPLATE: '<div class="mdui-table-fluid mdui-theme-accent-blue"></div><div class="custom-pagination"></div>',
+    dataCache: {},
+    DEFAULT_PAGE_SIZE: 10,
+    DEFAULT_PAGE_NUM: 1
 };
 
 app.getDataCache = function (name) {
@@ -42,14 +45,21 @@ app.logout = function () {
 };
 
 app.render = function (context) {
-    // 从缓存中读取数据
-    // var data = app.getDataCache(context.url);
-    var data = null;
-    if (data) {
-        console.log("依据缓存渲染页面");
-        _render(data);
+    if (app.hasPaginator) {
+        $.ajax({
+            async: false,
+            type: 'GET',
+            url: context.url + "?pageNum=" + app.pageNum + "&pageSize=" + app.pageSize,
+            contentType: 'application/json;charset=utf-8',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (response) {
+                var data = response.data;
+                _render(data);
+            }
+        });
     } else {
-        console.log("通过ajax获取数据");
         $.ajax({
             async: false,
             type: 'GET',
@@ -60,15 +70,17 @@ app.render = function (context) {
             },
             success: function (response) {
                 var data = response.data;
-                // app.setDataCache(context.url, data);
-                console.log("更新" + context.url + "缓存");
                 _render(data);
             }
         });
     }
     function _render(data) {
         if (app.table) {
-            app.table.refresh(data);
+            if (app.hasPaginator) {
+                app.table.refresh(data.list);
+            } else {
+                app.table.refresh(data);
+            }
         } else {
             var names = app.currentPageName;
             if(names == 'eval'){
@@ -98,8 +110,27 @@ app.render = function (context) {
             app.table = context.table = app.createTable({
                 parent: '.mdui-table-fluid',
                 fields: app.tableFields[names],
-                data: data
+                data: app.hasPaginator ? data.list : data
             });
+            if (app.hasPaginator) {
+                app.pagination = app.createPagination({
+                    parent: '.custom-pagination',
+                    totalPage: data.pages,
+                    totalSize: data.total,
+                    callBack: function (pageNum, pageSize) {
+                        var inputsData = app.toolbar.getInputsData();
+                        app.pageNum = pageNum;
+                        app.pageSize = pageSize;
+                        if (inputsData.length) {
+                            app.pagination.$parent.trigger('search');
+                        } else {
+                            app.render({
+                                url: app.currentPageName + '/listData.do'
+                            });
+                        }
+                    }
+                });
+            }
         }
     }
 };
@@ -110,10 +141,7 @@ app.initPane = function (context) {
         parent: '.container-main',
         fields: app.getToolbarFields(app.currentPageName)
     });
-    self.render({
-        url: context.url,
-        pane: context.pane
-    });
+    self.render(context);
 };
 
 app.removeEvent = function () {

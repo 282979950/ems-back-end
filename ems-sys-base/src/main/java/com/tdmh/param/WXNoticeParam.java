@@ -4,6 +4,7 @@ import com.tdmh.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -21,11 +22,13 @@ public class WXNoticeParam extends BaseEntity {
     /**
      * 微信公告标题
      */
+    @NotNull(message = "微信公告标题不能为空")
     private String wxNoticeTitle;
 
     /**
      * 微信公告类型
      */
+    @NotNull(message = "微信公告类型不能为空")
     private Integer wxNoticeType;
 
     /**
@@ -36,6 +39,7 @@ public class WXNoticeParam extends BaseEntity {
     /**
      * 微信公告内容
      */
+    @NotNull(message = "微信公告内容不能为空")
     private String wxNoticeContent;
 
     public WXNoticeParam() {

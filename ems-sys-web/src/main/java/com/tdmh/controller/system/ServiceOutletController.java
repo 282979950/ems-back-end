@@ -4,7 +4,6 @@ import com.tdmh.common.JsonData;
 import com.tdmh.entity.ServiceOutlet;
 import com.tdmh.service.IServiceOutletService;
 import com.tdmh.util.ShiroUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,8 +31,8 @@ public class ServiceOutletController {
     @RequiresPermissions("sys:solet:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
-    public JsonData getAllSOLet() {
-        return serviceOutletService.getAllSOLet();
+    public JsonData getAllSOLet(Integer pageNum, Integer pageSize) {
+        return serviceOutletService.getAllSOLetWithPagination(pageNum, pageSize);
     }
 
     /**
@@ -79,8 +78,7 @@ public class ServiceOutletController {
     @RequiresPermissions("sys:solet:retrieve")
     @RequestMapping("search.do")
     @ResponseBody
-    public JsonData selectSOLet(@Param("serviceOutletName") String serviceOutletName, @Param("serviceOutletAddress") String serviceOutletAddress) {
-        return serviceOutletService.selectSOLet(serviceOutletName , serviceOutletAddress);
+    public JsonData selectSOLet(String serviceOutletName, String serviceOutletAddress, Integer pageNum, Integer pageSize) {
+        return serviceOutletService.selectSOLet(serviceOutletName, serviceOutletAddress, pageNum, pageSize);
     }
-
 }
