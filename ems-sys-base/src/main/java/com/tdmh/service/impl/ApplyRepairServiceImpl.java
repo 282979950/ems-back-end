@@ -43,6 +43,8 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
 
     private static final String LYIMS_REVOKE_URL = "http://192.168.0.142:8080/lyimsstandard/revoke/workorderRevokeByEms";
 
+    private static final String LYIMS_GETTRACK_URL =  "http://192.168.0.142:8080/lyimsstandard/trajectory/repairmanTrajectory";
+
     @Autowired
     private ApplyRepairMapper applyRepairMapper;
 
@@ -245,6 +247,32 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
             return JsonData.fail("修改催单状态失败");
         }
         return JsonData.success(false, "催单成功");
+    }
+
+    @Override
+    public JsonData getRepairManTrack(String applyRepairFlowNumber) {
+        ApplyRepairParam applyRepairParam = applyRepairMapper.getApplyRepairParamByFlowNumber(applyRepairFlowNumber);
+        if (applyRepairParam == null) {
+            return JsonData.fail("订单不存在，请重试");
+        }
+        if (applyRepairParam.getApplyRepairStatus() == 1) {
+            return JsonData.fail("该报修单未签收，无法查看轨迹");
+        }
+        if (applyRepairParam.getApplyRepairStatus() == 3) {
+            return JsonData.fail("该报修单已完成，无法查看轨迹");
+        }
+        if (applyRepairParam.getApplyRepairStatus() == 4) {
+            return JsonData.fail("该报修单已是撤消状态，无法查看轨迹");
+        }
+        if (applyRepairParam.getApplyRepairStatus() == 5) {
+            return JsonData.fail("该报修单正在撤销中，无法查看轨迹");
+        }
+        String responseString = HttpRequestUtil.sendGet(LYIMS_GETTRACK_URL, "applyRepairFlowNumber="+applyRepairFlowNumber);
+        JSONObject response = JSONObject.parseObject(responseString);
+        if (!response.getBoolean("success")) {
+            return JsonData.fail(response.getString("msg"));
+        }
+        return JsonData.success(response.get("json"),"查询成功");
     }
 
     private JsonData create0(ApplyRepairParam param, Integer applyRepairType) {

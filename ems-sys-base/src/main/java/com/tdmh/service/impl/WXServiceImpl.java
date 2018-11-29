@@ -324,6 +324,6 @@ public class WXServiceImpl implements IWXService {
 
     @Override
     public JsonData getRepairManTrack(String applyRepairFlowNumber) {
-        return null;
+        return applyRepairService.getRepairManTrack(applyRepairFlowNumber);
     }
 }

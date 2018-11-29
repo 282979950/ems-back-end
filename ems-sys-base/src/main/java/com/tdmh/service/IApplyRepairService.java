@@ -98,4 +98,12 @@ public interface IApplyRepairService {
      * @return
      */
     JsonData remindWXApplyRepair(Integer applyRepairId);
+
+
+    /**
+     * 获取维修员经纬度
+     * @param applyRepairFlowNumber
+     * @return
+     */
+    JsonData getRepairManTrack(String applyRepairFlowNumber);
 }
