@@ -36,14 +36,14 @@
     <logger name="org.mybatis.spring" level="OFF"/>
     <logger name="org.apache.ibatis" level="OFF"/>
     <!-- 开发环境下的日志配置 -->
-    <springProfile name="local,dev">
+    <springProfile name="dev">
         <root level="DEBUG">
             <appender-ref ref="STDOUT" />
         </root>
     </springProfile>
 
     <!-- 生产环境下的日志配置 -->
-    <springProfile name="dev">
+    <springProfile name="pro,test">
         <root level="DEBUG">
             <appender-ref ref="FILE" />
         </root>

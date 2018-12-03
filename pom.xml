@@ -210,9 +210,9 @@
             </activation>
         </profile>
         <profile>
-            <id>ems.local</id>
+            <id>ems.pro</id>
             <properties>
-                <active_profile>local</active_profile>
+                <active_profile>pro</active_profile>
                 <need_filtered>vprs</need_filtered>
             </properties>
         </profile>
@@ -231,9 +231,9 @@
             </properties>
         </profile>
         <profile>
-            <id>vprs.local</id>
+            <id>vprs.pro</id>
             <properties>
-                <active_profile>local</active_profile>
+                <active_profile>pro</active_profile>
                 <need_filtered>ems</need_filtered>
             </properties>
         </profile>

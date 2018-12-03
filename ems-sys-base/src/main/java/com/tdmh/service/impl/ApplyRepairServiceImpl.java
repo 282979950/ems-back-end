@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
+import com.tdmh.common.YmlProtites;
 import com.tdmh.config.CustomWXPayConfig;
 import com.tdmh.entity.Meter;
 import com.tdmh.entity.mapper.ApplyRepairMapper;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,13 +39,8 @@ import java.util.List;
 @Slf4j
 public class ApplyRepairServiceImpl implements IApplyRepairService {
 
-    private static final String LYIMS_STANDARD_URL = "http://192.168.0.142:8080/lyimsstandard/save/workorderSaveByEms";
-
-    private static final String LYIMS_REMIND_URL = "http://192.168.0.142:8080/lyimsstandard/reminder/workorderReminderByEms";
-
-    private static final String LYIMS_REVOKE_URL = "http://192.168.0.142:8080/lyimsstandard/revoke/workorderRevokeByEms";
-
-    private static final String LYIMS_GETTRACK_URL =  "http://192.168.0.142:8080/lyimsstandard/trajectory/repairmanTrajectory";
+    @Resource
+    private YmlProtites ymlProtites;
 
     @Autowired
     private ApplyRepairMapper applyRepairMapper;
@@ -56,6 +53,7 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
 
     @Autowired
     private SysDictionaryService sysDictionaryService;
+
 
     @Override
     public JsonData listData(Integer pageNum, Integer pageSize) {
@@ -154,7 +152,7 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
             return JsonData.fail("撤销报修单失败，请重新撤销");
         }
         log.info("userId=" + applyRepairParam.getUserId() + "&userName=" + applyRepairParam.getUserName() + "&applyRepairFlowNumber=" + applyRepairParam.getApplyRepairFlowNumber());
-        String responseString = HttpRequestUtil.sendGet(LYIMS_REVOKE_URL, "userId=" + applyRepairParam.getUserId() + "&userName=" + applyRepairParam.getUserName() + "&applyRepairFlowNumber=" + applyRepairParam.getApplyRepairFlowNumber());
+        String responseString = HttpRequestUtil.sendGet("http://"+ymlProtites.getLyimsServerIp()+":"+ymlProtites.getLyimsServerPort()+"/lyimsstandard/revoke/workorderRevokeByEms", "userId=" + applyRepairParam.getUserId() + "&userName=" + applyRepairParam.getUserName() + "&applyRepairFlowNumber=" + applyRepairParam.getApplyRepairFlowNumber());
         log.info("撤销报修单流水号: " + applyRepairParam.getApplyRepairFlowNumber() + ",调度系统回复: " + responseString);
         JSONObject json = JSONObject.parseObject(responseString);
         if (json.getBoolean("success")) {
@@ -237,7 +235,7 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
             case 5:
                 return JsonData.fail("订单撤销中，不能进行催单操作");
         }
-        String responseString = HttpRequestUtil.sendGet(LYIMS_REMIND_URL, params);
+        String responseString = HttpRequestUtil.sendGet("http://"+ymlProtites.getLyimsServerIp()+":"+ymlProtites.getLyimsServerPort()+"/lyimsstandard/reminder/workorderReminderByEms", params);
         JSONObject response = JSONObject.parseObject(responseString);
         if (!response.getBoolean("success")) {
             return JsonData.fail("催单失败");
@@ -267,7 +265,7 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
         if (applyRepairParam.getApplyRepairStatus() == 5) {
             return JsonData.fail("该报修单正在撤销中，无法查看轨迹");
         }
-        String responseString = HttpRequestUtil.sendGet(LYIMS_GETTRACK_URL, "applyRepairFlowNumber="+applyRepairFlowNumber);
+        String responseString = HttpRequestUtil.sendGet("http://"+ymlProtites.getLyimsServerIp()+":"+ymlProtites.getLyimsServerPort()+"/lyimsstandard/trajectory/repairmanTrajectory", "applyRepairFlowNumber="+applyRepairFlowNumber);
         JSONObject response = JSONObject.parseObject(responseString);
         if (!response.getBoolean("success")) {
             return JsonData.fail(response.getString("msg"));
@@ -318,7 +316,7 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
         if (resultCount == 0) {
             return JsonData.fail("新建报修单失败");
         }
-        String responseString = HttpRequestUtil.sendGet(LYIMS_STANDARD_URL, param.toString());
+        String responseString = HttpRequestUtil.sendGet("http://"+ymlProtites.getLyimsServerIp()+":"+ymlProtites.getLyimsServerPort()+"/lyimsstandard/save/workorderSaveByEms", param.toString());
         JSONObject json = JSONObject.parseObject(responseString);
         if (!json.getBoolean("success")) {
             throw new CustomException("向调度系统传输报修单时失败，请联系管理员");
