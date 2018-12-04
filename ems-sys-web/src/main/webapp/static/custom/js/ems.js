@@ -290,6 +290,15 @@ app.initIndex = function () {
             }
         });
     });
+    $('body').on('change', 'select[name="HasCastCost"]', function () {
+        if (app.editForm) {
+            if(app.editForm.getData().HasCastCost == 'true'){
+                app.editForm.setValue('cardCost', app.getDictionaryByCategory("cardCost")[0].value);
+            }else {
+                app.editForm.setValue('cardCost', 0);
+            }
+        }
+    });
 };
 
 /**
@@ -4236,9 +4245,19 @@ app.getEditFormFields = function (name) {
                 caption: 'IC卡识别号',
                 disabled: true
             }, {
+                name: 'HasCastCost',
+                caption: '是否需工本费',
+                type: 'listcombobox',
+                options: [{
+                    key: '是',
+                    value: 'true'
+                }, {
+                    key: '否',
+                    value: 'false'
+                }]
+            }, {
                 name: 'cardCost',
                 caption: '补卡工本费',
-                value: app.getDictionaryByCategory("cardCost"),
                 disabled: true
             }, {
                 name: 'nIcCardIdentifier',

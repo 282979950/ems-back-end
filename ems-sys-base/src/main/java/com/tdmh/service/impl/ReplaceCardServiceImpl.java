@@ -1,5 +1,6 @@
 package com.tdmh.service.impl;
 
+import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserCard;
 import com.tdmh.entity.UserOrders;
@@ -52,6 +53,7 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
     @Transactional
     @Override
     public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders) {
+        BeanValidator.check(param);
         UserCard oldUserCard = userCardMapper.getUserCardByUserIdAndCardId(param.getUserId(),param.getIccardId());
         if(oldUserCard == null){
             return JsonData.fail("该用户没有可用卡");

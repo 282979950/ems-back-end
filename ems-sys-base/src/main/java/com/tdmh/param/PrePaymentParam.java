@@ -4,6 +4,7 @@ import com.tdmh.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -89,10 +90,12 @@ public class PrePaymentParam extends BaseEntity {
     /**
      * 补卡后新的IC卡识别号
      */
+    @NotNull(message = "新卡识别号不能为空")
     private String nIcCardIdentifier;
 
     /**
      * 补卡工本费
      */
+    @NotNull(message = "补卡工本费不能为空")
     private BigDecimal cardCost;
 }
