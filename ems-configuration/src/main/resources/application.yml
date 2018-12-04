@@ -9,6 +9,9 @@ spring:
       suffix: .jsp
   profiles:
     active: @active_profile@
+  aop:
+    auto: true
+    proxy-target-class: true
 mybatis:
   config-location: classpath:mybatis-config.xml
   type-aliases-package: com.tdmh.entity

@@ -128,7 +128,7 @@ app.initIndex = function () {
             if (app.editForm) {
                 var res = app.ReadCard();
                 if (res instanceof Array) {
-                    if (res[1] !== 0) {
+                    if (res[1] !== '0') {
                         app.warningMessage("只能用新卡进行补卡");
                         app.editForm.setValue('nIcCardIdentifier', '');
                         return;
@@ -471,13 +471,13 @@ app.initEvent = function () {
                 app.warningMessage('该卡为密码传递卡，不能充值');
                 return;
             }
-            if (result[4] !== '0') {
+            if (result[4] !== 0) {
                 var msg = "卡内已有未圈存的气量,确认覆盖已有气量继续充值吗";
                 if (confirm(msg) === false) {
                     return;
                 }
             }
-            if(result[2] !== table.getSelectedDatas()[0].iccardIdentifier || result[3] !== table.getSelectedDatas()[0].iccardId){
+            if(result[2] !== table.getSelectedDatas()[0].iccardIdentifier || +result[3] !== table.getSelectedDatas()[0].iccardId){
                 app.warningMessage("该卡不是与该用户绑定的卡");
                 return;
             }
@@ -1048,6 +1048,8 @@ app.initEvent = function () {
                                 });
                             }
                         }
+                    }else {
+                        app.errorMessage(response.message);
                     }
                 }
             });
@@ -2461,7 +2463,7 @@ app.tableFields = {
         name: 'iccardId',
         caption: 'IC卡编号'
     }, {
-        name: 'isLock',
+        name: 'lockStatus',
         caption: '锁定状态'
     }, {
         name: 'lastLockReason',
@@ -2471,7 +2473,7 @@ app.tableFields = {
         name: 'userId',
         caption: '用户编号'
     }, {
-        name: 'isLock',
+        name: 'lockStatus',
         caption: '锁定状态'
     }, {
         name: 'lockReason',
@@ -4176,8 +4178,8 @@ app.getEditFormFields = function (name) {
                 caption: '用户地址',
                 disabled: true
             }, {
-                name: 'isLock',
-                caption: '是否锁定',
+                name: 'lockStatus',
+                caption: '锁定状态',
                 disabled: true
             }, {
                 name: 'lastLockReason',

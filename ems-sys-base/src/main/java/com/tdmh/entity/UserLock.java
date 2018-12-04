@@ -32,6 +32,8 @@ public class UserLock extends BaseEntity{
      */
     private String lockReason;
 
+    private String lockStatus;
+
     public UserLock(Integer userLockId, Integer userId, Boolean isLock, String lockReason, Date
             createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);

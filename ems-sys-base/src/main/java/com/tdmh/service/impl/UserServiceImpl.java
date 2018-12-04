@@ -338,9 +338,9 @@ public class UserServiceImpl implements IUserService {
         userLock.setUpdateTime(new Date());
         int resultCount = userMapper.insertUserLock(userLock);
         if (resultCount == 0) {
-            return JsonData.fail("锁定/解锁失败");
+            return userLock.getIsLock()?JsonData.fail("锁定失败"):JsonData.fail("解锁失败");
         }
-        return JsonData.successMsg("锁定/解锁成功");
+        return userLock.getIsLock()?JsonData.successMsg("锁定成功"):JsonData.successMsg("解锁成功");
 
     }
 
@@ -497,5 +497,10 @@ public class UserServiceImpl implements IUserService {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean getUserLockStatusById(Integer userId) {
+        return userMapper.getUserLockStatusById(userId);
     }
 }

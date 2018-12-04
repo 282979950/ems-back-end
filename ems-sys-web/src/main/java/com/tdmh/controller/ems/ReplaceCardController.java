@@ -1,5 +1,6 @@
 package com.tdmh.controller.ems;
 
+import com.tdmh.common.BeUnLock;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.param.PrePaymentParam;
@@ -46,6 +47,7 @@ public class ReplaceCardController {
     @RequiresPermissions("recharge:supplement:update")
     @RequestMapping(value = "edit.do")
     @ResponseBody
+    @BeUnLock
     public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         param.setCreateBy(currentEmpId);

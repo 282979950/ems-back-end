@@ -227,4 +227,6 @@ public interface IUserService {
     void exportUserQuerySearchService(User user);
 
     void exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress);
+
+    boolean getUserLockStatusById(Integer userId);
 }

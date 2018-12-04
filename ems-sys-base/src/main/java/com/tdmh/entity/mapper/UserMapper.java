@@ -79,4 +79,6 @@ public interface UserMapper {
             "monthAvePayment") BigDecimal monthAvePayment, @Param("distIds") String distIds, @Param("userAddress") String userAddress);
     List<User> userListByUserQuery();
     List<User> userQuerySearch(User user);
+
+    boolean getUserLockStatusById(Integer userId);
 }

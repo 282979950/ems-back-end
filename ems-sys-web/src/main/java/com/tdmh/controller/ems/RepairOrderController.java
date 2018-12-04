@@ -1,5 +1,6 @@
 package com.tdmh.controller.ems;
 
+import com.tdmh.common.BeUnLock;
 import com.tdmh.common.JsonData;
 import com.tdmh.param.BindNewCardParam;
 import com.tdmh.param.RepairOrderParam;
@@ -38,6 +39,7 @@ public class RepairOrderController {
     @RequiresPermissions("repairorder:entry:create")
     @RequestMapping(value = "add.do")
     @ResponseBody
+    @BeUnLock
     public JsonData createRepairOrder(RepairOrderParam param) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         param.setUpdateBy(currentEmpId);
@@ -51,6 +53,7 @@ public class RepairOrderController {
     @RequiresPermissions("repairorder:entry:update")
     @RequestMapping(value = "edit.do")
     @ResponseBody
+    @BeUnLock
     public JsonData updateRepairOrder(RepairOrderParam param) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         param.setUpdateBy(currentEmpId);
@@ -97,6 +100,7 @@ public class RepairOrderController {
 
     @RequestMapping(value = "bindNewCard.do")
     @ResponseBody
+    @BeUnLock
     public JsonData bindNewCard(BindNewCardParam param) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         param.setUpdateBy(currentEmpId);

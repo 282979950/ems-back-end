@@ -1,5 +1,6 @@
 package com.tdmh.controller.ems;
 
+import com.tdmh.common.BeUnLock;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.User;
 import com.tdmh.entity.UserChange;
@@ -45,7 +46,8 @@ public class UserChangeController {
     @RequiresPermissions("account:alter:update")
     @RequestMapping(value = "/userChangeSettlement.do")
     @ResponseBody
-    public JsonData userChangeSettlement(UserChange userChange, User user ,double userMoney,double OrderSupplement){
+    @BeUnLock
+    public JsonData userChangeSettlement(User user,UserChange userChange, double userMoney,double OrderSupplement){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
 
         return userChangeService.userChangeSettlementService(userChange,user,currentEmpId,userMoney,OrderSupplement);
@@ -56,6 +58,7 @@ public class UserChangeController {
     @RequiresPermissions("account:alter:update")
     @RequestMapping(value = "/userEliminationHead.do")
     @ResponseBody
+    @BeUnLock
     public JsonData userEliminationHead(User user,BigDecimal userMoney,BigDecimal OrderSupplement, int flage){
         Integer Id = ShiroUtils.getPrincipal().getId();
 

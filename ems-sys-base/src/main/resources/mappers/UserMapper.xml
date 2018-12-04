@@ -490,13 +490,14 @@
             <arg column="dist_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="is_lock" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="lockStatus" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="lock_reason" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="last_lock_reason" jdbcType="VARCHAR" javaType="java.lang.String"/>
             </constructor>
     </resultMap>
     <select id="searchAccountArchive" parameterType="map" resultMap="LockAccountParam">
         select
-        u.user_id, u.user_name,uc.card_id as iccard_id, dist.dist_name, u.user_address, IFNULL(ul.is_lock,0) as is_lock,'' as lock_reason, ul.lock_reason as last_lock_reason
+        u.user_id, u.user_name,uc.card_id as iccard_id, dist.dist_name, u.user_address, IFNULL(ul.is_lock,0) as is_lock, (CASE WHEN is_lock=1 THEN '锁定' WHEN is_lock=0 THEN '未锁定' ELSE '未锁定' END) AS lockStatus, '' as lock_reason, ul.lock_reason as last_lock_reason
         from user u
         left join user_card uc on u.user_id = uc.user_id
         left join sys_district dist on u.user_dist_id = dist.dist_id
@@ -525,7 +526,7 @@
        </insert>
 
     <select id="searchLockList" parameterType="int" resultType="com.tdmh.entity.UserLock">
-      SELECT user_lock_id as userLockId,user_id as userId,is_lock as isLock,lock_reason as lockReason,create_time as createTime
+      SELECT user_lock_id as userLockId,user_id as userId,is_lock as isLock, (CASE WHEN is_lock=1 THEN '锁定' WHEN is_lock=0 THEN '未锁定' ELSE '未锁定' END) AS lockStatus,lock_reason as lockReason,create_time as createTime
       FROM user_lock where user_id = #{userId,jdbcType=INTEGER}
     </select>
 
@@ -703,5 +704,8 @@ WHERE orders.order_type IN ( '2','4')
             AND LOCATE (#{userName} ,user_name) > 0
         </if>
         ORDER BY create_time
+    </select>
+    <select id="getUserLockStatusById" parameterType="int" resultType="boolean">
+        select is_lock as isLock from user_lock where user_id = #{userId} order by create_time desc LIMIT 1
     </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.tdmh.controller.ems;
 
+import com.tdmh.common.BeUnLock;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.param.PrePaymentParam;
@@ -41,6 +42,7 @@ public class PrePaymentController {
     @RequiresPermissions("recharge:pre:update")
     @RequestMapping(value = "edit.do")
     @ResponseBody
+    @BeUnLock
     public JsonData createUserOrder(UserOrders userOrders) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         userOrders.setEmployeeId(currentEmpId);

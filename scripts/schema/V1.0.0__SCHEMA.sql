@@ -454,7 +454,7 @@ CREATE TABLE `user_orders` (
   `order_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '订单ID',
   `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
   `employee_id` int(10) unsigned NOT NULL COMMENT '员工ID',
-  `order_payment` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '充值金额',
+  `order_payment` decimal(10,2) DEFAULT NULL COMMENT '充值金额',
   `order_gas` decimal(10,1) DEFAULT NULL COMMENT '充值气量',
   `order_status` int(4) unsigned DEFAULT NULL COMMENT '订单状态',
   `order_create_time` datetime DEFAULT NULL COMMENT '订单创建时间',

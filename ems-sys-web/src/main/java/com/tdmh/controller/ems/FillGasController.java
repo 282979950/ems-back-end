@@ -1,5 +1,6 @@
 package com.tdmh.controller.ems;
 
+import com.tdmh.common.BeUnLock;
 import com.tdmh.common.JsonData;
 import com.tdmh.param.FillGasOrderParam;
 import com.tdmh.service.IFillGasService;
@@ -31,6 +32,7 @@ public class FillGasController {
      */
     @RequestMapping(value = "edit.do")
     @ResponseBody
+    @BeUnLock
     public JsonData editFillGasOrder(FillGasOrderParam param) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         param.setUpdateBy(currentEmpId);
