@@ -146,9 +146,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
             }
             emp.setUpdateBy(currentEmpId);
             employees.add(emp);
+            employeeMapper.deleteEmployeeRole(id);
         }
         int resultCount = employeeMapper.deleteEmployee(employees);
-        employeeMapper.deleteEmployeeRole(currentEmpId);
         if (resultCount < employees.size()) {
             return JsonData.fail("删除用户失败");
         }

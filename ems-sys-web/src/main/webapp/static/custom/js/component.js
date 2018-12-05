@@ -309,7 +309,9 @@
                         startView: field.startView,
                         todayHighlight:true,
                         todayBtn : field.todayBtn || false,
-                        pickerPosition : 'top-right'
+                        pickerPosition : 'top-right',
+                        startDate: field.startDate,
+                        endDate: field.endDate
                     });
                     break;
                 default:
