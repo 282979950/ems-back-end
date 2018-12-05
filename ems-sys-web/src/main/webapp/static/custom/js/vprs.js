@@ -900,12 +900,16 @@ app.getAddFormFields = function (name) {
                 name: 'startTime',
                 caption: '预约开始时间',
                 type: 'date',
-                required: true
+                required: true,
+                startDate: new Date(),
+                endDate: new Date(new Date().getTime() + 7 * 24 * 3600 * 1000)
             }, {
                 name: 'endTime',
                 caption: '预约截止时间',
                 type: 'date',
-                required: true
+                required: true,
+                startDate: new Date(),
+                endDate: new Date(new Date().getTime() + 7 * 24 * 3600 * 1000)
             }, {
                 name: 'remarks',
                 caption: '备注',

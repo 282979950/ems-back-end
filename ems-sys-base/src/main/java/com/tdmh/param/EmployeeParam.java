@@ -30,7 +30,7 @@ public class EmployeeParam extends BaseEntity {
     /**
      * 员工名称
      */
-    @NotNull
+    @NotNull(message = "员工名称不能为空")
     @Length(max = 50, message = "员工名字不能超过50个字")
     private String empName;
 
@@ -113,7 +113,6 @@ public class EmployeeParam extends BaseEntity {
     /**
      * 员工负责片区
      */
-    @NotNull(message = "员工负责片区不能为空")
     private String empManagementDistId;
 
     /**
