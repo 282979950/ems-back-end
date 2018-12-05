@@ -705,7 +705,7 @@ WHERE orders.order_type IN ( '2','4')
         </if>
         ORDER BY create_time
     </select>
-    <select id="getUserLockStatusById" parameterType="int" resultType="boolean">
+    <select id="getUserLockStatusById" parameterType="int" resultType="integer">
         select is_lock as isLock from user_lock where user_id = #{userId} order by create_time desc LIMIT 1
     </select>
 </mapper>

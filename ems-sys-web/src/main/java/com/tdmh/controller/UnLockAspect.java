@@ -39,9 +39,9 @@ public class UnLockAspect {
         } catch (Exception e) {
            throw new ParameterException("参数错误");
         }
-        if(userId == null) throw new ParameterException("参数为空");
-        boolean isLock = userService.getUserLockStatusById(userId);
-        if(isLock){
+        if(userId == null){ throw new ParameterException("参数为空");}
+        Integer isLock = userService.getUserLockStatusById(userId);
+        if(isLock!=null && isLock.intValue() == 1){
             throw new PermissionException("该用户已被锁定，不能进行操作");
         }
     }

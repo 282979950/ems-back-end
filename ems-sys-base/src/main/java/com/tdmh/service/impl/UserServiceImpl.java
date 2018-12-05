@@ -500,7 +500,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean getUserLockStatusById(Integer userId) {
+    public Integer getUserLockStatusById(Integer userId) {
         return userMapper.getUserLockStatusById(userId);
     }
 }

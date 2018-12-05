@@ -80,5 +80,5 @@ public interface UserMapper {
     List<User> userListByUserQuery();
     List<User> userQuerySearch(User user);
 
-    boolean getUserLockStatusById(Integer userId);
+    Integer getUserLockStatusById(Integer userId);
 }
