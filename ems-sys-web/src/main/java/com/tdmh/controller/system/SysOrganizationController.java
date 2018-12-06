@@ -1,24 +1,23 @@
 package com.tdmh.controller.system;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.tdmh.common.BeanValidator;
+import com.tdmh.common.JsonData;
+import com.tdmh.entity.SysOrganization;
+import com.tdmh.service.SysDictionaryService;
+import com.tdmh.service.SysOrganizationService;
+import com.tdmh.utils.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.tdmh.common.JsonData;
-import com.tdmh.entity.SysOrganization;
-import com.tdmh.service.SysDictionaryService;
-import com.tdmh.service.SysOrganizationService;
-import com.tdmh.utils.StringUtils;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @Controller
@@ -47,7 +46,7 @@ public class SysOrganizationController {
 	@RequestMapping(value = "/add.do")
 	@ResponseBody
 	public  JsonData addFindOnPc(SysOrganization sysz, HttpServletRequest request, HttpServletResponse response){
-
+		BeanValidator.check(sysz);
 		String msg = "新增【"+sysz.getOrgName()+"】机构成功";
 		int type=0;//用户选择时类别
 		int sys_type=0;//数据库查询类别;
