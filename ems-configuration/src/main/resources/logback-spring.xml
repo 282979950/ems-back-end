@@ -1,13 +1,13 @@
 <configuration scan="true" scanPeriod="30 seconds">
     <contextName>ems</contextName>
-    <!--<property name="USER_HOME" value="E:\ems" />-->
     <!-- 按照每天生成日志文件 -->
     <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${catalina.base}/logs/ems/ems.log</file>
         <append>false</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <FileNamePattern>${catalina.base}/logs/ems/ems.log.%d{yyyy-MM-dd}.log</FileNamePattern>
-            <MaxHistory>3</MaxHistory>
+            <fileNamePattern>${catalina.base}/logs/ems/ems.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
@@ -15,10 +15,6 @@
             <!-- 字符集 -->
             <charset>UTF-8</charset>
         </encoder>
-        <!--日志文件最大的大小-->
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>10MB</MaxFileSize>
-        </triggeringPolicy>
     </appender>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
