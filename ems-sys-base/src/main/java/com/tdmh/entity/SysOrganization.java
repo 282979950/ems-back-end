@@ -3,6 +3,7 @@ package com.tdmh.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 /**
@@ -18,6 +19,7 @@ public class SysOrganization extends BaseEntity{
     /*
      *机构名称
      */
+    @NotNull(message = "机构名称不能为空")
     private String orgName;
     /*
      *机构代码
@@ -27,14 +29,14 @@ public class SysOrganization extends BaseEntity{
     /*
      *机构类别
      */
-
+    @NotNull(message = "机构类别不能为空")
     private String orgCategory;
 
     private String orgCategoryName;
     /*
      *父级机构
      */
-
+    @NotNull(message = "父级机构不能为空")
     private Integer orgParentId;
     /*
      *父级机构名称
