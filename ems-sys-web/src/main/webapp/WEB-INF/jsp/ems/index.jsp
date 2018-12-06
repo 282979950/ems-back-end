@@ -46,10 +46,12 @@
         <img class="no-margin" src="${pageContext.request.contextPath}/static/custom/img/lanyan-logo.jpg">
         <span class="mdui-typo-headline no-select no-margin">蓝焰表具管理系统</span>
         <div class="mdui-toolbar-spacer"></div>
+        <!--
         <span onclick="app.lockScreen()" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
               mdui-tooltip="{content: '锁屏'}">
             <i class="mdui-icon material-icons">https</i>
         </span>
+        -->
         <span onclick="app.refresh()" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
               mdui-tooltip="{content: '刷新'}">
             <i class="mdui-icon material-icons">cached</i>
