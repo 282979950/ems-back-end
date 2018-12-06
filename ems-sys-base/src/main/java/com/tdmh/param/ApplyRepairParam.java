@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static com.tdmh.utils.DateUtils.formatDateTime;
+
 /**
  * @author Administrator on 2018/11/9.
  */
@@ -245,13 +247,13 @@ public class ApplyRepairParam extends BaseEntity {
                 "&userPhone=" + userPhone +
                 "&applyRepairFaultDesc=" + applyRepairFaultDesc +
                 "&applyRepairAppealContent=" + applyRepairAppealContent +
-                "&applyRepairTime=" + applyRepairTime +
+                "&applyRepairTime=" + formatDateTime(applyRepairTime) +
                 "&meterCode=" + meterCode +
                 "&meterDirection=" + meterDirectionName +
                 "&meterType=" + meterType +
                 "&currentOrderGasCount=" + currentOrderGasCount +
-                "&startTime=" + startTime +
-                "&endTime=" + endTime +
+                "&startTime=" + formatDateTime(startTime) +
+                "&endTime=" + formatDateTime(endTime) +
                 "&userTelPhone=" + userTelPhone +
                 "&remarks=" + getRemarks();
     }
