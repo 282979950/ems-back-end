@@ -14,11 +14,11 @@ import java.util.List;
  */
 @Mapper @Component
 public interface GasPriceMapper {
-    public List<GasPriceParam> listAllGasPrice();
+    List<GasPriceParam> listAllGasPrice();
 
-    public GasPrice findGasPriceByType(@Param("userType") Integer userType, @Param("userGasType") Integer userGasType);
+    GasPrice findGasPriceByType(@Param("userType") Integer userType, @Param("userGasType") Integer userGasType);
 
-    public int insert(GasPriceParam param);
+    int insert(GasPriceParam param);
 
-    public int update(GasPriceParam param);
+    int update(GasPriceParam param);
 }

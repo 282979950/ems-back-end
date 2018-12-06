@@ -32,7 +32,7 @@
         ap.gas_range_four as gasRangeFour, ap.gas_price_four as gasPriceFour
         FROM sys_dictionary a JOIN sys_dictionary b
         left JOIN gas_price ap ON a.dict_value = ap.user_type AND b.dict_value = ap.user_gas_type
-        WHERE a.dict_category = 'user_type' AND b.dict_category = 'user_gas_type';
+        WHERE a.dict_category = 'user_type' AND b.dict_category = 'user_gas_type' ORDER BY a.dict_id , b.dict_id;
     </select>
     <select id="findGasPriceByType" parameterType="map" resultMap="BaseResultMap">
         SELECT
