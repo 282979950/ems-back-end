@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,9 +124,8 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
     }
 
     @Override
-    public JsonData listData() {
-        List<SysDistrictParam> districtList = districtMapper.getAllDist();
-        return districtList == null || districtList.size() == 0 ? JsonData.successMsg("区域树为空，需要新建") : JsonData.successData(districtList);
+    public List<SysDistrictParam> listData() {
+        return districtMapper.getAllDist();
     }
 
     private List<SysDistrict> getChildrenDist(Integer distId) {

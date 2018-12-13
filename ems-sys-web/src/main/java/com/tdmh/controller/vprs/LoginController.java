@@ -1,17 +1,19 @@
 package com.tdmh.controller.vprs;
 
+import com.tdmh.common.JsonData;
 import com.tdmh.entity.Principal;
-import com.tdmh.shiro.CustomFormAuthenticationFilter;
+import com.tdmh.exception.CustomException;
 import com.tdmh.util.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,19 +42,35 @@ public class LoginController {
      * 登录失败
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public String loginFailure(HttpServletRequest request, Model model) {
-        String message = (String) request.getAttribute(CustomFormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
-        if (message != null) {
-            model.addAttribute(CustomFormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+    @ResponseBody
+    public JsonData loginFailure(HttpServletRequest request, String userName, String password, String type) {
+//        String message = (String) request.getAttribute(CustomFormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
+//        if (message != null) {
+//            model.addAttribute(CustomFormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+//        }
+//        String username = WebUtils.getCleanParam(request, FormAuthenticationFilter.DEFAULT_USERNAME_PARAM);
+//        boolean rememberMe = WebUtils.isTrue(request, FormAuthenticationFilter.DEFAULT_REMEMBER_ME_PARAM);
+//        String exception = (String) request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
+//
+//        model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, username);
+//        model.addAttribute(FormAuthenticationFilter.DEFAULT_REMEMBER_ME_PARAM, rememberMe);
+//        model.addAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME, exception);
+        UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
+        Subject currentUser = SecurityUtils.getSubject();
+        try {
+            currentUser.login(token);
+        } catch (UnknownAccountException uae) {
+            throw new CustomException("用户名不存在");
+        } catch (IncorrectCredentialsException ice) {
+            throw new CustomException("密码不正确");
+        } catch (LockedAccountException lae) {
+            throw new CustomException("LockedAccountException");
+        } catch (ExcessiveAttemptsException eae) {
+            throw new CustomException("ExcessiveAttemptsException");
+        } catch (AuthenticationException ae) {
+            throw new CustomException("AuthenticationException");
         }
-        String username = WebUtils.getCleanParam(request, FormAuthenticationFilter.DEFAULT_USERNAME_PARAM);
-        boolean rememberMe = WebUtils.isTrue(request, FormAuthenticationFilter.DEFAULT_REMEMBER_ME_PARAM);
-        String exception = (String) request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
-
-        model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, username);
-        model.addAttribute(FormAuthenticationFilter.DEFAULT_REMEMBER_ME_PARAM, rememberMe);
-        model.addAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME, exception);
-        return "vprs/login";
+        return JsonData.successData(currentUser.getPrincipal());
     }
 
     /**

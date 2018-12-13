@@ -1,10 +1,14 @@
 package com.tdmh.entity;
 
 
+import com.tdmh.service.impl.SysPermissionServiceImpl;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 授权用户信息
@@ -33,6 +37,8 @@ public class Principal implements Serializable {
 
     private Integer userType;
 
+    private Set<String> permissions;
+
     public Principal(Employee employee) {
         this.id = employee.getEmpId();
         this.loginName = employee.getEmpLoginName();
@@ -42,5 +48,20 @@ public class Principal implements Serializable {
         this.mobile = employee.getEmpMobile();
         this.userType = employee.getEmpType();
         this.distId = employee.getEmpDistrictId();
+        permissions = new HashSet<>();
+        Set<SysRole> roles = employee.getRoles();
+        for (SysRole role : roles) {
+            if (("admin").equals(role.getRoleName())) {
+                List<SysPermission> permissionList = SysPermissionServiceImpl.getPermissionList();
+                for (SysPermission sysPermission : permissionList) {
+                    this.permissions.add(sysPermission.getPermName());
+                }
+                break;
+            }
+            Set<SysPermission> permissions = role.getPermissions();
+            for (SysPermission permission : permissions) {
+                this.permissions.add(permission.getPermName());
+            }
+        }
     }
 }

@@ -74,5 +74,5 @@ public interface ISysDistrictService {
      *
      * @return
      */
-    JsonData listData();
+    List<SysDistrictParam> listData();
 }

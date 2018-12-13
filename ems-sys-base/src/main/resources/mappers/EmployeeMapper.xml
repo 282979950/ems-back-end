@@ -401,7 +401,7 @@
                 <id property="permId" column="perm_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
                 <result property="permName" column="perm_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
                 <result property="permCaption" column="perm_caption" jdbcType="VARCHAR" javaType="java.lang.String"/>
-             </collection>
+            </collection>
         </collection>
     </resultMap>
     <select id="getEmpByLoginName" parameterType="string" resultMap="userMap">
