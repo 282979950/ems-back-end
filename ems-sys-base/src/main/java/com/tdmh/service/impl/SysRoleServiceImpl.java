@@ -79,7 +79,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
             }
         }
         JsonData data = rolePermService.changeRolePerms(roleId, permList,roleParam.getCreateBy());
-        if (data.isStatus()) {
+        if (data.getStatus() == 0) {
             Set<SysPermission> permissions = Sets.newHashSet();
             List<Integer> permIds = permList;
             List<SysPermission> permissionList= SysPermissionServiceImpl.getPermissionList();
@@ -136,7 +136,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
             }
         }
         JsonData data = rolePermService.changeRolePerms(roleId, permList, roleParam.getUpdateBy());
-        if (data.isStatus()) {
+        if (data.getStatus() == 0) {
             Set<SysPermission> permissions = Sets.newHashSet();
             List<Integer> permIds = permList;
             List<SysPermission> permissionList= SysPermissionServiceImpl.getPermissionList();

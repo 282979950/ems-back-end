@@ -242,7 +242,7 @@ public class WXServiceImpl implements IWXService {
 
     private BigDecimal getOrderPayment(Integer userId, BigDecimal gas) {
         JsonData jsonData = gasPriceService.calAmount(userId, gas);
-        if (jsonData.isStatus()) {
+        if (jsonData.getStatus() == 0) {
             return (BigDecimal) jsonData.getData();
         } else {
             throw new RuntimeException("获取充值金额时错误");

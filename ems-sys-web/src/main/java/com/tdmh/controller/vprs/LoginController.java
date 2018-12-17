@@ -6,9 +6,7 @@ import com.tdmh.exception.CustomException;
 import com.tdmh.util.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,17 +42,6 @@ public class LoginController {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
     public JsonData loginFailure(HttpServletRequest request, String userName, String password, String type) {
-//        String message = (String) request.getAttribute(CustomFormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
-//        if (message != null) {
-//            model.addAttribute(CustomFormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
-//        }
-//        String username = WebUtils.getCleanParam(request, FormAuthenticationFilter.DEFAULT_USERNAME_PARAM);
-//        boolean rememberMe = WebUtils.isTrue(request, FormAuthenticationFilter.DEFAULT_REMEMBER_ME_PARAM);
-//        String exception = (String) request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
-//
-//        model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, username);
-//        model.addAttribute(FormAuthenticationFilter.DEFAULT_REMEMBER_ME_PARAM, rememberMe);
-//        model.addAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME, exception);
         UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
         Subject currentUser = SecurityUtils.getSubject();
         try {
@@ -76,21 +63,20 @@ public class LoginController {
     /**
      * 进入主页
      */
-    @RequiresRoles("user")
-    @RequestMapping(value = "index", method = RequestMethod.GET)
-    public String index(Model model) {
-        Principal principal = ShiroUtils.getPrincipal();
-        model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, principal.getLoginName());
-        return "vprs/index";
+    @RequestMapping(value = "currentUser", method = RequestMethod.GET)
+    @ResponseBody
+    public Principal index() {
+        return ShiroUtils.getPrincipal();
     }
 
     /**
      * 员工登出
      */
     @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public String logout(HttpServletRequest request, Model model) {
+    @ResponseBody
+    public JsonData logout(HttpServletRequest request, Model model) {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return "vprs/login";
+        return JsonData.success();
     }
 }

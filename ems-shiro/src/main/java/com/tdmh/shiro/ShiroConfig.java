@@ -44,7 +44,7 @@ public class ShiroConfig {
         manager.setSessionListeners(sessionListenerList);
         manager.setSessionIdUrlRewritingEnabled(false);
         manager.setDeleteInvalidSessions(true);
-        manager.setGlobalSessionTimeout(7200000);
+        manager.setGlobalSessionTimeout(60 * 60 * 1000);
         return manager;
     }
 
@@ -121,7 +121,7 @@ public class ShiroConfig {
         // anon:所有url都都可以匿名访问
         filterChainDefinitionMap.put("/login", "anon");
         // 配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
-        filterChainDefinitionMap.put("/logout", "logout");
+//        filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/wx/*", "anon");
         filterChainDefinitionMap.put("/dist/*", "anon");
         filterChainDefinitionMap.put("/lyimsstandard/*", "anon");

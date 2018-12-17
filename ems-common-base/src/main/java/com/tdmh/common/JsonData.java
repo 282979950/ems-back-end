@@ -19,7 +19,7 @@ public class JsonData{
     /**
      * 消息状态(true:成功,false:失败)
      */
-    private boolean status;
+    private int status;
 
     /**
      * 消息
@@ -31,35 +31,41 @@ public class JsonData{
      */
     private Object data;
 
-    public JsonData(boolean status) {
+    public JsonData(int status) {
         this.status = status;
     }
 
     public static JsonData success(Object object, String msg) {
-        JsonData jsonData = new JsonData(true);
+        JsonData jsonData = new JsonData(0);
         jsonData.data = object;
         jsonData.message = msg;
         return jsonData;
     }
 
     public static JsonData successData(Object object) {
-        JsonData jsonData = new JsonData(true);
+        JsonData jsonData = new JsonData(0);
         jsonData.data = object;
         return jsonData;
     }
 
     public static JsonData successMsg(String msg) {
-        JsonData jsonData = new JsonData(true);
+        JsonData jsonData = new JsonData(0);
         jsonData.message = msg;
         return jsonData;
     }
 
     public static JsonData success() {
-        return new JsonData(true);
+        return new JsonData(0);
     }
 
     public static JsonData fail(String msg) {
-        JsonData jsonData = new JsonData(false);
+        JsonData jsonData = new JsonData(1);
+        jsonData.message = msg;
+        return jsonData;
+    }
+
+    public static JsonData fail(int status, String msg) {
+        JsonData jsonData = new JsonData(status);
         jsonData.message = msg;
         return jsonData;
     }
