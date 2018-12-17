@@ -1,6 +1,5 @@
 package com.tdmh.controller.system;
 
-import com.alibaba.fastjson.JSONObject;
 import com.tdmh.common.JsonData;
 import com.tdmh.param.SysDistrictParam;
 import com.tdmh.service.ISysDistrictService;
@@ -30,16 +29,11 @@ public class SysDistrictController {
      *
      * @return
      */
+    @RequiresPermissions("sys:dist:visit")
     @RequestMapping("listData.do")
     @ResponseBody
-    public JSONObject getDistrictList() {
-        JSONObject json = new JSONObject();
-        json.put("list", sysDistrictService.listData());
-        JSONObject pagination = new JSONObject();
-        pagination.put("currentPage", 1);
-        pagination.put("pageSize", 10);
-        json.put("pagination", pagination);
-        return json;
+    public SysDistrictParam getDistrictList() {
+        return sysDistrictService.treeData();
     }
 
     /**

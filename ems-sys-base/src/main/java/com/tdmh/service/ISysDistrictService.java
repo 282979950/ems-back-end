@@ -75,4 +75,6 @@ public interface ISysDistrictService {
      * @return
      */
     List<SysDistrictParam> listData();
+
+    SysDistrictParam treeData();
 }

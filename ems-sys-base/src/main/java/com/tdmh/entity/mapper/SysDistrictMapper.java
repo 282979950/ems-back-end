@@ -44,4 +44,6 @@ public interface SysDistrictMapper {
     int updateDistrict(SysDistrictParam district);
 
     String getDistrictChildList(@Param("userDistId") Integer userDistId);
+
+    SysDistrictParam getDistParamById(@Param("distId") Integer distId);
 }

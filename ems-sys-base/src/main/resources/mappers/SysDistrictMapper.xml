@@ -318,4 +318,14 @@
     <select id="getDistrictChildList" parameterType="int" resultType="string">
         select getDistrictChildList(#{userDistId})
     </select>
+    <select id="getDistParamById" resultMap="SysDistrictParam" parameterType="integer">
+        SELECT s1.dist_id, s1.dist_name, s1.dist_code,
+        s1.dist_category, sd.dict_key AS dist_category_name, s1.dist_address, s1.dist_parent_id, s2.dist_name AS dist_parent_name,
+        s1.create_time, s1.create_by, s1.update_time,
+        s1.update_by, s1.usable, s1.remarks
+        FROM sys_district s1
+        LEFT JOIN sys_district s2 ON s1.dist_parent_id = s2.dist_id
+        LEFT JOIN sys_dictionary sd on s1.dist_category = sd.dict_value and sd.dict_category = 'dist_type' and sd.usable = 1
+        WHERE s1.usable = 1 and s1.dist_id = #{distId}
+    </select>
 </mapper>

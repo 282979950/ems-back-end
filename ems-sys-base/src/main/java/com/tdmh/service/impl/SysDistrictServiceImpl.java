@@ -128,11 +128,34 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         return districtMapper.getAllDist();
     }
 
+    @Override
+    public SysDistrictParam treeData() {
+        List<SysDistrictParam> distList = districtMapper.getAllDist();
+        for (SysDistrictParam dist : distList) {
+            Integer pId = dist.getDistParentId();
+            if (pId != null) {
+                for (SysDistrictParam dist2 : distList) {
+                    if (dist2.getDistId().equals(pId)) {
+                        if (dist2.getChildren() == null) {
+                            dist2.setChildren(new ArrayList<>());
+                        }
+                        dist2.getChildren().add(dist);
+                    }
+                }
+            }
+        }
+        return distList.get(0);
+    }
+
     private List<SysDistrict> getChildrenDist(Integer distId) {
         return districtMapper.getChildrenDist(distId);
     }
 
     private  SysDistrict getDistrictById(Integer distId) {
         return districtMapper.selectByPrimaryKey(distId);
+    }
+
+    private SysDistrictParam getDistParamById(Integer distId) {
+        return districtMapper.getDistParamById(distId);
     }
 }

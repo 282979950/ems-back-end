@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author litairan on 2018/9/4.
@@ -60,6 +61,8 @@ public class SysDistrictParam extends BaseEntity {
      * 父级区域名称
      */
     private String distParentName;
+
+    private List<SysDistrictParam> children;
 
     public SysDistrictParam(Integer distId, String distName, String distCode, Integer distCategory, String distCategoryName, String distAddress, Integer
             distParentId, String distParentName, Date  createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
