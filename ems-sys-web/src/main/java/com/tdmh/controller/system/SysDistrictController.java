@@ -32,7 +32,7 @@ public class SysDistrictController {
     @RequiresPermissions("sys:dist:visit")
     @RequestMapping("listData.do")
     @ResponseBody
-    public SysDistrictParam getDistrictList() {
+    public JsonData getDistrictList() {
         return sysDistrictService.treeData();
     }
 

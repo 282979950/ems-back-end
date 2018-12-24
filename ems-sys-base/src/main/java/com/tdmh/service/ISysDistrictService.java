@@ -76,5 +76,5 @@ public interface ISysDistrictService {
      */
     List<SysDistrictParam> listData();
 
-    SysDistrictParam treeData();
+    JsonData treeData();
 }

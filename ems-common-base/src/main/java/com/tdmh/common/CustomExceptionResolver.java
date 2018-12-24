@@ -43,10 +43,10 @@ public class CustomExceptionResolver implements HandlerExceptionResolver {
 
         if (url.endsWith(".do")) {
             if (e instanceof UnauthenticatedException) {
-                JsonData result = JsonData.fail("用户未登录");
+                JsonData result = JsonData.fail(2,"用户未登录");
                 mv = new ModelAndView("jsonView", result.toMap());
             } else if (e instanceof UnauthorizedException) {
-                JsonData result = JsonData.fail(2, "无权限访问");
+                JsonData result = JsonData.fail(3, "无权限访问");
                 mv = new ModelAndView("jsonView", result.toMap());
             } else if (e instanceof PermissionException || e instanceof ParameterException || e instanceof AuthenticationException || e instanceof AuthorizationException) {
                 JsonData result = JsonData.fail(e.getMessage());

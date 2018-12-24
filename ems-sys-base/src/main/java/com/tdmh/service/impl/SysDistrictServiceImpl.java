@@ -129,8 +129,12 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
     }
 
     @Override
-    public SysDistrictParam treeData() {
+    public JsonData treeData() {
+        List<SysDistrictParam> treeDataList = new ArrayList<>();
         List<SysDistrictParam> distList = districtMapper.getAllDist();
+        if (distList == null || distList.size() == 0) {
+            return JsonData.successData(treeDataList);
+        }
         for (SysDistrictParam dist : distList) {
             Integer pId = dist.getDistParentId();
             if (pId != null) {
@@ -144,7 +148,8 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
                 }
             }
         }
-        return distList.get(0);
+        treeDataList.add(distList.get(0));
+        return JsonData.successData(treeDataList);
     }
 
     private List<SysDistrict> getChildrenDist(Integer distId) {
