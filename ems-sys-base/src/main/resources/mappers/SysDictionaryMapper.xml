@@ -5,7 +5,7 @@
     <constructor >
       <idArg column="dict_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="dict_key" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="dict_value" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="dict_value" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="dict_category" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="dict_sort" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />

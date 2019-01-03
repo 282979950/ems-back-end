@@ -13,7 +13,7 @@ public class SysDictionary extends BaseEntity{
 
     private String dictKey;
 
-    private String dictValue;
+    private Integer dictValue;
 
     private String dictCategory;
 
@@ -21,7 +21,7 @@ public class SysDictionary extends BaseEntity{
 
     private List<Integer> ids;
 
-    public SysDictionary(Integer dictId, String dictKey, String dictValue, String dictCategory, Integer dictSort, Date createTime, Integer createBy, Date
+    public SysDictionary(Integer dictId, String dictKey, Integer dictValue, String dictCategory, Integer dictSort, Date createTime, Integer createBy, Date
             updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.dictId = dictId;

@@ -60,7 +60,7 @@ public class SysDictionaryController {
 
             return JsonData.fail("字典键不能为空");
         }
-        if(StringUtils.isBlank(sdy.getDictValue())){
+        if (sdy.getDictValue() == null) {
             return JsonData.fail("字典值不能为空");
         }
         if(StringUtils.isBlank(sdy.getDictCategory())){
