@@ -54,8 +54,7 @@ public interface EmployeeMapper {
     int deleteEmployee(List<EmployeeParam> employees);
 
     List<EmployeeParam> searchEmployee(@Param("empNumber") String empNumber, @Param("empName") String empName, @Param("empOrgId") Integer empOrgId, @Param
-            ("empDistrictId") Integer empDistrictId, @Param("empLoginName") String empLoginName, @Param("empPhone") String empPhone, @Param("empMobile") String
-                                          empMobile, @Param("empType") String empType);
+            ("empDistrictId") Integer empDistrictId, @Param("roleId") Integer roleId, @Param("empType") Integer empType);
 
     EmployeeParam getEmpById(@Param("empId") Integer empId);
 

@@ -570,17 +570,11 @@
         <if test="empDistrictId != null and empDistrictId != ''">
             AND emp_district_id = #{empDistrictId,jdbcType=INTEGER}
         </if>
-        <if test="empLoginName != null and empLoginName != ''">
-            AND emp_login_name LIKE CONCAT('%', #{empLoginName,jdbcType=VARCHAR}, '%')
-        </if>
-        <if test="empPhone != null and empPhone != ''">
-            AND emp_phone LIKE CONCAT('%', #{empPhone,jdbcType=VARCHAR}, '%')
-        </if>
-        <if test="empMobile != null and empMobile != ''">
-            AND emp_mobile LIKE CONCAT('%', #{empMobile,jdbcType=VARCHAR}, '%')
+        <if test="roleId != null and roleId != ''">
+            AND er.role_id = #{roleId,jdbcType=INTEGER}
         </if>
         <if test="empType != null and empType != ''">
-            AND emp_type = #{empType,jdbcType=VARCHAR}
+            AND emp_type = #{empType,jdbcType=INTEGER}
         </if>
     </select>
     <select id="getEmpById" parameterType="integer" resultMap="EmployeeParam">

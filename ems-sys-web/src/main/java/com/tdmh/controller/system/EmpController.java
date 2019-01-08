@@ -75,9 +75,9 @@ public class EmpController {
     @RequiresPermissions("sys:emp:retrieve")
     @RequestMapping(value = "search.do")
     @ResponseBody
-    public JsonData searchEmployee(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone,
-                                   String empMobile, String empType, Integer pageNum, Integer pageSize) {
-        return employeeService.searchEmployee(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType, pageNum, pageSize);
+    public JsonData searchEmployee(String empNumber, String empName, Integer empOrgId, Integer empDistId, Integer roleId, Integer empType, Integer pageNum,
+                                   Integer pageSize) {
+        return employeeService.searchEmployee(empNumber, empName, empOrgId, empDistId, roleId, empType, pageNum, pageSize);
     }
 
     @RequestMapping(value = "getEmpByEmpNumber.do")

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,33 +24,17 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
 
     /**
-     * 进入登录页面
-     */
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String login() {
-        System.out.println("进入login");
-        Subject subject = SecurityUtils.getSubject();
-        Principal principal = (Principal) subject.getPrincipal();
-        if (principal != null) {
-            return "redirect:/index";
-        }
-        return "vprs/login";
-    }
-
-    /**
      * 登录失败
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public JsonData loginFailure(HttpServletRequest request, String userName, String password, String type) {
+    public JsonData login(@RequestParam("userName") String userName, @RequestParam("password") String password, String type) {
         UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
         Subject currentUser = SecurityUtils.getSubject();
         try {
             currentUser.login(token);
-        } catch (UnknownAccountException uae) {
-            throw new CustomException("用户名不存在");
-        } catch (IncorrectCredentialsException ice) {
-            throw new CustomException("密码不正确");
+        } catch (UnknownAccountException | IncorrectCredentialsException uae) {
+            throw new CustomException("用户名或密码错误");
         } catch (LockedAccountException lae) {
             throw new CustomException("LockedAccountException");
         } catch (ExcessiveAttemptsException eae) {

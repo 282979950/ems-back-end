@@ -166,10 +166,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public JsonData searchEmployee(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone, String
-            empMobile, String empType, Integer pageNum, Integer pageSize) {
+    public JsonData searchEmployee(String empNumber, String empName, Integer empOrgId, Integer empDistId, Integer roleId, Integer empType, Integer pageNum,
+                                   Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<EmployeeParam> employees = employeeMapper.searchEmployee(empNumber, empName, empOrgId, empDistrictId, empLoginName, empPhone, empMobile, empType);
+        List<EmployeeParam> employees = employeeMapper.searchEmployee(empNumber, empName, empOrgId, empDistId, roleId, empType);
         if (employees == null) {
             return JsonData.successMsg("查询结果为空");
         }

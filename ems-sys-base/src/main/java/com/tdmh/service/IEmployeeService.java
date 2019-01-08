@@ -93,14 +93,12 @@ public interface IEmployeeService {
      * @param empName
      * @param empOrgId
      * @param empDistrictId
-     * @param empLoginName
-     * @param empPhone
-     * @param empMobile
+     * @param roleId
      * @param empType
      * @return
      */
-    JsonData searchEmployee(String empNumber, String empName, Integer empOrgId, Integer empDistrictId, String empLoginName, String empPhone, String
-            empMobile, String empType, Integer pageNum, Integer pageSize);
+    JsonData searchEmployee(String empNumber, String empName, Integer empOrgId, Integer empDistrictId,Integer roleId, Integer empType, Integer pageNum,
+                            Integer pageSize);
 
     JsonData getEmpByEmpNumber(String empNumber);
 }
