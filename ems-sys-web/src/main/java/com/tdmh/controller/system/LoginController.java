@@ -1,4 +1,4 @@
-package com.tdmh.controller.vprs;
+package com.tdmh.controller.system;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.Principal;
