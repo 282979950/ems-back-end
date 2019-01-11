@@ -82,4 +82,14 @@ public class SysDistrictController {
     public JsonData selectDistrict(@Param("distName") String distName, @Param("distCode") String distCode) {
         return sysDistrictService.selectDistrict(distName, distCode);
     }
+
+    /**
+     * 获取区域树的数据
+     */
+    @RequiresPermissions("sys:dist:visit")
+    @RequestMapping("loadTreeData.do")
+    @ResponseBody
+    public JsonData loadTreeData() {
+        return sysDistrictService.loadTreeData();
+    }
 }

@@ -3,6 +3,7 @@ package com.tdmh.service.impl;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.SysDistrict;
+import com.tdmh.entity.TreeNode;
 import com.tdmh.entity.mapper.SysDistrictMapper;
 import com.tdmh.exception.ParameterException;
 import com.tdmh.param.SysDistrictParam;
@@ -150,6 +151,25 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         }
         treeDataList.add(distList.get(0));
         return JsonData.successData(treeDataList);
+    }
+
+    @Override
+    public JsonData loadTreeData() {
+        List<SysDistrictParam> distList = districtMapper.getAllDist();
+        List<TreeNode> nodes = new ArrayList<>();
+        if (distList == null || distList.size() == 0) {
+            return JsonData.successData(nodes);
+        }
+        for (SysDistrictParam dist : distList) {
+            TreeNode node = new TreeNode();
+            node.setId(dist.getDistId());
+            node.setValue(dist.getDistId());
+            node.setTitle(dist.getDistName());
+            node.setKey(dist.getDistName());
+            node.setPId(dist.getDistParentId());
+            nodes.add(node);
+        }
+        return JsonData.successData(nodes);
     }
 
     private List<SysDistrict> getChildrenDist(Integer distId) {
