@@ -33,13 +33,37 @@ public class SysOrganizationController {
 	@RequestMapping(value = "/listData.do")
 	@ResponseBody
 	public JsonData selectFindListOnPc(){
+	/*
+	此处默认为列表显示暂时屏蔽
+
 
 		List<SysOrganization> list =sysOrganizationService.findListOrganizationOnPc();
 		if (list == null || list.size()==0) {
 			return JsonData.successMsg("查询结果为空");
 		}
 		return JsonData.successData(list);
-
+ 	*/
+	//默认使用树形加载列表
+		List<SysOrganization> treeDataList = new ArrayList<>();
+		List<SysOrganization> orgList = sysOrganizationService.findListOrganizationOnPc();
+		if (orgList == null || orgList.size() == 0) {
+			return JsonData.successData(treeDataList);
+		}
+		for (SysOrganization org : orgList) {
+			Integer pId = org.getOrgParentId();
+			if (pId != null) {
+				for (SysOrganization org2 : orgList) {
+					if (org2.getOrgId().equals(pId)) {
+						if (org2.getChildren() == null) {
+							org2.setChildren(new ArrayList<>());
+						}
+						org2.getChildren().add(org);
+					}
+				}
+			}
+		}
+		treeDataList.add(orgList.get(0));
+		return JsonData.successData(treeDataList);
 	}
 	//机构新增
 	@RequiresPermissions("sys:org:create")
@@ -61,12 +85,12 @@ public class SysOrganizationController {
 			sysz.setCreateBy(12324);
 			sysz.setUsable(true);
 
-			if(StringUtils.isBlank(sysz.getOrgCategory())){
+			if(sysz.getOrgCategory().intValue()==0){
 
 				return JsonData.fail("获取机构类别失败，请选择机构类别或联系管理员");
 			}
 
-			if(!"1".equals(sysz.getOrgCategory())){
+			if(sysz.getOrgCategory().intValue()!=1){
 
 				return JsonData.fail("操作有误，新增根节点时机构类别需选择公司");
 			}
@@ -82,20 +106,22 @@ public class SysOrganizationController {
 				return JsonData.fail(msg);
 			}
 			//机构类别按大至小，分为以下几种：公司，总经办，部门，小组
-			if(StringUtils.isBlank(sds.getOrgCategory())){
+			if(sds.getOrgCategory().intValue()==0){
 
 
 				return JsonData.fail("新增时获取上级机构类别失败，请刷新重试或联系管理员");
 			}
+			if(sysz.getOrgCategory().intValue()==0){
+				return JsonData.fail("请填写机构类别");
+			}
+
 			if(sds.getOrgCategory().equals(sysz.getOrgCategory())){
 
 				return JsonData.fail("操作失败，上级机构类别与新增时机构类别一致");
 			}
-			if(StringUtils.isBlank(sysz.getOrgCategory())){
-                return JsonData.fail("请填写机构类别");
-            }
-			sys_type=Integer.parseInt(sds.getOrgCategory());
-            type = Integer.parseInt(sysz.getOrgCategory());
+
+			sys_type = sds.getOrgCategory().intValue();
+            type = sysz.getOrgCategory();
 
 			if(sys_type==4){
 
@@ -113,7 +139,7 @@ public class SysOrganizationController {
 
 			int maxOrgId = sysOrganizationService.maxOrganizationOnPc();
 
-            sysz.setOrgCategory(type+"");
+            sysz.setOrgCategory(type);
 			sysz.setOrgId(++maxOrgId);
 			sysz.setOrgParentId(sds.getOrgId());
 
@@ -156,7 +182,7 @@ public class SysOrganizationController {
 			int count = sysOrganizationService.findIdByCountOnPc(sysz.getOrgId());
 			if(count>0){
 
-				if(StringUtils.isBlank(sysz.getOrgCategory())){
+				if(sysz.getOrgCategory().intValue()==0){
 
 					return JsonData.fail("获取机构类别失败，请选择机构类别或联系管理员");
 				}
@@ -168,16 +194,16 @@ public class SysOrganizationController {
 					return JsonData.fail(msg);
 				}
 				//机构类别按大至小，分为以下几种：公司，总经办，部门，小组
-				if(StringUtils.isBlank(sds.getOrgCategory())){
+				if(sds.getOrgCategory().intValue()==0){
 
 					return JsonData.fail("获取上级机构类别失败");
 				}
-                String dictValue= sysDictionaryService.dictCategoryByTypeService(sysz.getOrgCategory(),"org_type");
+                String dictValue= sysDictionaryService.dictCategoryByTypeService(sysz.getOrgCategory()+"","org_type");
 				if(sds.getOrgCategory().equals(dictValue)){
 
 					return JsonData.fail("操作失败，上级机构类别与修改时机构类别一致");
 				}
-                sys_type = Integer.parseInt(sds.getOrgCategory());
+                sys_type = sds.getOrgCategory().intValue();
                 type =Integer.parseInt(dictValue);
 
 				//判断用户选择的机构类型是否大于等于父级机构类型：例如：1,。公司。大于2总经办
@@ -191,7 +217,7 @@ public class SysOrganizationController {
 				}
 				//根据id修改机构信息
 				sysz.setUpdateBy(12324);
-				sysz.setOrgCategory(dictValue);
+				sysz.setOrgCategory(type);
 				sysz.setUpdateTime(new Date());
 				sysOrganizationService.updateOrgNameByIdOnPc(sysz);
 			}else{

@@ -30,7 +30,7 @@ public class SysOrganization extends BaseEntity{
      *机构类别
      */
     @NotNull(message = "机构类别不能为空")
-    private String orgCategory;
+    private Integer orgCategory;
 
     private String orgCategoryName;
     /*
@@ -46,9 +46,10 @@ public class SysOrganization extends BaseEntity{
      *临时参数
      */
     private List<Integer> ids;
+    private List<SysOrganization> children;
 
 
-    public SysOrganization( Integer orgId, String orgName, String orgCode, String orgCategory, Integer orgParentId, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+    public SysOrganization( Integer orgId, String orgName, String orgCode, Integer orgCategory, Integer orgParentId, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.orgId = orgId;
         this.orgName = orgName;
