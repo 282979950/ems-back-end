@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tdmh.common.BeanValidator;
@@ -192,22 +194,28 @@ public class SysRoleServiceImpl implements ISysRoleService {
     }
 
     @Override
-    public JsonData selectRole(String roleName) {
+    public JsonData selectRole(String roleName, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         if (roleName == null) {
-            return JsonData.success(sysRoleList, "查询成功");
+            List<SysRole> roles = roleMapper.selectAll();
+            if (roles == null || roles.size() == 0) {
+                return JsonData.successMsg("搜索结果为空");
+            }
+            PageInfo<SysRole> pageInfo = new PageInfo<>(roles);
+            return JsonData.success(pageInfo, "查询成功");
         }
         List<SysRoleParam> roleList = Lists.newArrayList();
         for (SysRole sysRole : sysRoleList) {
             if (sysRole.getRoleName().contains(roleName)) {
-            	SysRoleParam  sysRoleParam = new SysRoleParam();
-            	sysRoleParam.setRoleId(sysRole.getRoleId());
-            	sysRoleParam.setRoleName(sysRole.getRoleName());
+                SysRoleParam sysRoleParam = new SysRoleParam();
+                sysRoleParam.setRoleId(sysRole.getRoleId());
+                sysRoleParam.setRoleName(sysRole.getRoleName());
                 sysRole.setRoleDistList();
-            	sysRoleParam.setDistIds(StringUtils.join(sysRole.getRoleDistList(), Const.DEFAULT_SEPARATOR));
+                sysRoleParam.setDistIds(StringUtils.join(sysRole.getRoleDistList(), Const.DEFAULT_SEPARATOR));
                 sysRole.setRoleOrgList();
-           	    sysRoleParam.setOrgIds(StringUtils.join(sysRole.getRoleOrgList(),Const.DEFAULT_SEPARATOR));
+                sysRoleParam.setOrgIds(StringUtils.join(sysRole.getRoleOrgList(), Const.DEFAULT_SEPARATOR));
                 sysRole.setRolePermList();
-            	sysRoleParam.setPermIds(StringUtils.join(sysRole.getRolePermList(),Const.DEFAULT_SEPARATOR));
+                sysRoleParam.setPermIds(StringUtils.join(sysRole.getRolePermList(), Const.DEFAULT_SEPARATOR));
                 sysRoleParam.setIsAdmin(sysRole.getIsAdmin());
                 sysRoleParam.setCreateTime(sysRole.getCreateTime());
                 sysRoleParam.setRemarks(sysRole.getRemarks());
@@ -217,7 +225,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
         if (roleList.size() == 0) {
             return JsonData.successMsg("查询结果为空");
         } else {
-            return JsonData.success(roleList,"查询成功");
+            return JsonData.success(roleList, "查询成功");
         }
     }
 

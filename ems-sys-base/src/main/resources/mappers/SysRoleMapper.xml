@@ -193,7 +193,7 @@
     <select id="selectAll" resultMap="RoleResultMap">
         SELECT sr.role_id,sr.role_name,sr.role_dists,sr.role_orgs,sr.is_admin ,sr.create_time,sr.remarks,sp.perm_id,sp.perm_name
         FROM sys_role sr left JOIN sys_role_perm srp ON sr.role_id=srp.role_id
-        left JOIN sys_permission sp on srp.perm_id=sp.perm_id WHERE sr.usable=1;
+        left JOIN sys_permission sp on srp.perm_id=sp.perm_id WHERE sr.usable=1
     </select>
     <update id="deleteRoleById" parameterType="map">
         UPDATE sys_role

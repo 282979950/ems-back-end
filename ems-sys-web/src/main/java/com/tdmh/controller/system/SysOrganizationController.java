@@ -3,6 +3,7 @@ package com.tdmh.controller.system;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.SysOrganization;
+import com.tdmh.entity.TreeNode;
 import com.tdmh.service.SysDictionaryService;
 import com.tdmh.service.SysOrganizationService;
 import com.tdmh.utils.StringUtils;
@@ -306,4 +307,12 @@ public class SysOrganizationController {
         return JsonData.success(list,msg);
 
     }
+
+//	@RequiresPermissions("sys:org:visit")
+    @RequestMapping("/loadTreeData.do")
+	@ResponseBody
+	public JsonData loadTreeData() {
+		List<TreeNode> nodes = sysOrganizationService.loadTreeData();
+		return JsonData.successData(nodes);
+	}
 }

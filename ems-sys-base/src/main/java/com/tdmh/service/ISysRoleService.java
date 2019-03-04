@@ -35,5 +35,5 @@ public interface ISysRoleService {
      * @param roleName
      * @return
      */
-    JsonData selectRole(String roleName);
+    JsonData selectRole(String roleName, Integer pageNum, Integer pageSize);
 }

@@ -6,6 +6,7 @@ package com.tdmh.controller.system;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tdmh.common.JsonData;
+import com.tdmh.entity.ListNode;
 import com.tdmh.entity.SysDictionary;
 import com.tdmh.service.SysDictionaryService;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +38,27 @@ public class SysDictionaryController {
         List<SysDictionary> list = sysDictionaryService.findListOnPc();
         PageInfo<SysDictionary> page = new PageInfo<>(list);
         return JsonData.successData(page);
+    }
+
+    @RequiresPermissions("sys:dic:visit")
+    @RequestMapping(value = {"/loadListData.do"})
+    @ResponseBody
+    public JsonData loadListData(String category) {
+        if (StringUtils.isNotBlank(category)) {
+            List<SysDictionary> list = sysDictionaryService.findListByTypeOnPc(category);
+            if (list == null || list.size() <= 0) {
+                return JsonData.fail("该字段没有对应数据字典值");
+            }
+            List<ListNode> nodes = new ArrayList<>();
+            for (SysDictionary sysDictionary : list) {
+                ListNode node = new ListNode();
+                node.setKey(sysDictionary.getDictKey());
+                node.setValue(sysDictionary.getDictValue());
+                nodes.add(node);
+            }
+            return JsonData.successData(nodes);
+        }
+        return JsonData.fail("未获取到数据");
     }
 
     //新增数据

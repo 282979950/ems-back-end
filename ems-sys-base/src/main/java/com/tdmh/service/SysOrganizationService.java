@@ -1,12 +1,14 @@
 package com.tdmh.service;
 
 import com.tdmh.entity.SysOrganization;
+import com.tdmh.entity.TreeNode;
 import com.tdmh.entity.mapper.SysOrganizationMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -71,4 +73,22 @@ public class SysOrganizationService {
    public Integer selectCountByorgNameService(@Param("orgName") String orgName){
 	    return dao.selectCountByorgName(orgName);
     }
+
+	public List<TreeNode> loadTreeData() {
+		List<TreeNode> nodes = new ArrayList<>();
+		List<SysOrganization> organizations = findListOrganizationOnPc();
+		if (organizations == null || organizations.size() == 0) {
+			return nodes;
+		}
+		for (SysOrganization organization : organizations) {
+			TreeNode node = new TreeNode();
+			node.setId(organization.getOrgId());
+			node.setValue(organization.getOrgId());
+			node.setKey(organization.getOrgName());
+			node.setTitle(organization.getOrgName());
+			node.setPId(organization.getOrgParentId());
+			nodes.add(node);
+		}
+		return nodes;
+	}
 }

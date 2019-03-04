@@ -31,8 +31,8 @@ public class SysRoleController {
     @RequiresPermissions("sys:role:visit")
     @RequestMapping("listData.do")
     @ResponseBody
-    public JsonData getRoleList() {
-        return sysRoleService.selectRole("");
+    public JsonData getRoleList(Integer pageNum, Integer pageSize) {
+        return sysRoleService.selectRole(null, pageNum, pageSize);
     }
 
     /**
@@ -78,7 +78,7 @@ public class SysRoleController {
     @RequiresPermissions("sys:role:retrieve")
     @RequestMapping("search.do")
     @ResponseBody
-    public JsonData selectRole(String roleName) {
-       return sysRoleService.selectRole(roleName);
+    public JsonData selectRole(String roleName, Integer pageNum, Integer pageSize) {
+       return sysRoleService.selectRole(roleName, pageNum, pageSize);
     }
 }
