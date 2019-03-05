@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 权限实体
@@ -50,6 +51,8 @@ public class SysPermission extends BaseEntity {
     private Boolean isButton;
 
     private String permParentCaption;
+
+    private List<SysPermission> children;
 
     public SysPermission(Integer permId, String permName, String permCaption, String permHref, Integer permParentId, Boolean isButton, Date createTime, Integer createBy, Date updateTime, Integer
             updateBy, Boolean usable, String remarks) {

@@ -147,17 +147,32 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
 
     @Override
     public JsonData listAllMenus() {
-        List<SysPermission> permissions =  new ArrayList<SysPermission>();
-        for(SysPermission perm : permissionList) {
-        	if(!perm.getIsButton()) {
-        		permissions.add(perm);
-        	}
+        List<SysPermission> permissions = new ArrayList<>();
+        List<SysPermission> allPerms = permissionMapper.selectAll();
+        for (SysPermission perm : allPerms) {
+            if (!perm.getIsButton()) {
+                permissions.add(perm);
+            }
         }
-        if (permissions == null || permissions.size()==0) {
+        if (permissions.size() == 0) {
             return JsonData.successMsg("查询结果为空");
-        }
-        else {
-            return JsonData.successData(permissions);
+        } else {
+            for (SysPermission permission : permissions) {
+                Integer pId = permission.getPermParentId();
+                if (pId != null) {
+                    for (SysPermission perm : permissions) {
+                        if (perm.getPermId().equals(pId)) {
+                            if (perm.getChildren() == null) {
+                                perm.setChildren(new ArrayList<>());
+                            }
+                            perm.getChildren().add(permission);
+                        }
+                    }
+                }
+            }
+            List<SysPermission> menuTree = new ArrayList<>();
+            menuTree.add(permissions.get(0));
+            return JsonData.successData(menuTree);
         }
     }
 
