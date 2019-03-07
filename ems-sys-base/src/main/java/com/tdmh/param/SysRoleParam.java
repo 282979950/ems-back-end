@@ -1,15 +1,13 @@
 package com.tdmh.param;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdmh.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.util.List;
 
 /**
  * 系统角色参数类
@@ -35,36 +33,29 @@ public class SysRoleParam extends BaseEntity {
     /**
      * 权限ID列表
      */
-    @NotBlank(message = "角色拥有权限不能为空")
-    private String permIds;
+    @NotNull(message = "角色拥有权限不能为空")
+    private List<Integer> rolePermIds;
+
+    private List<String> rolePermNames;
 
     /**
      * 区域ID列表
      */
-    @NotBlank(message = "角色所属区域不能为空")
-    private String distIds;
+    @NotNull(message = "角色所属区域不能为空")
+    private List<Integer> roleDistIds;
+
+    private List<String> roleDistNames;
     /**
      * 组织ID列表
      */
-    @NotBlank(message = "角色所属机构不能为空")
-    private String orgIds;
+    @NotNull(message = "角色所属机构不能为空")
+    private List<Integer> roleOrgIds;
+
+    private List<String> roleOrgNames;
 
     /**
      * 是否是管理员
      */
     @NotNull(message = "是否是管理员不能为空")
     private Boolean isAdmin;
-
-    /**
-     * 创建时间
-     */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
-
-    /**
-     * 备注
-     */
-    private String remarks;
-
 }

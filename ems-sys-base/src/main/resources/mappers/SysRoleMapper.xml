@@ -16,19 +16,6 @@
             <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
     </resultMap>
-    <resultMap id="RoleResultMap" type="com.tdmh.entity.SysRole">
-        <id column="role_id" jdbcType="INTEGER" property="roleId" javaType="java.lang.Integer"/>
-        <result column="role_name" jdbcType="VARCHAR" property="roleName" javaType="java.lang.String"/>
-        <result column="role_dists" jdbcType="VARCHAR" property="roleDists" javaType="java.lang.String"/>
-        <result column="role_orgs" jdbcType="VARCHAR" property="roleOrgs" javaType="java.lang.String"/>
-        <result column="is_admin" jdbcType="BIT" property="isAdmin" javaType="java.lang.Boolean"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" javaType="java.util.Date"/>
-        <result column="remarks" jdbcType="VARCHAR" property="remarks" javaType="java.lang.String"/>
-        <collection property="permissions" ofType="com.tdmh.entity.SysPermission">
-            <id  column="perm_id" jdbcType="INTEGER" property="permId" javaType="java.lang.Integer"/>
-            <result column="perm_name" jdbcType="VARCHAR" property="permName" javaType="java.lang.String"/>
-        </collection>
-    </resultMap>
     <sql id="Base_Column_List">
         role_id, role_name, role_dists, role_orgs, is_admin, create_time, create_by, update_time, update_by,
         usable, remarks
@@ -43,15 +30,43 @@
         delete from sys_role
         where role_id = #{roleId,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.tdmh.entity.SysRole">
-        insert into sys_role (role_name, role_dists,
-        role_orgs, is_admin, create_time, create_by,
-        update_time, update_by, usable,
-        remarks)
-        values (#{roleName,jdbcType=VARCHAR}, #{roleDists,jdbcType=VARCHAR},
-        #{roleOrgs,jdbcType=VARCHAR}, #{isAdmin,jdbcType=BIT}, NOW(), #{createBy,jdbcType=INTEGER},
-        NOW(), #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},
-        #{remarks,jdbcType=VARCHAR})
+    <delete id="deleteDistByRoleId" parameterType="int">
+        delete from sys_role_dist
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteOrgByRoleId" parameterType="int">
+        delete from sys_role_org
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deletePermByRoleId" parameterType="int">
+        delete from sys_role_perm
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.tdmh.param.SysRoleParam">
+        <selectKey keyProperty="roleId" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into sys_role (role_name, is_admin, create_time, create_by, update_time, update_by, remarks)
+        values (#{roleName,jdbcType=VARCHAR}, #{isAdmin,jdbcType=BIT}, NOW(), #{createBy,jdbcType=INTEGER},
+        NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertDistPerms" parameterType="com.tdmh.param.SysRoleParam">
+        INSERT INTO sys_role_dist (role_id, dist_id) VALUES
+            <foreach collection="roleDistIds" item="distId" separator="," >
+                (#{roleId,jdbcType=INTEGER}, #{distId,jdbcType=INTEGER})
+            </foreach>
+    </insert>
+    <insert id="insertOrgPerms" parameterType="com.tdmh.param.SysRoleParam">
+        INSERT INTO sys_role_org (role_id, org_id) VALUES
+            <foreach collection="roleOrgIds" item="orgId" separator="," >
+                (#{roleId,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER})
+            </foreach>
+    </insert>
+    <insert id="insertPerms" parameterType="com.tdmh.param.SysRoleParam">
+        INSERT INTO sys_role_perm (role_id, perm_id) VALUES
+            <foreach collection="rolePermIds" item="permId" separator="," >
+                (#{roleId,jdbcType=INTEGER}, #{permId,jdbcType=INTEGER})
+            </foreach>
     </insert>
     <insert id="insertSelective" parameterType="com.tdmh.entity.SysRole">
         insert into sys_role
@@ -173,9 +188,9 @@
         remarks = #{remarks,jdbcType=VARCHAR}
         where role_id = #{roleId,jdbcType=INTEGER}
     </update>
-    <select id="checkRoleNameExist" parameterType="string" resultType="int">
+    <select id="checkRoleNameExist" parameterType="string" resultType="boolean">
         SELECT
-        COUNT (1)
+        COUNT(1)
         FROM
         sys_role
         WHERE usable = 1 AND role_name = #{roleName,jdbcType=VARCHAR}
@@ -190,10 +205,62 @@
         sys_role
         WHERE usable = 1 AND role_name = #{roleName,jdbcType=VARCHAR}
     </select>
-    <select id="selectAll" resultMap="RoleResultMap">
-        SELECT sr.role_id,sr.role_name,sr.role_dists,sr.role_orgs,sr.is_admin ,sr.create_time,sr.remarks,sp.perm_id,sp.perm_name
-        FROM sys_role sr left JOIN sys_role_perm srp ON sr.role_id=srp.role_id
-        left JOIN sys_permission sp on srp.perm_id=sp.perm_id WHERE sr.usable=1
+    <resultMap id="RoleResultMap" type="com.tdmh.param.SysRoleParam">
+        <id column="role_id" jdbcType="INTEGER" property="roleId" javaType="java.lang.Integer"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName" javaType="java.lang.String"/>
+        <result column="is_admin" property="isAdmin" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <collection property="roleDistIds" ofType="integer" select="getDistIdsByRoleId" column="role_id"/>
+        <collection property="roleDistNames" ofType="string" select="getDistNamesByRoleId" column="role_id"/>
+        <collection property="roleOrgIds" ofType="integer" select="getOrgIdsByRoleId" column="role_id"/>
+        <collection property="roleOrgNames" ofType="string" select="getOrgNamesByRoleId" column="role_id"/>
+        <collection property="rolePermIds" ofType="integer" select="getPermIdsByRoleId" column="role_id"/>
+        <collection property="rolePermNames" ofType="string" select="getPermNamesByRoleId" column="role_id"/>
+    </resultMap>
+    <select id="select" resultMap="RoleResultMap" parameterType="string">
+        SELECT sr.role_id, sr.role_name, sr.is_admin
+        FROM sys_role sr
+        WHERE sr.usable = 1
+        <if test="roleName != null and roleName != ''">
+            AND sr.role_name LIKE CONCAT('%', #{roleName,jdbcType=VARCHAR}, '%')
+        </if>
+    </select>
+    <select id="getDistIdsByRoleId" parameterType="int" resultType="int">
+        select dist_id from sys_role_dist where role_id = #{roleId}
+    </select>
+    <select id="getDistNamesByRoleId" parameterType="int" resultType="string">
+        select dist_name
+        from
+        sys_role_dist srd left join sys_district sd on srd.dist_id = sd.dist_id and sd.usable = 1
+        where role_id = #{roleId}
+    </select>
+    <select id="getOrgIdsByRoleId" parameterType="int" resultType="int">
+        select org_id from sys_role_org where role_id = #{roleId}
+    </select>
+    <select id="getOrgNamesByRoleId" parameterType="int" resultType="string">
+        select org_name
+        from
+        sys_role_org sro left join sys_organization so on sro.org_id = so.org_id and so.usable = 1
+        where role_id = #{roleId}
+    </select>
+    <select id="getPermIdsByRoleId" parameterType="int" resultType="int">
+        select perm_id from sys_role_perm where role_id = #{roleId}
+    </select>
+    <select id="getPermNamesByRoleId" parameterType="int" resultType="string">
+        select perm_name
+        from
+        sys_role_perm srp left join sys_permission sp on srp.perm_id = sp.perm_id and sp.usable= 1
+        where role_id = #{roleId}
+    </select>
+    <select id="getRoleById" resultMap="RoleResultMap" parameterType="int">
+        SELECT sr.role_id, sr.role_name, sr.is_admin
+        FROM sys_role sr
+        WHERE sr.usable = 1 and sr.role_id = #{roleId}
+    </select>
+    <select id="checkRoleIdExist" resultType="java.lang.Boolean" parameterType="int">
+        select
+        COUNT(1)
+        from sys_role
+        where usable = 1 and role_id = #{roleId}
     </select>
     <update id="deleteRoleById" parameterType="map">
         UPDATE sys_role
@@ -203,7 +270,6 @@
         usable = 0
         WHERE role_id = #{roleId,jdbcType=INTEGER}
     </update>
-
     <update id="deleteBatch" parameterType="list">
         update sys_role
         <trim prefix="set" suffixOverrides=",">
@@ -233,5 +299,14 @@
         <foreach collection="list" separator="or" item="i" index="index">
             role_id = #{i.roleId}
         </foreach>
+    </update>
+    <update id="update" parameterType="com.tdmh.param.SysRoleParam">
+        UPDATE sys_role
+        SET
+        role_name = #{roleName},
+        is_admin = #{isAdmin},
+        update_time = NOW(),
+        update_by = #{updateBy,jdbcType=INTEGER}
+        WHERE role_id = #{roleId,jdbcType=INTEGER}
     </update>
 </mapper>

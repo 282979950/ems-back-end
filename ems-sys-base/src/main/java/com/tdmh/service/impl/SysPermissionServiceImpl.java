@@ -6,6 +6,7 @@ import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.SysPermission;
 import com.tdmh.entity.SysRolePerm;
+import com.tdmh.entity.TreeNode;
 import com.tdmh.entity.mapper.SysPermissionMapper;
 import com.tdmh.entity.mapper.SysRolePermMapper;
 import com.tdmh.exception.ParameterException;
@@ -177,13 +178,21 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
     }
 
     @Override
-    public JsonData listAllMenusAndPerms() {
-        List<SysPermission> permissions = permissionList;
-        if (permissions == null || permissions.size()==0) {
-            return JsonData.successMsg("查询结果为空");
+    public JsonData listAllPerms() {
+        List<SysPermission> permissionList = permissionMapper.selectAll();
+        List<TreeNode> nodes = new ArrayList<>();
+        if (permissionList == null || permissionList.size() == 0) {
+            return JsonData.successData(nodes);
         }
-        else {
-            return JsonData.successData(permissions);
+        for (SysPermission permission : permissionList) {
+            TreeNode node = new TreeNode();
+            node.setId(permission.getPermId());
+            node.setValue(permission.getPermId());
+            node.setTitle(permission.getPermCaption());
+            node.setKey(permission.getPermName());
+            node.setPId(permission.getPermParentId());
+            nodes.add(node);
         }
+        return JsonData.successData(nodes);
     }
 }

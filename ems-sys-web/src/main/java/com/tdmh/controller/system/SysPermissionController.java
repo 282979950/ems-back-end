@@ -94,10 +94,10 @@ public class SysPermissionController {
      * 获取菜单列表与权限列表关系
      */
     @RequiresPermissions("sys:perm:visit")
-    @RequestMapping("listAllMenusAndPerms.do")
+    @RequestMapping("listAllPerms.do")
     @ResponseBody
-    public JsonData listAllMenusAndPerms() {
-        return sysPermissionService.listAllMenusAndPerms();
+    public JsonData listAllPerms() {
+        return sysPermissionService.listAllPerms();
     }
 
 

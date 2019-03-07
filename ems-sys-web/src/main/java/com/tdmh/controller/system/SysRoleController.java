@@ -1,5 +1,6 @@
 package com.tdmh.controller.system;
 
+import com.alibaba.fastjson.JSONObject;
 import com.tdmh.common.JsonData;
 import com.tdmh.param.SysRoleParam;
 import com.tdmh.service.ISysRoleService;
@@ -42,7 +43,8 @@ public class SysRoleController {
     @RequiresPermissions("sys:role:create")
     @RequestMapping(value = "add.do")
     @ResponseBody
-    public JsonData createRole(SysRoleParam roleParam) {
+    public JsonData createRole(String json) {
+        SysRoleParam roleParam = JSONObject.toJavaObject(JSONObject.parseObject(json), SysRoleParam.class);
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         roleParam.setCreateBy(currentEmpId);
         roleParam.setUpdateBy(currentEmpId);
@@ -66,7 +68,8 @@ public class SysRoleController {
     @RequiresPermissions("sys:role:update")
     @RequestMapping("edit.do")
     @ResponseBody
-    public JsonData updateRole(SysRoleParam roleParam) {
+    public JsonData updateRole(String json) {
+        SysRoleParam roleParam = JSONObject.toJavaObject(JSONObject.parseObject(json), SysRoleParam.class);
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         roleParam.setUpdateBy(currentEmpId);
         return sysRoleService.updateRole(roleParam);

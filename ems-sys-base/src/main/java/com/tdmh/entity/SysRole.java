@@ -1,20 +1,14 @@
 package com.tdmh.entity;
 
 
-import java.util.ArrayList;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-
-import com.github.pagehelper.util.StringUtil;
-import com.tdmh.common.Const;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 角色实体
@@ -79,44 +73,5 @@ public class SysRole extends BaseEntity {
 
     public SysRole() {
         super();
-    }
-    
-    public void setRoleDistList() {
-    	createDistList();
-    }
-    
-    public void setRoleOrgList() {
-    	createOrgList();
-    }
-    
-    public void setRolePermList() {
-    	createPermList();
-    }
-    
-    private void createDistList() {
-    	if(StringUtil.isNotEmpty(roleDists)) {
-        String[] distArray = roleDists.split(Const.DEFAULT_SEPARATOR);
-        roleDistList = new ArrayList<>(distArray.length);
-        for (String dist : distArray) {
-            roleDistList.add(Integer.parseInt(dist));
-        }
-    	}
-    }
-
-    private void createOrgList() {
-    	if(StringUtil.isNotEmpty(roleOrgs)) {
-        String[] orgArray = roleOrgs.split(Const.DEFAULT_SEPARATOR);
-        roleOrgList = new ArrayList<>(orgArray.length);
-        for (String org : orgArray) {
-        	roleOrgList.add(Integer.parseInt(org));
-        }
-    	}
-    }
-    
-    private void createPermList() {
-       rolePermList = new ArrayList<>(permissions.size());
-        for (SysPermission perm : permissions) {
-        	rolePermList.add(perm.getPermId());
-        }
     }
 }
