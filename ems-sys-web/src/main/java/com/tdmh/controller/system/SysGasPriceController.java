@@ -28,8 +28,8 @@ public class SysGasPriceController {
     @RequiresPermissions("sys:gasPrice:visit")
     @RequestMapping("listData.do")
     @ResponseBody
-    public JsonData getGasPriceList() {
-        return gasPriceService.listAllGasPrice();
+    public JsonData getGasPriceList(Integer pageNum, Integer pageSize) {
+        return gasPriceService.listAllGasPrice( pageNum,pageSize);
     }
 
     @RequiresPermissions("sys:gasPrice:update")

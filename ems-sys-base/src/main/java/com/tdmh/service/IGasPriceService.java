@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  */
 public interface IGasPriceService {
 
-    JsonData listAllGasPrice();
+    JsonData listAllGasPrice(Integer pageNum, Integer pageSize);
 
     GasPrice findGasPriceByType(Integer userType, Integer userGasType);
 

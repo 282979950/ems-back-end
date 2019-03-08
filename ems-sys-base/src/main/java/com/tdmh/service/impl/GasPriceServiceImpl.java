@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.GasPrice;
 import com.tdmh.entity.User;
@@ -32,9 +34,11 @@ public class GasPriceServiceImpl implements IGasPriceService {
     private UserMapper userMapper;
 
     @Override
-    public JsonData listAllGasPrice() {
+    public JsonData listAllGasPrice(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<GasPriceParam> list = gasPriceMapper.listAllGasPrice();
-        return list == null || list.size() == 0 ? JsonData.successMsg("没有配置用户类型或者用气类型") : JsonData.successData(list);
+        PageInfo<GasPriceParam> page = new PageInfo<>(list);
+        return list == null || list.size() == 0 ? JsonData.successMsg("没有配置用户类型或者用气类型") : JsonData.successData(page);
     }
 
     @Override
