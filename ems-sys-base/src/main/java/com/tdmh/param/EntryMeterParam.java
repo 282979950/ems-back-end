@@ -53,7 +53,7 @@ public class EntryMeterParam extends BaseEntity {
      * 表向(ture为左表，false为右表)
      */
     @NotNull(message = "表向不能为空")
-    private Boolean meterDirection;
+    private Integer meterDirection;
 
     /**
      * 表向(ture为左表，false为右表)
@@ -81,7 +81,7 @@ public class EntryMeterParam extends BaseEntity {
 
     private String meterStatusName;
 
-    public EntryMeterParam(Integer meterId, String meterCode, BigDecimal meterStopCode, String meterCategory, String meterType, Boolean meterDirection,
+    public EntryMeterParam(Integer meterId, String meterCode, BigDecimal meterStopCode, String meterCategory, String meterType, Integer meterDirection,
                            String meterDirectionName, Date meterProdDate, Date meterEntryDate, Integer meterStatus, String meterStatusName, Date createTime,
                            Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);

@@ -75,7 +75,7 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         BeanValidator.check(district);
         Integer distId = district.getDistId();
         String distName = district.getDistName();
-        if (distId.equals(ROOT_DIST_ID) && district.getDistParentName() != null) {
+        if (ROOT_DIST_ID == distId && district.getDistParentName() != null) {
             throw new ParameterException("根节点父级区域不能修改");
         }
         if (checkIdAndName(distId, distName)) {

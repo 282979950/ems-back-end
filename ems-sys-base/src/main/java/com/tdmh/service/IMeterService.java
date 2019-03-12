@@ -20,7 +20,7 @@ public interface IMeterService {
      *
      * @return
      */
-    JsonData getAllEntryMeters();
+    JsonData getAllEntryMeters(Integer pageNum, Integer pageSize);
 
     /**
      * 获取所有表具类型
@@ -112,7 +112,8 @@ public interface IMeterService {
      * @param meterProdDate
      * @return
      */
-    JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection, Date meterProdDate);
+    JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection, Date meterProdDate, Integer pageNum,
+                              Integer pageSize);
 
     String getMeterTypeByMeterTypeId(Integer meterTypeId);
 }

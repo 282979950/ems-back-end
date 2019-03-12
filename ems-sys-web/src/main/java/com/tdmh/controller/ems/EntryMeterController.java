@@ -22,7 +22,7 @@ import java.util.List;
  * @author litairan on 2018/8/24.
  */
 @Controller
-@RequestMapping("/entry/")
+@RequestMapping("/entryMeter/")
 public class EntryMeterController {
 
     @Autowired
@@ -34,8 +34,8 @@ public class EntryMeterController {
     @RequiresPermissions("account:entryMeter:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
-    public JsonData listData() {
-        return meterService.getAllEntryMeters();
+    public JsonData listData(Integer pageNum, Integer pageSize) {
+        return meterService.getAllEntryMeters(pageNum, pageSize);
     }
 
     /**
@@ -106,9 +106,9 @@ public class EntryMeterController {
     @RequiresPermissions("account:entryMeter:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData searchEntryMeter(@Param("meterCode") String meterCode, @Param("meterCategory") String meterCategory, @Param("meterType") String
-            meterType, @Param("meterDirection") Boolean meterDirection, @Param("meterProdDate") @DateTimeFormat(pattern="yyyy-MM") Date meterProdDate) {
-        return meterService.searchEntryMeter(meterCode, meterCategory, meterType, meterDirection, meterProdDate);
+    public JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection, @DateTimeFormat(pattern = "yyyy-MM")
+            Date meterProdDate, Integer pageNum, Integer pageSize) {
+        return meterService.searchEntryMeter(meterCode, meterCategory, meterType, meterDirection, meterProdDate, pageNum, pageSize);
     }
 
     @RequestMapping(value = "/getMeterByMeterCode.do")

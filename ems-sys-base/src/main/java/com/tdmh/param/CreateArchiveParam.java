@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -39,7 +40,7 @@ public class CreateArchiveParam extends BaseEntity {
     /**
      * 用户地址
      */
-    @NotNull(message = "用户地址不能为空")
+    @NotBlank(message = "用户地址不能为空")
     @Length(max = 100, message = "用户地址长度不能超过100字")
     private String userAddress;
 

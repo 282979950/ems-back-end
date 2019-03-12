@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.Meter;
@@ -33,12 +35,14 @@ public class MeterServiceImpl implements IMeterService {
     private MeterTypeMapper meterTypeMapper;
 
     @Override
-    public JsonData getAllEntryMeters() {
+    public JsonData getAllEntryMeters(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<EntryMeterParam> meters = meterMapper.getAllEntryMeters();
         if (meters == null || meters.size() == 0) {
             return JsonData.successMsg("未查询到表具信息");
         }
-        return JsonData.success(meters, "查询表具成功");
+        PageInfo<EntryMeterParam> pageInfo = new PageInfo<>(meters);
+        return JsonData.success(pageInfo, "查询表具成功");
     }
 
     @Override
@@ -67,8 +71,6 @@ public class MeterServiceImpl implements IMeterService {
             return JsonData.fail("不存在的表具类型");
         }
         Date date = new Date();
-        param.setMeterEntryDate(date);
-        param.setMeterProdDate(date);
         param.setCreateTime(date);
         param.setUpdateTime(date);
         int resultCount = meterMapper.addEntryMeter(param);
@@ -111,9 +113,12 @@ public class MeterServiceImpl implements IMeterService {
     }
 
     @Override
-    public JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection, Date meterProdDate) {
+    public JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection, Date meterProdDate, Integer pageNum,
+                                     Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<EntryMeterParam> meters = meterMapper.searchEntryMeter(meterCode, meterCategory, meterType, meterDirection, meterProdDate);
-        return meters == null || meters.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(meters, "查询成功");
+        PageInfo<EntryMeterParam> pageInfo = new PageInfo<>(meters);
+        return JsonData.success(pageInfo, "查询成功");
     }
 
     @Override
