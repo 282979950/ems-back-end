@@ -4,7 +4,6 @@ import com.tdmh.common.JsonData;
 import com.tdmh.param.CreateArchiveParam;
 import com.tdmh.service.IUserService;
 import com.tdmh.util.ShiroUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,8 +31,8 @@ public class CreateArchiveController {
     @RequiresPermissions("account:createArchive:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
-    public JsonData getAllArchives() {
-        return userService.getAllArchives();
+    public JsonData getAllArchives(Integer pageNum, Integer pageSize) {
+        return userService.getAllArchives(pageNum, pageSize);
     }
 
     /**
@@ -85,8 +84,8 @@ public class CreateArchiveController {
     @RequiresPermissions("account:createArchive:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData searchArchive(@Param("userId") Integer userId, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress, @Param
-            ("userType") Integer userType, @Param("userGasType") Integer userGasType, @Param("userStatus") Integer userStatus) {
-        return userService.searchArchive(userId, userDistId, userAddress, userType, userGasType, userStatus);
+    public JsonData searchArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType, Integer userStatus,
+                                  Integer pageNum, Integer pageSize) {
+        return userService.searchArchive(userId, userDistId, userAddress, userType, userGasType, userStatus, pageNum, pageSize);
     }
 }

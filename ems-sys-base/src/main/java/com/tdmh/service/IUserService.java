@@ -22,7 +22,7 @@ public interface IUserService {
      *
      * @return
      */
-    JsonData getAllArchives();
+    JsonData getAllArchives(Integer pageNum, Integer pageSize);
 
     /**
      * 新增档案
@@ -59,7 +59,8 @@ public interface IUserService {
      * @param userStatus
      * @return
      */
-    JsonData searchArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType, Integer userStatus);
+    JsonData searchArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType, Integer userStatus, Integer pageNum,
+                           Integer pageSize);
 
     /**
      * @return

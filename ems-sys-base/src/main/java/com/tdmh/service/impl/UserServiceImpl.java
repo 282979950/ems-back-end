@@ -1,6 +1,8 @@
 package com.tdmh.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.*;
@@ -50,9 +52,11 @@ public class UserServiceImpl implements IUserService {
     private SysDistrictMapper sysDistrictMapper;
 
     @Override
-    public JsonData getAllArchives() {
+    public JsonData getAllArchives(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<CreateArchiveParam> archives = userMapper.getAllArchives();
-        return archives == null || archives.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(archives, "查询成功");
+        PageInfo<CreateArchiveParam> pageInfo = new PageInfo<>(archives);
+        return JsonData.success(pageInfo, "查询成功");
     }
 
     @Override
@@ -95,9 +99,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData searchArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType, Integer userStatus) {
+    public JsonData searchArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType, Integer userStatus,
+                                  Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<CreateArchiveParam> archives = userMapper.searchArchive(userId, userDistId, userAddress, userType, userGasType, userStatus);
-        return archives == null || archives.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(archives, "查询成功");
+        PageInfo<CreateArchiveParam> pageInfo = new PageInfo<>(archives);
+        return JsonData.success(pageInfo, "查询成功");
     }
 
     @Override
