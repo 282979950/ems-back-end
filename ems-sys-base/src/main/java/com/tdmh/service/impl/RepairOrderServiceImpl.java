@@ -75,7 +75,7 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
             Meter oldMeter = meterService.getMeterByMeterId(oldMeterId);
             oldMeter.setMeterStopCode(param.getOldMeterStopCode());
             // 判断是否为换表
-            if (param.getRepairType().equals(0)) {
+            if (param.getRepairType().equals(0) || param.getRepairType().equals(6) || param.getRepairType().equals(7)) {
                 oldMeter.setMeterScrapTime(new Date());
                 oldMeter.setMeterStatus(3);
                 oldMeter.setUsable(false);

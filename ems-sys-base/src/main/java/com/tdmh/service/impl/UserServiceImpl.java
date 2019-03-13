@@ -108,9 +108,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData getAllInstallMeters() {
+    public JsonData getAllInstallMeters(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<InstallMeterParam> meters = userMapper.getAllInstallMeters();
-        return meters == null || meters.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(meters, "查询成功");
+        PageInfo<InstallMeterParam> pageInfo = new PageInfo<>(meters);
+        return JsonData.success(pageInfo, "查询成功");
     }
 
     @Override
@@ -204,9 +206,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData searchInstallMeter(Integer userId, Integer userDistId, String userAddress) {
+    public JsonData searchInstallMeter(Integer userId, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<InstallMeterParam> meters = userMapper.searchInstallMeter(userId, userDistId, userAddress);
-        return meters == null || meters.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(meters, "查询成功");
+        PageInfo<InstallMeterParam> pageInfo = new PageInfo<>(meters);
+        return JsonData.success(pageInfo, "查询成功");
     }
 
     @Override

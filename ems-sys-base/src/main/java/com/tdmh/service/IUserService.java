@@ -65,7 +65,7 @@ public interface IUserService {
     /**
      * @return
      */
-    JsonData getAllInstallMeters();
+    JsonData getAllInstallMeters(Integer pageNum, Integer pageSize);
 
     /**
      * 新增挂表
@@ -96,7 +96,7 @@ public interface IUserService {
      *
      * @return
      */
-    JsonData searchInstallMeter(Integer userId, Integer userDistId, String userAddress);
+    JsonData searchInstallMeter(Integer userId, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize);
 
     /**
      * 用户开户

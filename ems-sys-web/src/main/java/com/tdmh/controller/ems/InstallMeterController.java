@@ -5,7 +5,6 @@ import com.tdmh.param.InstallMeterParam;
 import com.tdmh.service.IMeterService;
 import com.tdmh.service.IUserService;
 import com.tdmh.util.ShiroUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,11 +31,11 @@ public class InstallMeterController {
     /**
      * 查询所有挂表信息
      */
-    @RequiresPermissions("account:installation:visit")
+    @RequiresPermissions("account:installMeter:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
-    public JsonData listData() {
-        return userService.getAllInstallMeters();
+    public JsonData listData(Integer pageNum, Integer pageSize) {
+        return userService.getAllInstallMeters(pageNum, pageSize);
     }
 
     /**
@@ -58,7 +57,7 @@ public class InstallMeterController {
      * @param param
      * @return
      */
-    @RequiresPermissions("account:installation:update")
+    @RequiresPermissions("account:installMeter:update")
     @RequestMapping(value = "/edit.do")
     @ResponseBody
     public JsonData editInstallMeter(InstallMeterParam param) {
@@ -86,11 +85,10 @@ public class InstallMeterController {
      *
      * @return
      */
-    @RequiresPermissions("account:installation:retrieve")
+    @RequiresPermissions("account:installMeter:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData searchInstallMeter(@Param("userId") Integer userId, @Param("userDistId") Integer userDistId, @Param("userAddress") String
-            userAddress) {
-        return userService.searchInstallMeter(userId, userDistId, userAddress);
+    public JsonData searchInstallMeter(Integer userId, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize) {
+        return userService.searchInstallMeter(userId, userDistId, userAddress, pageNum, pageSize);
     }
 }
