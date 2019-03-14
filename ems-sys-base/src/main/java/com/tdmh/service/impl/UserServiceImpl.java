@@ -1,6 +1,8 @@
 package com.tdmh.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.*;
@@ -407,11 +409,13 @@ public class UserServiceImpl implements IUserService {
         return userMapper.updateFillStatus(userId, status);
     }
     @Override
-    public JsonData userChangeService(User user){
+    public JsonData userChangeService(User user ,Integer pageNum, Integer pageSize){
+        PageHelper.startPage(pageNum, pageSize);
         //查询已经开户的相关数据
         user.setUserStatus(3);
         List<User>  u =userMapper.userChangeList(user);
-        return   u == null || u.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(u,"查询成功");
+        PageInfo<User> page = new PageInfo<>(u);
+        return   u == null || u.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(page,"查询成功");
     }
 
     @Override

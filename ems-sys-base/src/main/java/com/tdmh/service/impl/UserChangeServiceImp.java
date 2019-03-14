@@ -44,9 +44,9 @@ public class UserChangeServiceImp implements IUserChangeService {
         if(userChange == null){
             return JsonData.fail("未获取录入的相关信息");
         }
-        if(userChange.getUserChangeIdcard().length()<18){
+        if((userChange.getUserChangeIdcard().length()<15) ||(userChange.getUserChangeIdcard().length()>18)){
 
-            return JsonData.fail("录入信息失败，身份证号最少18位");
+            return JsonData.fail("录入信息失败，身份证号15位或18位");
 
         }
         BigDecimal  code = userChange.getTableCode();
@@ -250,6 +250,9 @@ public class UserChangeServiceImp implements IUserChangeService {
             GasPrice gasPrice = gasPriceService.findGasPriceByType(user.getUserType() ,user.getUserGasType());
             //查看当年该用户购买总气量
             BigDecimal hasUsedGasNum = gasPriceService.findHasUsedGasInYear(userId);
+            if(hasUsedGasNum==null){
+                hasUsedGasNum=new BigDecimal("0");
+            }
             //历史可用总量，当年充值总额做对比（同下）大于
             if(amount.compareTo(hasUsedGasNum)==1){
                 //400 ,900,500

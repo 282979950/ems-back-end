@@ -192,7 +192,7 @@ public interface IUserService {
     /**
      * 查询所有已开户相关用户信息
      */
-    JsonData userChangeService(User user);
+    JsonData userChangeService(User user,Integer pageNum, Integer pageSize);
 
     /**
      * 开户账户查询
