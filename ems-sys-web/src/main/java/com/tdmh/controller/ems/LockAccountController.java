@@ -39,8 +39,8 @@ public class LockAccountController {
     @RequiresPermissions("account:lockAccount:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData searchAccountArchives(@Param("userId") Integer userId, @Param("userName") String userName, @Param("iccardId") Integer iccardId) {
-        return userService.searchAllAccountArchive(userId, userName, iccardId);
+    public JsonData searchAccountArchives(@Param("userId") Integer userId, @Param("userName") String userName, @Param("iccardId") Integer iccardId,Integer pageNum, Integer pageSize) {
+        return userService.searchAllAccountArchive(userId, userName, iccardId,pageNum, pageSize);
     }
 
     /**

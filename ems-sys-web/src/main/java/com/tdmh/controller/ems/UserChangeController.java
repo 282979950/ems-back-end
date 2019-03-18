@@ -36,8 +36,8 @@ public class UserChangeController {
     @RequiresPermissions("account:alter:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
-    public JsonData userListController(User user) {
-        return userService.userChangeService(user);
+    public JsonData userListController(User user,Integer pageNum, Integer pageSize) {
+        return userService.userChangeService(user,pageNum,pageSize);
     }
     /**
      * 账户结算，变更账户处理
@@ -58,7 +58,6 @@ public class UserChangeController {
     @RequiresPermissions("account:alter:update")
     @RequestMapping(value = "/userEliminationHead.do")
     @ResponseBody
-    @BeUnLock
     public JsonData userEliminationHead(User user,BigDecimal userMoney,BigDecimal OrderSupplement, int flage){
         Integer Id = ShiroUtils.getPrincipal().getId();
 
@@ -81,7 +80,7 @@ public class UserChangeController {
     @RequiresPermissions("account:alter:visit")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData userSearchController(User user) {
-        return userService.userChangeService(user);
+    public JsonData userSearchController(User user,Integer pageNum, Integer pageSize) {
+        return userService.userChangeService(user,pageNum,pageSize);
     }
 }
