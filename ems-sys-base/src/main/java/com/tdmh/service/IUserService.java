@@ -119,7 +119,7 @@ public interface IUserService {
      *
      * @return
      */
-    JsonData getAllNotAccountArchive();
+    JsonData getAllNotAccountArchive(Integer pageNum, Integer pageSize);
 
     /**
      * 条件查询已开户的信息
@@ -131,14 +131,14 @@ public interface IUserService {
      * @param userGasType
      * @return
      */
-    JsonData searchAllNotAccountArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType);
+    JsonData searchAllNotAccountArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType, Integer pageNum, Integer pageSize);
 
     /**
      * 查询所有可以锁定和解锁的用户信息
      *
      * @return
      */
-    JsonData getAllAccountArchive();
+    JsonData getAllAccountArchive(Integer pageNum, Integer pageSize);
 
     /**
      * 条件查询所有可以锁定和解锁的用户信息

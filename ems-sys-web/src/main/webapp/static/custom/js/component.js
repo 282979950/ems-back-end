@@ -1220,11 +1220,11 @@
      * @param icCardPsw IC卡密码
      * @param gas 充值气量（单位：方）
      * @param fc 维修次数
-     * @param busisn交易流水号
+     * @param busisn 交易流水号
      * @return string S:成功 F:失败
      * @constructor
      */
-    app.WriteUCard = function (icCardId, icCardPsw, gas, fc,busisn) {
+    app.WriteUCard = function (icCardId, icCardPsw, gas, fc, busisn) {
         var ocx = $('.rw-comp')[0];
         var result = ocx.WriteUCard(0, 200, icCardId, icCardPsw, gas * 10, fc,busisn);
         return result === 'S' ? '写卡成功' : ('写卡失败' + ocx.ErrorDesc);

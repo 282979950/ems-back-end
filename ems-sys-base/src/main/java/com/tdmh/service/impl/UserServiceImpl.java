@@ -231,6 +231,7 @@ public class UserServiceImpl implements IUserService {
             param.setUserDeed("");
         }
         param.setUserStatus(3);
+        param.setUsable(true);
         int resultCount = userMapper.createAccount(param);
         if (resultCount == 0) {
             return JsonData.fail("用户开户失败");
@@ -310,20 +311,25 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData getAllNotAccountArchive() {
+    public JsonData getAllNotAccountArchive(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<CreateArchiveParam> archives = userMapper.searchArchive(null,null,null,null,null,2);
-        return archives == null || archives.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(archives, "查询成功");
+        PageInfo<CreateArchiveParam> info = new PageInfo<>(archives);
+        return JsonData.success(info, "查询成功");
 
     }
 
     @Override
-    public JsonData searchAllNotAccountArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType) {
+    public JsonData searchAllNotAccountArchive(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userGasType, Integer pageNum,
+                                               Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<CreateArchiveParam> archives = userMapper.searchArchive(userId, userDistId, userAddress, userType, userGasType,2);
-        return archives == null || archives.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(archives, "查询成功");
+        PageInfo<CreateArchiveParam> info = new PageInfo<>(archives);
+        return JsonData.success(info, "查询成功");
     }
 
     @Override
-    public JsonData getAllAccountArchive() {
+    public JsonData getAllAccountArchive(Integer pageNum, Integer pageSize) {
         List<LockAccountParam> accounts = userMapper.searchAccountArchive(null,null,null,3);
         return accounts == null || accounts.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(accounts, "查询成功");
 

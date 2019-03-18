@@ -41,56 +41,56 @@ public class WeChatController {
     @Autowired
     private IWXNoticeService wxNoticeService;
 
-    @RequestMapping(value = "wxLogin", method = RequestMethod.GET)
+    @RequestMapping(value = "wxLogin")
     @ResponseBody
     public JsonData wxLogin(@Param("code") String code) {
         return wxService.wxLogin(code);
     }
 
-    @RequestMapping(value = "getUsersByWXUserId", method = RequestMethod.GET)
+    @RequestMapping(value = "getUsersByWXUserId")
     @ResponseBody
     public JsonData getUsersByWXUserId(@Param("wxUserId") String wxUserId) {
         return wxService.getUsersByWXUserId(wxUserId);
     }
 
-    @RequestMapping(value = "getUserInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "getUserInfo")
     @ResponseBody
     public JsonData getUserInfo(@Param("userId") Integer userId) {
         return wxService.getUserInfo(userId);
     }
 
-    @RequestMapping(value = "checkUserExists", method = RequestMethod.GET)
+    @RequestMapping(value = "checkUserExists")
     @ResponseBody
     public JsonData checkUserExists(@Param("userId") Integer userId, @Param("userName") String userName) {
         return wxService.checkUserExists(userId, userName);
     }
 
-    @RequestMapping(value = "bindUser", method = RequestMethod.GET)
+    @RequestMapping(value = "bindUser")
     @ResponseBody
     public JsonData bindUser(@Param("wxUserId") String wxUserId, @Param("userId") Integer userId) {
         return wxService.bindUser(wxUserId, userId);
     }
 
-    @RequestMapping(value = "unBindUser", method = RequestMethod.GET)
+    @RequestMapping(value = "unBindUser")
     @ResponseBody
     public JsonData unBindUser(@Param("wxUserId") String wxUserId, @Param("userId") Integer userId) {
         return wxService.unBindUser(wxUserId, userId);
     }
 
-    @RequestMapping(value = "getWXOrders", method = RequestMethod.GET)
+    @RequestMapping(value = "getWXOrders")
     @ResponseBody
     public JsonData getWXOrders(@Param("userId") Integer userId) {
         return wxService.getWXOrders(userId);
     }
 
-    @RequestMapping(value = "recharge", method = RequestMethod.GET)
+    @RequestMapping(value = "recharge")
     @ResponseBody
     public JsonData recharge(@Param("wxUserId") String wxUserId, @Param("userId") Integer userId, @Param("gas") BigDecimal gas, HttpServletRequest request) {
         String ipAddress = HttpRequestUtil.getIpAddress(request);
         return wxService.recharge(wxUserId, userId, gas,ipAddress);
     }
 
-    @RequestMapping(value = "closeOrder", method = RequestMethod.GET)
+    @RequestMapping(value = "closeOrder")
     @ResponseBody
     public JsonData closeOrder(@Param("wxUserId") String wxUserId, @Param("userId") Integer userId, @Param("gas") BigDecimal gas, HttpServletRequest request) {
         String ipAddress = HttpRequestUtil.getIpAddress(request);

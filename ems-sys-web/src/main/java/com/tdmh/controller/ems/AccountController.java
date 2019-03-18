@@ -11,7 +11,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -40,8 +39,8 @@ public class AccountController {
     @RequiresPermissions("account:createAccount:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
-    public JsonData getAllNotAccountArchives() {
-        return userService.getAllNotAccountArchive();
+    public JsonData getAllNotAccountArchives(Integer pageNum, Integer pageSize) {
+        return userService.getAllNotAccountArchive(pageNum, pageSize);
     }
 
     /**
@@ -49,7 +48,7 @@ public class AccountController {
      *
      * @return
      */
-    @RequestMapping(value = "/selectAllMeters", method = RequestMethod.GET)
+    @RequestMapping(value = "/selectAllMeters")
     @ResponseBody
     public JsonData selectAll() {
         return meterService.selectAll();
@@ -79,8 +78,8 @@ public class AccountController {
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData searchArchive(@Param("userId") Integer userId, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress, @Param
-            ("userType") Integer userType, @Param("userGasType") Integer userGasType) {
-        return userService.searchAllNotAccountArchive(userId, userDistId, userAddress, userType, userGasType);
+            ("userType") Integer userType, @Param("userGasType") Integer userGasType, Integer pageNum, Integer pageSize) {
+        return userService.searchAllNotAccountArchive(userId, userDistId, userAddress, userType, userGasType, pageNum, pageSize);
     }
 
    /**

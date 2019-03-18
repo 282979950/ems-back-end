@@ -28,8 +28,8 @@ public class LockAccountController {
     @RequiresPermissions("account:lockAccount:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
-    public JsonData getAllAccountArchives() {
-        return userService.getAllAccountArchive();
+    public JsonData getAllAccountArchives(Integer pageNum, Integer pageSize) {
+        return userService.getAllAccountArchive(pageNum, pageSize);
     }
 
     /**
