@@ -137,7 +137,7 @@ public interface IUserService {
      *
      * @return
      */
-    JsonData getAllAccountArchive();
+    JsonData getAllAccountArchive(Integer pageNum, Integer pageSize);
 
     /**
      * 条件查询所有可以锁定和解锁的用户信息
@@ -147,7 +147,7 @@ public interface IUserService {
      * @param iccardId
      * @return
      */
-    JsonData searchAllAccountArchive(Integer userId, String userName, Integer iccardId);
+    JsonData searchAllAccountArchive(Integer userId, String userName, Integer iccardId, Integer pageNum, Integer pageSize);
 
     /**
      * 锁定/解锁用户
