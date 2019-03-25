@@ -32,9 +32,9 @@ public class PreStrikeController {
     @RequiresPermissions("financial:prestrike:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
-    public JsonData selectUserListController(User user){
+    public JsonData selectUserListController(User user,Integer pageNum, Integer pageSize){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return preStrikeService.selectUserByOrderTypeService( user,currentEmpId);
+        return preStrikeService.selectUserByOrderTypeService( user,currentEmpId,pageNum, pageSize);
     }
 
     /**
@@ -58,9 +58,9 @@ public class PreStrikeController {
     @RequiresPermissions("financial:prestrike:visit")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData searchUserListController(User user){
+    public JsonData searchUserListController(User user,Integer pageNum, Integer pageSize){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return preStrikeService.selectUserByOrderTypeService( user,currentEmpId);
+        return preStrikeService.selectUserByOrderTypeService( user,currentEmpId,pageNum,pageSize);
     }
 
 }

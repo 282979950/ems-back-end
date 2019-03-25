@@ -1,6 +1,8 @@
 package com.tdmh.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.StrikeNucleus;
 import com.tdmh.entity.User;
@@ -35,10 +37,12 @@ public class PreStrikeServiceImp implements IPreStrikeService {
     @Autowired
     private StrikeNucleusMapper strikeNucleus;
 
-    public  JsonData selectUserByOrderTypeService(User user,Integer currentEmpId){
+    public  JsonData selectUserByOrderTypeService(User user,Integer currentEmpId,Integer pageNum, Integer pageSize){
         user.setEmployeeId(currentEmpId);
+        PageHelper.startPage(pageNum, pageSize);
         List<User> u = userMapper.selectUserByOrderType(user);
-        return u.size()==0?JsonData.fail("未查询到相关数据"): JsonData.success(u,"查询成功");
+        PageInfo<User> page = new PageInfo<>(u);
+        return u.size()==0?JsonData.fail("未查询到相关数据"): JsonData.success(page,"查询成功");
     }
 
     /**
@@ -118,9 +122,11 @@ public class PreStrikeServiceImp implements IPreStrikeService {
       * @param strike
      * @return
      */
-public JsonData selectStrikeNucleusListService(StrikeNucleus strike){
+public JsonData selectStrikeNucleusListService(StrikeNucleus strike, Integer pageNum, Integer pageSize){
+    PageHelper.startPage(pageNum, pageSize);
     List<StrikeNucleus> list =strikeNucleus.selectStrikeNucleusList(strike);
-    return list.size()==0?JsonData.fail("未查询到相关数据"):JsonData.success(list,"查询成功");
+    PageInfo<StrikeNucleus> page = new PageInfo<>(list);
+    return list.size()==0?JsonData.fail("未查询到相关数据"):JsonData.success(page,"查询成功");
 }
 /**
  * 处理审批流程
