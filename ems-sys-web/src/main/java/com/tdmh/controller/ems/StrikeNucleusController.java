@@ -30,7 +30,7 @@ public class StrikeNucleusController {
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData selectUserListController(StrikeNucleus strikeNucleus, Integer pageNum, Integer pageSize){
-        return strikeNucleus== null?JsonData.fail("未获取到相关数据，请刷新数据或联系管理员"): preStrikeService.selectStrikeNucleusListService(strikeNucleus, pageNum, pageSize);
+        return  preStrikeService.selectStrikeNucleusListService(strikeNucleus, pageNum, pageSize);
 
     }
     /**
@@ -52,7 +52,7 @@ public class StrikeNucleusController {
     @RequestMapping(value = "search.do")
     @ResponseBody
     public JsonData searchUserListController(StrikeNucleus strikeNucleus, Integer pageNum, Integer pageSize){
-        return strikeNucleus== null?JsonData.fail("未获取到相关数据，请刷新数据或联系管理员"): preStrikeService.selectStrikeNucleusListService(strikeNucleus, pageNum, pageSize);
+        return  preStrikeService.selectStrikeNucleusListService(strikeNucleus, pageNum, pageSize);
 
     }
 
