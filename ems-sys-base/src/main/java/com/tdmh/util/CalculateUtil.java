@@ -41,31 +41,31 @@ public class CalculateUtil {
         BigDecimal totalGas = hasUsedGasNum.add(orderGas);
         if ( (hasUsedGasNum.compareTo(gasPrice.getGasRangeOne()) >= 0 && gasPrice.getGasRangeTwo() == null) || (hasUsedGasNum.compareTo(gasPrice.getGasRangeOne()) >= 0 && hasUsedGasNum.compareTo(gasPrice.getGasRangeTwo()) < 0)){
             if ( (totalGas.compareTo(gasPrice.getGasRangeOne()) >= 0 && gasPrice.getGasRangeTwo() == null) || (totalGas.compareTo(gasPrice.getGasRangeOne()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeTwo()) < 0)){
-                sb.append(orderGas+"(气)*"+gasPrice.getGasPriceOne()+"(元)");
+                sb.append(orderGas+"(方)*"+gasPrice.getGasPriceOne()+"(元/方)");
             } else if ( (totalGas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && gasPrice.getGasRangeThree() == null) || (totalGas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeThree()) < 0) ){
-                sb.append(gasPrice.getGasRangeTwo().subtract(hasUsedGasNum)+"(气)*"+gasPrice.getGasPriceOne()+"(元)+"+totalGas.subtract(gasPrice.getGasRangeTwo())+"(气)*"+gasPrice.getGasPriceTwo()+"(元)");
+                sb.append(gasPrice.getGasRangeTwo().subtract(hasUsedGasNum)+"(方)*"+gasPrice.getGasPriceOne()+"(元/方)+"+totalGas.subtract(gasPrice.getGasRangeTwo())+"(方)*"+gasPrice.getGasPriceTwo()+"(元/方)");
             } else if ( (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && gasPrice.getGasRangeFour() == null) || (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeFour()) < 0) ){
-                sb.append(gasPrice.getGasRangeTwo().subtract(hasUsedGasNum)+"(气)*"+gasPrice.getGasPriceOne()+"(元)+"+gasPrice.getGasRangeThree().subtract(gasPrice.getGasRangeTwo())+"(气)*"+gasPrice.getGasPriceTwo()+"(元)+"+totalGas.subtract(gasPrice.getGasRangeThree())+"(气)*"+gasPrice.getGasPriceThree()+"(元)");
+                sb.append(gasPrice.getGasRangeTwo().subtract(hasUsedGasNum)+"(方)*"+gasPrice.getGasPriceOne()+"(元/方)+"+gasPrice.getGasRangeThree().subtract(gasPrice.getGasRangeTwo())+"(方)*"+gasPrice.getGasPriceTwo()+"(元/方)+"+totalGas.subtract(gasPrice.getGasRangeThree())+"(方)*"+gasPrice.getGasPriceThree()+"(元/方)");
             } else if (totalGas.compareTo(gasPrice.getGasRangeFour()) >= 0) {
-                sb.append(gasPrice.getGasRangeTwo().subtract(hasUsedGasNum)+"(气)*"+gasPrice.getGasPriceOne()+"(元)+"+gasPrice.getGasRangeThree().subtract(gasPrice.getGasRangeTwo())+"(气)*"+gasPrice.getGasPriceTwo()+"(元)+"+gasPrice.getGasRangeFour().subtract(gasPrice.getGasRangeThree())+"(气)*"+gasPrice.getGasPriceThree()+"(元)+"+totalGas.subtract(gasPrice.getGasRangeFour())+"(气)*"+gasPrice.getGasPriceFour()+"(元)");
+                sb.append(gasPrice.getGasRangeTwo().subtract(hasUsedGasNum)+"(方)*"+gasPrice.getGasPriceOne()+"(元/方)+"+gasPrice.getGasRangeThree().subtract(gasPrice.getGasRangeTwo())+"(方)*"+gasPrice.getGasPriceTwo()+"(元/方)+"+gasPrice.getGasRangeFour().subtract(gasPrice.getGasRangeThree())+"(方)*"+gasPrice.getGasPriceThree()+"(元/方)+"+totalGas.subtract(gasPrice.getGasRangeFour())+"(方)*"+gasPrice.getGasPriceFour()+"(元/方)");
             }
         } else if ( (hasUsedGasNum.compareTo(gasPrice.getGasRangeTwo()) >= 0 && gasPrice.getGasRangeThree() == null) || (hasUsedGasNum.compareTo(gasPrice.getGasRangeTwo()) >= 0 && hasUsedGasNum.compareTo(gasPrice.getGasRangeThree()) < 0) ){
            if ( (totalGas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && gasPrice.getGasRangeThree() == null) || (totalGas.compareTo(gasPrice.getGasRangeTwo()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeThree()) < 0) ){
-               sb.append(orderGas+"(气)*"+gasPrice.getGasPriceTwo()+"(元)");
+               sb.append(orderGas+"(方)*"+gasPrice.getGasPriceTwo()+"(元/方)");
            } else if ( (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && gasPrice.getGasRangeFour() == null) || (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeFour()) < 0) ){
-               sb.append(gasPrice.getGasRangeThree().subtract(hasUsedGasNum)+"(气)*"+gasPrice.getGasPriceTwo()+"(元)+"+totalGas.subtract(gasPrice.getGasRangeThree())+"(气)*"+gasPrice.getGasPriceThree()+"(元)");
+               sb.append(gasPrice.getGasRangeThree().subtract(hasUsedGasNum)+"(方)*"+gasPrice.getGasPriceTwo()+"(元/方)+"+totalGas.subtract(gasPrice.getGasRangeThree())+"(方)*"+gasPrice.getGasPriceThree()+"(元/方)");
            } else if (totalGas.compareTo(gasPrice.getGasRangeFour()) >= 0) {
-               sb.append(gasPrice.getGasRangeThree().subtract(hasUsedGasNum)+"(气)*"+gasPrice.getGasPriceTwo()+"(元)+"+gasPrice.getGasRangeFour().subtract(gasPrice.getGasRangeThree())+"(气)*"+gasPrice.getGasPriceThree()+"(元)+"+totalGas.subtract(gasPrice.getGasRangeFour())+"(气)*"+gasPrice.getGasPriceFour()+"(元)");
+               sb.append(gasPrice.getGasRangeThree().subtract(hasUsedGasNum)+"(方)*"+gasPrice.getGasPriceTwo()+"(元/方)+"+gasPrice.getGasRangeFour().subtract(gasPrice.getGasRangeThree())+"(方)*"+gasPrice.getGasPriceThree()+"(元/方)+"+totalGas.subtract(gasPrice.getGasRangeFour())+"(方)*"+gasPrice.getGasPriceFour()+"(元/方)");
            }
         } else if ( (hasUsedGasNum.compareTo(gasPrice.getGasRangeThree()) >= 0 && gasPrice.getGasRangeFour() == null) || (hasUsedGasNum.compareTo(gasPrice.getGasRangeThree()) >= 0 && hasUsedGasNum.compareTo(gasPrice.getGasRangeFour()) < 0) ){
            if ( (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && gasPrice.getGasRangeFour() == null) || (totalGas.compareTo(gasPrice.getGasRangeThree()) >= 0 && totalGas.compareTo(gasPrice.getGasRangeFour()) < 0) ){
-               sb.append(orderGas+"(气)*"+gasPrice.getGasPriceThree()+"(元)");
+               sb.append(orderGas+"(方)*"+gasPrice.getGasPriceThree()+"(元/方)");
             } else if (totalGas.compareTo(gasPrice.getGasRangeFour()) >= 0) {
-               sb.append(gasPrice.getGasRangeFour().subtract(hasUsedGasNum)+"(气)*"+gasPrice.getGasPriceThree()+"(元)+"+totalGas.subtract(gasPrice.getGasRangeFour())+"(气)*"+gasPrice.getGasPriceFour()+"(元)");
+               sb.append(gasPrice.getGasRangeFour().subtract(hasUsedGasNum)+"(方)*"+gasPrice.getGasPriceThree()+"(元/方)+"+totalGas.subtract(gasPrice.getGasRangeFour())+"(方)*"+gasPrice.getGasPriceFour()+"(元/方)");
             }
         } else if (hasUsedGasNum.compareTo(gasPrice.getGasRangeFour()) >= 0) {
             if (totalGas.compareTo(gasPrice.getGasRangeFour()) >= 0) {
-                sb.append(orderGas+"(气)*"+gasPrice.getGasPriceFour()+"(元)");
+                sb.append(orderGas+"(方)*"+gasPrice.getGasPriceFour()+"(元/方)");
             }
         }
         return sb.toString();

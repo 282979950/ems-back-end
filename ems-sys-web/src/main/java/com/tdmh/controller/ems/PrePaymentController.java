@@ -55,8 +55,8 @@ public class PrePaymentController {
     @RequiresPermissions("recharge:pre:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData selectFindListByPre(PrePaymentParam param){
-        return prePaymentService.selectFindListByPre(param);
+    public JsonData selectFindListByPre(PrePaymentParam param, Integer pageNum, Integer pageSize){
+        return prePaymentService.selectFindListByPre(param, pageNum, pageSize);
     }
 
 

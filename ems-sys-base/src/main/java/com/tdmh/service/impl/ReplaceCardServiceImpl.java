@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserCard;
@@ -39,15 +41,19 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
     private UserOrdersMapper userOrdersMapper;
 
     @Override
-    public JsonData getAllReplaceCardInformation() {
-        List<PrePaymentParam> list = replaceCardMapper.getAllreplaceCard(null);
-        return list == null || list.size() == 0 ? JsonData.successMsg("暂无可补卡用户") : JsonData.successData(list);
+    public JsonData getAllReplaceCardInformation(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<PrePaymentParam> list = replaceCardMapper.getAllReplaceCard(null);
+        PageInfo<PrePaymentParam> info = new PageInfo<>(list);
+        return JsonData.successData(info);
     }
 
     @Override
-    public JsonData selectFindListByPre(PrePaymentParam param) {
-        List<PrePaymentParam> list = replaceCardMapper.getAllreplaceCard(param);
-        return list == null || list.size() == 0 ? JsonData.successMsg("暂无可补卡用户") : JsonData.success(list,"查询成功");
+    public JsonData selectFindListByPre(PrePaymentParam param, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<PrePaymentParam> list = replaceCardMapper.getAllReplaceCard(param);
+        PageInfo<PrePaymentParam> info = new PageInfo<>(list);
+        return JsonData.successData(info);
     }
 
     @Transactional

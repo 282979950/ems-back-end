@@ -15,7 +15,7 @@ public interface IPrePaymentService {
 
     JsonData createUserOrder(UserOrders userOrders);
 
-    JsonData selectFindListByPre(PrePaymentParam param);
+    JsonData selectFindListByPre(PrePaymentParam param, Integer pageNum, Integer pageSize);
 
     JsonData verifyCard(PrePaymentParam param);
     JsonData selectFindListArdQueryService(PrePaymentParam param);

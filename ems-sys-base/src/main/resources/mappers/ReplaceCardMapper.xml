@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tdmh.entity.mapper.ReplaceCardMapper">
-    <select id="getAllreplaceCard" parameterType="com.tdmh.param.PrePaymentParam"
+    <select id="getAllReplaceCard" parameterType="com.tdmh.param.PrePaymentParam"
             resultType="com.tdmh.param.PrePaymentParam">
         SELECT u.user_id as userId,uc.card_id as iccardId ,uc.card_identifier as iccardIdentifier, u.user_name as
         userName,u.user_phone as userPhone,
@@ -16,14 +16,20 @@
         LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
         WHERE u.user_id = uc.user_id AND sd1.dict_category='user_type' AND sd2.dict_category='user_gas_type'
         AND u.usable=1 AND uc.usable=1
+        <if test="param != null and param.userId != null and param.userId != ''">
+            and uc.user_id like CONCAT('%', #{param.userId},'%')
+        </if>
         <if test="param != null and param.userName != null and param.userName != ''">
             and u.user_name like CONCAT('%', #{param.userName}, '%')
         </if>
-        <if test="param != null and param.iccardId != null and param.iccardId != ''">
-            and uc.card_id like CONCAT('%', #{param.iccardId},'%')
-        </if>
         <if test="param != null and param.iccardIdentifier!=null and param.iccardIdentifier!=''">
             and uc.card_identifier like CONCAT('%', #{param.iccardIdentifier},'%')
+        </if>
+        <if test="param != null and param.userAddress != null and param.userAddress != ''">
+            and u.user_address like CONCAT('%', #{param.userAddress},'%')
+        </if>
+        <if test="param != null and param.userPhone != null and param.userPhone != ''">
+            and u.user_phone like CONCAT('%', #{param.userPhone},'%')
         </if>
     </select>
 

@@ -24,19 +24,19 @@ public class ReplaceCardController {
     private IReplaceCardService replaceCardService;
 
 
-    @RequiresPermissions("recharge:supplement:visit")
+    @RequiresPermissions("recharge:replaceCard:visit")
     @RequestMapping("listData.do")
     @ResponseBody
-    public JsonData getReplaceCardList() {
-        return replaceCardService.getAllReplaceCardInformation();
+    public JsonData getReplaceCardList(Integer pageNum, Integer pageSize) {
+        return replaceCardService.getAllReplaceCardInformation(pageNum, pageSize);
     }
 
     //依据条件查询对应数据
-    @RequiresPermissions("recharge:supplement:retrieve")
+    @RequiresPermissions("recharge:replaceCard:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData selectFindListByPre(PrePaymentParam param){
-        return replaceCardService.selectFindListByPre(param);
+    public JsonData selectFindListByPre(PrePaymentParam param, Integer pageNum, Integer pageSize){
+        return replaceCardService.selectFindListByPre(param, pageNum, pageSize);
     }
 
 
@@ -44,7 +44,7 @@ public class ReplaceCardController {
      *补卡
      *
      */
-    @RequiresPermissions("recharge:supplement:update")
+    @RequiresPermissions("recharge:replaceCard:update")
     @RequestMapping(value = "edit.do")
     @ResponseBody
     @BeUnLock
@@ -63,8 +63,8 @@ public class ReplaceCardController {
      * @param userId
      * @return
      */
-    @RequiresPermissions("recharge:supplement:supList")
-    @RequestMapping(value = "/List.do")
+    @RequiresPermissions("recharge:replaceCard:history")
+    @RequestMapping(value = "/history.do")
     @ResponseBody
     public JsonData searchSupList(@Param("userId") Integer userId) {
         return replaceCardService.searchSupList(userId);

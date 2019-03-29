@@ -1,6 +1,8 @@
 package com.tdmh.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserCard;
@@ -77,9 +79,11 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     }
 
     @Override
-    public JsonData selectFindListByPre(PrePaymentParam param) {
+    public JsonData selectFindListByPre(PrePaymentParam param, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<PrePaymentParam> list = prePaymentMapper.getAllOrderInformation(param);
-        return list == null || list.size() == 0 ? JsonData.successMsg("暂无可充值用户") : JsonData.success(list,"查询成功");
+        PageInfo<PrePaymentParam> info = new PageInfo<>(list);
+        return JsonData.success(info,"查询成功");
     }
 
     /**

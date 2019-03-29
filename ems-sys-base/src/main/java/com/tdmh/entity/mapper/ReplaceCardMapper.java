@@ -13,5 +13,5 @@ import java.util.List;
 
 @Mapper @Component
 public interface ReplaceCardMapper {
-    List<PrePaymentParam> getAllreplaceCard(@Param("param") PrePaymentParam param);
+    List<PrePaymentParam> getAllReplaceCard(@Param("param") PrePaymentParam param);
 }

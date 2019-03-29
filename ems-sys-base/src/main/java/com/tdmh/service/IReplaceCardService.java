@@ -13,9 +13,9 @@ public interface IReplaceCardService {
      * 查询所有可换卡的信息
      * @return
      */
-    JsonData getAllReplaceCardInformation();
+    JsonData getAllReplaceCardInformation(Integer pageNum, Integer pageSize);
 
-    JsonData selectFindListByPre(PrePaymentParam param);
+    JsonData selectFindListByPre(PrePaymentParam param, Integer pageNum, Integer pageSize);
 
     /**
      * 换卡操作
