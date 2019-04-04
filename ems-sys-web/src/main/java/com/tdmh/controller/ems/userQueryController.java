@@ -3,7 +3,6 @@ package com.tdmh.controller.ems;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.User;
 import com.tdmh.service.*;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,8 +33,8 @@ public class userQueryController {
     @RequiresPermissions("querystats:accountdetail:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
-    public JsonData userQueryList(){
-        return userService.userQueryListService();
+    public JsonData userQueryList(Integer pageNum, Integer pageSize){
+        return userService.userQueryListService(pageNum, pageSize);
     }
     /**
      * 查询产生变更记录表List
@@ -44,8 +43,8 @@ public class userQueryController {
     @RequiresPermissions("querystats:accountdetail:visit")
     @RequestMapping(value = "/historyQuery.do")
     @ResponseBody
-    public JsonData selectHistoryController(@Param("userId") Integer userId){
-        return userId==null? JsonData.fail("未获取到相关记录"):userChangeService.selectUserChangeListService(userId);
+    public JsonData selectHistoryController(Integer userId, Integer pageNum, Integer pageSize){
+        return userChangeService.selectUserChangeListService(userId, pageNum, pageSize);
     }
     /**
      * 查询充值记录表
@@ -54,8 +53,8 @@ public class userQueryController {
     @RequiresPermissions("querystats:accountdetail:visit")
     @RequestMapping(value = "/historyQueryOrders.do")
     @ResponseBody
-    public JsonData selectHistoryOrdersController(@Param("userId") Integer userId){
-        return orderService.selectHistoryOrdersService(userId);
+    public JsonData selectHistoryOrdersController(Integer userId, Integer pageNum, Integer pageSize){
+        return orderService.selectHistoryOrdersService(userId, pageNum, pageSize);
     }
     /**
      * 查询补气记录表
@@ -64,8 +63,8 @@ public class userQueryController {
     @RequiresPermissions("querystats:accountdetail:visit")
     @RequestMapping(value = "/historyFillGasOrder.do")
     @ResponseBody
-    public JsonData selectHistoryHistoryFillGasOrderController(@Param("userId") Integer userId){
-        return fillGasService.selectHistoryFillGasOrderService(userId);
+    public JsonData selectHistoryHistoryFillGasOrderController(Integer userId, Integer pageNum, Integer pageSize){
+        return fillGasService.selectHistoryFillGasOrderService(userId, pageNum, pageSize);
     }
     /**
      * 条件查询
@@ -73,8 +72,8 @@ public class userQueryController {
     @RequiresPermissions("querystats:accountdetail:visit")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData userQuerySearchListController(User user){
-        return userService.userQuerySearchService(user);
+    public JsonData userQuerySearchListController(User user, Integer pageNum, Integer pageSize){
+        return userService.userQuerySearchService(user, pageNum, pageSize);
     }
     /**
      * 用户卡相关记录
@@ -83,8 +82,8 @@ public class userQueryController {
     @RequiresPermissions("querystats:accountdetail:visit")
     @RequestMapping(value = "/historyUserCard.do")
     @ResponseBody
-    public JsonData selectHistoryUserCardQueryController(@Param("userId") Integer userId){
-        return userService.selectHistoryUserCardQueryService(userId);
+    public JsonData selectHistoryUserCardQueryController(Integer userId, Integer pageNum, Integer pageSize ){
+        return userService.selectHistoryUserCardQueryService(userId, pageNum, pageSize);
     }
     /**
      * 查询维修记录
@@ -93,7 +92,7 @@ public class userQueryController {
     @RequiresPermissions("querystats:accountdetail:visit")
     @RequestMapping(value = "/historyRepairOrder.do")
     @ResponseBody
-    public JsonData selectHistoryRepairOrderController(@Param("userId") Integer userId){
+    public JsonData selectHistoryRepairOrderController(Integer userId, Integer pageNum, Integer pageSize){
         return repairOrderService.selectHistoryRepairOrderQueryService(userId);
     }
 
@@ -104,8 +103,6 @@ public class userQueryController {
     @RequestMapping("/export.do")
     @ResponseBody
     public void exportUserQueryList(User user){
-
-        ;userService.exportUserQuerySearchService(user);
-
+        userService.exportUserQuerySearchService(user);
     }
 }

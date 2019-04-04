@@ -7,7 +7,6 @@ import com.tdmh.entity.UserChange;
 import com.tdmh.service.IUserChangeService;
 import com.tdmh.service.IUserService;
 import com.tdmh.util.ShiroUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,8 +69,8 @@ public class UserChangeController {
     @RequiresPermissions("account:alter:visit")
     @RequestMapping(value = "/userChangeList.do")
     @ResponseBody
-    public JsonData selectUserChangeListController(@Param("userId") Integer userId){
-        return userId==null? JsonData.fail("未获取到相关记录"):userChangeService.selectUserChangeListService(userId);
+    public JsonData selectUserChangeListController(Integer userId, Integer pageNum, Integer pageSize){
+        return userChangeService.selectUserChangeListService(userId, pageNum, pageSize);
     }
     /**
      * 显示已开户的用户相关信息（筛选查询）

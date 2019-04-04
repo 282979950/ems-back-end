@@ -199,27 +199,28 @@ public interface IUserService {
      * 开户账户查询
      * @return
      */
-    JsonData searchAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress);
+    JsonData searchAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize);
 
     /**
      * 查询异常用户
      * @return
      */
-    JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress);
+    JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress,
+                                    Integer pageNum, Integer pageSize);
 
     void exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress);
     /**
      * 查询统计（用户信息查询）
      */
-    JsonData userQueryListService();
+    JsonData userQueryListService(Integer pageNum, Integer pageSize);
     /**
      * 查询统计（筛选查询）
      */
-    JsonData userQuerySearchService(User user);
+    JsonData userQuerySearchService(User user, Integer pageNum, Integer pageSize);
     /**
      * 查询统计（用户卡相关查询）
      */
-    JsonData selectHistoryUserCardQueryService(Integer userId);
+    JsonData selectHistoryUserCardQueryService(Integer userId, Integer pageNum, Integer pageSize);
 
     int updateServiceTimesByUserId(Integer userId);
 

@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.entity.mapper.OrderMapper;
@@ -86,12 +88,11 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public JsonData selectHistoryOrdersService(Integer userId) {
-        if(userId.intValue()==0){
-            return JsonData.fail("未获取到此操作相关信息,请刷新重试或联系管理员");
-        }
+    public JsonData selectHistoryOrdersService(Integer userId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<UserOrders> list= userOrdersMapper.selectordersListQuery(userId);
-        return list==null?JsonData.fail("未查询到相关数据"):JsonData.success(list,"查询成功!");
+        PageInfo<UserOrders> info = new PageInfo<>(list);
+        return JsonData.success(info,"查询成功!");
     }
 
     /**

@@ -33,7 +33,7 @@ public interface IFillGasService {
     void setFillGasOrderProps(FillGasOrderParam param, BigDecimal needFillGas);
 
     void setOveruseOrderProps(FillGasOrderParam param, BigDecimal needFillGas, BigDecimal needFillMoney);
-    JsonData selectHistoryFillGasOrderService(Integer userId);
+    JsonData selectHistoryFillGasOrderService(Integer userId, Integer pageNum, Integer pageSize);
 
     boolean hasFillGasOrderResolved(Integer userId, String repairOrderId);
 

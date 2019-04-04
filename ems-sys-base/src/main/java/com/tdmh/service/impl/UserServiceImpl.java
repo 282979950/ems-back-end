@@ -438,18 +438,22 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData searchAccountQueryList(String startDate,String endDate, Integer userDistId, String userAddress) {
+    public JsonData searchAccountQueryList(String startDate,String endDate, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
         List<AccountQueryParam> list = userMapper.searchAccountQueryList(DateUtils.parseDate(startDate),DateUtils.parseDate(endDate),distIds,userAddress);
-        return  list == null || list.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(list,"查询成功");
+        PageInfo<AccountQueryParam> info = new PageInfo<>(list);
+        return  JsonData.success(info,"查询成功");
     }
 
     @Override
-    public JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {
+    public JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress,
+                                           Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
         List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
-        return list == null || list.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(list,"查询成功");
-
+        PageInfo<AbnormalUser> info = new PageInfo<>(list);
+        return JsonData.success(info,"查询成功");
     }
 
     @Override
@@ -465,27 +469,27 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData userQueryListService() {
+    public JsonData userQueryListService(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<User> list =userMapper.userListByUserQuery();
-        return list==null?JsonData.fail("未查询到相关数据"):JsonData.successData(list);
+        PageInfo<User> info = new PageInfo<>(list);
+        return JsonData.successData(info);
     }
 
     @Override
-    public JsonData userQuerySearchService(User user) {
-       List<User> list = userMapper.userQuerySearch(user);
-        return list.size()==0?JsonData.fail("未查询到相关数据，请刷新重试"):JsonData.success(list,"查询成功");
+    public JsonData userQuerySearchService(User user, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> list = userMapper.userQuerySearch(user);
+        PageInfo<User> info = new PageInfo<>(list);
+        return JsonData.success(info, "查询成功");
     }
 
     @Override
-    public JsonData selectHistoryUserCardQueryService(Integer userId) {
-
-        if(userId.intValue()==0){
-
-          return JsonData.fail("未获取到数据，请刷新或联系管理员");
-        }
-
+    public JsonData selectHistoryUserCardQueryService(Integer userId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<UserCard> list = userCardMapper.selectUserCardQuery(userId);
-        return list.size()==0?JsonData.fail("未查询到相关数据，请重新选择或联系管理员"):JsonData.success(list,"查询成功");
+        PageInfo<UserCard> info = new PageInfo<>(list);
+        return JsonData.success(info,"查询成功");
     }
 
     @Override

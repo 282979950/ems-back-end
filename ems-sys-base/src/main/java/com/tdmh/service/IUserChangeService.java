@@ -24,5 +24,5 @@ public interface IUserChangeService {
     /**
      *查询产生变更记录表
      */
-    JsonData selectUserChangeListService(Integer user);
+    JsonData selectUserChangeListService(Integer user, Integer pageNum, Integer pageSize);
 }

@@ -2,7 +2,6 @@ package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.service.IUserService;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,14 +35,15 @@ public class AbnormalUserController {
     @RequiresPermissions("querystats:abnormaluser:retrieve")
     @RequestMapping("/search.do")
     @ResponseBody
-    public JsonData searchAbnormalUserList(@Param("notBuyDayCount") Integer notBuyDayCount, @Param("monthAveGas") BigDecimal monthAveGas, @Param("monthAvePayment") BigDecimal monthAvePayment, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress){
-        return userService.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress);
+    public JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress,
+                                           Integer pageNum, Integer pageSize) {
+        return userService.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress, pageNum, pageSize);
     }
 
     @RequiresPermissions("querystats:abnormaluser:export")
     @RequestMapping("/export.do")
     @ResponseBody
-    public void exportAbnormalUserList(@Param("notBuyDayCount") Integer notBuyDayCount, @Param("monthAveGas") BigDecimal monthAveGas, @Param("monthAvePayment") BigDecimal monthAvePayment, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress){
+    public void exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {
         userService.exportAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress);
     }
 }
