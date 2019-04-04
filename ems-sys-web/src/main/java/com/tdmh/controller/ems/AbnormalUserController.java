@@ -24,7 +24,7 @@ public class AbnormalUserController {
      * 查询所有订单
      * @return
      */
-    @RequiresPermissions("querystats:abnormaluser:visit")
+    @RequiresPermissions("queryStats:exceptionQuery:visit")
     @RequestMapping("/listData.do")
     @ResponseBody
     public JsonData getAllAbnormalUserList(){
@@ -32,7 +32,7 @@ public class AbnormalUserController {
     }
 
 
-    @RequiresPermissions("querystats:abnormaluser:retrieve")
+    @RequiresPermissions("queryStats:exceptionQuery:retrieve")
     @RequestMapping("/search.do")
     @ResponseBody
     public JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress,
@@ -40,7 +40,7 @@ public class AbnormalUserController {
         return userService.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress, pageNum, pageSize);
     }
 
-    @RequiresPermissions("querystats:abnormaluser:export")
+    @RequiresPermissions("queryStats:exceptionQuery:export")
     @RequestMapping("/export.do")
     @ResponseBody
     public void exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {

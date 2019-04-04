@@ -22,7 +22,7 @@ public class AccountQueryController {
      * 查询所有订单
      * @return
      */
-    @RequiresPermissions("querystats:account:visit")
+    @RequiresPermissions("queryStats:account:visit")
     @RequestMapping("/listData.do")
     @ResponseBody
     public JsonData getAllAccountQueryList(){
@@ -30,14 +30,14 @@ public class AccountQueryController {
     }
 
 
-    @RequiresPermissions("querystats:account:retrieve")
+    @RequiresPermissions("queryStats:accountQuery:retrieve")
     @RequestMapping("/search.do")
     @ResponseBody
     public JsonData searchAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize) {
         return userService.searchAccountQueryList(startDate, endDate, userDistId, userAddress, pageNum, pageSize);
     }
 
-    @RequiresPermissions("querystats:account:export")
+    @RequiresPermissions("queryStats:accountQuery:export")
     @RequestMapping("/export.do")
     @ResponseBody
     public void exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress) {

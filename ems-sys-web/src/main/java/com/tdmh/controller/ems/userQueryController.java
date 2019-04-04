@@ -30,7 +30,7 @@ public class userQueryController {
     /**
      * 查询
      */
-    @RequiresPermissions("querystats:accountdetail:visit")
+    @RequiresPermissions("queryStats:userQuery:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData userQueryList(Integer pageNum, Integer pageSize){
@@ -40,7 +40,7 @@ public class userQueryController {
      * 查询产生变更记录表List
      * @return
      */
-    @RequiresPermissions("querystats:accountdetail:visit")
+    @RequiresPermissions("queryStats:userQuery:historyQuery")
     @RequestMapping(value = "/historyQuery.do")
     @ResponseBody
     public JsonData selectHistoryController(Integer userId, Integer pageNum, Integer pageSize){
@@ -50,8 +50,8 @@ public class userQueryController {
      * 查询充值记录表
      * @return
      */
-    @RequiresPermissions("querystats:accountdetail:visit")
-    @RequestMapping(value = "/historyQueryOrders.do")
+    @RequiresPermissions("queryStats:userQuery:historyOrderQuery")
+    @RequestMapping(value = "/historyOrderQuery.do")
     @ResponseBody
     public JsonData selectHistoryOrdersController(Integer userId, Integer pageNum, Integer pageSize){
         return orderService.selectHistoryOrdersService(userId, pageNum, pageSize);
@@ -60,7 +60,7 @@ public class userQueryController {
      * 查询补气记录表
      * @return
      */
-    @RequiresPermissions("querystats:accountdetail:visit")
+    @RequiresPermissions("queryStats:userQuery:historyFillGasOrder")
     @RequestMapping(value = "/historyFillGasOrder.do")
     @ResponseBody
     public JsonData selectHistoryHistoryFillGasOrderController(Integer userId, Integer pageNum, Integer pageSize){
@@ -69,7 +69,7 @@ public class userQueryController {
     /**
      * 条件查询
      */
-    @RequiresPermissions("querystats:accountdetail:visit")
+    @RequiresPermissions("queryStats:userQuery:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData userQuerySearchListController(User user, Integer pageNum, Integer pageSize){
@@ -79,7 +79,7 @@ public class userQueryController {
      * 用户卡相关记录
      * @return
      */
-    @RequiresPermissions("querystats:accountdetail:visit")
+    @RequiresPermissions("queryStats:userQuery:historyUserCard")
     @RequestMapping(value = "/historyUserCard.do")
     @ResponseBody
     public JsonData selectHistoryUserCardQueryController(Integer userId, Integer pageNum, Integer pageSize ){
@@ -89,7 +89,7 @@ public class userQueryController {
      * 查询维修记录
      * @return
      */
-    @RequiresPermissions("querystats:accountdetail:visit")
+    @RequiresPermissions("queryStats:userQuery:historyRepairOrder")
     @RequestMapping(value = "/historyRepairOrder.do")
     @ResponseBody
     public JsonData selectHistoryRepairOrderController(Integer userId, Integer pageNum, Integer pageSize){
@@ -99,7 +99,7 @@ public class userQueryController {
     /**
      * 用户卡相关记录导出
      */
-    @RequiresPermissions("querystats:accountdetail:visit")
+    @RequiresPermissions("queryStats:userQuery:export")
     @RequestMapping("/export.do")
     @ResponseBody
     public void exportUserQueryList(User user){
