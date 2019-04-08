@@ -40,7 +40,7 @@ public class AccountQueryController {
     @RequiresPermissions("queryStats:accountQuery:export")
     @RequestMapping("/export.do")
     @ResponseBody
-    public void exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress) {
-        userService.exportAccountQueryList(startDate, endDate, userDistId, userAddress);
+    public JsonData exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress) {
+        return userService.exportAccountQueryList(startDate, endDate, userDistId, userAddress);
     }
 }

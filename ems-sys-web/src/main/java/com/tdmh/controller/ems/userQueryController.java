@@ -102,7 +102,7 @@ public class userQueryController {
     @RequiresPermissions("queryStats:userQuery:export")
     @RequestMapping("/export.do")
     @ResponseBody
-    public void exportUserQueryList(User user){
-        userService.exportUserQuerySearchService(user);
+    public JsonData exportUserQueryList(User user){
+        return userService.exportUserQuerySearchService(user);
     }
 }

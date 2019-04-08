@@ -14,7 +14,6 @@ import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RandomUtils;
 import com.tdmh.utils.StringUtils;
-import com.tdmh.utils.excel.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -457,15 +456,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress) {
+    public JsonData exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress) {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
         List<AccountQueryParam> list = userMapper.searchAccountQueryList(DateUtils.parseDate(startDate),DateUtils.parseDate(endDate),distIds,userAddress);
-        String fileName = "开户信息-"+DateUtils.getDate()+".xlsx";
-        try {
-            new ExportExcel("开户信息", AccountQueryParam.class).setDataList(list).write(fileName).dispose();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        return list.size() == 0 ? JsonData.fail("未查询到相关数据") : JsonData.successData(list);
+//        String fileName = "开户信息-"+DateUtils.getDate()+".xlsx";
+//        try {
+//            new ExportExcel("开户信息", AccountQueryParam.class).setDataList(list).write(fileName).dispose();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -501,27 +501,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void exportUserQuerySearchService(User user) {
-
+    public JsonData exportUserQuerySearchService(User user) {
         List<User> list = userMapper.userQuerySearch(user);
-        String fileName = "用户数据信息-"+DateUtils.getDate()+".xlsx";
-        try {
-            new ExportExcel("用户数据信息", UserExport.class).setDataList(list).write(fileName).dispose();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        return list.size() == 0 ? JsonData.fail("未查询到相关数据") : JsonData.successData(list);
     }
 
     @Override
-    public void exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {
+    public JsonData exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
         List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
-        String fileName = "异常用户信息-"+DateUtils.getDate()+".xlsx";
-        try {
-            new ExportExcel("异常用户信息", AbnormalUser.class).setDataList(list).write(fileName).dispose();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        return list.size() == 0 ? JsonData.fail("未查询到相关数据") : JsonData.successData(list);
     }
 
     @Override

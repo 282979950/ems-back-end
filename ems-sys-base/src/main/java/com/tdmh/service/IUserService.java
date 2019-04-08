@@ -208,7 +208,7 @@ public interface IUserService {
     JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress,
                                     Integer pageNum, Integer pageSize);
 
-    void exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress);
+    JsonData exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress);
     /**
      * 查询统计（用户信息查询）
      */
@@ -226,9 +226,9 @@ public interface IUserService {
 
     JsonData getBindNewCardParamByUserId(Integer userId);
 
-    void exportUserQuerySearchService(User user);
+    JsonData exportUserQuerySearchService(User user);
 
-    void exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress);
+    JsonData exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress);
 
     Integer getUserLockStatusById(Integer userId);
 }

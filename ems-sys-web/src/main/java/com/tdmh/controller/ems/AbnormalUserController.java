@@ -43,7 +43,7 @@ public class AbnormalUserController {
     @RequiresPermissions("queryStats:exceptionQuery:export")
     @RequestMapping("/export.do")
     @ResponseBody
-    public void exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {
-        userService.exportAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress);
+    public JsonData exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {
+        return userService.exportAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress);
     }
 }
