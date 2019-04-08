@@ -69,8 +69,8 @@ public class UserChangeController {
     @RequiresPermissions("account:alter:visit")
     @RequestMapping(value = "/userChangeList.do")
     @ResponseBody
-    public JsonData selectUserChangeListController(Integer userId, Integer pageNum, Integer pageSize){
-        return userChangeService.selectUserChangeListService(userId, pageNum, pageSize);
+    public JsonData selectUserChangeListController(Integer userId){
+        return userChangeService.selectUserChangeListService(userId);
     }
     /**
      * 显示已开户的用户相关信息（筛选查询）

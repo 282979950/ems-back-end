@@ -220,7 +220,7 @@ public interface IUserService {
     /**
      * 查询统计（用户卡相关查询）
      */
-    JsonData selectHistoryUserCardQueryService(Integer userId, Integer pageNum, Integer pageSize);
+    JsonData selectHistoryUserCardQueryService(Integer userId);
 
     int updateServiceTimesByUserId(Integer userId);
 

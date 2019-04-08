@@ -485,11 +485,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData selectHistoryUserCardQueryService(Integer userId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+    public JsonData selectHistoryUserCardQueryService(Integer userId) {
         List<UserCard> list = userCardMapper.selectUserCardQuery(userId);
-        PageInfo<UserCard> info = new PageInfo<>(list);
-        return JsonData.success(info,"查询成功");
+        return list.size()==0?JsonData.fail("未查询到相关数据，请重新选择或联系管理员"):JsonData.success(list,"查询成功");
     }
 
     @Override

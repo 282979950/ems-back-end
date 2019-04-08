@@ -43,8 +43,8 @@ public class userQueryController {
     @RequiresPermissions("queryStats:userQuery:historyQuery")
     @RequestMapping(value = "/historyQuery.do")
     @ResponseBody
-    public JsonData selectHistoryController(Integer userId, Integer pageNum, Integer pageSize){
-        return userChangeService.selectUserChangeListService(userId, pageNum, pageSize);
+    public JsonData selectHistoryController(Integer userId){
+        return userChangeService.selectUserChangeListService(userId);
     }
     /**
      * 查询充值记录表
@@ -53,8 +53,8 @@ public class userQueryController {
     @RequiresPermissions("queryStats:userQuery:historyOrderQuery")
     @RequestMapping(value = "/historyOrderQuery.do")
     @ResponseBody
-    public JsonData selectHistoryOrdersController(Integer userId, Integer pageNum, Integer pageSize){
-        return orderService.selectHistoryOrdersService(userId, pageNum, pageSize);
+    public JsonData selectHistoryOrdersController(Integer userId){
+        return orderService.selectHistoryOrdersService(userId);
     }
     /**
      * 查询补气记录表
@@ -63,8 +63,8 @@ public class userQueryController {
     @RequiresPermissions("queryStats:userQuery:historyFillGasOrder")
     @RequestMapping(value = "/historyFillGasOrder.do")
     @ResponseBody
-    public JsonData selectHistoryHistoryFillGasOrderController(Integer userId, Integer pageNum, Integer pageSize){
-        return fillGasService.selectHistoryFillGasOrderService(userId, pageNum, pageSize);
+    public JsonData selectHistoryHistoryFillGasOrderController(Integer userId){
+        return fillGasService.selectHistoryFillGasOrderService(userId);
     }
     /**
      * 条件查询
@@ -82,8 +82,8 @@ public class userQueryController {
     @RequiresPermissions("queryStats:userQuery:historyUserCard")
     @RequestMapping(value = "/historyUserCard.do")
     @ResponseBody
-    public JsonData selectHistoryUserCardQueryController(Integer userId, Integer pageNum, Integer pageSize ){
-        return userService.selectHistoryUserCardQueryService(userId, pageNum, pageSize);
+    public JsonData selectHistoryUserCardQueryController(Integer userId){
+        return userService.selectHistoryUserCardQueryService(userId);
     }
     /**
      * 查询维修记录
@@ -92,7 +92,7 @@ public class userQueryController {
     @RequiresPermissions("queryStats:userQuery:historyRepairOrder")
     @RequestMapping(value = "/historyRepairOrder.do")
     @ResponseBody
-    public JsonData selectHistoryRepairOrderController(Integer userId, Integer pageNum, Integer pageSize){
+    public JsonData selectHistoryRepairOrderController(Integer userId){
         return repairOrderService.selectHistoryRepairOrderQueryService(userId);
     }
 

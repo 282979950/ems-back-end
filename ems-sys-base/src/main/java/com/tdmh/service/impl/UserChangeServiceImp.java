@@ -1,8 +1,6 @@
 package com.tdmh.service.impl;
 
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.*;
 import com.tdmh.entity.mapper.UserCardMapper;
@@ -311,10 +309,8 @@ public class UserChangeServiceImp implements IUserChangeService {
         return JsonData.fail("系统内部出错，请确认该条信息并刷新，或联系管理员");
     }
 
-    public JsonData selectUserChangeListService(Integer userId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+    public JsonData selectUserChangeListService(Integer userId) {
         List<UserChange> userChange = userChangeMapper.selectUserChangeList(userId);
-        PageInfo<UserChange> info = new PageInfo<>(userChange);
-        return JsonData.successData(info);
+        return JsonData.successData(userChange);
     }
 }

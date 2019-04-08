@@ -1,7 +1,5 @@
 package com.tdmh.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserOrders;
@@ -166,11 +164,9 @@ public class FillGasServiceImpl implements IFillGasService {
     }
 
     @Override
-    public JsonData selectHistoryFillGasOrderService(Integer userId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+    public JsonData selectHistoryFillGasOrderService(Integer userId) {
         List<FillGasOrderParam> list = fillGasOrderMapper.selectFillGasOrderQuery(userId);
-        PageInfo<FillGasOrderParam> info = new PageInfo<>(list);
-        return JsonData.success(info, "查询成功!");
+        return  list.size()==0?JsonData.fail("未查询到相关数据"):JsonData.success(list,"查询成功!");
     }
 
     private void createOveruseOrder(BigDecimal payment, BigDecimal gas, Integer userId, Integer empId) {
