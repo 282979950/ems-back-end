@@ -43,4 +43,11 @@ public class AccountQueryController {
     public JsonData exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress) {
         return userService.exportAccountQueryList(startDate, endDate, userDistId, userAddress);
     }
+
+    @RequiresPermissions("queryStats:accountQuery:export")
+    @RequestMapping("/exportWithPageInfo.do")
+    @ResponseBody
+    public JsonData exportAccountQueryWithPageInfo(String startDate, String endDate, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize) {
+        return userService.exportAccountQueryWithPageInfo(startDate, endDate, userDistId, userAddress, pageNum, pageSize);
+    }
 }

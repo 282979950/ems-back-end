@@ -46,4 +46,12 @@ public class AbnormalUserController {
     public JsonData exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {
         return userService.exportAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress);
     }
+
+    @RequiresPermissions("queryStats:exceptionQuery:export")
+    @RequestMapping("/exportWithPageInfo.do")
+    @ResponseBody
+    public JsonData exportAbnormalUserWithPageInfo(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId,
+                                           String userAddress, Integer pageNum, Integer pageSize) {
+        return userService.exportAbnormalUserWithPageInfo(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress, pageNum, pageSize);
+    }
 }

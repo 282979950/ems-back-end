@@ -231,4 +231,10 @@ public interface IUserService {
     JsonData exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress);
 
     Integer getUserLockStatusById(Integer userId);
+
+    JsonData exportAbnormalUserWithPageInfo(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize);
+
+    JsonData exportAccountQueryWithPageInfo(String startDate, String endDate, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize);
+
+    JsonData exportUserQueryWithPageInfo(User user, Integer pageNum, Integer pageSize);
 }

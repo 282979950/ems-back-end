@@ -460,12 +460,6 @@ public class UserServiceImpl implements IUserService {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
         List<AccountQueryParam> list = userMapper.searchAccountQueryList(DateUtils.parseDate(startDate),DateUtils.parseDate(endDate),distIds,userAddress);
         return list.size() == 0 ? JsonData.fail("未查询到相关数据") : JsonData.successData(list);
-//        String fileName = "开户信息-"+DateUtils.getDate()+".xlsx";
-//        try {
-//            new ExportExcel("开户信息", AccountQueryParam.class).setDataList(list).write(fileName).dispose();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
     }
 
     @Override
@@ -516,5 +510,33 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Integer getUserLockStatusById(Integer userId) {
         return userMapper.getUserLockStatusById(userId);
+    }
+
+    @Override
+    public JsonData exportAbnormalUserWithPageInfo(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId,
+                                                   String userAddress, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
+        List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
+        PageInfo<AbnormalUser> info = new PageInfo<>(list);
+        return JsonData.successData(info);
+    }
+
+    @Override
+    public JsonData exportAccountQueryWithPageInfo(String startDate, String endDate, Integer userDistId, String userAddress, Integer pageNum,
+                                                   Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        String distIds = sysDistrictMapper.getDistrictChildList(userDistId);
+        List<AccountQueryParam> list = userMapper.searchAccountQueryList(DateUtils.parseDate(startDate), DateUtils.parseDate(endDate), distIds, userAddress);
+        PageInfo<AccountQueryParam> info = new PageInfo<>(list);
+        return JsonData.successData(info);
+    }
+
+    @Override
+    public JsonData exportUserQueryWithPageInfo(User user, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> list = userMapper.userQuerySearch(user);
+        PageInfo<User> info = new PageInfo<>(list);
+        return JsonData.successData(info);
     }
 }

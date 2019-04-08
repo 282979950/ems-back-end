@@ -105,4 +105,11 @@ public class userQueryController {
     public JsonData exportUserQueryList(User user){
         return userService.exportUserQuerySearchService(user);
     }
+
+    @RequiresPermissions("queryStats:userQuery:export")
+    @RequestMapping("/exportWithPageInfo.do")
+    @ResponseBody
+    public JsonData exportUserQueryWithPageInfo(User user, Integer pageNum, Integer pageSize){
+        return userService.exportUserQueryWithPageInfo(user, pageNum, pageSize);
+    }
 }
