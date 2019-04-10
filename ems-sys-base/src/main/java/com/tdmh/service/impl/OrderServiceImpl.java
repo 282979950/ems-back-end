@@ -88,7 +88,7 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public JsonData selectHistoryOrdersService(Integer userId) {
         List<UserOrders> list= userOrdersMapper.selectordersListQuery(userId);
-        return list==null?JsonData.fail("未查询到相关数据"):JsonData.success(list,"查询成功!");
+        return list==null?JsonData.successMsg("未查询到相关数据"):JsonData.success(list,"查询成功!");
     }
 
     /**

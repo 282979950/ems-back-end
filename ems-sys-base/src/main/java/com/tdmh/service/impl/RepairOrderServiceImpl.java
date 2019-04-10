@@ -279,14 +279,8 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
 
     @Override
     public JsonData selectHistoryRepairOrderQueryService(Integer userId) {
-
-        if(userId.intValue()==0){
-
-            return JsonData.fail("未获取到相关数据，请刷新重试");
-        }
-
         List<RepairOrderParam> list = repairOrderMapper.selectRepairOrderByuserQuery(userId);
-        return list.size()==0?JsonData.fail("未查询到相关数据"):JsonData.success(list,"查询成功");
+        return list.size()==0?JsonData.successMsg("未查询到相关数据"):JsonData.success(list,"查询成功");
     }
 
     private boolean checkRepairOrderExists(String repairOrderId) {
