@@ -15,7 +15,7 @@ public interface IRepairOrderService {
      * 获取所有维修单
      * @return
      */
-    JsonData listData();
+    JsonData listData(Integer pageNum, Integer pageSize);
 
     /**
      * 新建维修单
@@ -35,7 +35,7 @@ public interface IRepairOrderService {
      * 查询维修单
      * @return
      */
-    JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName);
+    JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName, Integer pageNum, Integer pageSize);
 
     JsonData getRepairOrderUserById(Integer userId);
 

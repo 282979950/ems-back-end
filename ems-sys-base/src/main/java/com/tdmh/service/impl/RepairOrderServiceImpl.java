@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.*;
@@ -50,9 +52,11 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     private IGasPriceService gasPriceService;
 
     @Override
-    public JsonData listData() {
+    public JsonData listData(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<RepairOrderParam> orderParams = repairOrderMapper.listData();
-        return orderParams == null || orderParams.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.successData(orderParams);
+        PageInfo<RepairOrderParam> info = new PageInfo<>(orderParams);
+        return JsonData.successData(info);
     }
 
     @Override
@@ -196,9 +200,11 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     }
 
     @Override
-    public JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName) {
+    public JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<RepairOrderParam> orderParams = repairOrderMapper.searchRepairOrder(repairOrderId, userId, repairType, empName);
-        return orderParams == null || orderParams.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.success(orderParams, "查询成功");
+        PageInfo<RepairOrderParam> info = new PageInfo<>(orderParams);
+        return JsonData.success(info, "查询成功");
     }
 
     @Override

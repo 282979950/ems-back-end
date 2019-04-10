@@ -26,17 +26,17 @@ public class RepairOrderController {
     /**
      * 查询所有维修单
      */
-    @RequiresPermissions("repairorder:entry:visit")
+    @RequiresPermissions("repairOrder:entry:visit")
     @RequestMapping(value = "listData.do")
     @ResponseBody
-    public JsonData listData() {
-        return repairOrderService.listData();
+    public JsonData listData(Integer pageNum, Integer pageSize) {
+        return repairOrderService.listData(pageNum, pageSize);
     }
 
     /**
      * 维修单录入
      */
-    @RequiresPermissions("repairorder:entry:create")
+    @RequiresPermissions("repairOrder:entry:create")
     @RequestMapping(value = "add.do")
     @ResponseBody
     @BeUnLock
@@ -50,7 +50,7 @@ public class RepairOrderController {
     /**
      * 编辑维修单
      */
-    @RequiresPermissions("repairorder:entry:update")
+    @RequiresPermissions("repairOrder:entry:update")
     @RequestMapping(value = "edit.do")
     @ResponseBody
     @BeUnLock
@@ -63,12 +63,11 @@ public class RepairOrderController {
     /**
      * 查询维修单
      */
-    @RequiresPermissions("repairorder:entry:retrieve")
+    @RequiresPermissions("repairOrder:entry:retrieve")
     @RequestMapping(value = "search.do")
     @ResponseBody
-    public JsonData searchRepairOrder(@Param("repairOrderId")String repairOrderId, @Param("userId")Integer userId, @Param("repairType")Integer repairType,
-                                      @Param("empName") String empName) {
-        return repairOrderService.searchRepairOrder(repairOrderId, userId, repairType, empName);
+    public JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName, Integer pageNum, Integer pageSize) {
+        return repairOrderService.searchRepairOrder(repairOrderId, userId, repairType, empName, pageNum, pageSize);
     }
 
     /**
