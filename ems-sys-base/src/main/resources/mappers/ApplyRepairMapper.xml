@@ -19,7 +19,7 @@
             <arg column="apply_repair_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="meter_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="meter_direction" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="meter_direction" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="meter_direction_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="meter_type" jdbcType="VARCHAR" javaType="java.lang.String"/>

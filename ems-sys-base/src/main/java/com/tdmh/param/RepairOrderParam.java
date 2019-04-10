@@ -95,7 +95,7 @@ public class RepairOrderParam extends BaseEntity {
     /**
      * 旧表表向
      */
-    private Boolean oldMeterDirection;
+    private Integer oldMeterDirection;
 
     /**
      * 旧表表向名称
@@ -131,7 +131,7 @@ public class RepairOrderParam extends BaseEntity {
     /**
      * 新表表向
      */
-    private Boolean newMeterDirection;
+    private Integer newMeterDirection;
 
     /**
      * 新表表向名称
@@ -211,9 +211,9 @@ public class RepairOrderParam extends BaseEntity {
 
     public RepairOrderParam(Integer id, String repairOrderId, Integer userId, String userName, String userPhone, String userAddress, Integer repairType,
                             String repairTypeName, Integer gasEquipmentType, String gasEquipmentTypeName, Integer oldMeterId, String oldMeterCode,
-                            Integer oldMeterTypeId, String oldMeterTypeName, Boolean oldMeterDirection, String oldMeterDirectionName,
+                            Integer oldMeterTypeId, String oldMeterTypeName, Integer oldMeterDirection, String oldMeterDirectionName,
                             BigDecimal oldMeterStopCode, Integer newMeterId, String newMeterCode, Integer newMeterTypeId, String newMeterTypeName,
-                            Boolean newMeterDirection, String newMeterDirectionName, BigDecimal newMeterStopCode, Integer repairFaultType,
+                            Integer newMeterDirection, String newMeterDirectionName, BigDecimal newMeterStopCode, Integer repairFaultType,
                             String repairFaultTypeName, Integer repairResultType, String repairResultTypeName, Integer empId, String empNumber,
                             String empName, Date repairStartTime, Date repairEndTime, String newSafetyCode, String oldSafetyCode, Date createTime,
                             Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {

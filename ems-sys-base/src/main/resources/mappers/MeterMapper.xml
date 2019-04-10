@@ -7,7 +7,7 @@
             <arg column="meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="meter_stop_code" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
             <arg column="meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="meter_direction" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="meter_direction" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="meter_prod_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="meter_entry_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="meter_install_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
@@ -45,7 +45,7 @@
         update_time, update_by, usable,
         remarks)
         values (#{meterId,jdbcType=INTEGER}, #{meterCode,jdbcType=VARCHAR}, #{meterStopCode,jdbcType=DECIMAL},
-        #{meterTypeId,jdbcType=INTEGER}, #{meterDirection,jdbcType=BIT}, #{meterProdDate,jdbcType=TIMESTAMP},
+        #{meterTypeId,jdbcType=INTEGER}, #{meterDirection,jdbcType=INTEGER}, #{meterProdDate,jdbcType=TIMESTAMP},
         #{meterEntryDate,jdbcType=TIMESTAMP}, #{meterInstallTime,jdbcType=TIMESTAMP}, #{meterScrapTime,jdbcType=TIMESTAMP},
         #{meterValidityperiod,jdbcType=INTEGER}, #{meterStatus,jdbcType=INTEGER}, #{meterCommKey,jdbcType=CHAR},
         #{meterCommNum,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
@@ -186,7 +186,7 @@
                 meter_type_id = #{meterTypeId,jdbcType=INTEGER},
             </if>
             <if test="meterDirection != null">
-                meter_direction = #{meterDirection,jdbcType=BIT},
+                meter_direction = #{meterDirection,jdbcType=INTEGER},
             </if>
             <if test="meterProdDate != null">
                 meter_prod_date = #{meterProdDate,jdbcType=TIMESTAMP},
@@ -246,7 +246,7 @@
         set meter_code = #{meterCode,jdbcType=VARCHAR},
         meter_stop_code = #{meterStopCode,jdbcType=DECIMAL},
         meter_type_id = #{meterTypeId,jdbcType=INTEGER},
-        meter_direction = #{meterDirection,jdbcType=BIT},
+        meter_direction = #{meterDirection,jdbcType=INTEGER},
         meter_prod_date = #{meterProdDate,jdbcType=TIMESTAMP},
         meter_entry_date = #{meterEntryDate,jdbcType=TIMESTAMP},
         meter_install_time = #{meterInstallTime,jdbcType=TIMESTAMP},

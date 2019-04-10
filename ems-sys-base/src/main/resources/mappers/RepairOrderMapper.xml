@@ -17,14 +17,14 @@
             <arg column="old_meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="old_meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="old_meter_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="old_meter_direction" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="old_meter_direction" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="old_meter_direction_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="old_meter_stop_code" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
             <arg column="new_meter_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="new_meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="new_meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="new_meter_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="new_meter_direction" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="new_meter_direction" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="new_meter_direction_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="new_meter_stop_code" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
             <arg column="repair_fault_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
