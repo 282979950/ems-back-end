@@ -28,9 +28,9 @@ public class InvoiceController {
     @RequiresPermissions("invoice:assign:visit")
     @RequestMapping("/assign/listData.do")
     @ResponseBody
-    public JsonData getAllAssignInvoiceList(){
+    public JsonData getAllAssignInvoiceList(Integer pageNum,Integer pageSize){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return invoiceService.getAllAssignInvoiceList(currentEmpId);
+        return invoiceService.getAllAssignInvoiceList(currentEmpId,pageNum,pageSize);
     }
 
     /**

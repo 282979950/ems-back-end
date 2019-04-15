@@ -6,7 +6,7 @@ import com.tdmh.common.JsonData;
  * @author Liuxia on 2018/10/18.
  */
 public interface IInvoiceService {
-    JsonData getAllAssignInvoiceList(Integer currentEmpId);
+    JsonData getAllAssignInvoiceList(Integer currentEmpId,Integer pageNum,Integer pageSize);
 
     JsonData addInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer currentEmpId);
 

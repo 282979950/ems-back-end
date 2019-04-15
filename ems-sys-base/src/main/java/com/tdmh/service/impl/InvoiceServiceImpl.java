@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.Invoice;
@@ -37,19 +39,31 @@ public class InvoiceServiceImpl implements IInvoiceService {
     private SysRoleMapper sysRoleMapper;
 
     @Override
-    public JsonData getAllAssignInvoiceList(Integer currentEmpId) {
+    public JsonData getAllAssignInvoiceList(Integer currentEmpId, Integer pageNum, Integer pageSize) {
         EmployeeParam emp = employeeMapper.getEmpById(currentEmpId);
-        if(emp == null){
+        if (emp == null) {
             return JsonData.fail("该操作员不存在");
         }
         SysRoleParam role = sysRoleMapper.getRoleById(emp.getRoleId());
-        List<Invoice> list =  Lists.newArrayList();
-        if(role.getIsAdmin()) {
-            list = invoiceMapper.getAllAssignInvoiceList(null, null,null);
-        }else{
-            list = invoiceMapper.getAllAssignInvoiceList(null, null, currentEmpId);
+        if (role.getIsAdmin()) {
+            return getAllInvoice(pageNum, pageSize);
+        } else {
+            return getInvoiceByEmpId(currentEmpId, pageNum, pageSize);
         }
-        return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
+    }
+
+    private JsonData getAllInvoice(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Invoice> list = invoiceMapper.getAllAssignInvoiceList(null, null, null);
+        PageInfo<Invoice> page = new PageInfo<>(list);
+        return JsonData.successData(page);
+    }
+
+    private JsonData getInvoiceByEmpId(Integer currentEmpId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Invoice> list = invoiceMapper.getAllAssignInvoiceList(null, null, currentEmpId);
+        PageInfo<Invoice> page = new PageInfo<>(list);
+        return JsonData.successData(page);
     }
 
     @Override
