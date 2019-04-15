@@ -3,7 +3,6 @@ package com.tdmh.service.impl;
 import com.google.common.collect.Lists;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.Invoice;
-import com.tdmh.entity.SysRole;
 import com.tdmh.entity.mapper.EmployeeMapper;
 import com.tdmh.entity.mapper.InvoiceMapper;
 import com.tdmh.entity.mapper.OrderMapper;
@@ -11,6 +10,7 @@ import com.tdmh.entity.mapper.SysRoleMapper;
 import com.tdmh.exception.ParameterException;
 import com.tdmh.param.EmployeeParam;
 import com.tdmh.param.InvoiceParam;
+import com.tdmh.param.SysRoleParam;
 import com.tdmh.service.IInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,9 +42,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
         if(emp == null){
             return JsonData.fail("该操作员不存在");
         }
-        SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+        SysRoleParam role = sysRoleMapper.getRoleById(emp.getRoleId());
         List<Invoice> list =  Lists.newArrayList();
-        if(role.getIsAdmin() == true) {
+        if(role.getIsAdmin()) {
             list = invoiceMapper.getAllAssignInvoiceList(null, null,null);
         }else{
             list = invoiceMapper.getAllAssignInvoiceList(null, null, currentEmpId);
@@ -58,9 +58,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
         if(emp == null){
             return JsonData.fail("该操作员不存在");
         }
-        SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+        SysRoleParam role = sysRoleMapper.getRoleById(emp.getRoleId());
         List<Invoice> list = Lists.newArrayList();
-        if(role.getIsAdmin() == true) {
+        if(role.getIsAdmin()) {
             list = invoiceMapper.getAllAssignInvoiceList(invoiceCode, invoiceNumber,null);
         }else {
             list = invoiceMapper.getAllAssignInvoiceList(invoiceCode, invoiceNumber, currentEmpId);
@@ -155,9 +155,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
         if(emp == null){
             return JsonData.fail("该操作员不存在");
         }
-        SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+        SysRoleParam role = sysRoleMapper.getRoleById(emp.getRoleId());
         List<Invoice> list = Lists.newArrayList();
-        if(role.getIsAdmin() == true) {
+        if(role.getIsAdmin()) {
             list = invoiceMapper.getAllPrintCancelInvoiceList(null, null, null, null);
         }else {
             list = invoiceMapper.getAllPrintCancelInvoiceList(null, null, null, currentEmpId);
@@ -171,9 +171,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
         if(emp == null){
             return JsonData.fail("该操作员不存在");
         }
-        SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+        SysRoleParam role = sysRoleMapper.getRoleById(emp.getRoleId());
         List<Invoice> list = Lists.newArrayList();
-        if(role.getIsAdmin() == true) {
+        if(role.getIsAdmin()) {
             list = invoiceMapper.getAllPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, null);
         }else {
             list = invoiceMapper.getAllPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, currentEmpId);
@@ -189,7 +189,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
             return JsonData.fail("该操作员不存在");
         }
         if(printType == 2 || printType == 3) {
-            SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+            SysRoleParam role = sysRoleMapper.getRoleById(emp.getRoleId());
             if (!role.getIsAdmin()) {
                 int resultCount = orderMapper.hasAuthorityToInvoice(orderId, userId);
                 if (resultCount == 0) {
@@ -237,7 +237,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
         if(emp == null){
             return JsonData.fail("该操作员不存在");
         }
-        SysRole role = sysRoleMapper.selectByPrimaryKey(emp.getRoleId());
+        SysRoleParam role = sysRoleMapper.getRoleById(emp.getRoleId());
         if (!role.getIsAdmin()) {
             int resultCount = orderMapper.hasAuthorityToInvoice(orderId, userId);
             if (resultCount == 0) {
