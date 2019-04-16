@@ -69,6 +69,18 @@ public class EmployeeServiceImpl implements IEmployeeService {
         PageInfo<EmployeeParam> page = new PageInfo<>(employees);
         return JsonData.success(page, "查询成功");
     }
+    @Override
+    public JsonData getAllEmp() {
+        List<EmployeeParam> employees = employeeMapper.getAllEmployees();
+        if (employees == null || employees.size() == 0) {
+            return JsonData.successMsg("搜索结果为空");
+        }
+        for (EmployeeParam employee : employees) {
+            employee.setEmpPassword(null);
+        }
+
+        return JsonData.success(employees, "查询成功");
+    }
 
     @Override
     public Employee getEmpByLoginName(String empLoginName) {

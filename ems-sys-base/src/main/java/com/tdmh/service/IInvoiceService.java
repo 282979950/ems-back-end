@@ -14,7 +14,7 @@ public interface IInvoiceService {
 
     JsonData getAllPrintCancelInvoiceList(Integer currentEmpId, Integer pageNum, Integer pageSize);
 
-    JsonData searchAssignInvoiceList(String invoiceCode, String invoiceNumber, Integer currentEmpId);
+    JsonData searchAssignInvoiceList(String invoiceCode, String invoiceNumber, Integer currentEmpId,Integer pageNum,Integer pageSize);
 
     JsonData searchPrintCancelInvoiceList(String invoiceCode, String invoiceNumber, Integer empId, Integer currentEmpId, Integer pageNum, Integer pageSize);
 

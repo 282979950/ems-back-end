@@ -32,6 +32,15 @@ public class EmpController {
     public JsonData listData(Integer pageNum, Integer pageSize) {
         return employeeService.getAllEmployees(pageNum, pageSize);
     }
+    /**
+     * 获取员工相关信息，下拉使用
+     */
+    @RequiresPermissions("sys:emp:visit")
+    @RequestMapping(value = "listDataByEmp.do")
+    @ResponseBody
+    public JsonData listDataByEmp() {
+        return employeeService.getAllEmp();
+    }
 
     /**
      * 新建员工

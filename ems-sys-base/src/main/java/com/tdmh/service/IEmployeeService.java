@@ -53,6 +53,7 @@ public interface IEmployeeService {
      */
     JsonData getAllEmployees(Integer pageNum, Integer pageSize);
 
+    JsonData getAllEmp();
     /**
      * 新建员工
      * employee中必须含有empNumber,empName,empOrgId,empLoginName,empPassword,empType,empManagementDistId,empRoleId

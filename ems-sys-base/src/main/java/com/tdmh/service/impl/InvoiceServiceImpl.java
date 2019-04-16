@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,19 +68,32 @@ public class InvoiceServiceImpl implements IInvoiceService {
     }
 
     @Override
-    public JsonData searchAssignInvoiceList(String invoiceCode, String invoiceNumber, Integer currentEmpId) {
+    public JsonData searchAssignInvoiceList(String invoiceCode, String invoiceNumber, Integer currentEmpId,Integer pageNum,Integer pageSize) {
         EmployeeParam emp = employeeMapper.getEmpById(currentEmpId);
+        PageHelper.startPage(pageNum, pageSize);
         if(emp == null){
             return JsonData.fail("该操作员不存在");
         }
         SysRoleParam role = sysRoleMapper.getRoleById(emp.getRoleId());
-        List<Invoice> list = Lists.newArrayList();
+        //若为Admin则查询所有，否则查询部分
         if(role.getIsAdmin()) {
-            list = invoiceMapper.getAllAssignInvoiceList(invoiceCode, invoiceNumber,null);
+          return  searchAssignInvoiceListIsAdmin(invoiceCode, invoiceNumber, currentEmpId,pageNum, pageSize);
         }else {
-            list = invoiceMapper.getAllAssignInvoiceList(invoiceCode, invoiceNumber, currentEmpId);
+          return  searchAssignInvoiceListIsNotAdmin( invoiceCode, invoiceNumber, currentEmpId,pageNum, pageSize);
         }
-        return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.success(list,"查询成功");
+    }
+
+    public JsonData searchAssignInvoiceListIsAdmin(String invoiceCode, String invoiceNumber, Integer currentEmpId,Integer pageNum,Integer pageSize){
+        PageHelper.startPage(pageNum, pageSize);
+        List<Invoice> list = invoiceMapper.getAllAssignInvoiceList(invoiceCode, invoiceNumber,null);
+        PageInfo<Invoice> page = new PageInfo<>(list);
+        return   JsonData.success(page,"查询成功");
+    }
+    public JsonData searchAssignInvoiceListIsNotAdmin(String invoiceCode, String invoiceNumber, Integer currentEmpId,Integer pageNum,Integer pageSize){
+        PageHelper.startPage(pageNum, pageSize);
+        List<Invoice>  list = invoiceMapper.getAllAssignInvoiceList(invoiceCode, invoiceNumber, currentEmpId);
+        PageInfo<Invoice> page = new PageInfo<>(list);
+        return JsonData.success(page,"查询成功");
     }
 
     @Override

@@ -40,9 +40,9 @@ public class InvoiceController {
     @RequiresPermissions("invoice:assign:retrieve")
     @RequestMapping("/assign/search.do")
     @ResponseBody
-    public JsonData searchAssignInvoiceList(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
+    public JsonData searchAssignInvoiceList(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber,Integer pageNum,Integer pageSize){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return invoiceService.searchAssignInvoiceList(invoiceCode, invoiceNumber, currentEmpId);
+        return invoiceService.searchAssignInvoiceList(invoiceCode, invoiceNumber, currentEmpId,pageNum, pageSize);
     }
 
     /**
