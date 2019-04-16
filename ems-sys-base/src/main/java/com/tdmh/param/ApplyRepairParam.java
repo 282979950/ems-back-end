@@ -108,7 +108,7 @@ public class ApplyRepairParam extends BaseEntity {
     /**
      * 表向
      */
-    private Boolean meterDirection;
+    private Integer meterDirection;
 
     /**
      * 表向名称
@@ -199,7 +199,7 @@ public class ApplyRepairParam extends BaseEntity {
     public ApplyRepairParam(Integer applyRepairId, String applyRepairFlowNumber, Integer userId, String userName, Integer distId, String distName,
                             String distCode, String userAddress, String userPhone, Integer applyRepairType, String applyRepairTypeName,
                             String applyRepairFaultDesc, String applyRepairAppealContent, Date applyRepairTime, Integer meterId, String meterCode,
-                            Boolean meterDirection, String meterDirectionName, Integer meterTypeId, String meterType, BigDecimal currentOrderGasCount,
+                            Integer meterDirection, String meterDirectionName, Integer meterTypeId, String meterType, BigDecimal currentOrderGasCount,
                             Integer applyRepairStatus, String applyRepairStatusName, Date startTime, Date endTime, String userTelPhone, Boolean isDisplayRemind,
                             Boolean hasEval, String signPersonId, String repairmanPhone, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);

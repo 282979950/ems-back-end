@@ -127,7 +127,7 @@
                 #{meterTypeId,jdbcType=INTEGER},
             </if>
             <if test="meterDirection != null">
-                #{meterDirection,jdbcType=BIT},
+                #{meterDirection,jdbcType=INTEGER},
             </if>
             <if test="meterProdDate != null">
                 #{meterProdDate,jdbcType=TIMESTAMP},

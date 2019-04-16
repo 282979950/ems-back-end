@@ -106,7 +106,7 @@ public class EntryMeterController {
     @RequiresPermissions("account:entryMeter:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection, @DateTimeFormat(pattern = "yyyy-MM")
+    public JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Integer meterDirection, @DateTimeFormat(pattern = "yyyy-MM")
             Date meterProdDate, Integer pageNum, Integer pageSize) {
         return meterService.searchEntryMeter(meterCode, meterCategory, meterType, meterDirection, meterProdDate, pageNum, pageSize);
     }

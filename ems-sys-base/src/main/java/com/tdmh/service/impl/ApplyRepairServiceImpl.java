@@ -295,9 +295,9 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
         Integer meterTypeId = meter.getMeterTypeId();
         param.setMeterTypeId(meterTypeId);
         param.setMeterType(meterService.getMeterTypeByMeterTypeId(meterTypeId));
-        Boolean meterDirection = meter.getMeterDirection();
+        Integer meterDirection = meter.getMeterDirection();
         param.setMeterDirection(meterDirection);
-        param.setMeterDirectionName(meterDirection ? "左" : "右");
+        param.setMeterDirectionName(meterDirection == 1 ? "左" : "右");
         BigDecimal historyMeterStopCode = fillGasService.getHistoryMeterStopCodeByUserId(userId);
         BigDecimal gasCount = fillGasService.getSumOrderGasByUserId(userId);
         param.setCurrentOrderGasCount(gasCount.subtract(historyMeterStopCode));

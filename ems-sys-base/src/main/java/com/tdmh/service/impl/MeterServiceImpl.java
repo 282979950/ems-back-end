@@ -113,7 +113,7 @@ public class MeterServiceImpl implements IMeterService {
     }
 
     @Override
-    public JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Boolean meterDirection, Date meterProdDate, Integer pageNum,
+    public JsonData searchEntryMeter(String meterCode, String meterCategory, String meterType, Integer meterDirection, Date meterProdDate, Integer pageNum,
                                      Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<EntryMeterParam> meters = meterMapper.searchEntryMeter(meterCode, meterCategory, meterType, meterDirection, meterProdDate);

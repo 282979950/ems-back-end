@@ -167,7 +167,7 @@
             <arg column="meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="meter_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="meter_direction" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="meter_direction" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="meter_direction_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
     </resultMap>

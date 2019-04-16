@@ -57,7 +57,7 @@ public class RepairOrderUserParam {
     /**
      * 旧表表向
      */
-    private Boolean meterDirection;
+    private Integer meterDirection;
 
     /**
      * 旧表表向名称

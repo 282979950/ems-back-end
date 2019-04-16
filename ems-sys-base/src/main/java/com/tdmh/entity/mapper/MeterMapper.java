@@ -33,7 +33,7 @@ public interface MeterMapper {
     int deleteEntryMeter(List<Meter> meters);
 
     List<EntryMeterParam> searchEntryMeter(@Param("meterCode") String meterCode, @Param("meterCategory") String meterCategory, @Param("meterType") String
-            meterType, @Param("meterDirection") Boolean meterDirection, @Param("meterProdDate") Date meterProdDate);
+            meterType, @Param("meterDirection") Integer meterDirection, @Param("meterProdDate") Date meterProdDate);
 
     boolean checkMeterExist(@Param("meterCode") String meterCode);
 

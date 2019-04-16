@@ -62,7 +62,8 @@ public class GasPriceServiceImpl implements IGasPriceService {
 
     @Override
     public BigDecimal findHasUsedGasInYear(Integer userId) {
-        return userOrdersMapper.findHasUsedGasInYear(userId);
+        BigDecimal gasInYear = userOrdersMapper.findHasUsedGasInYear(userId);
+        return gasInYear == null ? BigDecimal.ZERO : gasInYear;
     }
 
     @Override

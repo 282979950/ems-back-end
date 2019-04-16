@@ -39,7 +39,7 @@ public class Meter extends BaseEntity {
     /**
      * 表向
      */
-    private Boolean meterDirection;
+    private Integer meterDirection;
 
     /**
      * 表具生产日期
@@ -81,7 +81,7 @@ public class Meter extends BaseEntity {
      */
     private String meterCommNum;
 //    Integer,String,BigDecimal,Integer,Boolean,Date,Date,Date,Date,Integer,Integer,String,String,Date,Integer,Date,Integer,Boolean,String
-    public Meter(Integer meterId, String meterCode, BigDecimal meterStopCode, Integer meterTypeId, Boolean meterDirection, Date meterProdDate, Date
+    public Meter(Integer meterId, String meterCode, BigDecimal meterStopCode, Integer meterTypeId, Integer meterDirection, Date meterProdDate, Date
             meterEntryDate, Date meterInstallTime, Date meterScrapTime, Integer meterValidityperiod, Integer meterStatus, String meterCommKey, String
             meterCommNum, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
