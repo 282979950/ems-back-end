@@ -5,7 +5,6 @@ import com.tdmh.common.JsonData;
 import com.tdmh.param.FillGasOrderParam;
 import com.tdmh.service.IFillGasService;
 import com.tdmh.util.ShiroUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +22,8 @@ public class FillGasController {
 
     @RequestMapping(value = "listData.do")
     @ResponseBody
-    public JsonData listData() {
-        return fillGasService.listData();
+    public JsonData listData(Integer pageNum, Integer pageSize) {
+        return fillGasService.listData(pageNum, pageSize);
     }
 
     /**
@@ -44,9 +43,8 @@ public class FillGasController {
      */
     @RequestMapping(value = "search.do")
     @ResponseBody
-    public JsonData searchFillGasOrder(@Param("repairOrderId") String repairOrderId, @Param("userId") Integer userId,
-                                       @Param("fillGasOrderType") Integer fillGasOrderType) {
-        return fillGasService.searchFillGasOrder(repairOrderId, userId ,fillGasOrderType);
+    public JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType, Integer pageNum, Integer pageSize) {
+        return fillGasService.searchFillGasOrder(repairOrderId, userId ,fillGasOrderType, pageNum, pageSize);
     }
 
     @RequestMapping(value = "getFlowNum.do")

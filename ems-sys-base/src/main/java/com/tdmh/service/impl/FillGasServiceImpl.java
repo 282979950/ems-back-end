@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserOrders;
@@ -35,9 +37,11 @@ public class FillGasServiceImpl implements IFillGasService {
     private UserOrdersMapper userOrdersMapper;
 
     @Override
-    public JsonData listData() {
+    public JsonData listData(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<FillGasOrderParam> fillGasOrders = fillGasOrderMapper.listData();
-        return fillGasOrders == null || fillGasOrders.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.successData(fillGasOrders);
+        PageInfo<FillGasOrderParam> info = new PageInfo<>(fillGasOrders);
+        return JsonData.successData(info);
     }
 
     @Override
@@ -80,9 +84,11 @@ public class FillGasServiceImpl implements IFillGasService {
     }
 
     @Override
-    public JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType) {
+    public JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<FillGasOrderParam> fillGasOrders = fillGasOrderMapper.searchFillGasOrder(repairOrderId, userId, fillGasOrderType);
-        return fillGasOrders == null || fillGasOrders.size() == 0 ? JsonData.successMsg("查询结果为空"): JsonData.success(fillGasOrders, "查询成功");
+        PageInfo<FillGasOrderParam> info = new PageInfo<>(fillGasOrders);
+        return JsonData.success(info, "查询成功");
     }
 
     @Override

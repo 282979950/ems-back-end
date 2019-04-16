@@ -12,13 +12,13 @@ import java.math.BigDecimal;
  */
 public interface IFillGasService {
 
-    JsonData listData();
+    JsonData listData(Integer pageNum, Integer pageSize);
 
     int createFillGasOrder(FillGasOrderParam param);
 
     JsonData editFillGasOrder(FillGasOrderParam param);
 
-    JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType);
+    JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType, Integer pageNum, Integer pageSize);
 
     BigDecimal getSumOrderGasByUserId(Integer userId);
 
