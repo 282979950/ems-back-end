@@ -12,11 +12,11 @@ public interface IInvoiceService {
 
     JsonData assignInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer empId, Integer currentEmpId);
 
-    JsonData getAllPrintCancelInvoiceList(Integer currentEmpId);
+    JsonData getAllPrintCancelInvoiceList(Integer currentEmpId, Integer pageNum, Integer pageSize);
 
     JsonData searchAssignInvoiceList(String invoiceCode, String invoiceNumber, Integer currentEmpId);
 
-    JsonData searchPrintCancelInvoiceList(String invoiceCode, String invoiceNumber, Integer empId, Integer currentEmpId);
+    JsonData searchPrintCancelInvoiceList(String invoiceCode, String invoiceNumber, Integer empId, Integer currentEmpId, Integer pageNum, Integer pageSize);
 
     JsonData findInvoice(Integer orderId, Integer userId, Integer currentEmpId, Integer printType);
 

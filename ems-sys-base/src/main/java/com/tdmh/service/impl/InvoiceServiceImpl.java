@@ -164,35 +164,61 @@ public class InvoiceServiceImpl implements IInvoiceService {
     }
 
     @Override
-    public JsonData getAllPrintCancelInvoiceList(Integer currentEmpId) {
+    public JsonData getAllPrintCancelInvoiceList(Integer currentEmpId, Integer pageNum, Integer pageSize) {
         EmployeeParam emp = employeeMapper.getEmpById(currentEmpId);
         if(emp == null){
             return JsonData.fail("该操作员不存在");
         }
         SysRoleParam role = sysRoleMapper.getRoleById(emp.getRoleId());
-        List<Invoice> list = Lists.newArrayList();
         if(role.getIsAdmin()) {
-            list = invoiceMapper.getAllPrintCancelInvoiceList(null, null, null, null);
+            return getAllPrintCancelInvoice(pageNum, pageSize);
         }else {
-            list = invoiceMapper.getAllPrintCancelInvoiceList(null, null, null, currentEmpId);
+            return getAllPrintCancelInvoiceByEmpId(currentEmpId, pageNum, pageSize);
         }
-        return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.successData(list);
+    }
+
+    private JsonData getAllPrintCancelInvoice(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Invoice> list = invoiceMapper.getAllPrintCancelInvoiceList(null, null, null, null);
+        PageInfo<Invoice> info = new PageInfo<>(list);
+        return JsonData.successData(info);
+    }
+
+    private JsonData getAllPrintCancelInvoiceByEmpId(Integer currentEmpId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Invoice> list = invoiceMapper.getAllPrintCancelInvoiceList(null, null, null, currentEmpId);
+        PageInfo<Invoice> info = new PageInfo<>(list);
+        return JsonData.successData(info);
     }
 
     @Override
-    public JsonData searchPrintCancelInvoiceList(String invoiceCode,String invoiceNumber,Integer empId, Integer currentEmpId){
+    public JsonData searchPrintCancelInvoiceList(String invoiceCode, String invoiceNumber, Integer empId, Integer currentEmpId, Integer pageNum,
+                                                 Integer pageSize) {
         EmployeeParam emp = employeeMapper.getEmpById(currentEmpId);
-        if(emp == null){
+        if (emp == null) {
             return JsonData.fail("该操作员不存在");
         }
         SysRoleParam role = sysRoleMapper.getRoleById(emp.getRoleId());
-        List<Invoice> list = Lists.newArrayList();
-        if(role.getIsAdmin()) {
-            list = invoiceMapper.getAllPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, null);
-        }else {
-            list = invoiceMapper.getAllPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, currentEmpId);
+        if (role.getIsAdmin()) {
+            return searchPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, pageNum, pageSize);
+        } else {
+            return searchPrintCancelInvoiceListByEmpId(invoiceCode, invoiceNumber, empId, currentEmpId, pageNum, pageSize);
         }
-        return list == null || list.size() == 0 ? JsonData.successMsg("暂无分配的发票") : JsonData.success(list,"查询成功");
+    }
+
+    private JsonData searchPrintCancelInvoiceList(String invoiceCode, String invoiceNumber, Integer empId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Invoice> list = invoiceMapper.getAllPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, null);
+        PageInfo<Invoice> info = new PageInfo<>(list);
+        return JsonData.successData(info);
+    }
+
+    private JsonData searchPrintCancelInvoiceListByEmpId(String invoiceCode, String invoiceNumber, Integer empId, Integer currentEmpId, Integer pageNum,
+                                                         Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Invoice> list = invoiceMapper.getAllPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, currentEmpId);
+        PageInfo<Invoice> info = new PageInfo<>(list);
+        return JsonData.successData(info);
     }
 
     @Override

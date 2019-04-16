@@ -75,9 +75,9 @@ public class InvoiceController {
     @RequiresPermissions("invoice:printCancel:visit")
     @RequestMapping("/printCancel/listData.do")
     @ResponseBody
-    public JsonData getAllPrintCancelInvoiceList(){
+    public JsonData getAllPrintCancelInvoiceList(Integer pageNum, Integer pageSize){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return invoiceService.getAllPrintCancelInvoiceList(currentEmpId);
+        return invoiceService.getAllPrintCancelInvoiceList(currentEmpId, pageNum, pageSize);
     }
 
     /**
@@ -87,9 +87,9 @@ public class InvoiceController {
     @RequiresPermissions("invoice:printCancel:retrieve")
     @RequestMapping("/printCancel/search.do")
     @ResponseBody
-    public JsonData searchPrintCancelInvoiceList(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber,@Param("empId") Integer empId){
+    public JsonData searchPrintCancelInvoiceList(String invoiceCode, String invoiceNumber, Integer empId, Integer pageNum, Integer pageSize){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return invoiceService.searchPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, currentEmpId);
+        return invoiceService.searchPrintCancelInvoiceList(invoiceCode, invoiceNumber, empId, currentEmpId, pageNum, pageSize);
     }
 
     /**
