@@ -1,5 +1,7 @@
 package com.tdmh.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.entity.mapper.OrderMapper;
@@ -30,9 +32,11 @@ public class OrderServiceImpl implements IOrderService {
     private UserOrdersMapper userOrdersMapper;
 
     @Override
-    public JsonData searchOrderAndInvoiceList(String userName,String iccardId, String iccardIdentifier, String invoiceCode, String invoiceNumber) {
+    public JsonData searchOrderAndInvoiceList(String userName,String iccardId, String iccardIdentifier, String invoiceCode, String invoiceNumber, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<OrderParam> list = orderMapper.searchOrderAndInvoiceList(userName, iccardId, iccardIdentifier, invoiceCode,invoiceNumber);
-        return list == null || list.size() == 0 ? JsonData.successMsg("暂无订单") : JsonData.success(list,"查询成功");
+        PageInfo<OrderParam> info = new PageInfo<>(list);
+        return JsonData.success(info,"查询成功");
     }
 
     @Override

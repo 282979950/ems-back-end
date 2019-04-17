@@ -28,8 +28,8 @@ public class OrderController {
     @RequiresPermissions("recharge:order:visit")
     @RequestMapping("/listData.do")
     @ResponseBody
-    public JsonData getAllOrderAndInvoiceList(){
-        return JsonData.success();
+    public JsonData getAllOrderAndInvoiceList(Integer pageNum, Integer pageSize){
+        return orderService.searchOrderAndInvoiceList(null, null, null, null, null, pageNum, pageSize);
     }
     /**
      * 查询指定订单
@@ -38,8 +38,8 @@ public class OrderController {
     @RequiresPermissions("recharge:order:visit")
     @RequestMapping("/search.do")
     @ResponseBody
-    public JsonData searchOrderAndInvoiceList(@Param("userName") String userName,@Param("iccardId") String iccardId, @Param("iccardIdentifier") String iccardIdentifier, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
-        return orderService.searchOrderAndInvoiceList(userName,iccardId,iccardIdentifier, invoiceCode, invoiceNumber);
+    public JsonData searchOrderAndInvoiceList(String userName, String iccardId, String iccardIdentifier, String invoiceCode, String invoiceNumber, Integer pageNum, Integer pageSize) {
+        return orderService.searchOrderAndInvoiceList(userName, iccardId, iccardIdentifier, invoiceCode, invoiceNumber, pageNum, pageSize);
     }
 
     /**

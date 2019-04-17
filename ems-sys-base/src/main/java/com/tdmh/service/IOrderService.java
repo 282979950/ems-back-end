@@ -8,11 +8,15 @@ import com.tdmh.entity.UserOrders;
  */
 public interface IOrderService {
 
-    JsonData searchOrderAndInvoiceList(String userName, String iccardId, String iccardIdentifier, String invoiceCode, String invoiceNumber);
+    JsonData searchOrderAndInvoiceList(String userName, String iccardId, String iccardIdentifier, String invoiceCode, String invoiceNumber, Integer pageNum, Integer pageSize);
 
     JsonData updateOrderStatus(Integer orderId, Integer orderStatus);
+
     JsonData BusinessDataQueryService(UserOrders orders);
+
     JsonData BusinessDataQuerySearchListService(UserOrders orders);
+
     JsonData selectHistoryOrdersService(Integer userId);
+
     void exportBusinessDataQueryListService(UserOrders orders);
 }
