@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @Controller
-@RequestMapping("/ardQuery/")
-public class ArdQueryController {
+@RequestMapping("/cardQuery/")
+public class CardQueryController {
     @Autowired
     private IPrePaymentService prePaymentService;
 
@@ -27,7 +27,7 @@ public class ArdQueryController {
      * @param param
      * @return
      */
-    @RequiresPermissions("querystats:ardQuery:visit")
+    @RequiresPermissions("queryStats:cardQuery:visit")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData selectFindListArdQueryByIccardIdentifier(PrePaymentParam param){
@@ -41,7 +41,7 @@ public class ArdQueryController {
      * 查询统计
      * @return
      */
-    @RequiresPermissions("querystats:ardQuery:visit")
+    @RequiresPermissions("querytats:cardQuery:visit")
     @RequestMapping("/listData.do")
     @ResponseBody
     public JsonData selectFindListArdQuery(){
@@ -52,7 +52,7 @@ public class ArdQueryController {
      * @param param
      * @return
      */
-    @RequiresPermissions("querystats:ardQuery:visit")
+    @RequiresPermissions("queryStats:cardQuery:visit")
     @RequestMapping(value = "/Export.do")
     @ResponseBody
     public void ardQueryExport(PrePaymentParam param,HttpServletResponse response){
