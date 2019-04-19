@@ -86,6 +86,8 @@ public class CreateAccountParam extends BaseEntity {
      */
     private Integer userStatus;
 
+    private Integer serviceTimes;
+
     private String flowNumber;
 
     private Integer orderId;

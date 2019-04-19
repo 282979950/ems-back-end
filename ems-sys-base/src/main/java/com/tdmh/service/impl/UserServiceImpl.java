@@ -229,6 +229,7 @@ public class UserServiceImpl implements IUserService {
         if (param.getUserDeed() == null) {
             param.setUserDeed("");
         }
+        param.setServiceTimes(0);
         param.setUserStatus(3);
         param.setUsable(true);
         int resultCount = userMapper.createAccount(param);
