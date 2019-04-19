@@ -97,7 +97,7 @@ public class EmpController {
     }
 
     @RequiresPermissions("sys:emp:resetPassword")
-    @RequestMapping(value = "getEmpByEmpNumber.do")
+    @RequestMapping(value = "resetPassword.do")
     @ResponseBody
     public JsonData resetPassword(Integer empId) {
         return employeeService.resetPassword(empId);
