@@ -194,4 +194,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
         EmployeeParam employee = employeeMapper.getEmpByEmpNumber(empNumber);
         return employee == null ? JsonData.successMsg("查询结果为空") : JsonData.success(employee, "查询成功");
     }
+
+    @Override
+    public JsonData resetPassword(Integer empId) {
+        EmployeeParam emp = employeeMapper.getEmpById(empId);
+        emp.setEmpPassword(MD5Utils.MD5EncodeUtf8("0000"));
+        return employeeMapper.editEmployee(emp) == 1 ? JsonData.successMsg("重置密码成功") : JsonData.fail("重置密码失败");
+    }
 }

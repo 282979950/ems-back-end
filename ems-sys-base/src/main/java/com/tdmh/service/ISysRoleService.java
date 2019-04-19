@@ -36,4 +36,10 @@ public interface ISysRoleService {
      * @return
      */
     JsonData selectRole(String roleName, Integer pageNum, Integer pageSize);
+
+    /**
+     * 获取所有角色信息
+     * @return
+     */
+    JsonData getAllRole();
 }

@@ -107,6 +107,12 @@ public class SysRoleServiceImpl implements ISysRoleService {
         return JsonData.success(pageInfo, "查询成功");
     }
 
+    @Override
+    public JsonData getAllRole() {
+        List<SysRoleParam> roles = roleMapper.select(null);
+        return JsonData.success(roles, "查询成功");
+    }
+
     private boolean checkRoleIdExist(Integer roleId) {
         return roleMapper.checkRoleIdExist(roleId);
     }

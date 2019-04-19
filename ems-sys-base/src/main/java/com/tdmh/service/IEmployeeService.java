@@ -102,4 +102,11 @@ public interface IEmployeeService {
                             Integer pageSize);
 
     JsonData getEmpByEmpNumber(String empNumber);
+
+    /**
+     * 重置密码
+     * @param empId
+     * @return
+     */
+    JsonData resetPassword(Integer empId);
 }

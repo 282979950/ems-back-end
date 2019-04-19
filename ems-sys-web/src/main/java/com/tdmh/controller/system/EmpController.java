@@ -95,4 +95,11 @@ public class EmpController {
 //        return employeeService.searchEmployee(empNumber, null, null, null, null, null, null, null);
         return employeeService.getEmpByEmpNumber(empNumber);
     }
+
+    @RequiresPermissions("sys:emp:resetPassword")
+    @RequestMapping(value = "getEmpByEmpNumber.do")
+    @ResponseBody
+    public JsonData resetPassword(Integer empId) {
+        return employeeService.resetPassword(empId);
+    }
 }

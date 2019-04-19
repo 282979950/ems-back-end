@@ -37,6 +37,18 @@ public class SysRoleController {
     }
 
     /**
+     * 获取角色列表
+     *
+     * @return JsonData
+     */
+    @RequiresPermissions("sys:role:visit")
+    @RequestMapping("getAllRole.do")
+    @ResponseBody
+    public JsonData getAllRole() {
+        return sysRoleService.getAllRole();
+    }
+
+    /**
      * 新增权限
      *
      */
