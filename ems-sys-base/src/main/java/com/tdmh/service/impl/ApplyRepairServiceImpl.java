@@ -104,7 +104,7 @@ public class ApplyRepairServiceImpl implements IApplyRepairService {
         PageHelper.startPage(pageNum, pageSize);
         List<ApplyRepairParam> applyRepairs = applyRepairMapper.search(userId, userName, userPhone, userTelPhone);
         PageInfo<ApplyRepairParam> page = new PageInfo<>(applyRepairs);
-        return applyRepairs.size() == 0 ? JsonData.successMsg("查询结果为空"): JsonData.success(page, "查询成功");
+        return JsonData.success(page, "查询成功");
     }
 
     @Override

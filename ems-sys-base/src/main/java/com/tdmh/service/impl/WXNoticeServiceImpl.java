@@ -34,9 +34,6 @@ public class WXNoticeServiceImpl implements IWXNoticeService {
     public JsonData listDataWithPagination(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<WXNoticeParam> wxNotices = wxNoticeMapper.listData();
-        if (wxNotices == null || wxNotices.size() == 0) {
-            return JsonData.successMsg("查询结果为空");
-        }
         PageInfo<WXNoticeParam> page = new PageInfo<>(wxNotices);
         return JsonData.successData(page);
     }
@@ -77,9 +74,6 @@ public class WXNoticeServiceImpl implements IWXNoticeService {
     public JsonData search(String wxNoticeTitle, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<WXNoticeParam> wxNotices = wxNoticeMapper.search(wxNoticeTitle);
-        if (wxNotices == null || wxNotices.size() == 0) {
-            return JsonData.successMsg("查询结果为空");
-        }
         PageInfo<WXNoticeParam> page = new PageInfo<>(wxNotices);
         return JsonData.success(page, "查询成功");
     }

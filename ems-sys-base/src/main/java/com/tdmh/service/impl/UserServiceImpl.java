@@ -333,7 +333,7 @@ public class UserServiceImpl implements IUserService {
         PageHelper.startPage(pageNum, pageSize);
         List<LockAccountParam> accounts = userMapper.searchAccountArchive(null,null,null,3);
         PageInfo<LockAccountParam> page = new PageInfo<>(accounts);
-        return accounts == null || accounts.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(page, "查询成功");
+        return JsonData.success(page, "查询成功");
 
     }
 
@@ -342,7 +342,7 @@ public class UserServiceImpl implements IUserService {
         PageHelper.startPage(pageNum, pageSize);
         List<LockAccountParam> accounts = userMapper.searchAccountArchive(userId, userName, iccardId , 3);
         PageInfo<LockAccountParam> page = new PageInfo<>(accounts);
-        return accounts.size() == 0 ? JsonData.successMsg("搜索结果为空") : JsonData.success(page, "查询成功");
+        return JsonData.success(page, "查询成功");
     }
 
     @Override
@@ -434,7 +434,7 @@ public class UserServiceImpl implements IUserService {
         user.setUserStatus(3);
         List<User>  u =userMapper.userChangeList(user);
         PageInfo<User> page = new PageInfo<>(u);
-        return   u == null || u.size() == 0 ? JsonData.successMsg("未查到相关数据") : JsonData.success(page,"查询成功");
+        return JsonData.success(page,"查询成功");
     }
 
     @Override
