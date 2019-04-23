@@ -42,7 +42,7 @@ public class PreStrikeServiceImp implements IPreStrikeService {
         PageHelper.startPage(pageNum, pageSize);
         List<User> u = userMapper.selectUserByOrderType(user);
         PageInfo<User> page = new PageInfo<>(u);
-        return u.size()==0?JsonData.fail("未查询到相关数据"): JsonData.success(page,"查询成功");
+        return JsonData.success(page,"查询成功");
     }
 
     /**
@@ -126,7 +126,7 @@ public JsonData selectStrikeNucleusListService(StrikeNucleus strike, Integer pag
     PageHelper.startPage(pageNum, pageSize);
     List<StrikeNucleus> list =strikeNucleus.selectStrikeNucleusList(strike);
     PageInfo<StrikeNucleus> page = new PageInfo<>(list);
-    return list.size()==0?JsonData.fail("未查询到相关数据"):JsonData.success(page,"查询成功");
+    return JsonData.success(page,"查询成功");
 }
 /**
  * 处理审批流程

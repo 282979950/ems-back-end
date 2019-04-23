@@ -255,184 +255,163 @@ INSERT INTO `sys_organization` VALUES ('1017', '艺术部test', null, '3', '1013
 INSERT INTO `sys_organization` VALUES ('1018', '形象部test', 'DDD', '3', '1013', null, null, '2018-10-23 13:56:41', '12324', '1', null);
 
 -- 系统权限
-INSERT INTO `sys_permission` VALUES ('1000', 'visit', '根目录', '/', null, '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1001', 'sys:visit', '系统管理', '/sys/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1002', 'sys:dist:visit', '区域管理', '/sys/dist', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1003', 'sys:org:visit', '机构管理', '/sys/org', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1004', 'sys:emp:visit', '用户管理', '/sys/emp', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1005', 'sys:role:visit', '角色管理', '/sys/role', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1006', 'sys:perm:visit', '权限管理', '/sys/perm', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1007', 'sys:dic:visit', '字典管理', '/sys/dic', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1008', 'sys:gasPrice:visit', '气价管理', '/sys/gasPrice', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1009', 'sys:log:visit', '日志管理', '/sys/log', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1010', 'sys:notice:visit', '公告管理', '/sys/notice', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1011', 'account:visit', '账户开户管理', '/account/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1012', 'account:createArchive:visit', '用户建档', '/account/createArchive', '1011', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1013', 'account:entryMeter:visit', '表具入库', '/account/entryMeter', '1011', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1014', 'account:installMeter:visit', '挂表信息', '/account/installation', '1011', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1015', 'account:createAccount:visit', '账户开户', '/account/createAccount', '1011', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1016', 'account:lockAccount:visit', '账户锁定', '/account/lockAccount', '1011', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1017', 'account:alter:visit', '账户变更', '/account/alter', '1011', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1018', 'recharge:visit', '充值缴费管理', '/recharge/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1019', 'recharge:prePayment:visit', '预付费充值', '/recharge/pre', '1018', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1020', 'recharge:replaceCard:visit', '补卡充值', '/recharge/supplement', '1018', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1021', 'recharge:postPayment:visit', '后付费缴费', '/recharge/suff', '1018', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1022', 'recharge:order:visit', '订单管理', '/recharge/order', '1018', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1023', 'invoice:visit', '发票管理', '/invoice', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1024', 'invoice:assign:visit', '发票分配', '/invoice/assign', '1023', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1025', 'invoice:printCancel:visit', '发票查询', '/invoice/printCancel', '1023', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1026', 'invoice:eInvoice:visit', '电子发票管理', '/invoice/eInvoice', '1023', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1027', 'repairOrder:visit', '维修补气管理', '/repairOrder/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1028', 'repairOrder:input:visit', '维修单录入提交', '/repairOrder/entry', '1027', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1029', 'repairOrder:fillGas:visit', '维修补气结算', '/repairOrder/supplement', '1027', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1030', 'repairOrder:initCard:visit', 'IC卡初始化', '/repairOrder/initCard', '1027', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1031', 'financial:visit', '账务处理', '/financial/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1032', 'financial:preStrike:visit', '预冲账处理', '/financial/preStrike', '1031', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1033', 'financial:strike:visit', '冲账处理', '/financial/strike', '1031', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1034', 'meter:visit', '表具运行管理', '/meter/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1035', 'meter:record:visit', '抄表管理', '/meter/record', '1034', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1036', 'meter:control:visit', '阀门控制', '/meter/valve', '1034', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1037', 'meter:exception:visit', '异常情况管理', '/meter/exception', '1034', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1038', 'queryStats:visit', '查询统计', '/queryStats/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1039', 'queryStats:cardQuery:visit', 'IC卡查询', '/queryStats/cardQuery', '1036', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1040', 'queryStats:accountQuery:visit', '开户信息查询', '/queryStats/accountQuery', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1041', 'queryStats:userQuery:visit', '燃气用户信息查询', '/queryStats/userQuery', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1042', 'queryStats:exceptionQuery:visit', '异常用户查询', '/queryStats/exceptionQuery', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1043', 'queryStats:businessDataQuery:visit', '营业数据查询', '/businessDataQuery/data', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1044', 'queryStats:report:visit', '营业报表统计', '/queryStats/report', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1045', 'queryStats:report:visit', '网点管理', '/queryStats/report', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1046', 'applyRepair:visit', '报修单管理', '/applyRepair/', '1000', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1047', 'applyRepair:entryApplyRepair:visit', '报修单录入', '/applyRepair/entryApplyRepair', '1045', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1048', 'sys:outlet:visit', '网点管理', '/sys/outlet', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1049', 'sys:evalItem:visit', '评价项管理', '/sys/evalItem', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1050', 'sys:eval:visit', '评价查询', '/sys/eval', '1038', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-INSERT INTO `sys_permission` VALUES ('1051', 'sys:wxNotice:visit', '微信公告管理', '/sys/wxNotice', '1001', '0', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
-
-INSERT INTO `sys_permission` (`perm_name`, `perm_caption`, `perm_href`, `perm_parent_id`, `is_button` , `create_time` ,  `create_by` , `update_time` , `update_by`, `usable` , `remarks`)
-VALUES
-('account:alter:update', '变更修改', '', '1017', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:createAccount:export', '导出', '', '1015', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:createAccount:import', '导入', '', '1015', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:createAccount:retrieve', '查询', '', '1015', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:createAccount:update', '开户', '', '1015', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:createArchive:create', '增加', '', '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:createArchive:delete', '删除', '', '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:createArchive:export', '导出', '', '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:createArchive:import', '导入', '', '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:createArchive:retrieve', '查询', '', '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:createArchive:update', '修改', '', '1012', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:entryMeter:create', '增加', '', '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:entryMeter:delete', '删除', '', '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:entryMeter:export', '导出', '', '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:entryMeter:import', '导入', '', '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:entryMeter:retrieve', '查询', '', '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:entryMeter:update', '修改', '', '1013', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:installation:export', '导出', '', '1014', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:installation:import', '导入', '', '1014', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:installation:retrieve', '查询', '', '1014', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:installation:update', '修改', '', '1014', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:lockAccount:export', '导出', '', '1016', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:lockAccount:import', '导入', '', '1016', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:lockAccount:lock', '锁定解锁', '', '1016', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:lockAccount:lockList', '锁定记录', '', '1016', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('account:lockAccount:retrieve', '查询', '', '1016', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('invoice:assign:add', '发票录入', '', '1024', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('invoice:assign:assignment', '发票分配', '', '1024', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('invoice:assign:retrieve', '查询', '', '1024', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('invoice:printCancel:retrieve', '发票查询', '', '1025', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('queryStats:exceptionQuery:export', '导出', '', '1042', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('queryStats:exceptionQuery:retrieve', '查询', '', '1042', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('queryStats:accountQuery:export', '开户信息查询导出', '', '1040', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('queryStats:accountQuery:retrieve', '查询', '', '1040', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('queryStats:cardQuery:record', '识别IC卡', '', '1039', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:order:cancel', '发票报废', '', '1022', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:order:new', '新票补打', '', '1022', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:order:old', '原票补打', '', '1022', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:order:print', '订单打印', '', '1022', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:order:record', '识别IC卡', '', '1022', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:order:retrieve', '查询', '', '1022', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:order:writeCard', '订单页面写卡', '', '1022', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:pre:new', '发卡充值', '', '1019', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:pre:record', '识别IC卡', '', '1019', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:pre:retrieve', '查询', '', '1019', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:pre:update', '预充值', '', '1019', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('invoice:printCancel:cancel', '作废', '', '1025', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:supplement:retrieve', '补卡查询', '', '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:supplement:supList', '历史补卡记录', '', '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('recharge:supplement:update', '补卡', '', '1020', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('repairOrder:entry:create', '增加', '', '1028', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('repairOrder:entry:delete', '删除', '', '1028', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('repairOrder:entry:retrieve', '查询', '', '1028', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('repairOrder:entry:update', '修改', '', '1028', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('repairOrder:fillGas:fillGas', '补气补缴', '', '1029', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dic:create', '增加', '', '1007', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dic:delete', '删除', '', '1007', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dic:export', '导出', '', '1007', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dic:import', '导入', '', '1007', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dic:retrieve', '查询', '', '1007', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dic:update', '修改', '', '1007', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dist:create', '增加', '', '1002', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dist:delete', '删除', '', '1002', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dist:export', '导出', '', '1002', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dist:import', '导入', '', '1002', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dist:retrieve', '查询', '', '1002', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:dist:update', '修改', '', '1002', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:emp:create', '增加', '', '1004', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:emp:delete', '删除', '', '1004', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:emp:export', '导出', '', '1004', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:emp:import', '导入', '', '1004', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:emp:retrieve', '查询', '', '1004', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:emp:update', '修改', '', '1004', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:emp:detail', '详情', '', '1004', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:emp:resetPassword', '重置密码', '', '1004', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:gasPrice:update', '修改', '', '1008', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:log:create', '增加', '', '1009', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:log:delete', '删除', '', '1009', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:log:export', '导出', '', '1009', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:log:import', '导入', '', '1009', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:log:retrieve', '查询', '', '1009', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:log:update', '修改', '', '1009', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:notice:create', '增加', '', '1010', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:notice:delete', '删除', '', '1010', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:notice:export', '导出', '', '1010', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:notice:import', '导入', '', '1010', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:notice:retrieve', '查询', '', '1010', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:notice:update', '修改', '', '1010', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:org:create', '增加', '', '1003', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:org:delete', '删除', '', '1003', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:org:export', '导出', '', '1003', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:org:import', '导入', '', '1003', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:org:retrieve', '查询', '', '1003', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:org:update', '修改', '', '1003', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:perm:create', '增加', '', '1006', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:perm:delete', '删除', '', '1006', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:perm:export', '导出', '', '1006', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:perm:import', '导入', '', '1006', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:perm:retrieve', '查询', '', '1006', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:perm:update', '修改', '', '1006', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:role:create', '增加', '', '1005', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:role:delete', '删除', '', '1005', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:role:export', '导出', '', '1005', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:role:import', '导入', '', '1005', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:role:retrieve', '查询', '', '1005', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:role:update', '修改', '', '1005', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('applyRepair:entryApplyRepair:create', '增加', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('applyRepair:entryApplyRepair:delete', '删除', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('applyRepair:entryApplyRepair:update', '修改', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('applyRepair:entryApplyRepair:retrieve', '查询', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('applyRepair:entryApplyRepair:cancel', '撤销', '', '1046', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:outlet:create', '增加', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:outlet:delete', '删除', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:outlet:update', '修改', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:outlet:retrieve', '查询', '', '1048', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:evalItem:create', '增加', '', '1049', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:evalItem:delete', '删除', '', '1049', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:evalItem:update', '修改', '', '1049', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:evalItem:retrieve', '查询', '', '1049', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:eval:retrieve', '查询', '', '1050', '1', '18-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:wxNotice:create', '新增', '', '1051', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:wxNotice:delete', '删除', '', '1051', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', ''),
-('sys:wxNotice:retrieve', '查询', '', '1051', '1', '2018-08-01 15:38:26', '1000000001', '2018-08-01 15:38:31', '1000000001', '1', '');
+INSERT INTO `sys_permission` VALUES ('1000', 'visit', '根目录', '', null, '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1001', 'sys:visit', '系统管理', '', '1000', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1002', 'sys:dist:visit', '区域管理', '', '1001', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1003', 'sys:org:visit', '机构管理', '', '1001', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1004', 'sys:emp:visit', '用户管理', '', '1001', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1005', 'sys:role:visit', '角色管理', '', '1001', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1006', 'sys:perm:visit', '权限管理', '', '1001', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1007', 'sys:dic:visit', '字典管理', '', '1001', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1008', 'sys:gasPrice:visit', '气价管理', '', '1001', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1009', 'sys:log:visit', '日志管理', '', '1001', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1010', 'sys:notice:visit', '公告管理', '', '1001', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1011', 'account:visit', '账户开户管理', '', '1000', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1012', 'account:createArchive:visit', '用户建档', '', '1011', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1013', 'account:entryMeter:visit', '表具入库', '', '1011', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1014', 'account:installMeter:visit', '挂表信息', '', '1011', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1015', 'account:createAccount:visit', '账户开户', '', '1011', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1016', 'account:lockAccount:visit', '账户锁定', '', '1011', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1017', 'account:alter:visit', '账户变更', '', '1011', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1018', 'recharge:visit', '充值缴费管理', '', '1000', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1019', 'recharge:prePayment:visit', '预付费充值', '', '1018', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1020', 'recharge:replaceCard:visit', '补卡充值', '', '1018', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1021', 'recharge:postPayment:visit', '后付费缴费', '', '1018', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1022', 'recharge:order:visit', '订单管理', '', '1018', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1023', 'invoice:visit', '发票管理', '', '1000', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1024', 'invoice:assign:visit', '发票分配', '', '1023', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1025', 'invoice:query:visit', '发票查询', '', '1023', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1026', 'invoice:eInvoice:visit', '电子发票管理', '', '1023', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1027', 'repairOrder:visit', '维修补气管理', '', '1000', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1028', 'repairOrder:entry:visit', '维修单录入提交', '', '1027', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1029', 'repairOrder:fillGas:visit', '维修补气结算', '', '1027', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1030', 'repairOrder:initCard:visit', 'IC卡初始化', '', '1027', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1031', 'financial:visit', '账务处理', '', '1000', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1032', 'financial:preStrike:visit', '预冲账处理', '', '1031', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1033', 'financial:strike:visit', '冲账处理', '', '1031', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1034', 'meter:visit', '表具运行管理', '', '1000', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1035', 'meter:record:visit', '抄表管理', '', '1034', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1036', 'meter:control:visit', '阀门控制', '', '1034', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1037', 'meter:exception:visit', '异常情况管理', '', '1034', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1038', 'queryStats:visit', '查询统计', '', '1000', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1039', 'queryStats:cardQuery:visit', 'IC卡查询', '', '1036', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1040', 'queryStats:accountQuery:visit', '开户信息查询', '', '1038', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1041', 'queryStats:userQuery:visit', '燃气用户信息查询', '', '1038', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1042', 'queryStats:exceptionQuery:visit', '异常用户查询', '', '1038', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1043', 'queryStats:businessDataQuery:visit', '营业数据查询', '', '1038', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1044', 'queryStats:report:visit', '营业报表统计', '', '1038', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1045', 'queryStats:outlet:visit', '网点管理', '', '1038', '0', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1048', 'account:alter:update', '修改', '', '1021', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1049', 'account:createAccount:export', '导出', '', '1015', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1050', 'account:createAccount:import', '导入', '', '1015', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1051', 'account:createAccount:retrieve', '查询', '', '1015', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1052', 'account:createAccount:update', '开户', '', '1015', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1053', 'account:createArchive:create', '增加', '', '1012', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1054', 'account:createArchive:delete', '删除', '', '1012', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1055', 'account:createArchive:export', '导出', '', '1012', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1056', 'account:createArchive:import', '导入', '', '1012', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1057', 'account:createArchive:retrieve', '查询', '', '1012', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1058', 'account:createArchive:update', '修改', '', '1012', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1059', 'account:entryMeter:create', '增加', '', '1013', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1060', 'account:entryMeter:delete', '删除', '', '1013', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1061', 'account:entryMeter:export', '导出', '', '1013', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1062', 'account:entryMeter:import', '导入', '', '1013', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1063', 'account:entryMeter:retrieve', '查询', '', '1013', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1064', 'account:entryMeter:update', '修改', '', '1013', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1065', 'account:installMeter:export', '导出', '', '1014', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1066', 'account:installMeter:import', '导入', '', '1014', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1067', 'account:installMeter:retrieve', '查询', '', '1014', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1068', 'account:installMeter:update', '修改', '', '1014', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1069', 'account:lockAccount:export', '导出', '', '1016', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1070', 'account:lockAccount:import', '导入', '', '1016', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1071', 'account:lockAccount:lock', '锁定解锁', '', '1016', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1072', 'account:lockAccount:lockList', '锁定记录', '', '1016', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1073', 'account:lockAccount:retrieve', '查询', '', '1016', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1074', 'invoice:assign:add', '发票录入', '', '1024', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1075', 'invoice:assign:assignment', '发票分配', '', '1024', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1076', 'invoice:assign:retrieve', '查询', '', '1024', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1077', 'queryStats:exceptionQuery:export', '导出', '', '1042', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1078', 'queryStats:exceptionQuery:retrieve', '查询', '', '1042', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1079', 'queryStats:accountQuery:export', '开户信息查询导出', '', '1040', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1080', 'queryStats:accountQuery:retrieve', '查询', '', '1040', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1081', 'queryStats:cardQuery:record', '识别IC卡', '', '1039', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1082', 'recharge:order:cancel', '发票报废', '', '1022', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1083', 'recharge:order:new', '新票补打', '', '1022', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1084', 'recharge:order:old', '原票补打', '', '1022', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1085', 'recharge:order:print', '订单打印', '', '1022', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1086', 'recharge:order:record', '识别IC卡', '', '1022', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1087', 'recharge:order:retrieve', '查询', '', '1022', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1088', 'recharge:order:writeCard', '订单页面写卡', '', '1022', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1089', 'recharge:pre:new', '发卡充值', '', '1019', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1090', 'recharge:pre:record', '识别IC卡', '', '1019', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1091', 'recharge:pre:retrieve', '查询', '', '1019', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1092', 'recharge:pre:update', '预充值', '', '1019', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1093', 'recharge:replaceCard:retrieve', '补卡查询', '', '1020', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1094', 'recharge:replaceCard:history', '历史补卡记录', '', '1020', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1095', 'recharge:replaceCard:update', '补卡', '', '1020', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1096', 'repairOrder:entry:create', '增加', '', '1028', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1097', 'repairOrder:entry:delete', '删除', '', '1028', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1098', 'repairOrder:entry:retrieve', '查询', '', '1028', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1099', 'repairOrder:entry:update', '修改', '', '1028', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1100', 'repairOrder:fillGas:fillGas', '补气补缴', '', '1029', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1101', 'sys:dic:create', '增加', '', '1007', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1102', 'sys:dic:delete', '删除', '', '1007', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1103', 'sys:dic:export', '导出', '', '1007', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1104', 'sys:dic:import', '导入', '', '1007', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1105', 'sys:dic:retrieve', '查询', '', '1007', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1106', 'sys:dic:update', '修改', '', '1007', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1107', 'sys:dist:create', '增加', '', '1002', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1108', 'sys:dist:delete', '删除', '', '1002', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1109', 'sys:dist:export', '导出', '', '1002', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1110', 'sys:dist:import', '导入', '', '1002', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1111', 'sys:dist:retrieve', '查询', '', '1002', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1112', 'sys:dist:update', '修改', '', '1002', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1113', 'sys:emp:create', '增加', '', '1004', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1114', 'sys:emp:delete', '删除', '', '1004', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1115', 'sys:emp:export', '导出', '', '1004', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1116', 'sys:emp:import', '导入', '', '1004', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1117', 'sys:emp:retrieve', '查询', '', '1004', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1118', 'sys:emp:update', '修改', '', '1004', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1119', 'sys:emp:detail', '详情', '', '1004', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1120', 'sys:emp:resetPassword', '重置密码', '', '1004', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1121', 'sys:gasPrice:update', '修改', '', '1008', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1122', 'sys:log:create', '增加', '', '1009', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1123', 'sys:log:delete', '删除', '', '1009', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1124', 'sys:log:export', '导出', '', '1009', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1125', 'sys:log:import', '导入', '', '1009', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1126', 'sys:log:retrieve', '查询', '', '1009', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1127', 'sys:log:update', '修改', '', '1009', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1128', 'sys:notice:create', '增加', '', '1010', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1129', 'sys:notice:delete', '删除', '', '1010', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1130', 'sys:notice:export', '导出', '', '1010', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1131', 'sys:notice:import', '导入', '', '1010', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1132', 'sys:notice:retrieve', '查询', '', '1010', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1133', 'sys:notice:update', '修改', '', '1010', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1134', 'sys:org:create', '增加', '', '1003', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1135', 'sys:org:delete', '删除', '', '1003', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1136', 'sys:org:export', '导出', '', '1003', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1137', 'sys:org:import', '导入', '', '1003', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1138', 'sys:org:retrieve', '查询', '', '1003', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1139', 'sys:org:update', '修改', '', '1003', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1140', 'sys:perm:create', '增加', '', '1006', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1141', 'sys:perm:delete', '删除', '', '1006', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1142', 'sys:perm:export', '导出', '', '1006', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1143', 'sys:perm:import', '导入', '', '1006', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1144', 'sys:perm:retrieve', '查询', '', '1006', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1145', 'sys:perm:update', '修改', '', '1006', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1146', 'sys:role:create', '增加', '', '1005', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1147', 'sys:role:delete', '删除', '', '1005', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1148', 'sys:role:export', '导出', '', '1005', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1149', 'sys:role:import', '导入', '', '1005', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1150', 'sys:role:retrieve', '查询', '', '1005', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1151', 'sys:role:update', '修改', '', '1005', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1169', 'queryStats:userQuery:historyQuery', '历史记录', '', '1041', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1170', 'queryStats:userQuery:historyOrderQuery', '历史订单', '', '1041', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1171', 'queryStats:userQuery:historyFillGasOrder', '历史补气', '', '1041', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1172', 'queryStats:userQuery:retrieve', '查询', '', '1041', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1173', 'queryStats:userQuery:historyUserCard', '历史卡', '', '1041', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1174', 'queryStats:userQuery:historyRepairOrder', '历史维修', '', '1041', '1', null, null, null, null, '1', '');
+INSERT INTO `sys_permission` VALUES ('1175', 'queryStats:userQuery:export', '导出', '', '1041', '1', null, null, null, null, '1', '');
 
 -- 角色数据
 INSERT INTO `sys_role` VALUES ('1001', 'admin', '1000', '1000', '1', null, null, null, null, '1', '');

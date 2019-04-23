@@ -72,7 +72,7 @@ public class InvoiceController {
      * 查询已分配后的发票编号
      * @return
      */
-    @RequiresPermissions("invoice:printCancel:visit")
+    @RequiresPermissions("invoice:query:visit")
     @RequestMapping("/printCancel/listData.do")
     @ResponseBody
     public JsonData getAllPrintCancelInvoiceList(Integer pageNum, Integer pageSize){
@@ -84,7 +84,7 @@ public class InvoiceController {
      * 查询特定的已分配的发票
      * @return
      */
-    @RequiresPermissions("invoice:printCancel:retrieve")
+    @RequiresPermissions("invoice:query:retrieve")
     @RequestMapping("/printCancel/search.do")
     @ResponseBody
     public JsonData searchPrintCancelInvoiceList(String invoiceCode, String invoiceNumber, Integer empId, Integer pageNum, Integer pageSize){
@@ -143,7 +143,7 @@ public class InvoiceController {
      * @param invoiceNumber
      * @return
      */
-    @RequiresPermissions("recharge:printCancel:cancel")
+    @RequiresPermissions("invoice:query:cancel")
     @RequestMapping("printCancel/cancel.do")
     @ResponseBody
     public JsonData cancelNotPrintInvoice(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){

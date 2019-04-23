@@ -38,7 +38,7 @@ public class GasPriceServiceImpl implements IGasPriceService {
         PageHelper.startPage(pageNum, pageSize);
         List<GasPriceParam> list = gasPriceMapper.listAllGasPrice();
         PageInfo<GasPriceParam> page = new PageInfo<>(list);
-        return list == null || list.size() == 0 ? JsonData.successMsg("没有配置用户类型或者用气类型") : JsonData.successData(page);
+        return JsonData.successData(page);
     }
 
     @Override

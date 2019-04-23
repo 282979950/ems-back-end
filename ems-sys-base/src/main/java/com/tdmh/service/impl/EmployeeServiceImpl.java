@@ -186,7 +186,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
             return JsonData.successMsg("查询结果为空");
         }
         PageInfo<EmployeeParam> page = new PageInfo<>(employees);
-        return employees.size() == 0 ? JsonData.successMsg("查询结果为空") : JsonData.success(page, "查询成功");
+        return JsonData.success(page, "查询成功");
     }
 
     @Override

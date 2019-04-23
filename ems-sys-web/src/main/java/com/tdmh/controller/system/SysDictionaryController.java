@@ -183,6 +183,6 @@ public class SysDictionaryController {
         PageHelper.startPage(pageNum, pageSize);
         List<SysDictionary> list = sysDictionaryService.findListByService(sdy);
         PageInfo<SysDictionary> page = new PageInfo<>(list);
-        return list.size() == 0 ? JsonData.fail("未查询到相关数据请重试") : JsonData.success(page, "查询成功");
+        return JsonData.success(page, "查询成功");
     }
 }
