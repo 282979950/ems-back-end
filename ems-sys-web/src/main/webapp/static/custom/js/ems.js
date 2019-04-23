@@ -2097,6 +2097,7 @@ app.findInvoice = function (data, printType) {
 };
 
 app.PrintInvoice = function (data, sdata) {
+    // todo 调用控件去打印
     $.ajax({
         async: true,
         type: 'Post',
