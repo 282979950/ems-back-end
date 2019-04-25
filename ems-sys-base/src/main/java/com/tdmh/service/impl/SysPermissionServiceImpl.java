@@ -139,9 +139,6 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
     public JsonData selectPermission(String permName, String permCaption, String menuName, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<SysPermission> permissions = permissionMapper.select(permName, permCaption, menuName);
-        if (permissions == null || permissions.size() == 0) {
-            return JsonData.successMsg("查询结果为空");
-        }
         PageInfo<SysPermission> page = new PageInfo<>(permissions);
         return JsonData.success(page, "查询成功");
     }

@@ -25,7 +25,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         user_id, user_name, user_phone, user_idcard, user_deed, user_dist_id, user_address,
-        user_type, user_gas_type,  user_status, user_locked, service_times,
+        user_type, user_gas_type, user_status, user_locked, service_times,
         create_time, create_by, update_time, update_by, usable, remarks
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -267,7 +267,7 @@
     <select id="getAllArchives" resultMap="CreateArchiveParam">
         select
         u.user_id, u.user_dist_id, dist.dist_name as user_dist_name, u.user_address, u.user_type, sd.dict_key as user_type_name, u.user_gas_type,
-        sd2.dict_key as  user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
+        sd2.dict_key as user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
         u.update_time, u.update_by, u.usable, u.remarks
         from user u
         LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
@@ -333,7 +333,7 @@
     <select id="searchArchive" parameterType="map" resultMap="CreateArchiveParam">
         select
         u.user_id, u.user_dist_id, dist.dist_name as user_dist_name, u.user_address, u.user_type, sd.dict_key as user_type_name, u.user_gas_type,
-        sd2.dict_key as  user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
+        sd2.dict_key as user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
         u.update_time, u.update_by, u.usable, u.remarks
         from user u
         LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
@@ -367,7 +367,7 @@
     <select id="searchAccountById" resultMap="CreateArchiveParam" parameterType="map">
         select
         u.user_id, u.user_dist_id, dist.dist_name as user_dist_name, u.user_address, u.user_type, sd.dict_key as user_type_name, u.user_gas_type,
-        sd2.dict_key as  user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
+        sd2.dict_key as user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
         u.update_time, u.update_by, u.usable, u.remarks
         from user u
         LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
@@ -493,11 +493,12 @@
             <arg column="lockStatus" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="lock_reason" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="last_lock_reason" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            </constructor>
+        </constructor>
     </resultMap>
     <select id="searchAccountArchive" parameterType="map" resultMap="LockAccountParam">
         select
-        u.user_id, u.user_name,uc.card_id as iccard_id, dist.dist_name, u.user_address, IFNULL(ul.is_lock,0) as is_lock, (CASE WHEN is_lock=1 THEN '锁定' WHEN is_lock=0 THEN '未锁定' ELSE '未锁定' END) AS lockStatus, '' as lock_reason, ul.lock_reason as last_lock_reason
+        u.user_id, u.user_name,uc.card_id as iccard_id, dist.dist_name, u.user_address, IFNULL(ul.is_lock,0) as is_lock, (CASE WHEN is_lock=1 THEN '锁定' WHEN
+        is_lock=0 THEN '未锁定' ELSE '未锁定' END) AS lockStatus, '' as lock_reason, ul.lock_reason as last_lock_reason
         from user u
         left join user_card uc on u.user_id = uc.user_id
         left join sys_district dist on u.user_dist_id = dist.dist_id
@@ -507,13 +508,13 @@
         ) ul ON u.user_id = ul.user_id
         where u.usable = 1 AND uc.usable=1
         <if test="userId != null and userId != ''">
-            AND u.user_id  LIKE CONCAT('%',#{userId,jdbcType=VARCHAR}, '%')
+            AND u.user_id LIKE CONCAT('%',#{userId,jdbcType=VARCHAR}, '%')
         </if>
         <if test="userName != null and userName != ''">
-            AND u.user_name  LIKE CONCAT('%',#{userName,jdbcType=VARCHAR}, '%')
+            AND u.user_name LIKE CONCAT('%',#{userName,jdbcType=VARCHAR}, '%')
         </if>
         <if test="iccardId != null and iccardId != ''">
-            AND uc.card_id  LIKE CONCAT('%',#{iccardId,jdbcType=VARCHAR}, '%')
+            AND uc.card_id LIKE CONCAT('%',#{iccardId,jdbcType=VARCHAR}, '%')
         </if>
         <if test="userStatus != null and userStatus != ''">
             AND u.user_status = #{userStatus,jdbcType=VARCHAR}
@@ -521,13 +522,14 @@
     </select>
     <insert id="insertUserLock" parameterType="com.tdmh.entity.UserLock">
         insert into user_lock (user_id, is_lock,lock_reason,create_time, create_by,update_time,update_by ,usable, remarks)
-       values (#{userId,jdbcType=INTEGER},#{isLock,jdbcType=BIT},#{lockReason,jdbcType=VARCHAR},NOW(),#{createBy,jdbcType=INTEGER},NOW(),
+        values (#{userId,jdbcType=INTEGER},#{isLock,jdbcType=BIT},#{lockReason,jdbcType=VARCHAR},NOW(),#{createBy,jdbcType=INTEGER},NOW(),
         #{updateBy,jdbcType=INTEGER},#{usable,jdbcType=BIT},#{remarks,jdbcType=VARCHAR})
-       </insert>
+    </insert>
 
     <select id="searchLockList" parameterType="int" resultType="com.tdmh.entity.UserLock">
-      SELECT user_lock_id as userLockId,user_id as userId,is_lock as isLock, (CASE WHEN is_lock=1 THEN '锁定' WHEN is_lock=0 THEN '未锁定' ELSE '未锁定' END) AS lockStatus,lock_reason as lockReason,create_time as createTime
-      FROM user_lock where user_id = #{userId,jdbcType=INTEGER}
+        SELECT user_lock_id as userLockId,user_id as userId,is_lock as isLock, (CASE WHEN is_lock=1 THEN '锁定' WHEN is_lock=0 THEN '未锁定' ELSE '未锁定' END) AS
+        lockStatus,lock_reason as lockReason,create_time as createTime
+        FROM user_lock where user_id = #{userId,jdbcType=INTEGER}
     </select>
 
     <update id="updateServiceTimesByUserId" parameterType="int">
@@ -544,14 +546,14 @@
         where
         user_id = #{userId} and usable = 1
     </update>
-    <select id="userChangeList" parameterType="com.tdmh.entity.User" resultType="com.tdmh.entity.User" >
+    <select id="userChangeList" parameterType="com.tdmh.entity.User" resultType="com.tdmh.entity.User">
         SELECT
         u.user_id as userId,u.user_name as userName,u.user_phone as userPhone,
         dist.dist_name as distName,u.user_address as userAddress,
         u.user_idcard as userIdcard,u.user_deed as userDeed,
         u.user_type as userType,u.user_gas_type as userGasType,
         sd.dict_key AS userTypeName,
-        u.user_gas_type as userGasType,sd2.dict_key AS  userGasTypeName,
+        u.user_gas_type as userGasType,sd2.dict_key AS userGasTypeName,
         u.user_status as userStatus,sd3.dict_key AS userStatusName
         FROM user u
         LEFT JOIN sys_district dist ON u.user_dist_id = dist.dist_id
@@ -585,56 +587,54 @@
         </set>
         where user_id = #{userId,jdbcType=INTEGER}
     </update>
-    <update id="updateUserUsable" parameterType="int" >
-        update user  SET usable=0 where user_id = #{userId,jdbcType=INTEGER}
+    <update id="updateUserUsable" parameterType="int">
+        update user SET usable=0 where user_id = #{userId,jdbcType=INTEGER}
 
     </update>
     <!--查询充值类型为	普通订单和超用补缴订单数据-->
     <select id="selectUserByOrderType" resultType="com.tdmh.entity.User" parameterType="com.tdmh.entity.User">
         SELECT
-          u.user_id as userId,
-          u.user_name as userName,
-          u.user_address as userAddress,
-          u.user_type as userType,
-          u.user_gas_type as userGasType,
-          orders.order_id as orderId,
-
-          orders.order_payment as orderPayment,
-          orders.order_gas as orderGas,
-          orders.employee_id as employeeId,
-          orders.order_status as orderStatus,
-          orders.create_time as orderCreateTime,
-          orders.order_type as orderType,
-          orders.account_state as accountState,
-          orders.order_strike_time as orderStrikeTime,
-          sd.dict_key AS userTypeName ,
-         sd2.dict_key AS  userGasTypeName,
-         sd3.dict_key AS  orderTypeName,
-         sd4.dict_key AS accountStateName
+        u.user_id as userId,
+        u.user_name as userName,
+        u.user_address as userAddress,
+        u.user_type as userType,
+        u.user_gas_type as userGasType,
+        orders.order_id as orderId,
+        orders.order_payment as orderPayment,
+        orders.order_gas as orderGas,
+        orders.employee_id as employeeId,
+        orders.order_status as orderStatus,
+        orders.create_time as orderCreateTime,
+        orders.order_type as orderType,
+        orders.account_state as accountState,
+        orders.order_strike_time as orderStrikeTime,
+        sd.dict_key AS userTypeName ,
+        sd2.dict_key AS userGasTypeName,
+        sd3.dict_key AS orderTypeName,
+        sd4.dict_key AS accountStateName
         FROM
-           user_orders orders
-        LEFT JOIN user u  ON orders.user_id = u.user_id
+        user_orders orders
+        LEFT JOIN user u ON orders.user_id = u.user_id
         LEFT JOIN sys_district dist ON u.user_dist_id = dist.dist_id
         LEFT JOIN sys_dictionary sd ON u.user_type = sd.dict_value AND sd.dict_category = 'user_type' AND sd.usable = 1
         LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND sd2.usable = 1
         LEFT JOIN sys_dictionary sd3 ON orders.order_type = sd3.dict_value AND sd3.dict_category = 'order_type' AND sd3.usable = 1
-    LEFT JOIN sys_dictionary sd4 ON orders.account_state = sd4.dict_value AND sd4.dict_category = 'account_state' AND sd4.usable = 1
-
-WHERE orders.order_type IN ( '2','4')
+        LEFT JOIN sys_dictionary sd4 ON orders.account_state = sd4.dict_value AND sd4.dict_category = 'account_state' AND sd4.usable = 1
+        WHERE orders.order_type IN ( '2','4')
         <if test="userName != null and userName != ''">
-         and    user_name = #{userName}
+            AND u.user_name LIKE CONCAT('%', #{userName,jdbcType=VARCHAR}, '%')
         </if>
-        <if test="userTypeName != null and userTypeName != ''">
+        <if test="userType != null and userType != ''">
             AND sd.dict_key = #{userTypeName}
         </if>
         <if test="employeeId != null">
-            AND orders.employee_id = #{employeeId}
+            AND orders.employee_id LIKE CONCAT('%', #{employeeId,jdbcType=VARCHAR}, '%')
         </if>
         ORDER BY orderCreateTime DESC
     </select>
     <select id="searchAccountQueryList" parameterType="map" resultType="com.tdmh.param.AccountQueryParam">
         select u.user_id as userId, u.user_name as userName, sd.dist_name as userDistName, u.user_address as userAddress,
-        sd1.dict_key AS userTypeName , sd2.dict_key AS  userGasTypeName, e.emp_name as openByName, u.open_time as openTime
+        sd1.dict_key AS userTypeName , sd2.dict_key AS userGasTypeName, e.emp_name as openByName, u.open_time as openTime
         from user u
         left join sys_district sd on u.user_dist_id = sd.dist_id AND sd.usable = 1
         LEFT JOIN sys_dictionary sd1 ON u.user_type = sd1.dict_value AND sd1.dict_category = 'user_type' AND sd1.usable = 1
@@ -657,19 +657,22 @@ WHERE orders.order_type IN ( '2','4')
     </select>
 
     <select id="searchAbnormalUserList" parameterType="map" resultType="com.tdmh.param.AbnormalUser">
-        SELECT u.user_id AS userId, u.user_name AS userName, uc.card_id AS iccardId, uc.card_identifier AS iccardIdentifier, u.user_phone AS userPhone, sd.dist_name as userDistName,
+        SELECT u.user_id AS userId, u.user_name AS userName, uc.card_id AS iccardId, uc.card_identifier AS iccardIdentifier, u.user_phone AS userPhone,
+        sd.dist_name as userDistName,
         u.user_address AS userAddress, uo.totalOrderGas, uo.totalOrderPayment, uo.startBuyDay, uo.endBuyDay, datediff(now(),uo.endBuyDay) AS notBuyDayCount,
-        ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) AS monthAveGas, ROUND(totalOrderPayment /(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) AS monthAvePayment
+        ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) AS monthAveGas, ROUND(totalOrderPayment
+        /(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) AS monthAvePayment
         FROM `user` u
         JOIN user_card uc ON u.user_id = uc.user_id AND uc.usable = 1
         LEFT JOIN sys_district sd on u.user_dist_id = sd.dist_id AND sd.usable = 1
         JOIN
         (
-        SELECT user_id, SUM(order_gas) AS totalOrderGas, SUM(order_payment) AS totalOrderPayment, MIN(create_time) AS startBuyDay, MAX(create_time) AS endBuyDay FROM user_orders GROUP BY user_id
+        SELECT user_id, SUM(order_gas) AS totalOrderGas, SUM(order_payment) AS totalOrderPayment, MIN(create_time) AS startBuyDay, MAX(create_time) AS endBuyDay
+        FROM user_orders GROUP BY user_id
         ) uo ON u.user_id = uo.user_id
         WHERE u.usable = 1
         <if test="monthAveGas!=null">
-            AND  ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) <![CDATA[ <= ]]> #{monthAveGas}
+            AND ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) <![CDATA[ <= ]]> #{monthAveGas}
         </if>
         <if test="monthAvePayment!=null">
             AND ROUND(totalOrderPayment /(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) <![CDATA[ <= ]]> #{monthAvePayment}
@@ -687,19 +690,19 @@ WHERE orders.order_type IN ( '2','4')
     <select id="userListByUserQuery" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-         FROM `user`
-        WHERE  usable = 1 ORDER BY create_time
+        FROM `user`
+        WHERE usable = 1 ORDER BY create_time
 
     </select>
     <select id="userQuerySearch" resultMap="BaseResultMap" parameterType="com.tdmh.entity.User">
         SELECT
         <include refid="Base_Column_List"/>
         FROM `user`
-        WHERE  usable = 1
-        <if test="userId != null" >
+        WHERE usable = 1
+        <if test="userId != null">
             AND user_id = #{userId}
         </if>
-        <if test="userName != null and userName!=''" >
+        <if test="userName != null and userName!=''">
 
             AND LOCATE (#{userName} ,user_name) > 0
         </if>

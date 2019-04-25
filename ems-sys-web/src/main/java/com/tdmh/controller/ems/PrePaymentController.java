@@ -28,7 +28,7 @@ public class PrePaymentController {
      * 显示所有可正常充值的的用户信息(包括用户，IC卡，消费信息)
      * @return
      */
-    @RequiresPermissions("recharge:pre:visit111")
+    @RequiresPermissions("recharge:pre:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData getAllOrderInformation() {

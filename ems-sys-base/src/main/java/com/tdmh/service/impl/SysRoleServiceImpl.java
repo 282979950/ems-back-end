@@ -100,9 +100,6 @@ public class SysRoleServiceImpl implements ISysRoleService {
     public JsonData selectRole(String roleName, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<SysRoleParam> roles = roleMapper.select(roleName);
-        if (roles == null || roles.size() == 0) {
-            return JsonData.successMsg("搜索结果为空");
-        }
         PageInfo<SysRoleParam> pageInfo = new PageInfo<>(roles);
         return JsonData.success(pageInfo, "查询成功");
     }
