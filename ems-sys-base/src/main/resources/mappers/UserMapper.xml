@@ -625,7 +625,7 @@
             AND u.user_name LIKE CONCAT('%', #{userName,jdbcType=VARCHAR}, '%')
         </if>
         <if test="userType != null and userType != ''">
-            AND sd.dict_key = #{userTypeName}
+            AND sd.dict_value = #{userType}
         </if>
         <if test="employeeId != null">
             AND orders.employee_id LIKE CONCAT('%', #{employeeId,jdbcType=VARCHAR}, '%')

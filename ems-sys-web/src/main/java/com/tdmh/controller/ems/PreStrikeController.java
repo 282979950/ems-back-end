@@ -29,12 +29,12 @@ public class PreStrikeController {
      * @return
      */
 
-    @RequiresPermissions("financial:prestrike:visit")
+    @RequiresPermissions("financial:preStrike:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
     public JsonData selectUserListController(User user,Integer pageNum, Integer pageSize){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return preStrikeService.selectUserByOrderTypeService( user,currentEmpId,pageNum, pageSize);
+        return preStrikeService.selectUserByOrderTypeService(user, currentEmpId, pageNum, pageSize);
     }
 
     /**
@@ -42,10 +42,10 @@ public class PreStrikeController {
      * @param user
      * @return
      */
-    @RequiresPermissions("financial:prestrike:visit")
+    @RequiresPermissions("financial:preStrike:edit")
     @RequestMapping(value = "/edit.do")
     @ResponseBody
-    public JsonData editPrestrikeController(User user){
+    public JsonData editPreStrikeController(User user){
         String  currentEmpName = ShiroUtils.getPrincipal().getLoginName();
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         return user== null? JsonData.fail("未获取到该条数据相关信息，请检查数据或联系管理员"): preStrikeService.editUserOrdersService(user,currentEmpName,currentEmpId);
@@ -55,7 +55,7 @@ public class PreStrikeController {
      * @return
      */
 
-    @RequiresPermissions("financial:prestrike:visit")
+    @RequiresPermissions("financial:preStrike:visit")
     @RequestMapping(value = "/search.do")
     @ResponseBody
     public JsonData searchUserListController(User user,Integer pageNum, Integer pageSize){
