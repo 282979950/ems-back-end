@@ -4,14 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 /**
  * 角色权限实体
  */
 @Getter
 @Setter
-public class SysRolePerm extends BaseEntity {
+public class SysRolePerm {
     /**
      * ID
      */
@@ -29,9 +28,7 @@ public class SysRolePerm extends BaseEntity {
     @NotNull
     private Integer permId;
 
-    public SysRolePerm(Integer id, Integer roleId, Integer permId, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable,
-                       String remarks) {
-        super(createTime, createBy, updateTime, updateBy, usable, remarks);
+    public SysRolePerm(Integer id, Integer roleId, Integer permId) {
         this.id = id;
         this.roleId = roleId;
         this.permId = permId;

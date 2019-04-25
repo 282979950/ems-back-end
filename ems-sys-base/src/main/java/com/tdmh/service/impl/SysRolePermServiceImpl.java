@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -65,8 +64,6 @@ public class SysRolePermServiceImpl implements ISysRolePermService {
             SysRolePerm rolePerm = new SysRolePerm();
             rolePerm.setRoleId(roleId);
             rolePerm.setPermId(perm);
-            rolePerm.setCreateBy(currentEmpId);
-            rolePerm.setUpdateBy(currentEmpId);
             rolePermList.add(rolePerm);
         }
         return rolePermList;

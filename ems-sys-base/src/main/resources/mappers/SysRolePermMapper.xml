@@ -157,12 +157,11 @@
     </insert>
     <select id="selectByPermissionId"  parameterType="list" resultType="com.tdmh.entity.SysRolePerm">
         SELECT
-        <include refid="Base_Column_List"/>
+        id, role_id as roleId, perm_id as permId
         FROM sys_role_perm
         WHERE perm_id IN
         <foreach collection="permIds" item="permId" open="(" close=")" separator=",">
             #{permId}
         </foreach>
-
     </select>
 </mapper>

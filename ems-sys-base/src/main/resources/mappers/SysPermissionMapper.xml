@@ -224,10 +224,9 @@
     <select id="select" parameterType="map" resultType="com.tdmh.entity.SysPermission">
         SELECT
         spa.perm_id as permId, spa.perm_name as permName, spa.perm_caption as permCaption, spa.perm_href as permHref,
-        spa.perm_parent_id as permParentId, spb.perm_caption AS permParentCaption,spa.is_button as isButton,spa.remarks
+        spa.perm_parent_id as permParentId, null,spa.is_button as isButton,spa.remarks
         FROM
-        sys_permission spa JOIN sys_permission spb ON spa.perm_parent_id = spb.perm_id
-        WHERE spa.perm_parent_id IS NOT NULL and spa.usable = 1
+        sys_permission spa WHERE spa.usable = 1
         <if test="permCaption != null and permCaption != ''">
             AND spa.perm_caption LIKE CONCAT('%',#{permCaption,jdbcType=VARCHAR}, '%')
         </if>
