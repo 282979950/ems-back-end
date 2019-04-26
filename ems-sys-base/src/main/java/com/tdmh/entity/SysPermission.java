@@ -41,7 +41,6 @@ public class SysPermission extends BaseEntity {
     /**
      * 权限父级ID
      */
-    @NotNull(message = "菜单名称不能为空")
     private Integer permParentId;
 
     /**
