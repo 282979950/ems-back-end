@@ -7,6 +7,8 @@
             <idArg column="fill_gas_order_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="fill_gas_order_type_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="card_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="card_identifier" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
@@ -48,13 +50,15 @@
     </update>
     <select id="listData" resultMap="FillGasOrderParam">
         SELECT
-        fgo.id, fgo.fill_gas_order_type,sd2.dict_key as fill_gas_order_type_name, fgo.user_id, u.user_name, u.user_phone, u.user_address, fgo.repair_order_id,
+        fgo.id, fgo.fill_gas_order_type,sd2.dict_key as fill_gas_order_type_name, fgo.user_id, uc.card_id, uc.card_identifier, u.user_name, u.user_phone, u.user_address,
+        fgo.repair_order_id,
         fgo.gas_count, fgo.stop_code_count, fgo.need_fill_gas, fgo.fill_gas, fgo.left_gas, fgo.need_fill_money, fgo.fill_money, fgo.left_money,
         fgo.fill_gas_order_status, sd.dict_key as fill_gas_order_status_name,
         fgo.create_time, fgo.create_by, fgo.update_time, fgo.update_by, fgo.usable, fgo.remarks
         from
         fill_gas_order fgo
         LEFT JOIN `user` u on fgo.user_id = u.user_id and u.usable = 1
+        LEFT JOIN user_card uc ON u.user_id = uc.user_id AND uc.usable = 1
         LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
         LEFT JOIN sys_dictionary sd2 on fgo.fill_gas_order_type = sd2.dict_value and sd2.dict_category = 'fill_gas_order_type' and sd2.usable = 1
         where fgo.usable = 1
@@ -109,13 +113,15 @@
     </select>
     <select id="searchFillGasOrder" resultMap="FillGasOrderParam" parameterType="map">
         SELECT
-        fgo.id, fgo.fill_gas_order_type,sd2.dict_key as fill_gas_order_type_name, fgo.user_id, u.user_name, u.user_phone, u.user_address, fgo.repair_order_id,
+        fgo.id, fgo.fill_gas_order_type,sd2.dict_key as fill_gas_order_type_name, fgo.user_id, uc.card_id, uc.card_identifier, u.user_name, u.user_phone, u.user_address,
+        fgo.repair_order_id,
         fgo.gas_count, fgo.stop_code_count, fgo.need_fill_gas, fgo.fill_gas, fgo.left_gas, fgo.need_fill_money, fgo.fill_money, fgo.left_money,
         fgo.fill_gas_order_status, sd.dict_key as fill_gas_order_status_name,
         fgo.create_time, fgo.create_by, fgo.update_time, fgo.update_by, fgo.usable, fgo.remarks
         from
         fill_gas_order fgo
         LEFT JOIN `user` u on fgo.user_id = u.user_id and u.usable = 1
+        LEFT JOIN user_card uc ON u.user_id = uc.user_id AND uc.usable = 1
         LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
         LEFT JOIN sys_dictionary sd2 on fgo.fill_gas_order_type = sd2.dict_value and sd2.dict_category = 'fill_gas_order_type' and sd2.usable = 1
         where fgo.usable = 1

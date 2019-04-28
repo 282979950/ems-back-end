@@ -40,6 +40,16 @@ public class FillGasOrderParam extends BaseEntity {
     private Integer userId;
 
     /**
+     * 用户IC卡号
+     */
+    private Integer cardId;
+
+    /**
+     * IC卡识别号
+     */
+    private String cardIdentifier;
+
+    /**
      * 用户名称
      */
     private String userName;
@@ -109,16 +119,18 @@ public class FillGasOrderParam extends BaseEntity {
      */
     private String fillGasOrderStatusName;
 
-    public FillGasOrderParam(Integer id, Integer fillGasOrderType,String fillGasOrderTypeName, Integer userId, String userName, String userPhone,
-                             String userAddress, String repairOrderId, BigDecimal gasCount, BigDecimal stopCodeCount, BigDecimal needFillGas,
-                             BigDecimal fillGas, BigDecimal leftGas, BigDecimal needFillMoney, BigDecimal fillMoney, BigDecimal leftMoney,
-                             Integer fillGasOrderStatus, String fillGasOrderStatusName, Date createTime, Integer createBy, Date updateTime, Integer updateBy,
-                             Boolean usable, String remarks) {
+    public FillGasOrderParam(Integer id, Integer fillGasOrderType, String fillGasOrderTypeName, Integer userId, Integer cardId, String cardIdentifier,
+                             String userName, String userPhone, String userAddress, String repairOrderId, BigDecimal gasCount, BigDecimal stopCodeCount,
+                             BigDecimal needFillGas, BigDecimal fillGas, BigDecimal leftGas, BigDecimal needFillMoney, BigDecimal fillMoney,
+                             BigDecimal leftMoney, Integer fillGasOrderStatus, String fillGasOrderStatusName, Date createTime, Integer createBy,
+                             Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.id = id;
         this.fillGasOrderType = fillGasOrderType;
         this.fillGasOrderTypeName = fillGasOrderTypeName;
         this.userId = userId;
+        this.cardId = cardId;
+        this.cardIdentifier = cardIdentifier;
         this.userName = userName;
         this.userPhone = userPhone;
         this.userAddress = userAddress;
