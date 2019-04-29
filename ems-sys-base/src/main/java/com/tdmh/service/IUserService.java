@@ -193,7 +193,7 @@ public interface IUserService {
     /**
      * 查询所有已开户相关用户信息
      */
-    JsonData userChangeService(User user,Integer pageNum, Integer pageSize);
+    JsonData userChangeService(User user, Integer pageNum, Integer pageSize);
 
     /**
      * 开户账户查询
@@ -237,4 +237,8 @@ public interface IUserService {
     JsonData exportAccountQueryWithPageInfo(String startDate, String endDate, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize);
 
     JsonData exportUserQueryWithPageInfo(User user, Integer pageNum, Integer pageSize);
+    /**
+     * 发起新增时根据用户号查看该户此时状态
+     */
+    String getUserStatusNameByUserId(Integer userId);
 }

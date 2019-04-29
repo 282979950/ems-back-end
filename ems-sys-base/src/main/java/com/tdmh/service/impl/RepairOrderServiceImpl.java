@@ -14,6 +14,7 @@ import com.tdmh.param.RepairOrderParam;
 import com.tdmh.param.RepairOrderUserParam;
 import com.tdmh.service.*;
 import com.tdmh.util.CalculateUtil;
+import com.tdmh.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,6 +67,10 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         String repairOrderId = param.getRepairOrderId();
         if (checkRepairOrderExists(repairOrderId)){
             return JsonData.fail("维修单已存在，不能重复录入");
+        }
+        String userStatus = userService.getUserStatusNameByUserId(param.getUserId());
+        if(StringUtils.isNotBlank(userStatus) && "已挂表待开户".equals(userStatus)){
+            return JsonData.fail("该户号尚未开户，请先开户");
         }
         String newMeterCode = param.getNewMeterCode();
         if (newMeterCode != null && checkNewMeterInstalled(newMeterCode) && checkNewMeterScrapped(newMeterCode)) {

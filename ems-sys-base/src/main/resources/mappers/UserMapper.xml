@@ -332,8 +332,10 @@
     </update>
     <select id="searchArchive" parameterType="map" resultMap="CreateArchiveParam">
         select
-        u.user_id, u.user_dist_id, dist.dist_name as user_dist_name, u.user_address, u.user_type, sd.dict_key as user_type_name, u.user_gas_type,
-        sd2.dict_key as user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked, mt.meter_category, u.create_time, u.create_by,
+        u.user_id, u.user_dist_id, dist.dist_name as user_dist_name, u.user_address, u.user_type, sd.dict_key as
+        user_type_name, u.user_gas_type,
+        sd2.dict_key as user_gas_type_name, u.user_status, sd3.dict_key as user_status_name, u.user_locked,
+        mt.meter_category, u.create_time, u.create_by,
         u.update_time, u.update_by, u.usable, u.remarks
         from user u
         LEFT JOIN user_meters um ON u.user_id=um.user_id and um.usable = 1
@@ -341,8 +343,10 @@
         LEFT JOIN meter_type mt ON m.meter_type_id=mt.meter_type_id
         left join sys_district dist on u.user_dist_id = dist.dist_id
         LEFT JOIN sys_dictionary sd on u.user_type = sd.dict_value and sd.dict_category = 'user_type' and sd.usable = 1
-        LEFT JOIN sys_dictionary sd2 on u.user_gas_type = sd2.dict_value and sd2.dict_category = 'user_gas_type' and sd2.usable = 1
-        LEFT JOIN sys_dictionary sd3 on u.user_status = sd3.dict_value and sd3.dict_category = 'user_status' and sd3.usable = 1
+        LEFT JOIN sys_dictionary sd2 on u.user_gas_type = sd2.dict_value and sd2.dict_category = 'user_gas_type' and
+        sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 on u.user_status = sd3.dict_value and sd3.dict_category = 'user_status' and
+        sd3.usable = 1
         where u.usable = 1
         <if test="userId != null and userId != ''">
             AND u.user_id LIKE CONCAT('%', #{userId,jdbcType=INTEGER}, '%')
@@ -403,11 +407,13 @@
     </select>
     <select id="searchInstallMeter" parameterType="map" resultMap="InstallMeterParam">
         select
-        u.user_id, u.user_dist_id, sd.dist_name as user_dist_name, u.user_address, u.user_status, sd2.dict_key as user_status_name , m.meter_code
+        u.user_id, u.user_dist_id, sd.dist_name as user_dist_name, u.user_address, u.user_status, sd2.dict_key as
+        user_status_name , m.meter_code
         from user u LEFT JOIN user_meters um ON u.user_id = um.user_id and um.usable = 1
         LEFT JOIN meter m ON um.meter_id = m.meter_id
         LEFT JOIN sys_district sd on u.user_dist_id = sd.dist_id
-        LEFT JOIN sys_dictionary sd2 on u.user_status = sd2.dict_value and sd2.dict_category = 'user_status' and sd2.usable = 1
+        LEFT JOIN sys_dictionary sd2 on u.user_status = sd2.dict_value and sd2.dict_category = 'user_status' and
+        sd2.usable = 1
         WHERE u.usable = 1 and u.user_status = 1
         <if test="userId != null and userId != ''">
             AND u.user_id LIKE CONCAT('%', #{userId,jdbcType=INTEGER}, '%')
@@ -497,7 +503,8 @@
     </resultMap>
     <select id="searchAccountArchive" parameterType="map" resultMap="LockAccountParam">
         select
-        u.user_id, u.user_name,uc.card_id as iccard_id, dist.dist_name, u.user_address, IFNULL(ul.is_lock,0) as is_lock, (CASE WHEN is_lock=1 THEN '锁定' WHEN
+        u.user_id, u.user_name,uc.card_id as iccard_id, dist.dist_name, u.user_address, IFNULL(ul.is_lock,0) as is_lock,
+        (CASE WHEN is_lock=1 THEN '锁定' WHEN
         is_lock=0 THEN '未锁定' ELSE '未锁定' END) AS lockStatus, '' as lock_reason, ul.lock_reason as last_lock_reason
         from user u
         left join user_card uc on u.user_id = uc.user_id
@@ -558,8 +565,10 @@
         FROM user u
         LEFT JOIN sys_district dist ON u.user_dist_id = dist.dist_id
         LEFT JOIN sys_dictionary sd ON u.user_type = sd.dict_value AND sd.dict_category = 'user_type' AND sd.usable = 1
-        LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND sd2.usable = 1
-        LEFT JOIN sys_dictionary sd3 ON u.user_status = sd3.dict_value AND sd3.dict_category = 'user_status' AND sd3.usable = 1
+        LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND
+        sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 ON u.user_status = sd3.dict_value AND sd3.dict_category = 'user_status' AND
+        sd3.usable = 1
 
         WHERE u.usable = 1
         <if test="userStatus != null and userStatus != ''">
@@ -617,9 +626,12 @@
         LEFT JOIN user u ON orders.user_id = u.user_id
         LEFT JOIN sys_district dist ON u.user_dist_id = dist.dist_id
         LEFT JOIN sys_dictionary sd ON u.user_type = sd.dict_value AND sd.dict_category = 'user_type' AND sd.usable = 1
-        LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND sd2.usable = 1
-        LEFT JOIN sys_dictionary sd3 ON orders.order_type = sd3.dict_value AND sd3.dict_category = 'order_type' AND sd3.usable = 1
-        LEFT JOIN sys_dictionary sd4 ON orders.account_state = sd4.dict_value AND sd4.dict_category = 'account_state' AND sd4.usable = 1
+        LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND
+        sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 ON orders.order_type = sd3.dict_value AND sd3.dict_category = 'order_type' AND
+        sd3.usable = 1
+        LEFT JOIN sys_dictionary sd4 ON orders.account_state = sd4.dict_value AND sd4.dict_category = 'account_state'
+        AND sd4.usable = 1
         WHERE orders.order_type IN ( '2','4')
         <if test="userName != null and userName != ''">
             AND u.user_name LIKE CONCAT('%', #{userName,jdbcType=VARCHAR}, '%')
@@ -633,12 +645,16 @@
         ORDER BY orderCreateTime DESC
     </select>
     <select id="searchAccountQueryList" parameterType="map" resultType="com.tdmh.param.AccountQueryParam">
-        select u.user_id as userId, u.user_name as userName, sd.dist_name as userDistName, u.user_address as userAddress,
-        sd1.dict_key AS userTypeName , sd2.dict_key AS userGasTypeName, e.emp_name as openByName, u.open_time as openTime
+        select u.user_id as userId, u.user_name as userName, sd.dist_name as userDistName, u.user_address as
+        userAddress,
+        sd1.dict_key AS userTypeName , sd2.dict_key AS userGasTypeName, e.emp_name as openByName, u.open_time as
+        openTime
         from user u
         left join sys_district sd on u.user_dist_id = sd.dist_id AND sd.usable = 1
-        LEFT JOIN sys_dictionary sd1 ON u.user_type = sd1.dict_value AND sd1.dict_category = 'user_type' AND sd1.usable = 1
-        LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND sd2.usable = 1
+        LEFT JOIN sys_dictionary sd1 ON u.user_type = sd1.dict_value AND sd1.dict_category = 'user_type' AND sd1.usable
+        = 1
+        LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND
+        sd2.usable = 1
         LEFT JOIN employee e on u.open_by = e.emp_id
         where u.usable = 1 and u.user_status = 3
         <if test="startDate!=null">
@@ -657,25 +673,31 @@
     </select>
 
     <select id="searchAbnormalUserList" parameterType="map" resultType="com.tdmh.param.AbnormalUser">
-        SELECT u.user_id AS userId, u.user_name AS userName, uc.card_id AS iccardId, uc.card_identifier AS iccardIdentifier, u.user_phone AS userPhone,
+        SELECT u.user_id AS userId, u.user_name AS userName, uc.card_id AS iccardId, uc.card_identifier AS
+        iccardIdentifier, u.user_phone AS userPhone,
         sd.dist_name as userDistName,
-        u.user_address AS userAddress, uo.totalOrderGas, uo.totalOrderPayment, uo.startBuyDay, uo.endBuyDay, datediff(now(),uo.endBuyDay) AS notBuyDayCount,
-        ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) AS monthAveGas, ROUND(totalOrderPayment
+        u.user_address AS userAddress, uo.totalOrderGas, uo.totalOrderPayment, uo.startBuyDay, uo.endBuyDay,
+        datediff(now(),uo.endBuyDay) AS notBuyDayCount,
+        ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) AS monthAveGas,
+        ROUND(totalOrderPayment
         /(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) AS monthAvePayment
         FROM `user` u
         JOIN user_card uc ON u.user_id = uc.user_id AND uc.usable = 1
         LEFT JOIN sys_district sd on u.user_dist_id = sd.dist_id AND sd.usable = 1
         JOIN
         (
-        SELECT user_id, SUM(order_gas) AS totalOrderGas, SUM(order_payment) AS totalOrderPayment, MIN(create_time) AS startBuyDay, MAX(create_time) AS endBuyDay
+        SELECT user_id, SUM(order_gas) AS totalOrderGas, SUM(order_payment) AS totalOrderPayment, MIN(create_time) AS
+        startBuyDay, MAX(create_time) AS endBuyDay
         FROM user_orders GROUP BY user_id
         ) uo ON u.user_id = uo.user_id
         WHERE u.usable = 1
         <if test="monthAveGas!=null">
-            AND ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) <![CDATA[ <= ]]> #{monthAveGas}
+            AND ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) <![CDATA[ <= ]]>
+            #{monthAveGas}
         </if>
         <if test="monthAvePayment!=null">
-            AND ROUND(totalOrderPayment /(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) <![CDATA[ <= ]]> #{monthAvePayment}
+            AND ROUND(totalOrderPayment /(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) <![CDATA[ <= ]]>
+            #{monthAvePayment}
         </if>
         <if test="notBuyDayCount">
             AND datediff(now(),uo.endBuyDay) <![CDATA[ >= ]]> #{notBuyDayCount}
@@ -710,5 +732,16 @@
     </select>
     <select id="getUserLockStatusById" parameterType="int" resultType="integer">
         select is_lock as isLock from user_lock where user_id = #{userId} order by create_time desc LIMIT 1
+    </select>
+    <select id="getUserStatusNameByUserId" resultType="java.lang.String">
+    SELECT
+      sd3.dict_key
+    FROM
+      `user` u
+      LEFT JOIN sys_dictionary sd3
+        ON u.user_status = sd3.dict_value
+        AND sd3.dict_category = 'user_status'
+        AND sd3.usable = 1
+    WHERE u.user_id = #{userId}
     </select>
 </mapper>

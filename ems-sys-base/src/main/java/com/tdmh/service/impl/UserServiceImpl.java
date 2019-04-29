@@ -540,4 +540,9 @@ public class UserServiceImpl implements IUserService {
         PageInfo<User> info = new PageInfo<>(list);
         return JsonData.successData(info);
     }
+
+    @Override
+    public String getUserStatusNameByUserId(Integer userId) {
+        return userMapper.getUserStatusNameByUserId(userId);
+    }
 }
