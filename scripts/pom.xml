@@ -39,10 +39,9 @@
                 <flyway.locations>
                     filesystem:${project.basedir}/schema,
                     filesystem:${project.basedir}/constraint,
-                    filesystem:${project.basedir}/data,
-                    filesystem:${project.basedir}/test
+                    filesystem:${project.basedir}/data
                 </flyway.locations>
-                <flyway.url>jdbc:mysql://localhost:3306/ems?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;autoReconnect=true</flyway.url>
+                <flyway.url>jdbc:mysql://localhost:3306/ems?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useSSL=false</flyway.url>
                 <flyway.user>root</flyway.user>
                 <flyway.password>root</flyway.password>
             </properties>
