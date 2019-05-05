@@ -49,4 +49,6 @@ public interface UserCardMapper {
     BindNewCardParam getBindNewCardParamByUserId(Integer userId);
 
     boolean checkNewCardIdentifier(String newCardIdentifier);
+
+    List<UserCard> selectUserCardByUserId(@Param("userId") Integer userId,@Param("usable") Boolean usable);
 }

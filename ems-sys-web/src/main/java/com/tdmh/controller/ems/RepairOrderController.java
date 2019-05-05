@@ -2,6 +2,7 @@ package com.tdmh.controller.ems;
 
 import com.tdmh.common.BeUnLock;
 import com.tdmh.common.JsonData;
+import com.tdmh.entity.UserCard;
 import com.tdmh.param.BindNewCardParam;
 import com.tdmh.param.RepairOrderParam;
 import com.tdmh.service.IRepairOrderService;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * 维修补气管理controller
@@ -104,5 +107,15 @@ public class RepairOrderController {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         param.setUpdateBy(currentEmpId);
         return repairOrderService.bindNewCard(param);
+    }
+    /**
+     * 查询查询指定维修单换卡记录
+     */
+    @RequiresPermissions("repairOrder:entry:visit")
+    @RequestMapping(value = "userCardByUserId.do")
+    @ResponseBody
+    public JsonData selectUserCardByUserIdController(Integer userId) {
+        List<UserCard> list = repairOrderService.selectUserCardByUserIdService(userId);
+        return JsonData.successData(list);
     }
 }

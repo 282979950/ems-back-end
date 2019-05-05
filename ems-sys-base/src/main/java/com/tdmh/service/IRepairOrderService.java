@@ -1,8 +1,12 @@
 package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
+import com.tdmh.entity.UserCard;
 import com.tdmh.param.BindNewCardParam;
 import com.tdmh.param.RepairOrderParam;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 维修单service
@@ -47,4 +51,11 @@ public interface IRepairOrderService {
 
     JsonData bindNewCard(BindNewCardParam param);
     JsonData selectHistoryRepairOrderQueryService(Integer userId);
+
+    /**
+     * 查询补卡记录(维修补气补卡操作)
+     * @param userId
+     * @return
+     */
+    List<UserCard> selectUserCardByUserIdService(@Param("userId") Integer userId);
 }
