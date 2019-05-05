@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tdmh.entity.mapper.UserCardMapper">
-<insert id="insert">
+    <insert id="insert">
  insert into user_card (user_id, card_id,card_identifier,card_password,card_initialization, order_id, card_cost, create_time, create_by,update_time,update_by ,usable)
        values (#{userId,jdbcType=INTEGER},#{cardId,jdbcType=INTEGER},#{cardIdentifier,jdbcType=VARCHAR}, #{cardPassword,jdbcType=VARCHAR},#{cardInitialization,jdbcType=BIT},#{orderId,jdbcType=INTEGER},#{cardCost,jdbcType=DECIMAL}, NOW(),#{createBy,jdbcType=INTEGER},NOW(),
         #{updateBy,jdbcType=INTEGER},#{usable,jdbcType=BIT})
 </insert>
-<select id="countUserCardBycardId" parameterType="Integer" resultType="Integer">
+    <select id="countUserCardBycardId" parameterType="Integer" resultType="Integer">
 SELECT COUNT(0) FROM user_card  WHERE usable=1 AND card_id=#{cardId}
 
 </select>
-<update id="initCardPwdBycardId" parameterType="com.tdmh.entity.mapper.UserCardMapper">
+    <update id="initCardPwdBycardId" parameterType="com.tdmh.entity.mapper.UserCardMapper">
   UPDATE  user_card SET card_initialization=#{cardInitialization} WHERE usable=1 AND  card_id=#{cardId}
 
 </update>
-<select id="userCardPwdBycardId" parameterType="Integer" resultType="String">
+    <select id="userCardPwdBycardId" parameterType="Integer" resultType="String">
 SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
 
 </select>
     <select id="getUserCardByUserIdAndCardId" parameterType="map" resultType="com.tdmh.entity.UserCard">
-        select user_card_id AS userCardId, user_id as userId, card_id as cardId ,card_identifier as cardIdentifier,card_password as cardPassword, order_id as orderId,
-        create_time as  createTime, create_by as createBy,update_time as updateTime,update_by as updateBy ,usable from  user_card
+        select user_card_id AS userCardId, user_id as userId, card_id as cardId ,card_identifier as
+        cardIdentifier,card_password as cardPassword, order_id as orderId,
+        create_time as createTime, create_by as createBy,update_time as updateTime,update_by as updateBy ,usable from
+        user_card
         where usable=1
-            <if test="userId != null and userId != ''">
-                and user_id = #{userId}
-            </if>
-            <if test="iccardId != null and iccardId != ''">
-                and card_id = #{iccardId}
-            </if>
+        <if test="userId != null and userId != ''">
+            and user_id = #{userId}
+        </if>
+        <if test="iccardId != null and iccardId != ''">
+            and card_id = #{iccardId}
+        </if>
     </select>
     <update id="update">
           update user_card set
@@ -57,7 +59,7 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
         </if>
     </select>
 
-    <select id="getUserCardByYouSelfIdAndnIcCardIdentifier"  parameterType="map" resultType="int">
+    <select id="getUserCardByYouSelfIdAndnIcCardIdentifier" parameterType="map" resultType="int">
         SELECT COUNT(user_card_id) FROM user_card
         WHERE user_id=#{userId} AND card_identifier=#{niccardIdentifier} AND card_identifier !=#{iccardIdentifier}
     </select>
@@ -127,4 +129,16 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
 
       UPDATE user_card SET card_status=#{cardStatus},usable=0    WHERE user_id=#{userId}  AND usable=1
 </update>
+    <select id="selectUserCardByUserId" resultType="com.tdmh.entity.UserCard">
+      SELECT
+          user_card_id as userCardId ,
+          user_id as userId ,
+          card_id as cardId ,
+          card_identifier as cardIdentifier,
+          card_cost  as cardCost,
+          create_time as createTime
+      FROM user_card
+      WHERE  user_id=#{userId} AND usable=#{usable}
+      ORDER BY create_time DESC
+    </select>
 </mapper>

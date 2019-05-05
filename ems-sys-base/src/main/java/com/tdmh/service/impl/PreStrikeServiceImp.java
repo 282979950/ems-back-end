@@ -91,7 +91,6 @@ public class PreStrikeServiceImp implements IPreStrikeService {
 
             updateCount =orders.updateUserOrdersByOrderId(userOrders);
             StrikeNucleus strike = new StrikeNucleus();
-            strike.setId(RandomUtils.getUUID());
             strike.setOrderId(user.getOrderId());
             strike.setUserName(user.getUserName());
             strike.setNucleusGas(user.getOrderGas());

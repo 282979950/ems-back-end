@@ -3,7 +3,7 @@
 <mapper namespace="com.tdmh.entity.mapper.StrikeNucleusMapper">
     <resultMap id="BaseResultMap" type="com.tdmh.entity.StrikeNucleus">
         <constructor>
-            <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.Integer"/>
             <arg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="nucleus_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>

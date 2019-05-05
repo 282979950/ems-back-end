@@ -288,6 +288,11 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         return list.size()==0?JsonData.successMsg("未查询到相关数据"):JsonData.success(list,"查询成功");
     }
 
+    @Override
+    public List<UserCard> selectUserCardByUserIdService(Integer userId) {
+        return userCardMapper.selectUserCardByUserId(userId,false);
+    }
+
     private boolean checkRepairOrderExists(String repairOrderId) {
         return repairOrderMapper.checkRepairOrderExists(repairOrderId);
     }
