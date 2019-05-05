@@ -10,6 +10,7 @@ import com.tdmh.entity.mapper.MeterMapper;
 import com.tdmh.entity.mapper.MeterTypeMapper;
 import com.tdmh.param.EntryMeterParam;
 import com.tdmh.service.IMeterService;
+import com.tdmh.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,6 +60,10 @@ public class MeterServiceImpl implements IMeterService {
     public JsonData addEntryMeter(EntryMeterParam param) {
         BeanValidator.check(param);
         String meterCode = param.getMeterCode();
+        int number = DateUtils.temporalComparison(param.getMeterProdDate(),param.getMeterEntryDate());
+        if(number==1){
+            return JsonData.fail("操作有误!生产日期需比入库日期早");
+        }
         if (checkMeterExist(meterCode)) {
             return JsonData.fail("表具已经存在,表具编号：" + meterCode);
         }
