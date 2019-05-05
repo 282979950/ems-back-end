@@ -4,6 +4,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.joda.time.DateTime;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -197,5 +198,23 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         DateTime newDateTime = newDate.dayOfMonth().withMinimumValue();
 
         return newDateTime.toDate();
+    }
+    /**
+     * 判断年月大小
+     * date1小于date2返回-1，date1大于date2返回1，相等返回0
+     */
+    public static int temporalComparison(Date d1,Date d2) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+        String beginTime = format.format(d1);
+        String endTime = format.format(d2);
+        int compareTo = 0;
+        try {
+            Date date1 = format.parse(beginTime);
+            Date date2 = format.parse(endTime);
+            compareTo = date1.compareTo(date2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return compareTo;
     }
 }
