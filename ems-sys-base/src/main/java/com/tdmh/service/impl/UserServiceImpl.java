@@ -449,8 +449,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress,
                                            Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
+        PageHelper.startPage(pageNum, pageSize);
         List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
         PageInfo<AbnormalUser> info = new PageInfo<>(list);
         return JsonData.success(info,"查询成功");
