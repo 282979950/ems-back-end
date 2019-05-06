@@ -439,8 +439,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public JsonData searchAccountQueryList(String startDate,String endDate, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
+        PageHelper.startPage(pageNum, pageSize);
         List<AccountQueryParam> list = userMapper.searchAccountQueryList(DateUtils.parseDate(startDate),DateUtils.parseDate(endDate),distIds,userAddress);
         PageInfo<AccountQueryParam> info = new PageInfo<>(list);
         return  JsonData.success(info,"查询成功");
