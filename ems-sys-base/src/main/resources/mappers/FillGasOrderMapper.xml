@@ -44,6 +44,8 @@
         update fill_gas_order
         set
         fill_gas_order_status = #{fillGasOrderStatus},
+        fill_money = #{fillMoney},
+        left_money = #{leftMoney},
         update_time = NOW(),
         update_by = #{updateBy}
         where id = #{id}
