@@ -31,4 +31,6 @@ public interface RepairOrderMapper {
 
     RepairOrderUserParam getRepairOrderUserById(Integer userId);
     List<RepairOrderParam> selectRepairOrderByuserQuery(Integer userId);
+
+    int lockRepairOrderByUserId(@Param("userId") Integer userId);
 }

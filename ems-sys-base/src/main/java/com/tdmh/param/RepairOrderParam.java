@@ -29,6 +29,13 @@ public class RepairOrderParam extends BaseEntity {
     private String repairOrderId;
 
     /**
+     * 维修单状态
+     */
+    private Integer repairOrderStatus;
+
+    private String repairOrderStatusName;
+
+    /**
      * 用户Id
      */
     @NotNull(message = "户号不能为空")
@@ -209,8 +216,9 @@ public class RepairOrderParam extends BaseEntity {
         super();
     }
 
-    public RepairOrderParam(Integer id, String repairOrderId, Integer userId, String userName, String userPhone, String userAddress, Integer repairType,
-                            String repairTypeName, Integer gasEquipmentType, String gasEquipmentTypeName, Integer oldMeterId, String oldMeterCode,
+    public RepairOrderParam(Integer id, String repairOrderId, Integer repairOrderStatus, String repairOrderStatusName, Integer userId, String userName,
+                            String userPhone, String userAddress, Integer repairType, String repairTypeName, Integer gasEquipmentType,
+                            String gasEquipmentTypeName, Integer oldMeterId, String oldMeterCode,
                             Integer oldMeterTypeId, String oldMeterTypeName, Integer oldMeterDirection, String oldMeterDirectionName,
                             BigDecimal oldMeterStopCode, Integer newMeterId, String newMeterCode, Integer newMeterTypeId, String newMeterTypeName,
                             Integer newMeterDirection, String newMeterDirectionName, BigDecimal newMeterStopCode, Integer repairFaultType,
@@ -220,6 +228,8 @@ public class RepairOrderParam extends BaseEntity {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.id = id;
         this.repairOrderId = repairOrderId;
+        this.repairOrderStatus = repairOrderStatus;
+        this.repairOrderStatusName = repairOrderStatusName;
         this.userId = userId;
         this.userName = userName;
         this.userPhone = userPhone;

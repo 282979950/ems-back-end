@@ -177,6 +177,8 @@ INSERT INTO `sys_dictionary` VALUES ('1129', 'apply_repair_type', '电话报修'
 INSERT INTO `sys_dictionary` VALUES ('1130', 'wx_notice_type', '通知', '1', null, null, null, null, null, '1', null);
 INSERT INTO `sys_dictionary` VALUES ('1131', 'wx_notice_type', '提醒', '2', null, null, null, null, null, '1', null);
 INSERT INTO `sys_dictionary` VALUES ('1139', 'card_cost', '20', '20', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1140', 'repair_order_status', '正常', '1', null, null, null, null, null, '1', null);
+INSERT INTO `sys_dictionary` VALUES ('1141', 'repair_order_status', '已锁定', '2', null, null, null, null, null, '1', null);
 
 -- 区域数据
 INSERT INTO `sys_district` VALUES ('1000', '石门市', 'SMS', '1', '', null, null, null, null, null, '1', '');

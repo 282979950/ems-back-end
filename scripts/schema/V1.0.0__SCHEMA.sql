@@ -172,7 +172,8 @@ CREATE TABLE `meter_type` (
 -- 报修单
 CREATE TABLE `repair_order` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `repair_order_id` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `repair_order_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `repair_order_status` int(4) unsigned NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `repair_type` int(4) NOT NULL,
   `gas_equipment_type` int(4) NOT NULL,
@@ -185,16 +186,16 @@ CREATE TABLE `repair_order` (
   `emp_id` int(10) DEFAULT NULL,
   `repair_start_time` datetime NOT NULL,
   `repair_end_time` datetime NOT NULL,
-  `new_safety_code` varchar(64) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `old_safety_code` varchar(64) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `new_safety_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `old_safety_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `create_by` int(10) NOT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `update_by` int(10) DEFAULT NULL COMMENT '更新者',
   `usable` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否可用',
-  `remarks` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注信息',
+  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注信息',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1000000002 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- 冲账审核
 CREATE TABLE `strike_nucleus` (

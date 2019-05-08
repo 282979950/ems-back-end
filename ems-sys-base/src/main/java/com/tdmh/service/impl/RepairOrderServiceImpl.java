@@ -119,6 +119,11 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 }
             }
         } else {
+            if (fillGasService.hasUnfinishedFillGasOrder(userId)) {
+                return JsonData.fail("该用户有未处理的补气单不能提交普通维修单");
+            }
+            // 锁定历史订单
+            repairOrderMapper.lockRepairOrderByUserId(userId);
             int resultCount = repairOrderMapper.addRepairOrder(param);
             if (resultCount == 0) {
                 return JsonData.fail("新增维修单失败");
