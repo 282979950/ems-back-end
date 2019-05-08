@@ -103,6 +103,8 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 oldMeter.setUsable(true);
                 meterService.updateMeter(oldMeter);
             }
+            // 锁定历史订单
+            repairOrderMapper.lockRepairOrderByUserId(userId);
             int resultCount = repairOrderMapper.addRepairOrder(param);
             if (resultCount == 0) {
                 return JsonData.fail("新增维修单失败");
