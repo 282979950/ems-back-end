@@ -7,11 +7,11 @@ import com.tdmh.common.JsonData;
 import com.tdmh.entity.StrikeNucleus;
 import com.tdmh.entity.User;
 import com.tdmh.entity.UserOrders;
+import com.tdmh.entity.mapper.FillGasOrderMapper;
 import com.tdmh.entity.mapper.StrikeNucleusMapper;
 import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.service.IPreStrikeService;
-import com.tdmh.utils.RandomUtils;
 import com.tdmh.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +36,8 @@ public class PreStrikeServiceImp implements IPreStrikeService {
     private UserOrdersMapper orders;
     @Autowired
     private StrikeNucleusMapper strikeNucleus;
+    @Autowired
+    private FillGasOrderMapper fillGasOrder;
 
     public  JsonData selectUserByOrderTypeService(User user,Integer currentEmpId,Integer pageNum, Integer pageSize){
         user.setEmployeeId(currentEmpId);
@@ -63,6 +65,10 @@ public class PreStrikeServiceImp implements IPreStrikeService {
 
             return JsonData.fail("未获取到相关数据,请刷新数据或联系管理员");
 
+        }
+        boolean flag = fillGasOrder.hasUnfinishedFillGasOrder(user.getUserId());
+        if(flag){
+            return JsonData.fail("该户有未处理的补气补缴结算单请处理");
         }
         userOrders.setUserId(user.getUserId());
         userOrders.setEmployeeId(user.getEmployeeId());
