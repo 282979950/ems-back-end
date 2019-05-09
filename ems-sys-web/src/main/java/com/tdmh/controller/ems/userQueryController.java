@@ -112,4 +112,10 @@ public class userQueryController {
     public JsonData exportUserQueryWithPageInfo(User user, Integer pageNum, Integer pageSize){
         return userService.exportUserQueryWithPageInfo(user, pageNum, pageSize);
     }
+    @RequiresPermissions("queryStats:userQuery:userMeterType")
+    @RequestMapping("/userMeterType.do")
+    @ResponseBody
+    public JsonData selectUserMeterTypeController(Integer userId){
+        return userService.selectUserMeterTypeService(userId);
+    }
 }

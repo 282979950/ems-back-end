@@ -241,4 +241,8 @@ public interface IUserService {
      * 发起新增时根据用户号查看该户此时状态
      */
     String getUserStatusNameByUserId(Integer userId);
+    /**
+     * 查询统计（用户表相关查询）
+     */
+    JsonData selectUserMeterTypeService(Integer userId);
 }

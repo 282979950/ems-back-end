@@ -50,6 +50,9 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private SysDistrictMapper sysDistrictMapper;
 
+    @Autowired
+    private UserMeterTypeMapper userMeterType;
+
     @Override
     public JsonData getAllArchives(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
@@ -544,5 +547,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public String getUserStatusNameByUserId(Integer userId) {
         return userMapper.getUserStatusNameByUserId(userId);
+    }
+
+    @Override
+    public JsonData selectUserMeterTypeService(Integer userId) {
+        return JsonData.successData(userMeterType.selectUserMeterTypeByUserId(userId));
     }
 }
