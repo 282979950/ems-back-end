@@ -47,11 +47,15 @@ public class UserMeterType implements Serializable {
      * 表具型号
      */
     private String meterType;
+    /**
+     * 表具编号
+     */
+    private String meterCode;
 
     public UserMeterType() {
     }
 
-    public UserMeterType(Integer userId, String userName, String userPhone, String userIdcard, String userAddress, Integer userLocked, String meterCategory, String meterType) {
+    public UserMeterType(Integer userId, String userName, String userPhone, String userIdcard, String userAddress, Integer userLocked, String meterCategory, String meterType, String meterCode) {
         this.userId = userId;
         this.userName = userName;
         this.userPhone = userPhone;
@@ -60,6 +64,7 @@ public class UserMeterType implements Serializable {
         this.userLocked = userLocked;
         this.meterCategory = meterCategory;
         this.meterType = meterType;
+        this.meterCode = meterCode;
     }
 
 

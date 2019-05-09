@@ -10,6 +10,7 @@
         <result column="user_locked" property="userLocked"/>
         <result column="meter_category" property="meterCategory"/>
         <result column="meter_type" property="meterType"/>
+        <result column="meter_code" property="meterCode"/>
     </resultMap>
     <select id="selectUserMeterTypeByUserId" resultMap="BaseResultMap">
         SELECT
@@ -20,7 +21,8 @@
           u.user_address,
           u.user_locked,
           mt.meter_category,
-          mt.meter_type
+          mt.meter_type,
+          me.meter_code
         FROM
           `user` u
           LEFT JOIN user_meters um
