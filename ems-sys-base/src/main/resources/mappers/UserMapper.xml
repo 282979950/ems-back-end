@@ -632,7 +632,7 @@
         sd3.usable = 1
         LEFT JOIN sys_dictionary sd4 ON orders.account_state = sd4.dict_value AND sd4.dict_category = 'account_state'
         AND sd4.usable = 1
-        WHERE orders.order_type IN ( '2','4')
+        WHERE orders.order_type IN ( '2')
         <if test="userName != null and userName != ''">
             AND u.user_name LIKE CONCAT('%', #{userName,jdbcType=VARCHAR}, '%')
         </if>

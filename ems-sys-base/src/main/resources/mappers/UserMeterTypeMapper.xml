@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.UserMeterTypeMapper">
+    <resultMap id="BaseResultMap" type="com.tdmh.entity.UserMeterType">
+        <id column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_phone" property="userPhone"/>
+        <result column="user_idcard" property="userIdcard"/>
+        <result column="user_address" property="userAddress"/>
+        <result column="user_locked" property="userLocked"/>
+        <result column="meter_category" property="meterCategory"/>
+        <result column="meter_type" property="meterType"/>
+        <result column="meter_code" property="meterCode"/>
+    </resultMap>
+    <select id="selectUserMeterTypeByUserId" resultMap="BaseResultMap">
+        SELECT
+          u.user_id,
+          u.user_name,
+          u.user_phone,
+          u.user_idcard,
+          u.user_address,
+          u.user_locked,
+          mt.meter_category,
+          mt.meter_type,
+          me.meter_code
+        FROM
+          `user` u
+          LEFT JOIN user_meters um
+            ON u.user_id = um.user_id
+          LEFT JOIN meter me
+          ON  um.meter_id = me.meter_id
+          LEFT JOIN meter_type mt
+          ON me.meter_type_id = mt.meter_type_id
+          WHERE u.usable=1
+          AND u.user_id=#{userId}
+    </select>
+</mapper>

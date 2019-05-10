@@ -89,6 +89,10 @@ public class MeterServiceImpl implements IMeterService {
     @Transactional
     public JsonData editEntryMeter(EntryMeterParam param) {
         BeanValidator.check(param);
+        int number = DateUtils.temporalComparison(param.getMeterProdDate(),param.getMeterEntryDate());
+        if(number==1){
+            return JsonData.fail("操作有误!生产日期需比入库日期早");
+        }
         // TODO: 2018/8/24 修改表具编号时提示用户
         int resultCount = meterMapper.editEntryMeter(param);
         if (resultCount == 0) {

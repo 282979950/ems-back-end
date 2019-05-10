@@ -70,7 +70,7 @@ public interface UserMapper {
 
     int updateFillStatus(@Param("userId") Integer userId, @Param("status") Boolean status);
     int updateUserUsable(@Param("userId") Integer userId);
-    //查询充值类型为	普通订单和超用补缴订单数据
+    //查询充值类型为	普通订单数据
     List<User> selectUserByOrderType(User user);
 
     List<AccountQueryParam> searchAccountQueryList(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("distIds") String distIds, @Param("userAddress") String userAddress);
