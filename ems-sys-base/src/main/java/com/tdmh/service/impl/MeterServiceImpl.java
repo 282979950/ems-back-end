@@ -61,7 +61,7 @@ public class MeterServiceImpl implements IMeterService {
         BeanValidator.check(param);
         String meterCode = param.getMeterCode();
         int number = DateUtils.temporalComparison(param.getMeterProdDate(),param.getMeterEntryDate());
-        if(number==1){
+        if (number == 1) {
             return JsonData.fail("操作有误!生产日期需比入库日期早");
         }
         if (checkMeterExist(meterCode)) {
@@ -70,10 +70,6 @@ public class MeterServiceImpl implements IMeterService {
         BigDecimal stopCode = param.getMeterStopCode();
         if (stopCode == null) {
             param.setMeterStopCode(BigDecimal.ZERO);
-        }
-        Integer meterTypeId = meterTypeMapper.getMeterTypeId(param.getMeterCategory(), param.getMeterType());
-        if (meterTypeId == null || meterTypeId == 0) {
-            return JsonData.fail("不存在的表具类型");
         }
         Date date = new Date();
         param.setCreateTime(date);

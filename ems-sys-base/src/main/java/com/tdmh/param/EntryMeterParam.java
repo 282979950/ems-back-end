@@ -37,16 +37,17 @@ public class EntryMeterParam extends BaseEntity {
      */
     private BigDecimal meterStopCode;
 
+    @NotNull(message = "表具类别不能为空")
+    private Integer meterTypeId;
     /**
      * 表具类别
      */
-    @NotNull(message = "表具类别不能为空")
+
     private String meterCategory;
 
     /**
      * 表具型号
      */
-    @NotNull(message = "表具型号不能为空")
     private String meterType;
 
     /**
@@ -81,13 +82,14 @@ public class EntryMeterParam extends BaseEntity {
 
     private String meterStatusName;
 
-    public EntryMeterParam(Integer meterId, String meterCode, BigDecimal meterStopCode, String meterCategory, String meterType, Integer meterDirection,
-                           String meterDirectionName, Date meterProdDate, Date meterEntryDate, Integer meterStatus, String meterStatusName, Date createTime,
-                           Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+    public EntryMeterParam(Integer meterId, String meterCode, BigDecimal meterStopCode, Integer meterTypeId, String meterCategory, String meterType,
+                           Integer meterDirection, String meterDirectionName, Date meterProdDate, Date meterEntryDate, Integer meterStatus,
+                           String meterStatusName, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.meterId = meterId;
         this.meterCode = meterCode;
         this.meterStopCode = meterStopCode;
+        this.meterTypeId = meterTypeId;
         this.meterCategory = meterCategory;
         this.meterType = meterType;
         this.meterDirection = meterDirection;

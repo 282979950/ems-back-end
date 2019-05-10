@@ -269,6 +269,7 @@
             <idArg column="meter_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="meter_stop_code" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="meter_category" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="meter_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="meter_direction" jdbcType="INTEGER" javaType="java.lang.Integer"/>
@@ -287,7 +288,7 @@
     </resultMap>
     <select id="getAllEntryMeters" parameterType="map" resultMap="EntryMeterParam">
         select
-        m.meter_id, m.meter_code, m.meter_stop_code, mt.meter_category, mt.meter_type, m.meter_direction, sd.dict_key as meter_direction_name,
+        m.meter_id, m.meter_code, m.meter_stop_code, m.meter_type_id, mt.meter_category, mt.meter_type, m.meter_direction, sd.dict_key as meter_direction_name,
         m.meter_prod_date, m.meter_entry_date, m.meter_status, sd2.dict_key as meter_status_name, m.create_time, m.create_by, m.update_time, m.update_by,
         m.usable, m.remarks
         from meter m left join meter_type mt on m.meter_type_id = mt.meter_type_id
@@ -303,7 +304,7 @@
         update_time, update_by,
         remarks)
         values (#{meterCode,jdbcType=VARCHAR}, #{meterStopCode,jdbcType=DECIMAL},
-        (select mt.meter_type_id from meter_type mt where mt.meter_category = #{meterCategory,jdbcType=VARCHAR} and mt.meter_type = #{meterType,jdbcType=VARCHAR}), #{meterDirection,jdbcType=INTEGER}, #{meterProdDate,jdbcType=TIMESTAMP},
+        #{meterTypeId,jdbcType=INTEGER}, #{meterDirection,jdbcType=INTEGER}, #{meterProdDate,jdbcType=TIMESTAMP},
         #{meterEntryDate,jdbcType=TIMESTAMP}, NOW(), #{createBy,jdbcType=INTEGER},
         NOW(), #{updateBy,jdbcType=INTEGER},
         #{remarks,jdbcType=VARCHAR})
@@ -317,11 +318,7 @@
             <if test="meterStopCode != null">
                 meter_stop_code = #{meterStopCode,jdbcType=DECIMAL},
             </if>
-                meter_type_id = (
-                  select mt.meter_type_id
-                  from meter_type mt
-                  where mt.meter_category = #{meterCategory,jdbcType=VARCHAR} and mt.meter_type = #{meterType,jdbcType=VARCHAR}
-                ),
+                meter_type_id = #{meterTypeId,jdbcType=INTEGER},
             <if test="meterDirection != null">
                 meter_direction = #{meterDirection},
             </if>
@@ -368,7 +365,7 @@
     </update>
     <select id="searchEntryMeter" parameterType="map" resultMap="EntryMeterParam">
         select
-        m.meter_id, m.meter_code, m.meter_stop_code, mt.meter_category, mt.meter_type, m.meter_direction, sd.dict_key as meter_direction_name,
+        m.meter_id, m.meter_code, m.meter_stop_code, m.meter_type_id, mt.meter_category, mt.meter_type, m.meter_direction, sd.dict_key as meter_direction_name,
         m.meter_prod_date, m.meter_entry_date, m.meter_status, sd2.dict_key as meter_status_name, m.create_time, m.create_by, m.update_time, m.update_by,
         m.usable, m.remarks
         from meter m left join meter_type mt on m.meter_type_id = mt.meter_type_id
