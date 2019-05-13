@@ -27,6 +27,7 @@
           `user` u
           LEFT JOIN user_meters um
             ON u.user_id = um.user_id
+            AND um.usable = 1
           LEFT JOIN meter me
           ON  um.meter_id = me.meter_id
           LEFT JOIN meter_type mt
