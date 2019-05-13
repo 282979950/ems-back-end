@@ -393,7 +393,7 @@
         select
         count(1)
         from meter
-        where meter_code = #{meterCode,jdbcType=VARCHAR} and usable = 1
+        where meter_code = #{meterCode,jdbcType=VARCHAR}
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select
