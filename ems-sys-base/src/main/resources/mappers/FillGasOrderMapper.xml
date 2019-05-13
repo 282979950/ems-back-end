@@ -45,8 +45,10 @@
         set
         fill_gas_order_status = #{fillGasOrderStatus},
         fill_money = #{fillMoney},
-        left_money = #{leftMoney},
         update_time = NOW(),
+        <if test="remarks != null and remarks != ''">
+            remarks = #{remarks},
+        </if>
         update_by = #{updateBy}
         where id = #{id}
     </update>
@@ -64,7 +66,7 @@
         LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
         LEFT JOIN sys_dictionary sd2 on fgo.fill_gas_order_type = sd2.dict_value and sd2.dict_category = 'fill_gas_order_type' and sd2.usable = 1
         where fgo.usable = 1
-        order by fgo.id desc
+        order by fgo.fill_gas_order_status, fgo.id desc
     </select>
     <select id="getSumOrderGasByUserId" resultType="java.math.BigDecimal" parameterType="int">
         SELECT
@@ -136,7 +138,7 @@
         <if test="fillGasOrderType != null">
             AND fgo.fill_gas_order_type = #{fillGasOrderType}
         </if>
-        order by fgo.id desc
+        order by fgo.fill_gas_order_status, fgo.id desc
     </select>
     <select id="selectFillGasOrderQuery" resultType="com.tdmh.param.FillGasOrderParam" parameterType="java.lang.Integer">
     SELECT
