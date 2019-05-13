@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -60,6 +61,11 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
     @Override
     public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders) {
         BeanValidator.check(param);
+        int tempOrderGas = userOrders.getOrderGas().compareTo(BigDecimal.ZERO);
+        //若充值气量小于0或者等于零则提示充值气量
+        if(tempOrderGas == -1 || tempOrderGas == 0){
+            return JsonData.fail("操作有误！充值金额需大于零");
+        }
         UserCard oldUserCard = userCardMapper.getUserCardByUserIdAndCardId(param.getUserId(),param.getIccardId());
         if(oldUserCard == null){
             return JsonData.fail("该用户没有可用卡");
