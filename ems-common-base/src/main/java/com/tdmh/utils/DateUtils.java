@@ -202,9 +202,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 判断年月大小
      * date1小于date2返回-1，date1大于date2返回1，相等返回0
+     * dateformat初始化日期格式 例如：yyyy-MM 或 yyyy-MM-dd HH:mm:ss 等格式
      */
-    public static int temporalComparison(Date d1,Date d2) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+    public static int temporalComparison(Date d1,Date d2,String dateformat) {
+        SimpleDateFormat format = new SimpleDateFormat(dateformat);
         String beginTime = format.format(d1);
         String endTime = format.format(d2);
         int compareTo = 0;
