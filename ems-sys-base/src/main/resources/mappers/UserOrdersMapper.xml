@@ -241,7 +241,7 @@
       NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
   </insert>
   <select id="findHasUsedGasInYear" resultType="decimal">
-        SELECT SUM(order_gas) FROM user_orders WHERE user_id = #{userId} AND create_time > MAKEDATE(YEAR(NOW()), 1);
+        SELECT SUM(order_gas) FROM user_orders WHERE user_id = #{userId} AND (order_status = 1 or order_status = 2) AND create_time > MAKEDATE(YEAR(NOW()), 1);
   </select>
   <insert id="createChangeUserOrder" parameterType="com.tdmh.entity.UserOrders" >
     insert into user_orders (user_id,employee_id,order_payment,
