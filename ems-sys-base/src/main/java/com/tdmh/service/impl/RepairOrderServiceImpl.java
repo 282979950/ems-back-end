@@ -14,6 +14,7 @@ import com.tdmh.param.RepairOrderParam;
 import com.tdmh.param.RepairOrderUserParam;
 import com.tdmh.service.*;
 import com.tdmh.util.CalculateUtil;
+import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,10 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     public JsonData createRepairOrder(RepairOrderParam param) {
         BeanValidator.check(param);
         String repairOrderId = param.getRepairOrderId();
+        int number = DateUtils.temporalComparison(param.getRepairStartTime(),param.getRepairEndTime(),"yyyy-MM-dd HH:mm");
+        if (number == 1) {
+            return JsonData.fail("操作有误!维修开始时间需比维修结束时间早");
+        }
         if (checkRepairOrderExists(repairOrderId)){
             return JsonData.fail("维修单已存在，不能重复录入");
         }
@@ -139,6 +144,10 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     @Transactional
     public JsonData editRepairOrder(RepairOrderParam param) {
         BeanValidator.check(param);
+        int number = DateUtils.temporalComparison(param.getRepairStartTime(),param.getRepairEndTime(),"yyyy-MM-dd HH:mm");
+        if (number == 1) {
+            return JsonData.fail("操作有误!维修开始时间需比维修结束时间早");
+        }
         RepairOrderParam old = repairOrderMapper.getRepairOrderById(param.getId());
         Integer repairType = param.getRepairType();
         if (repairType.equals(0) || repairType.equals(6) || repairType.equals(7)) {
