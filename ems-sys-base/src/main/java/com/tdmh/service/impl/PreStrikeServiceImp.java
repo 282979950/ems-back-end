@@ -12,6 +12,7 @@ import com.tdmh.entity.mapper.StrikeNucleusMapper;
 import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.service.IPreStrikeService;
+import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,18 @@ public class PreStrikeServiceImp implements IPreStrikeService {
         boolean flag = fillGasOrder.hasUnfinishedFillGasOrder(user.getUserId());
         if(flag){
             return JsonData.fail("该户有未处理的补气补缴结算单请处理");
+        }
+        /*
+         *根据条件查询相关参数 tempDate2为空不做处理，
+         * 若不为空则判断两条数据做出提示
+         */
+        Date tempDate1 = orders.getCreateTimeByOrderId(user.getOrderId());
+        Date tempDate2 = fillGasOrder.getCreateTimeByUserId(user.getUserId());
+        if(tempDate1 != null && tempDate2 != null){
+            int number = DateUtils.temporalComparison(tempDate1,tempDate2,"yyyy-MM-dd HH:mm:ss");
+            if (number == 1 || number == 0) {
+                return JsonData.fail("操作有误!该笔充值记录时间需小于补气补缴结算生成时间");
+            }
         }
         userOrders.setUserId(user.getUserId());
         userOrders.setEmployeeId(user.getEmployeeId());
