@@ -519,8 +519,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonData exportAbnormalUserWithPageInfo(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId,
                                                    String userAddress, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
+        PageHelper.startPage(pageNum, pageSize);
         List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
         PageInfo<AbnormalUser> info = new PageInfo<>(list);
         return JsonData.successData(info);
@@ -529,8 +529,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonData exportAccountQueryWithPageInfo(String startDate, String endDate, Integer userDistId, String userAddress, Integer pageNum,
                                                    Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
         String distIds = sysDistrictMapper.getDistrictChildList(userDistId);
+        PageHelper.startPage(pageNum, pageSize);
         List<AccountQueryParam> list = userMapper.searchAccountQueryList(DateUtils.parseDate(startDate), DateUtils.parseDate(endDate), distIds, userAddress);
         PageInfo<AccountQueryParam> info = new PageInfo<>(list);
         return JsonData.successData(info);
