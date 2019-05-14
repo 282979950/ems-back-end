@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -45,4 +46,5 @@ public interface UserOrdersMapper {
 
     List<UserOrders> selectBusinessDataQuery(UserOrders record);
     List<UserOrders> selectordersListQuery(Integer userId);
+    Date getCreateTimeByOrderId(@Param("orderId") Integer orderId);
 }

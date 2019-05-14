@@ -199,7 +199,7 @@ CREATE TABLE `repair_order` (
 
 -- 冲账审核
 CREATE TABLE `strike_nucleus` (
-  `id` varchar(32) NOT NULL COMMENT 'id与业务无关',
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'id与业务无关',
   `order_id` int(11) DEFAULT NULL COMMENT '订单ID',
   `user_name` varchar(20) DEFAULT NULL COMMENT '用户名称',
   `nucleus_status` int(2) DEFAULT NULL COMMENT '审核状态(0,未审核,1已审核)',
