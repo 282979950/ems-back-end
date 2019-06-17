@@ -149,7 +149,7 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
                 }
             }
         }
-        treeDataList.add(distList.get(0));
+        treeDataList.add(distList.get(distList.size()-1));
         return JsonData.successData(treeDataList);
     }
 
