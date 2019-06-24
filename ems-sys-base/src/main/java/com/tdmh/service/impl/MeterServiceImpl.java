@@ -39,9 +39,6 @@ public class MeterServiceImpl implements IMeterService {
     public JsonData getAllEntryMeters(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<EntryMeterParam> meters = meterMapper.getAllEntryMeters();
-        if (meters == null || meters.size() == 0) {
-            return JsonData.successMsg("未查询到表具信息");
-        }
         PageInfo<EntryMeterParam> pageInfo = new PageInfo<>(meters);
         return JsonData.success(pageInfo, "查询表具成功");
     }

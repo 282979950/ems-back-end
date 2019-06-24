@@ -61,6 +61,9 @@ public class FillGasServiceImpl implements IFillGasService {
         param.setFillGasOrderStatus(1);
         Integer fillGasOrderType = param.getFillGasOrderType();
         if (fillGasOrderType.equals(1)) {
+            param.setFillMoney(BigDecimal.ZERO);
+            param.setNeedFillMoney(BigDecimal.ZERO);
+            param.setLeftMoney(BigDecimal.ZERO);
             fillGasOrderMapper.editFillGasOrder(param);
             // 剩余气量不为0时还需要生成一笔订单
             BigDecimal leftGas = param.getLeftGas();
