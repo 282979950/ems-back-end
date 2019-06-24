@@ -40,10 +40,20 @@ public class PreStrikeServiceImp implements IPreStrikeService {
     @Autowired
     private FillGasOrderMapper fillGasOrder;
 
-    public  JsonData selectUserByOrderTypeService(User user,Integer currentEmpId,Integer pageNum, Integer pageSize){
+    public  JsonData selectUserByOrderTypeService(User user,Integer currentEmpId,String isAdmin,Integer pageNum, Integer pageSize){
         user.setEmployeeId(currentEmpId);
-        PageHelper.startPage(pageNum, pageSize);
-        List<User> u = userMapper.selectUserByOrderType(user);
+        List<User> u = null;
+        /*
+         *判断是否为admin，不是查询个人产生的记录
+         */
+        if(StringUtils.isNotBlank(isAdmin) && "admin".equals(isAdmin)){
+            user.setEmployeeId(null);
+            PageHelper.startPage(pageNum, pageSize);
+            u = userMapper.selectUserByOrderType(user);
+        }else{
+            PageHelper.startPage(pageNum, pageSize);
+            u = userMapper.selectUserByOrderType(user);
+        }
         PageInfo<User> page = new PageInfo<>(u);
         return JsonData.success(page,"查询成功");
     }

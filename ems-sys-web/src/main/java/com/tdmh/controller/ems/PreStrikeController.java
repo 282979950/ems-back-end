@@ -34,7 +34,8 @@ public class PreStrikeController {
     @ResponseBody
     public JsonData selectUserListController(User user,Integer pageNum, Integer pageSize){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return preStrikeService.selectUserByOrderTypeService(user, currentEmpId, pageNum, pageSize);
+        String isAdmin =ShiroUtils.getPrincipal().getLoginName();
+        return preStrikeService.selectUserByOrderTypeService(user, currentEmpId,isAdmin, pageNum, pageSize);
     }
 
     /**
@@ -60,7 +61,8 @@ public class PreStrikeController {
     @ResponseBody
     public JsonData searchUserListController(User user,Integer pageNum, Integer pageSize){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return preStrikeService.selectUserByOrderTypeService( user,currentEmpId,pageNum,pageSize);
+        String isAdmin =ShiroUtils.getPrincipal().getLoginName();
+        return preStrikeService.selectUserByOrderTypeService(user, currentEmpId,isAdmin, pageNum, pageSize);
     }
 
 }
