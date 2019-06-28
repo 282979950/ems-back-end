@@ -49,9 +49,11 @@ public class OrderServiceImpl implements IOrderService {
         }
     }
     @Override
-    public JsonData BusinessDataQueryService(UserOrders orders){
+    public JsonData BusinessDataQueryService(UserOrders orders,Integer pageNum, Integer pageSize){
+        PageHelper.startPage(pageNum, pageSize);
         List<UserOrders> list= userOrdersMapper.selectBusinessDataQuery(orders);
-        return list==null?JsonData.fail("未查询到相关数据"):JsonData.successData(list);
+        PageInfo<UserOrders> page = new PageInfo<>(list);
+        return JsonData.successData(page);
     }
 
     @Override
@@ -110,6 +112,14 @@ public class OrderServiceImpl implements IOrderService {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public JsonData ReportBusinessDataQueryService(UserOrders orders,Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserOrders> list= userOrdersMapper.selectReportBusinessDataQuery(orders);
+        PageInfo<UserOrders> page = new PageInfo<>(list);
+        return JsonData.success(page,"查询成功");
     }
 
 }

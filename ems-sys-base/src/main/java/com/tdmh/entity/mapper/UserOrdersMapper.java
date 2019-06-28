@@ -47,4 +47,5 @@ public interface UserOrdersMapper {
     List<UserOrders> selectBusinessDataQuery(UserOrders record);
     List<UserOrders> selectordersListQuery(Integer userId);
     Date getCreateTimeByOrderId(@Param("orderId") Integer orderId);
+    List<UserOrders> selectReportBusinessDataQuery(UserOrders record);
 }

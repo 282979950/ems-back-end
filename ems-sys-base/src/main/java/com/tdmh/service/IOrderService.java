@@ -12,11 +12,13 @@ public interface IOrderService {
 
     JsonData updateOrderStatus(Integer orderId, Integer orderStatus);
 
-    JsonData BusinessDataQueryService(UserOrders orders);
+    JsonData BusinessDataQueryService(UserOrders orders,Integer pageNum, Integer pageSize);
 
     JsonData BusinessDataQuerySearchListService(UserOrders orders);
 
     JsonData selectHistoryOrdersService(Integer userId);
 
     void exportBusinessDataQueryListService(UserOrders orders);
+
+    JsonData ReportBusinessDataQueryService(UserOrders orders,Integer pageNum, Integer pageSize);
 }
