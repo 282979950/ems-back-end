@@ -149,6 +149,22 @@ public class UserOrders extends BaseEntity {
      */
     private String endTime;
     /**
+     * 临时参数（次数）
+     */
+    private String icCard;
+    /**
+     * 临时参数（机构id）
+     */
+    private Integer empOrgId;
+    /**
+     * 临时参数（起始日期）
+     */
+    private String startDate;
+    /**
+     * 临时参数（截止日期）
+     */
+    private String endDate;
+    /**
      * 发起冲账时间
      */
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")

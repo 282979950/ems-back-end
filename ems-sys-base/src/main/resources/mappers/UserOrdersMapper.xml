@@ -306,43 +306,27 @@
   </update>
 
   <select id="selectBusinessDataQuery" resultType="com.tdmh.entity.UserOrders" parameterType="com.tdmh.entity.UserOrders">
-      SELECT
-        orders.order_id as orderId,
-        u.user_name as userName,
-        u.user_phone as userPhone,
-        u.user_idcard as userIdcard,
-        sd4.dict_key AS accountStateName,
-        u.user_address as userAddress,
-        e.emp_name as empName,
-        u.service_times as serviceTimes,
-        orders.order_payment as orderPayment,
-        orders.order_gas as orderGas,
-        orders.create_time as rechargeTime
-
-      FROM
-        user_orders orders
-          LEFT JOIN `user` u
-          ON orders.user_id = u.user_id
-          LEFT JOIN employee e
-          ON orders.employee_id = e.emp_id
-         LEFT JOIN sys_dictionary sd4
-          ON orders.account_state = sd4.dict_value
-          AND sd4.dict_category = 'account_state' AND sd4.usable = 1
-
-      WHERE orders.usable = 1
-      <if test="empId!=null and empId!=''">
-          AND e.emp_id=#{empId}
-      </if>
-      <if test="accountState!=null and accountState!=''">
-         and  sd4.dict_value = #{accountState}
-      </if>
-      <if test="startTime!=null and startTime!='' and endTime!=null and endTime!=''">
-          AND
-          DATE_FORMAT(orders.create_time,'%Y-%m-%d')&gt;=#{startTime}
-          AND
-          DATE_FORMAT(orders.create_time,'%Y-%m-%d')&lt;=#{endTime}
-
-      </if>
+         SELECT
+          user_id AS userId,
+          SUM(
+            CASE WHEN
+            user_id IS NOT NULL
+            THEN
+            1
+            ELSE
+            0
+            END
+          )AS icCard,
+            MAX(create_time) AS createTime,
+            SUM(order_gas) AS orderGas,
+            SUM(order_payment) AS orderPayment
+        FROM
+          user_orders
+        WHERE usable = 1
+       <if test="userId != null" >
+          AND user_id = #{userId}
+       </if>
+        GROUP BY user_id
   </select>
   <select  id ="selectordersListQuery" resultType="com.tdmh.entity.UserOrders" parameterType="java.lang.Integer">
          SELECT
@@ -377,4 +361,42 @@
   <select id="getCreateTimeByOrderId" resultType="java.util.Date">
     SELECT create_time as createTime FROM user_orders WHERE order_id = #{orderId} AND usable = 1
   </select>
+    <select id="selectReportBusinessDataQuery" resultType="com.tdmh.entity.UserOrders">
+        SELECT
+            orders.order_id AS orderId,
+            orders.user_id AS userId,
+            orders.create_time AS createTime,
+          SUM(
+            CASE WHEN
+             orders.user_id IS NOT NULL
+            THEN
+            1
+            ELSE
+            0
+            END
+            )AS icCard,
+            SUM(orders.order_gas) AS orderGas,
+            SUM(orders.order_payment) AS orderPayment
+        FROM
+          user_orders orders
+         LEFT JOIN employee e
+          ON orders.employee_id = e.emp_id
+         LEFT JOIN sys_organization org
+          ON e.emp_org_id = org.org_id
+          WHERE orders.usable = 1
+        <if test="userId != null" >
+            AND orders.user_id = #{userId}
+        </if>
+        <if test="empOrgId != null" >
+            AND org.org_id= #{empOrgId}
+        </if>
+        <if test="startDate!=null and startDate!=''">
+            AND DATE_FORMAT(orders.create_time,'%Y-%m-%d') &gt;= #{startDate}
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            AND DATE_FORMAT(orders.create_time,'%Y-%m-%d') &lt;= #{endDate}
+        </if>
+          GROUP BY
+          orders.create_time
+    </select>
 </mapper>

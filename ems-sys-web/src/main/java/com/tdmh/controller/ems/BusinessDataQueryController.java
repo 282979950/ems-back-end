@@ -29,8 +29,8 @@ public class BusinessDataQueryController {
     @RequiresPermissions("querystats:businessDataQuery:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
-    public JsonData BusinessDataQueryList(UserOrders orders){
-        return orderService.BusinessDataQueryService(orders);
+    public JsonData BusinessDataQueryList(UserOrders orders,Integer pageNum, Integer pageSize){
+        return orderService.BusinessDataQueryService(orders,pageNum,pageSize);
     }
     /**
      * 按条件查询
@@ -38,8 +38,8 @@ public class BusinessDataQueryController {
     @RequiresPermissions("querystats:businessDataQuery:visit")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData BusinessDataQuerySearchList(UserOrders orders){
-        return orderService.BusinessDataQuerySearchListService(orders);
+    public JsonData BusinessDataQuerySearchList(UserOrders orders,Integer pageNum, Integer pageSize){
+        return orderService.BusinessDataQueryService(orders,pageNum,pageSize);
     }
 
     /**
