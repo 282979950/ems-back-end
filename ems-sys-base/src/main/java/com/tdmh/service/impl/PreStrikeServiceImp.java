@@ -11,6 +11,7 @@ import com.tdmh.entity.mapper.FillGasOrderMapper;
 import com.tdmh.entity.mapper.StrikeNucleusMapper;
 import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
+import com.tdmh.param.FillGasOrderParam;
 import com.tdmh.service.IPreStrikeService;
 import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.StringUtils;
@@ -40,13 +41,13 @@ public class PreStrikeServiceImp implements IPreStrikeService {
     @Autowired
     private FillGasOrderMapper fillGasOrder;
 
-    public  JsonData selectUserByOrderTypeService(User user,Integer currentEmpId,String isAdmin,Integer pageNum, Integer pageSize){
+    public  JsonData selectUserByOrderTypeService(User user,Integer currentEmpId,String isAdmin,Integer userType,Integer pageNum, Integer pageSize){
         user.setEmployeeId(currentEmpId);
         List<User> u = null;
         /*
-         *判断是否为admin，不是查询个人产生的记录
+         *判断是否为admin或者用户类型为管理员，不是查询个人产生的记录
          */
-        if(StringUtils.isNotBlank(isAdmin) && "admin".equals(isAdmin)){
+        if(StringUtils.isNotBlank(isAdmin) && "admin".equals(isAdmin) ||userType.intValue()== 2){
             user.setEmployeeId(null);
             PageHelper.startPage(pageNum, pageSize);
             u = userMapper.selectUserByOrderType(user);
@@ -77,22 +78,55 @@ public class PreStrikeServiceImp implements IPreStrikeService {
             return JsonData.fail("未获取到相关数据,请刷新数据或联系管理员");
 
         }
-        boolean flag = fillGasOrder.hasUnfinishedFillGasOrder(user.getUserId());
-        if(flag){
-            return JsonData.fail("该户有未处理的补气补缴结算单请处理");
-        }
+
+        Integer fillGasOrderStatus;
+        Date tempDate3;
+        Date tempDate4;
+        int number;
         /*
-         *根据条件查询相关参数 tempDate2为空不做处理，
-         * 若不为空则判断两条数据做出提示
+         *查看查看选中的一条数据是否为最新的一条
          */
         Date tempDate1 = orders.getCreateTimeByOrderId(user.getOrderId());
-        Date tempDate2 = fillGasOrder.getCreateTimeByUserId(user.getUserId());
-        if(tempDate1 != null && tempDate2 != null){
-            int number = DateUtils.temporalComparison(tempDate1,tempDate2,"yyyy-MM-dd HH:mm:ss");
-            if (number == -1 || number == 0) {
-                return JsonData.fail("该笔充值已补气补缴结算完成,无法撤销");
+        Date tempDate2 = orders.getNowCreateTimeByOrderId(user.getUserId());
+
+        number = DateUtils.temporalComparison(tempDate1,tempDate2,"yyyy-MM-dd HH:mm:ss");
+        if(number!=0){
+            return JsonData.fail("请操作该户最近一笔记录：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(tempDate2));
+        }
+        //查询该户最近一笔补气补缴单
+        FillGasOrderParam fgp = new FillGasOrderParam();
+        fgp = fillGasOrder.getCreateTimeByUserId(user.getUserId(),null);
+        //若该户没有查到相关补缴记录则可以直接发起
+        if( fgp != null && fgp.getFillGasOrderStatus()!= null && fgp.getUpdateTime()!=null){
+            fillGasOrderStatus = fgp.getFillGasOrderStatus();
+            tempDate3 = fgp.getUpdateTime();
+            //查看该笔记录状态(0:未处理 1：已处理 2：已撤销)
+            if(fillGasOrderStatus.intValue()== 0){
+                number = DateUtils.temporalComparison(tempDate1,tempDate3,"yyyy-MM-dd HH:mm:ss");
+                if(number == -1){
+                    return JsonData.fail("该用户存在未处理的结算单,无法发起");
+                }
+            }
+            if(fillGasOrderStatus.intValue()== 1){
+                number = DateUtils.temporalComparison(tempDate1,tempDate3,"yyyy-MM-dd HH:mm:ss");
+                if(number == -1){
+                    return JsonData.fail("该笔充值已结算完成,无法发起");
+                }
+            }
+            if(fillGasOrderStatus.intValue()== 2){
+                //查询该笔记录的上一笔最近已处理记录
+                FillGasOrderParam completeFgp = new FillGasOrderParam();
+                completeFgp = fillGasOrder.getCreateTimeByUserId(user.getUserId(),1);
+                if(completeFgp!= null && completeFgp.getFillGasOrderStatus()!= null && completeFgp.getUpdateTime()!= null){
+                    tempDate4 = completeFgp.getUpdateTime();
+                    number = DateUtils.temporalComparison(tempDate1,tempDate4,"yyyy-MM-dd HH:mm:ss");
+                    if(number == -1){
+                        return JsonData.fail("该笔充值已在历史结算中处理完成,无法发起");
+                    }
+                }
             }
         }
+
         userOrders.setUserId(user.getUserId());
         userOrders.setEmployeeId(user.getEmployeeId());
         userOrders.setOrderId(user.getOrderId());
@@ -202,5 +236,11 @@ public JsonData updateStrikeService(StrikeNucleus strike,boolean flag){
 
     }
 }
+
+    @Override
+    public JsonData selectHistoryStrikeNucleusService(Integer userId) {
+        List<StrikeNucleus> list = strikeNucleus.selectStrikeNucleusByUserId(userId);
+        return JsonData.success(list,"查询成功");
+    }
 
 }

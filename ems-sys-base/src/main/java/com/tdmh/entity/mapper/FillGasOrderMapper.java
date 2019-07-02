@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,9 +40,11 @@ public interface FillGasOrderMapper {
     BigDecimal getHistoryMeterStopCodeByUserId(@Param("userId") Integer userId);
 
     /**
-     *根据UserId查看指定状态下的创建时间
+     *根据UserId查看指定状态下的最近一笔记录
      * @param userId
      * @return
      */
-    Date getCreateTimeByUserId(@Param("userId") Integer userId);
+    FillGasOrderParam getCreateTimeByUserId(@Param("userId") Integer userId,@Param("fillGasOrderStatus") Integer fillGasOrderStatus);
+
+    Integer getFillGasOrderCountByUserId(@Param("userId") Integer userId,@Param("fillGasOrderStatus") Integer fillGasOrderStatus);
 }

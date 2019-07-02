@@ -3,6 +3,7 @@ package com.tdmh.entity.mapper;
 
 import com.tdmh.entity.StrikeNucleus;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface StrikeNucleusMapper {
 
     List<StrikeNucleus> selectStrikeNucleusList(StrikeNucleus strikeNucleus);
     int updateStrikeNucleusById(StrikeNucleus strikeNucleus);
+    List<StrikeNucleus> selectStrikeNucleusByUserId(@Param("userId") Integer userId);
 }
