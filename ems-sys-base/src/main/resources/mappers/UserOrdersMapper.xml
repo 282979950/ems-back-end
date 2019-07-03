@@ -366,7 +366,6 @@
   </select>
     <select id="selectReportBusinessDataQuery" resultType="com.tdmh.entity.UserOrders">
         SELECT
-            orders.order_id AS orderId,
             orders.user_id AS userId,
             orders.create_time AS createTime,
           SUM(
@@ -400,6 +399,7 @@
             AND DATE_FORMAT(orders.create_time,'%Y-%m-%d') &lt;= #{endDate}
         </if>
           GROUP BY
+          orders.user_id,
           orders.create_time
     </select>
 </mapper>
