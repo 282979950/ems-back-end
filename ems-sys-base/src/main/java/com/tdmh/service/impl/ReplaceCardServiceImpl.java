@@ -6,10 +6,7 @@ import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserCard;
 import com.tdmh.entity.UserOrders;
-import com.tdmh.entity.mapper.ReplaceCardMapper;
-import com.tdmh.entity.mapper.UserCardMapper;
-import com.tdmh.entity.mapper.UserMapper;
-import com.tdmh.entity.mapper.UserOrdersMapper;
+import com.tdmh.entity.mapper.*;
 import com.tdmh.exception.ParameterException;
 import com.tdmh.param.CreateAccountParam;
 import com.tdmh.param.PrePaymentParam;
@@ -40,6 +37,8 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
 
     @Autowired
     private UserOrdersMapper userOrdersMapper;
+    @Autowired
+    private FillGasOrderMapper fillGasOrderMapper;
 
     @Override
     public JsonData getAllReplaceCardInformation(Integer pageNum, Integer pageSize) {
@@ -61,6 +60,11 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
     @Override
     public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders) {
         BeanValidator.check(param);
+        //充值时查询该用户是否存在未处理的补气补缴单,若有则不允许充值fillGasOrderStatus=0查询未处理
+        int countfillGasOrder = fillGasOrderMapper.getFillGasOrderCountByUserId(param.getUserId(),0);
+        if(countfillGasOrder>0){
+            return JsonData.fail("该户存在未处理的补气补缴单请无法充值");
+        }
         int tempOrderGas = userOrders.getOrderGas().compareTo(BigDecimal.ZERO);
         //若充值气量小于0或者等于零则提示充值气量
         if(tempOrderGas == -1 || tempOrderGas == 0){
