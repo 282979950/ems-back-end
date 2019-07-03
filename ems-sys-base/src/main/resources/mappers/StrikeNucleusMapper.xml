@@ -92,5 +92,27 @@
             id=#{id}
 
     </update>
-
+    <select id="selectStrikeNucleusByUserId" resultType="com.tdmh.entity.StrikeNucleus">
+        SELECT
+          nucleus.id AS id,
+          nucleus.order_id AS orderId,
+          nucleus.user_name AS userName,
+          nucleus.nucleus_status AS nucleusStatus,
+          nucleus.nucleus_opinion AS nucleusOpinion,
+          nucleus.nucleus_launching_person AS nucleusLaunchingPerson,
+          nucleus.create_time AS createTime,
+          sys.dict_key AS nucleusStatusName
+        FROM
+        strike_nucleus nucleus
+          LEFT JOIN
+          user_orders orders
+            ON   nucleus.order_id  = orders.order_id
+            LEFT JOIN
+            sys_dictionary sys
+            ON
+          nucleus.nucleus_status=sys.dict_value
+          AND sys.dict_category = 'nucleus_status'
+          WHERE sys.usable =1 AND nucleus.usable = 1 AND orders.usable=1
+          AND orders.user_id=#{userId}
+    </select>
 </mapper>

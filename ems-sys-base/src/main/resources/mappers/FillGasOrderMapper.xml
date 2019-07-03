@@ -179,9 +179,18 @@
         LEFT JOIN meter m on um.meter_id = m.meter_id and m.usable = 0
         where um.user_id = #{userId}
     </select>
-    <select id="getCreateTimeByUserId" resultType="java.util.Date">
-        SELECT MAX(create_time) as createTime FROM fill_gas_order
-        WHERE usable = 1 AND (fill_gas_order_status = 1 OR fill_gas_order_status = 2)
+    <select id="getCreateTimeByUserId" resultType="com.tdmh.param.FillGasOrderParam">
+        SELECT fill_gas_order_status as fillGasOrderStatus,MAX(update_time) as updateTime FROM fill_gas_order
+        WHERE usable = 1
         AND user_id = #{userId}
+        <if test="fillGasOrderStatus != null">
+            AND fill_gas_order_status= #{fillGasOrderStatus}
+        </if>
+    </select>
+    <select id="getFillGasOrderCountByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(0) FROM fill_gas_order
+        WHERE usable =1
+        AND user_id = #{userId}
+        AND fill_gas_order_status = #{fillGasOrderStatus}
     </select>
 </mapper>

@@ -57,13 +57,23 @@ public class StrikeNucleus extends BaseEntity {
     private String nucleusLaunchingPerson;
 
     /**
+     * 临时参数(userID)
+     */
+    private Integer userId;
+
+    /**
+     * 临时参数(nucleusStatus)
+     */
+    private String nucleusStatusName;
+
+    /**
      * 充值时间
      */
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date rechargeTime;
 
-    public StrikeNucleus( Integer id, Integer orderId, String userName, Integer nucleusStatus, String nucleusOpinion, BigDecimal nucleusGas, BigDecimal nucleusPayment, String nucleusLaunchingPerson, Date rechargeTime,Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, @Length(max = 255, message = "备注长度不能超过255个字") String remarks) {
+    public StrikeNucleus( Integer id, Integer orderId, String userName, Integer nucleusStatus, String nucleusOpinion, BigDecimal nucleusGas, BigDecimal nucleusPayment, String nucleusLaunchingPerson, Integer userId, String nucleusStatusName, Date rechargeTime,Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, @Length(max = 255, message = "备注长度不能超过255个字") String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.id = id;
         this.orderId = orderId;
@@ -73,6 +83,8 @@ public class StrikeNucleus extends BaseEntity {
         this.nucleusGas = nucleusGas;
         this.nucleusPayment = nucleusPayment;
         this.nucleusLaunchingPerson = nucleusLaunchingPerson;
+        this.userId = userId;
+        this.nucleusStatusName = nucleusStatusName;
         this.rechargeTime = rechargeTime;
     }
 

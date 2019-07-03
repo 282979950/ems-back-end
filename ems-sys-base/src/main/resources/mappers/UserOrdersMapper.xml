@@ -361,6 +361,9 @@
   <select id="getCreateTimeByOrderId" resultType="java.util.Date">
     SELECT create_time as createTime FROM user_orders WHERE order_id = #{orderId} AND usable = 1
   </select>
+  <select id="getNowCreateTimeByOrderId" resultType="java.util.Date">
+    SELECT MAX(create_time) AS createTime  FROM user_orders WHERE user_id = #{userId} AND usable = 1
+  </select>
     <select id="selectReportBusinessDataQuery" resultType="com.tdmh.entity.UserOrders">
         SELECT
             orders.order_id AS orderId,

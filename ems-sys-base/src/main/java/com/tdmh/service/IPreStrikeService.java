@@ -11,9 +11,10 @@ import com.tdmh.entity.User;
  */
 public interface IPreStrikeService {
 
-    JsonData selectUserByOrderTypeService(User user, Integer currentEmpId,String isAdmin,Integer pageNum, Integer pageSize);
+    JsonData selectUserByOrderTypeService(User user, Integer currentEmpId,String isAdmin,Integer userType,Integer pageNum, Integer pageSize);
     JsonData editUserOrdersService(User user, String currentEmpName, Integer currentEmpId);
     JsonData selectStrikeNucleusListService(StrikeNucleus strikeNucleus,Integer pageNum, Integer pageSize);
     JsonData updateStrikeService(StrikeNucleus strikeNucleus, boolean flag);
+    JsonData selectHistoryStrikeNucleusService(Integer userId);
 
 }

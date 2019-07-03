@@ -26,6 +26,8 @@ public class userQueryController {
     private IFillGasService fillGasService;
     @Autowired
     private IRepairOrderService repairOrderService;
+    @Autowired
+    private IPreStrikeService preStrikeService;
 
     /**
      * 查询
@@ -94,6 +96,16 @@ public class userQueryController {
     @ResponseBody
     public JsonData selectHistoryRepairOrderController(Integer userId){
         return repairOrderService.selectHistoryRepairOrderQueryService(userId);
+    }
+    /**
+     * 查询审核的冲账记录
+     * @return
+     */
+    @RequiresPermissions("queryStats:userQuery:userStrike")
+    @RequestMapping(value = "/historyUserStrike.do")
+    @ResponseBody
+    public JsonData selectHistoryStrikeNucleusController(Integer userId){
+        return preStrikeService.selectHistoryStrikeNucleusService(userId);
     }
 
     /**

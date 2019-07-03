@@ -7,10 +7,7 @@ import com.tdmh.common.BeanValidator;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserCard;
 import com.tdmh.entity.UserOrders;
-import com.tdmh.entity.mapper.PrePaymentMapper;
-import com.tdmh.entity.mapper.UserCardMapper;
-import com.tdmh.entity.mapper.UserMapper;
-import com.tdmh.entity.mapper.UserOrdersMapper;
+import com.tdmh.entity.mapper.*;
 import com.tdmh.param.PrePaymentParam;
 import com.tdmh.param.WriteCardParam;
 import com.tdmh.service.IPrePaymentService;
@@ -47,6 +44,9 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private FillGasOrderMapper fillGasOrderMapper;
+
     @Override
     public JsonData getAllOrderInformation() {
         List<PrePaymentParam> list = prePaymentMapper.getAllOrderInformation(null);
@@ -57,6 +57,11 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     @Override
     public JsonData createUserOrder(UserOrders userOrders) {
         BeanValidator.check(userOrders);
+        //充值时查询该用户是否存在未处理的补气补缴单,若有则不允许充值fillGasOrderStatus=0查询未处理
+        int count = fillGasOrderMapper.getFillGasOrderCountByUserId(userOrders.getUserId(),0);
+        if(count>0){
+            return JsonData.fail("该户存在未处理的补气补缴单请无法充值");
+        }
         userOrders.setUsable(true);
         userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
         userOrders.setOrderType(2); //2为普通充值类型

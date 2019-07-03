@@ -82,13 +82,14 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
               card_id as cardId ,
               card_identifier as cardIdentifier,
               card_cost  as cardCost,
+              usable,
               create_time as createTime
         FROM
               user_card
         WHERE
-              usable = 1
-        AND
             user_id =#{userId}
+        ORDER BY
+            create_time DESC
     </select>
     <resultMap id="BindNewCardParam" type="com.tdmh.param.BindNewCardParam">
         <constructor>
