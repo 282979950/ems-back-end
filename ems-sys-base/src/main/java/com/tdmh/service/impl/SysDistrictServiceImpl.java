@@ -136,7 +136,11 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
         if (distList == null || distList.size() == 0) {
             return JsonData.successData(treeDataList);
         }
+        SysDistrictParam root = null;
         for (SysDistrictParam dist : distList) {
+            if (dist.getDistId() == ROOT_DIST_ID) {
+                treeDataList.add(dist);
+            }
             Integer pId = dist.getDistParentId();
             if (pId != null) {
                 for (SysDistrictParam dist2 : distList) {
@@ -149,7 +153,6 @@ public class SysDistrictServiceImpl implements ISysDistrictService {
                 }
             }
         }
-        treeDataList.add(distList.get(distList.size()-1));
         return JsonData.successData(treeDataList);
     }
 
