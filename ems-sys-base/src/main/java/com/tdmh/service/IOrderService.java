@@ -8,7 +8,7 @@ import com.tdmh.entity.UserOrders;
  */
 public interface IOrderService {
 
-    JsonData searchOrderAndInvoiceList(String userName, String iccardId, String iccardIdentifier, String invoiceCode, String invoiceNumber, Integer pageNum, Integer pageSize);
+    JsonData searchOrderAndInvoiceList(String userName, String iccardId, String iccardIdentifier, String invoiceCode, String invoiceNumber, Integer pageNum, Integer pageSize, String startDate, String endDate);
 
     JsonData updateOrderStatus(Integer orderId, Integer orderStatus);
 

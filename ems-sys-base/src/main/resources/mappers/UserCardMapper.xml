@@ -43,10 +43,11 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
           usable = #{usable}
           where user_card_id = #{userCardId}
     </update>
+    <!--查询没有产生的工本费 uc.card_cost !=0.00-->
     <select id="getAllSupList" parameterType="Integer" resultType="com.tdmh.param.CreateAccountParam">
         select uc.user_id as userId, uc.card_id as iccardId, uc.card_identifier as iccardIdentifier, uc.card_cost as castCost, uo.order_gas as orderGas,uo.order_payment as orderPayment,uc.create_time as createTime
         from user_card uc join user_orders uo on uc.order_id = uo.order_id
-        where uc.user_id = #{userId} ORDER BY uc.create_time DESC,uc.user_card_id DESC
+        where uc.user_id = #{userId}  AND uc.card_cost !=0.00 ORDER BY uc.create_time DESC,uc.user_card_id DESC
     </select>
     <select id="getUserCardByUserIdAndnIcCardIdentifier" parameterType="map" resultType="int">
         select count(user_card_id) from user_card

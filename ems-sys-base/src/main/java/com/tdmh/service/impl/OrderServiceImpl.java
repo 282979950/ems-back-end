@@ -32,9 +32,9 @@ public class OrderServiceImpl implements IOrderService {
     private UserOrdersMapper userOrdersMapper;
 
     @Override
-    public JsonData searchOrderAndInvoiceList(String userName,String iccardId, String iccardIdentifier, String invoiceCode, String invoiceNumber, Integer pageNum, Integer pageSize) {
+    public JsonData searchOrderAndInvoiceList(String userName,String iccardId, String iccardIdentifier, String invoiceCode, String invoiceNumber, Integer pageNum, Integer pageSize, String startDate, String endDate) {
         PageHelper.startPage(pageNum, pageSize);
-        List<OrderParam> list = orderMapper.searchOrderAndInvoiceList(userName, iccardId, iccardIdentifier, invoiceCode,invoiceNumber);
+        List<OrderParam> list = orderMapper.searchOrderAndInvoiceList(userName, iccardId, iccardIdentifier, invoiceCode,invoiceNumber,startDate,endDate);
         PageInfo<OrderParam> info = new PageInfo<>(list);
         return JsonData.success(info,"查询成功");
     }

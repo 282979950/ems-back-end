@@ -14,8 +14,9 @@ import java.util.List;
 @Mapper @Component
 public interface OrderMapper {
     List<OrderParam> searchOrderAndInvoiceList(@Param("userName") String userName, @Param("iccardId") String iccardId,
-                                               @Param("iccardIdentifier") String iccardIdentifier, @Param("invoiceCode") String invoiceCode, @Param(
-                                                       "invoiceNumber") String invoiceNumber);
+                                               @Param("iccardIdentifier") String iccardIdentifier, @Param("invoiceCode") String invoiceCode,
+                                               @Param("invoiceNumber") String invoiceNumber, @Param("startDate") String startDate,
+                                               @Param("endDate") String endDate);
 
     InvoiceParam findOrderById(@Param("orderId") Integer orderId);
 

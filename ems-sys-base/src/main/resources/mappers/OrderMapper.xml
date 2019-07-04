@@ -36,6 +36,12 @@
         <if test="invoiceNumber!=null and invoiceNumber!=''">
             and i.invoice_number like CONCAT('%', #{invoiceNumber}, '%')
         </if>
+        <if test="startDate!=null and startDate!=''">
+            AND DATE_FORMAT(uo.create_time,'%Y-%m-%d') &gt;= #{startDate}
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            AND DATE_FORMAT(uo.create_time,'%Y-%m-%d') &lt;= #{endDate}
+        </if>
         order by uo.create_time DESC
     </select>
     <select id="findOrderById" parameterType="int" resultType="com.tdmh.param.InvoiceParam">
