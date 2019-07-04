@@ -2,26 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tdmh.entity.mapper.StrikeNucleusMapper">
     <resultMap id="BaseResultMap" type="com.tdmh.entity.StrikeNucleus">
-        <constructor>
-            <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.Integer"/>
-            <arg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="nucleus_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="nucleus_opinion" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="nucleus_gas" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+        <id column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="user_name" property="userName"/>
+        <result column="nucleus_status" property="nucleusStatus"/>
+        <result column="nucleus_opinion" property="nucleusOpinion"/>
+        <result column="nucleus_gas" property="nucleusGas"/>
+        <result column="nucleus_payment" property="nucleusPayment"/>
+        <result column="nucleus_launching_person" property="nucleusLaunchingPerson"/>
+        <result column="recharge_time" property="rechargeTime"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
 
-            <arg column="nucleus_payment" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
-            <arg column="nucleus_launching_person" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="recharge_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-            <arg column="create_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
-            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-            <arg column="update_by" jdbcType="INTEGER" javaType="java.lang.Integer" />
-            <arg column="usable" jdbcType="BIT" javaType="java.lang.Boolean" />
-            <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
-
-
-        </constructor>
     </resultMap>
     <sql id="Base_Column_List">
       id,order_id,user_name,nucleus_status,nucleus_opinion,nucleus_gas,nucleus_payment,

@@ -180,7 +180,7 @@
         where um.user_id = #{userId}
     </select>
     <select id="getCreateTimeByUserId" resultType="com.tdmh.param.FillGasOrderParam">
-        SELECT fill_gas_order_status as fillGasOrderStatus,MAX(update_time) as updateTime FROM fill_gas_order
+        SELECT any_value(fill_gas_order_status) as fillGasOrderStatus,MAX(update_time) as updateTime FROM fill_gas_order
         WHERE usable = 1
         AND user_id = #{userId}
         <if test="fillGasOrderStatus != null">
