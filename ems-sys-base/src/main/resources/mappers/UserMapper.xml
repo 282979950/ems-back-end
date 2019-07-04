@@ -688,7 +688,7 @@
         (
         SELECT user_id, SUM(order_gas) AS totalOrderGas, SUM(order_payment) AS totalOrderPayment, MIN(create_time) AS
         startBuyDay, MAX(create_time) AS endBuyDay
-        FROM user_orders account_state NOT IN(1,3) OR account_state IS NULL GROUP BY user_id
+        FROM user_orders WHERE account_state NOT IN(1,3) OR account_state IS NULL GROUP BY user_id
         ) uo ON u.user_id = uo.user_id
         WHERE u.usable = 1
         <if test="monthAveGas!=null">
