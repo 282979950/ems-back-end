@@ -70,6 +70,11 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         if(tempOrderGas == -1 || tempOrderGas == 0){
             return JsonData.fail("操作有误！充值金额需大于零");
         }
+        //支持最大充气量
+        BigDecimal maxOrderGas = new BigDecimal("900");
+        if( userOrders.getOrderGas().compareTo(maxOrderGas) == 1){
+            return JsonData.fail("充值气量最大支持900");
+        }
         UserCard oldUserCard = userCardMapper.getUserCardByUserIdAndCardId(param.getUserId(),param.getIccardId());
         if(oldUserCard == null){
             return JsonData.fail("该用户没有可用卡");

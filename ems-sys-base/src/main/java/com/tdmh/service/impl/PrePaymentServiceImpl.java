@@ -62,6 +62,11 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         if(count>0){
             return JsonData.fail("该户存在未处理的补气补缴单请无法充值");
         }
+        //支持最大充气量
+        BigDecimal maxOrderGas = new BigDecimal("900");
+        if( userOrders.getOrderGas().compareTo(maxOrderGas) == 1){
+            return JsonData.fail("充值气量最大支持900");
+        }
         userOrders.setUsable(true);
         userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
         userOrders.setOrderType(2); //2为普通充值类型

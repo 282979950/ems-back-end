@@ -223,6 +223,12 @@ public class UserServiceImpl implements IUserService {
         if(count>0){
             return JsonData.fail("该卡已绑定其他用户");
         }
+
+        //支持最大充气量
+        BigDecimal maxOrderGas = new BigDecimal("900");
+        if( param.getOrderGas().compareTo(maxOrderGas) == 1){
+            return JsonData.fail("充值气量最大支持900");
+        }
         Integer iccardId = param.getUserId()+10000000;
         param.setIccardId(iccardId);
         // TODO: 2018/8/9 从接口中读取IC卡识别号
