@@ -10,6 +10,7 @@ import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.param.FillGasOrderParam;
 import com.tdmh.service.IFillGasService;
+import com.tdmh.service.IRepairOrderService;
 import com.tdmh.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class FillGasServiceImpl implements IFillGasService {
 
     @Autowired
     private FillGasOrderMapper fillGasOrderMapper;
+
+    @Autowired
+    private IRepairOrderService repairOrderService;
 
     @Autowired
     private UserMapper userMapper;
@@ -69,12 +73,15 @@ public class FillGasServiceImpl implements IFillGasService {
             BigDecimal leftGas = param.getLeftGas();
             if (leftGas.compareTo(BigDecimal.ZERO) > 0) {
                 createNewFillGasOrder(param);
+                repairOrderService.updateRepairOrderStatus(param.getRepairOrderId(), 2);
                 return JsonData.successMsg("该补气单已处理，有新补气单生成用于下次补气");
             } else {
+                repairOrderService.updateRepairOrderStatus(param.getRepairOrderId(), 4);
                 return JsonData.successMsg("补气单处理完成");
             }
         } else if (fillGasOrderType.equals(2)) {
             fillGasOrderMapper.editFillGasOrder(param);
+            repairOrderService.updateRepairOrderStatus(param.getRepairOrderId(), 4);
             // 生成一笔补缴充值
             createOveruseOrder(param.getFillMoney(), param.getStopCodeCount().subtract(param.getGasCount()), param.getUserId(), param.getUpdateBy());
             return JsonData.successMsg("超用补缴单已处理");

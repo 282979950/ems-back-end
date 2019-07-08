@@ -64,6 +64,19 @@ public class RepairOrderController {
     }
 
     /**
+     * 编辑维修单
+     */
+    @RequiresPermissions("repairOrder:entry:update")
+    @RequestMapping(value = "cancel.do")
+    @ResponseBody
+    @BeUnLock
+    public JsonData cancelRepairOrder(RepairOrderParam param) {
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        param.setUpdateBy(currentEmpId);
+        return repairOrderService.cancelRepairOrder(param);
+    }
+
+    /**
      * 查询维修单
      */
     @RequiresPermissions("repairOrder:entry:retrieve")

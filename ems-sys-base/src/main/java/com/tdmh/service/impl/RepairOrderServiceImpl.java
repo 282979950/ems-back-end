@@ -65,6 +65,13 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     @Transactional
     public JsonData createRepairOrder(RepairOrderParam param) {
         BeanValidator.check(param);
+        // 当存在待处理的维修单时需要先撤销旧的维修单
+        if (hasPendingRepairOrder(param.getUserId())) {
+            return JsonData.fail("当前用户存在待处理的维修单，需要先撤销旧的维修单才能新建维修单");
+        }
+        if (hasProcessingRepairOrder(param.getUserId())) {
+            return JsonData.fail("当前用户存在处理中的维修单，需要处理完维修单后才能新建维修单");
+        }
         String repairOrderId = param.getRepairOrderId();
         int number = DateUtils.temporalComparison(param.getRepairStartTime(),param.getRepairEndTime(),"yyyy-MM-dd HH:mm");
         if (number == 1) {
@@ -81,6 +88,7 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         if (newMeterCode != null && checkNewMeterInstalled(newMeterCode) && checkNewMeterScrapped(newMeterCode)) {
             return JsonData.fail("新表已经被其他用户使用");
         }
+
         Integer userId = param.getUserId();
         if (checkNeedFillGas(param)) {
             userService.updateServiceTimesByUserId(param.getUserId());
@@ -109,7 +117,8 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 meterService.updateMeter(oldMeter);
             }
             // 锁定历史订单
-            repairOrderMapper.lockRepairOrderByUserId(userId);
+//            repairOrderMapper.lockRepairOrderByUserId(userId);
+            param.setRepairOrderStatus(1);
             int resultCount = repairOrderMapper.addRepairOrder(param);
             if (resultCount == 0) {
                 return JsonData.fail("新增维修单失败");
@@ -130,7 +139,9 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 return JsonData.fail("该用户有未处理的补气单不能提交普通维修单");
             }
             // 锁定历史订单
-            repairOrderMapper.lockRepairOrderByUserId(userId);
+//            repairOrderMapper.lockRepairOrderByUserId(userId);
+            // 无需处理的订单
+            param.setRepairOrderStatus(3);
             int resultCount = repairOrderMapper.addRepairOrder(param);
             if (resultCount == 0) {
                 return JsonData.fail("新增维修单失败");
@@ -138,6 +149,14 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 return JsonData.successMsg("新增维修单成功");
             }
         }
+    }
+
+    private boolean hasPendingRepairOrder(Integer userId) {
+        return repairOrderMapper.countPendingRepairOrder(userId) > 0;
+    }
+
+    private boolean hasProcessingRepairOrder(Integer userId) {
+        return repairOrderMapper.countProcessingRepairOrder(userId) > 0;
     }
 
     @Override
@@ -218,6 +237,60 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 return JsonData.successMsg("编辑维修单成功");
             }
         }
+    }
+
+    @Override
+    @Transactional
+    public JsonData cancelRepairOrder(RepairOrderParam param) {
+        Integer status = param.getRepairOrderStatus();
+        if (status.equals(1)) {
+            // 判断是否为换表
+            Integer repairType = param.getRepairType();
+            if (repairType.equals(0) || repairType.equals(6) || repairType.equals(7)) {
+                String oldMeterCode = param.getOldMeterCode();
+                String newMeterCode = param.getNewMeterCode();
+                // 还原表具关联关系
+                restoreMeter(param.getUserId(), oldMeterCode, newMeterCode);
+                // 撤销补气单
+                fillGasService.cancelFillGasByUserId(param.getUserId());
+                // 撤销维修单
+                repairOrderMapper.cancelRepairOrder(param);
+                return JsonData.successMsg("撤销维修单成功");
+            } else {
+                // 撤销维修单
+                repairOrderMapper.cancelRepairOrder(param);
+                // 撤销补气单
+                fillGasService.cancelFillGasByUserId(param.getUserId());
+                return JsonData.successMsg("撤销维修单成功");
+            }
+        } else {
+            // 将订单状态设置为4
+            return JsonData.success(repairOrderMapper.cancelRepairOrder(param), "撤销维修单成功");
+        }
+    }
+
+    @Override
+    public void updateRepairOrderStatus(String repairOrderId, int i) {
+        repairOrderMapper.updateRepairOrderStatus(repairOrderId, i);
+    }
+
+    private void restoreMeter(Integer userId,String oldMeterCode, String newMeterCode) {
+        // 将旧表设置为可用
+        Meter oldMeter = meterService.getMeterByMeterId(meterService.getMeterIdByMeterCode(oldMeterCode));
+        oldMeter.setUsable(true);
+        oldMeter.setMeterStatus(2);
+        oldMeter.setMeterScrapTime(null);
+        meterService.updateMeter(oldMeter);
+        // 将新表设置为入库状态
+        Meter newMeter = meterService.getMeterByMeterId(meterService.getMeterIdByMeterCode(newMeterCode));
+        newMeter.setMeterStatus(1);
+        meterService.updateMeter(newMeter);
+        //删除表具关联关系
+        UserMeters oldUserMeter = userMetersMapper.getUserMeterByUserIdAndMeterId(userId, oldMeter.getMeterId());
+        oldUserMeter.setUsable(true);
+        oldUserMeter.setUpdateTime(new Date());
+        userMetersMapper.updateMeter(oldUserMeter);
+        userMetersMapper.deleteUserMeterByUserIdAndMeterId(userId, oldMeter.getMeterId());
     }
 
     @Override

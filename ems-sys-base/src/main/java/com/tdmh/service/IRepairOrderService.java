@@ -58,4 +58,8 @@ public interface IRepairOrderService {
      * @return
      */
     List<UserCard> selectUserCardByUserIdService(@Param("userId") Integer userId);
+
+    JsonData cancelRepairOrder(RepairOrderParam param);
+
+    void updateRepairOrderStatus(String repairOrderId, int i);
 }
