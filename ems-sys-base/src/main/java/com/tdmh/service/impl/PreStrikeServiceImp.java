@@ -107,10 +107,11 @@ public class PreStrikeServiceImp implements IPreStrikeService {
                     return JsonData.fail("该用户存在未处理的结算单,无法发起");
                 }
             }
+            //补气补缴页面生成的数据有可能一次性未结清重新生成一笔未处理的补气或补缴单，正常情况下一次结清会提示（该笔充值已结算完成）因无法区分此处提示比较笼统
             if(fillGasOrderStatus.intValue()== 1){
                 number = DateUtils.temporalComparison(tempDate1,tempDate3,"yyyy-MM-dd HH:mm:ss");
                 if(number == -1){
-                    return JsonData.fail("该笔充值已结算完成,无法发起");
+                    return JsonData.fail("该笔充值已结算完成或存在一次性未结清的补气(补缴单)");
                 }
             }
             if(fillGasOrderStatus.intValue()== 2){
