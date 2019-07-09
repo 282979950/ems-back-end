@@ -408,13 +408,13 @@
         select
         meter_id
         from meter
-        where meter_code = #{meterCode,jdbcType=VARCHAR} and usable = 1
+        where meter_code = #{meterCode,jdbcType=VARCHAR}
     </select>
     <select id="getMeterByMeterId" parameterType="integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from meter
-        where meter_id = #{meterId,jdbcType=INTEGER} and usable = 1
+        where meter_id = #{meterId,jdbcType=INTEGER}
     </select>
     <select id="getMeterIdByUserId" resultType="integer" parameterType="integer">
         select

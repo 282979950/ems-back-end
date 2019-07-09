@@ -92,11 +92,11 @@
     </select>
     <insert id="addRepairOrder" parameterType="com.tdmh.param.RepairOrderParam">
         insert into repair_order(
-        repair_order_id, user_id, repair_type, gas_equipment_type, old_meter_id, old_meter_stop_code, new_meter_id, new_meter_stop_code,
+        repair_order_id, repair_order_status, user_id, repair_type, gas_equipment_type, old_meter_id, old_meter_stop_code, new_meter_id, new_meter_stop_code,
         repair_fault_type, repair_result_type, emp_id, repair_start_time, repair_end_time, new_safety_code, old_safety_code,
         create_time, create_by, update_time, update_by, remarks
-        ) values (#{repairOrderId}, #{userId}, #{repairType}, #{gasEquipmentType}, #{oldMeterId}, #{oldMeterStopCode}, #{newMeterId}, #{newMeterStopCode},
-        #{repairFaultType}, #{repairResultType}, #{empId}, #{repairStartTime}, #{repairEndTime}, #{newSafetyCode}, #{oldSafetyCode},
+        ) values (#{repairOrderId}, #{repairOrderStatus}, #{userId}, #{repairType}, #{gasEquipmentType}, #{oldMeterId}, #{oldMeterStopCode}, #{newMeterId},
+        #{newMeterStopCode}, #{repairFaultType}, #{repairResultType}, #{empId}, #{repairStartTime}, #{repairEndTime}, #{newSafetyCode}, #{oldSafetyCode},
         NOW(), #{createBy}, NOW(), #{updateBy}, #{remarks})
     </insert>
     <update id="editRepairOrder">
@@ -120,11 +120,23 @@
         update_by = #{updateBy}
         where id = #{id}
     </update>
+    <update id="cancelRepairOrder">
+        update repair_order
+        set
+        repair_order_status = 5
+        where id = #{id}
+    </update>
     <update id="lockRepairOrderByUserId" parameterType="int">
         update repair_order
         set
         repair_order_status = 2
         where user_id = #{userId} and repair_order_status = 1 and usable = 1
+    </update>
+    <update id="updateRepairOrderStatus">
+        update repair_order
+        set
+        repair_order_status = #{status}
+        where repair_order_id = #{repairOrderId} and usable = 1
     </update>
     <select id="searchRepairOrder" resultMap="RepairOrderParam" parameterType="map">
         <include refid="Base_Sql"></include>
@@ -202,5 +214,17 @@
                 AND sd4.usable = 1
             WHERE reor.usable = 1
               AND reor.user_id =#{userId}
+    </select>
+    <select id="countPendingRepairOrder" resultType="int">
+        select
+        count(1)
+        from repair_order
+        where user_id = #{userId} and repair_order_status = 1 and usable = 1
+    </select>
+    <select id="countProcessingRepairOrder" resultType="int">
+        select
+        count(1)
+        from repair_order
+        where user_id = #{userId} and repair_order_status = 2 and usable = 1
     </select>
 </mapper>

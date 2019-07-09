@@ -19,6 +19,8 @@ public interface RepairOrderMapper {
 
     int editRepairOrder(RepairOrderParam param);
 
+    int cancelRepairOrder(RepairOrderParam param);
+
     List<RepairOrderParam> searchRepairOrder(@Param("repairOrderId") String repairOrderId, @Param("userId") Integer userId,
                                              @Param("repairType") Integer repairType,
                                              @Param("empName") String empName);
@@ -33,4 +35,11 @@ public interface RepairOrderMapper {
     List<RepairOrderParam> selectRepairOrderByuserQuery(Integer userId);
 
     int lockRepairOrderByUserId(@Param("userId") Integer userId);
+
+
+    int countPendingRepairOrder(@Param("userId")Integer userId);
+
+    int countProcessingRepairOrder(@Param("userId")Integer userId);
+
+    void updateRepairOrderStatus(@Param("repairOrderId") String repairOrderId, @Param("status") int status);
 }
