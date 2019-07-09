@@ -25,8 +25,7 @@
     </sql>
 
     <select id="sumHistoryPurchasingAirVolume" resultType="java.math.BigDecimal" parameterType="Integer">
-        SELECT  SUM(order_gas) FROM user_orders WHERE user_id =#{userId} AND usable=1
-
+        SELECT  SUM(order_gas) FROM user_orders WHERE user_id =#{userId} AND (account_state = 2 OR account_state IS null) AND usable=1
     </select>
     <select id="sumHistoryTableCode" resultType="java.math.BigDecimal" parameterType="Integer">
 

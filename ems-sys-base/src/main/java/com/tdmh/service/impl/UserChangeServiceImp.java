@@ -8,6 +8,7 @@ import com.tdmh.entity.mapper.UserChangeMapper;
 import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.service.IGasPriceService;
+import com.tdmh.service.IMeterService;
 import com.tdmh.service.IUserChangeService;
 import com.tdmh.util.CalculateUtil;
 import com.tdmh.utils.RandomUtils;
@@ -37,31 +38,27 @@ public class UserChangeServiceImp implements IUserChangeService {
     private UserOrdersMapper userOrdersMapper;
     @Autowired
     private UserCardMapper userCardMapper;
+
+    @Autowired
+    private IMeterService meterService;
+
     @Override
     @Transactional(readOnly = false)
-    public JsonData userChangeSettlementService(UserChange userChange, User user,Integer currentEmpId,double userMoney,double OrderSupplement){
-
-        if(userChange == null){
+    public JsonData userChangeSettlementService(UserChange userChange, User user, Integer currentEmpId, double userMoney, double OrderSupplement) {
+        if (userChange == null) {
             return JsonData.fail("未获取录入的相关信息");
         }
-        if((userChange.getUserChangeIdcard().length()<15) ||(userChange.getUserChangeIdcard().length()>18)){
-
+        if ((userChange.getUserChangeIdcard().length() < 15) || (userChange.getUserChangeIdcard().length() > 18)) {
             return JsonData.fail("录入信息失败，身份证号15位或18位");
-
         }
-        BigDecimal  code = userChange.getTableCode();
-        Integer userId= user.getUserId();
-
+        Integer userId = user.getUserId();
+        Meter currentMeter = meterService.getMeterByMeterId(meterService.getMeterIdByUserId(userId));
+        currentMeter.setMeterStopCode(userChange.getTableCode());
+        meterService.updateMeter(currentMeter);
         //根据id获取当前所有购气总量
-        BigDecimal PurchasingAirVolume =userChangeMapper.sumHistoryPurchasingAirVolume(userId);
-        BigDecimal HistoryTableCode= userChangeMapper.sumHistoryTableCode(userId);
-        BigDecimal amount;
-        if(null!=HistoryTableCode){
-            amount= PurchasingAirVolume.subtract(HistoryTableCode).subtract(code);
-        }else{
-            amount= PurchasingAirVolume.subtract(code);
-        }
-
+        BigDecimal PurchasingAirVolume = userChangeMapper.sumHistoryPurchasingAirVolume(userId);
+        BigDecimal HistoryTableCode = userChangeMapper.sumHistoryTableCode(userId);
+        BigDecimal amount = HistoryTableCode == null ? PurchasingAirVolume : PurchasingAirVolume.subtract(HistoryTableCode);
         userChange.setId(RandomUtils.getUUID());
         userChange.setUserId(user.getUserId());
         userChange.setUserOldName(user.getUserName());
@@ -73,8 +70,7 @@ public class UserChangeServiceImp implements IUserChangeService {
         userChange.setUpdateBy(currentEmpId);
         userChange.setUpdateTime(new Date());
         userChange.setUsable(true);
-
-        if(amount.compareTo(BigDecimal.ZERO)>=0){
+        if (amount.compareTo(BigDecimal.ZERO) >= 0) {
             //新增记录
             userChangeMapper.insert(userChange);
             //变更用户信息
@@ -83,65 +79,16 @@ public class UserChangeServiceImp implements IUserChangeService {
             user.setUserIdcard(userChange.getUserChangeIdcard());
             user.setUserDeed(userChange.getUserChangeDeed());
             UserMapper.updateUserById(user);
-            return JsonData.successMsg("已成功变更账户,当前可用总量为："+amount+"方");
-
-
+            return JsonData.successMsg("已成功变更账户,当前可用总量为：" + amount + "方");
         }
-         /*
-             *此处超用代码屏蔽，不需要在此补缴，也不需要计算金额,提示用户就可
-        else if(userMoney!=0){
-            //新增记录
-            userChangeMapper.insert(userChange);
-            //变更用户信息
-            user.setUserName(userChange.getUserChangeName());
-            user.setUserPhone(userChange.getUserChangePhone());
-            user.setUserIdcard(userChange.getUserChangeIdcard());
-            user.setUserDeed(userChange.getUserChangeDeed());
-            UserMapper.updateUserById(user);
-            //生成一笔充值记录
-            UserOrders orders = new UserOrders() ;
-            orders.setUserId(userChange.getUserId());
-            orders.setEmployeeId(currentEmpId);
-            orders.setOrderPayment(new BigDecimal(userMoney+""));
-            orders.setOrderGas(amount.negate());
-            orders.setOrderType(4);
-            orders.setCreateTime(new Date());
-            orders.setCreateBy(currentEmpId);
-            orders.setUpdateBy(currentEmpId);
-            orders.setUpdateTime( new Date());
-            orders.setUsable(true);
-            orders.setOrderSupplement(new BigDecimal(OrderSupplement));
-            orders.setRemarks("超用补缴充值记录");
-            userOrdersMapper.createChangeUserOrder(orders);
-            return JsonData.successMsg("已成功变更账户,补缴成功");
+        return JsonData.fail("此用户超用，无法变更资料");
+    }
 
-        }else{
-
-
-            GasPrice gasPrice = gasPriceService.findGasPriceByType(user.getUserType() ,user.getUserGasType());
-            BigDecimal hasUsedGasNum = gasPriceService.findHasUsedGasInYear(userId);
-            if(gasPrice != null){
-                BigDecimal orderPayment = CalculateUtil.gasToPayment((amount.negate()).add(hasUsedGasNum), gasPrice);
-                BigDecimal hasOrderPayment = CalculateUtil.gasToPayment(hasUsedGasNum, gasPrice);
-
-                BigDecimal[] res={orderPayment.subtract(hasOrderPayment),orderPayment.subtract(hasOrderPayment)};
-                //return JsonData.success(orderPayment.subtract(hasOrderPayment),"超用气量(单位:方):"+amount.negate()+",超用补缴金额(单位:元):"+orderPayment.subtract(hasOrderPayment));
-                return JsonData.success(res,"超用气量(单位:方):"+amount.negate()+",超用补缴金额(单位:元):"+orderPayment.subtract(hasOrderPayment));
-
-            }
-            */
-            return JsonData.fail("此用户超用，无法变更资料");
-        }
-
-      //  return JsonData.fail("服务内部出错");
-
-  //  }
     /**
      * 标识。1，用户超用补缴，2.燃气公司退钱
      * userMoney 实补金额
      * OrderSupplement应补金额
      */
-
     @Override
     @Transactional(readOnly = false)
     public JsonData userEliminationHeadService(User user,BigDecimal userMoney,BigDecimal OrderSupplement,int flage,Integer Id){
