@@ -13,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.math.BigDecimal;
-
 /**
  * 账户变更controller
  *
@@ -57,10 +55,10 @@ public class UserChangeController {
     @RequiresPermissions("account:alter:update")
     @RequestMapping(value = "/userEliminationHead.do")
     @ResponseBody
-    public JsonData userEliminationHead(User user,BigDecimal userMoney,BigDecimal OrderSupplement, int flage){
+    public JsonData userEliminationHead(User user){
         Integer Id = ShiroUtils.getPrincipal().getId();
 
-        return user==null?JsonData.fail("未获取到该条数据先关信息，请检查数据或联系管理员"):userChangeService.userEliminationHeadService(user,userMoney,OrderSupplement,flage,Id);
+        return userChangeService.userEliminationHeadService(user);
     }
     /**
      * 查询产生变更记录表List

@@ -51,4 +51,6 @@ public interface UserCardMapper {
     boolean checkNewCardIdentifier(String newCardIdentifier);
 
     List<UserCard> selectUserCardByUserId(@Param("userId") Integer userId,@Param("usable") Boolean usable);
+    //查询是否存在用户销户记录
+    int countAccountCancellation(@Param("userId") Integer userId);
 }

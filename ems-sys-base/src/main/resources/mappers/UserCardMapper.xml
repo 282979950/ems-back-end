@@ -143,4 +143,7 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
       WHERE  user_id=#{userId} AND usable=#{usable}
       ORDER BY create_time DESC
     </select>
+    <select id="countAccountCancellation" resultType="java.lang.Integer">
+        SELECT COUNT(0) FROM user_card WHERE user_id = #{userId} AND card_status = 2 AND usable = 0
+    </select>
 </mapper>

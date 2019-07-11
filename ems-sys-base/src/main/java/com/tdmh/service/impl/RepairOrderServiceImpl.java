@@ -90,6 +90,10 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         }
 
         Integer userId = param.getUserId();
+        int count = userCardMapper.countAccountCancellation(userId);
+        if(count>0){
+            return JsonData.fail("已销户的【"+userId+"】无法录入维修单");
+        }
         if (checkNeedFillGas(param)) {
             userService.updateServiceTimesByUserId(param.getUserId());
             String oldMeterCode = param.getOldMeterCode();
@@ -509,6 +513,8 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                     if (fillGasService.hasUnfinishedFillGasOrder(userId)) {
                         fillGasService.cancelFillGasByUserId(userId);
                     }
+                    //不需要补气时修改维修单为已处理
+                    repairOrderMapper.updateRepairOrderStatus(repairOrderId,4);
                     return 0;
             }
         }

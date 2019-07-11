@@ -4,8 +4,6 @@ import com.tdmh.common.JsonData;
 import com.tdmh.entity.User;
 import com.tdmh.entity.UserChange;
 
-import java.math.BigDecimal;
-
 /**
  * 用户服务接口
  *
@@ -20,7 +18,7 @@ public interface IUserChangeService {
     /**
      * 账户销户处理
      */
-    JsonData userEliminationHeadService(User user, BigDecimal userMoney, BigDecimal OrderSupplement, int flage, Integer Id);
+    JsonData userEliminationHeadService(User user);
     /**
      *查询产生变更记录表
      */
