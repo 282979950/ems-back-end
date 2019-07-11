@@ -379,30 +379,17 @@ public class UserServiceImpl implements IUserService {
         List<UserLock> userLocks= userMapper.searchLockList(userId);
         return  userLocks == null || userLocks.size() == 0 ? JsonData.successMsg("未产生历史记录") : JsonData.success(userLocks, "查询成功");
     }
+
     @Override
-   public  JsonData cardService(Integer cardId){
-        UserCard card=new UserCard();
-        if(cardId.intValue()==0){
-            return  JsonData.fail("卡号为0，请确认卡或该卡已初始化");
-        }
-        //查询是否存在该条数据
-        String pwd=null;
-        int resultCount = userCardMapper.countUserCardBycardId(cardId);
-        if(resultCount>0){
+    public JsonData cardService(String cardId) {
+        int resultCount = userCardMapper.countUserCardByCardId(cardId);
+        if (resultCount > 0) {
             //查看密码(一般情况下用户在开卡时会生成卡密码)
-        pwd = userCardMapper.userCardPwdBycardId(cardId);
-
-        if(StringUtils.isBlank(pwd)){
-            return  JsonData.fail("未查询到卡相关信息");
-        }else{
-            card.setCardPassword(pwd);
+            UserCard userCard = userCardMapper.getUserCardByCardIdentifier(cardId);
+            return JsonData.success(userCard, "查询成功");
+        } else {
+            return JsonData.fail("未查询到相关数据");
         }
-    }else{
-        return  JsonData.fail("未查询到相关数据");
-    }
-
-        return JsonData.success(card,"查询成功");
-
     }
     @Override
     @Transactional

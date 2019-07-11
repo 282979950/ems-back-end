@@ -88,7 +88,7 @@
         select
         count(1)
         from repair_order
-        where repair_order_id = #{repairOrderId} and usable = 1
+        where repair_order_id = #{repairOrderId} and repair_order_status != 5  and usable = 1
     </select>
     <insert id="addRepairOrder" parameterType="com.tdmh.param.RepairOrderParam">
         insert into repair_order(

@@ -6,16 +6,16 @@
        values (#{userId,jdbcType=INTEGER},#{cardId,jdbcType=INTEGER},#{cardIdentifier,jdbcType=VARCHAR}, #{cardPassword,jdbcType=VARCHAR},#{cardInitialization,jdbcType=BIT},#{orderId,jdbcType=INTEGER},#{cardCost,jdbcType=DECIMAL}, NOW(),#{createBy,jdbcType=INTEGER},NOW(),
         #{updateBy,jdbcType=INTEGER},#{usable,jdbcType=BIT})
 </insert>
-    <select id="countUserCardBycardId" parameterType="Integer" resultType="Integer">
-SELECT COUNT(0) FROM user_card  WHERE usable=1 AND card_id=#{cardId}
+    <select id="countUserCardByCardId" parameterType="string" resultType="Integer">
+SELECT COUNT(0) FROM user_card  WHERE usable=1 AND card_identifier=#{cardId}
 
 </select>
     <update id="initCardPwdBycardId" parameterType="com.tdmh.entity.mapper.UserCardMapper">
   UPDATE  user_card SET card_initialization=#{cardInitialization} WHERE usable=1 AND  card_id=#{cardId}
 
 </update>
-    <select id="userCardPwdBycardId" parameterType="Integer" resultType="String">
-SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
+    <select id="userCardPwdByCardId" parameterType="string" resultType="String">
+SELECT card_password FROM user_card  WHERE usable=1 AND card_identifier = #{cardId}
 
 </select>
     <select id="getUserCardByUserIdAndCardId" parameterType="map" resultType="com.tdmh.entity.UserCard">
@@ -142,6 +142,20 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_id=#{cardId}
       FROM user_card
       WHERE  user_id=#{userId} AND usable=#{usable}
       ORDER BY create_time DESC
+    </select>
+    <select id="getUserCardByCardIdentifier" resultType="com.tdmh.entity.UserCard">
+        SELECT
+              user_id as userId ,
+              card_id as cardId ,
+              card_identifier as cardIdentifier,
+              card_password as cardPassword,
+              card_cost  as cardCost,
+              usable,
+              create_time as createTime
+        FROM
+              user_card
+        WHERE
+            card_identifier =#{cardIdentifier}
     </select>
     <select id="countAccountCancellation" resultType="java.lang.Integer">
         SELECT COUNT(0) FROM user_card WHERE user_id = #{userId} AND card_status = 2 AND usable = 0

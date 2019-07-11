@@ -88,10 +88,10 @@ public class AccountController {
      * @return
      */
     @RequiresPermissions("account:createAccount:retrieve")
-    @RequestMapping(value = "redCard.do")
+    @RequestMapping(value = "readCard.do")
     @ResponseBody
-    public JsonData redCard(@Param("cardId") Integer cardId) {
-        return userService.cardService( cardId);
+    public JsonData readCard(@Param("cardId") String cardId) {
+        return userService.cardService(cardId);
     }
     /**
      * 初始化卡

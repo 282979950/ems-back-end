@@ -167,7 +167,7 @@ public interface IUserService {
     /**
      * 获取需要初始化的相关数据相关数据
      */
-    JsonData cardService(Integer cardId);
+    JsonData cardService(String cardId);
 
     /**
      * 初始化卡

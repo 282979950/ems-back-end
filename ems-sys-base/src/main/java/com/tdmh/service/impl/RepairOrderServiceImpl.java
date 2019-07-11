@@ -135,6 +135,8 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                     case 2:
                         return JsonData.successMsg("新增维修单成功，请前往\"账户\"->\"账户变更\"->\"账户销户\"进行销户处理");
                     default:
+                        // 无需补气补缴的单子将订单状态处理为已处理
+                        repairOrderMapper.updateRepairOrderStatus(param.getRepairOrderId(), 4);
                         return JsonData.successMsg("新增维修单成功，请前往IC卡初始化页面将卡片初始化");
                 }
             }

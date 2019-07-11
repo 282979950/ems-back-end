@@ -23,11 +23,11 @@ public interface UserCardMapper {
     /*
     查询记录
      */
-    int countUserCardBycardId(int cardId);
+    int countUserCardByCardId(String cardId);
     /*
     查询密码
      */
-    String userCardPwdBycardId(int cardId);
+    String userCardPwdByCardId(String cardId);
     /*
     初始化卡，刷新标记
      */
@@ -51,6 +51,8 @@ public interface UserCardMapper {
     boolean checkNewCardIdentifier(String newCardIdentifier);
 
     List<UserCard> selectUserCardByUserId(@Param("userId") Integer userId,@Param("usable") Boolean usable);
+
+    UserCard getUserCardByCardIdentifier(@Param("cardIdentifier") String cardIdentifier);
     //查询是否存在用户销户记录
     int countAccountCancellation(@Param("userId") Integer userId);
 }
