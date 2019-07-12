@@ -14,6 +14,7 @@
             <arg column="user_old_phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_old_idcard" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="user_old_deed" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="table_code" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
 
         </constructor>
@@ -21,7 +22,7 @@
     <sql id="Base_Column_List">
        id,user_id,user_change_name,user_change_phone,
        user_change_idcard,user_change_deed,user_old_name,
-       user_old_phone,user_old_idcard,user_old_deed,create_time
+       user_old_phone,user_old_idcard,user_old_deed,table_code,create_time
     </sql>
 
     <select id="sumHistoryPurchasingAirVolume" resultType="java.math.BigDecimal" parameterType="Integer">
@@ -48,6 +49,7 @@
       user_old_phone,
       user_old_idcard,
       user_old_deed,
+      table_code,
       create_time,
       create_by,
       update_time,
@@ -65,6 +67,7 @@
        #{userOldPhone},
        #{userOldIdcard},
        #{userOldDeed},
+       #{tableCode},
        #{createTime},
        #{createBy},
        #{updateTime},

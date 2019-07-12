@@ -42,4 +42,8 @@ public interface RepairOrderMapper {
     int countProcessingRepairOrder(@Param("userId")Integer userId);
 
     void updateRepairOrderStatus(@Param("repairOrderId") String repairOrderId, @Param("status") int status);
+
+    boolean isDemolitionTable(@Param("userId")Integer userId);
+
+    int updateDemolitionTableStatus(@Param("userId")Integer userId);
 }

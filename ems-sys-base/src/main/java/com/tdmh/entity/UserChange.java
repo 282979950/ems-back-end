@@ -69,7 +69,7 @@ public class UserChange extends BaseEntity {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
-    public UserChange(String id, Integer userId, String userChangeName, String userChangePhone, String userChangeIdcard, String userChangeDeed, String userOldName, String userOldPhone, String userOldIdcard, String userOldDeed,Date createTime) {
+    public UserChange(String id, Integer userId, String userChangeName, String userChangePhone, String userChangeIdcard, String userChangeDeed, String userOldName, String userOldPhone, String userOldIdcard, String userOldDeed,BigDecimal tableCode,Date createTime) {
         this.id = id;
         this.userId = userId;
         this.userChangeName = userChangeName;
@@ -80,6 +80,7 @@ public class UserChange extends BaseEntity {
         this.userOldPhone = userOldPhone;
         this.userOldIdcard = userOldIdcard;
         this.userOldDeed = userOldDeed;
+        this.tableCode =  tableCode;
         this.createTime = createTime;
     }
 
