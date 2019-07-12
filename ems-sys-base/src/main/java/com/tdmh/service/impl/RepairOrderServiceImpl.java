@@ -94,7 +94,11 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         if(count>0){
             return JsonData.fail("已销户的【"+userId+"】无法录入维修单");
         }
-        if (checkNeedFillGas(param) || checkCloseAccount(param)) {
+        //若是报停拆表处理结果必须为拆表，否则提示
+        if(param.getRepairType().equals(5) && !param.getRepairResultType().equals(33)){
+            return JsonData.fail("请选择处理结果【拆表】");
+        }
+        if (checkNeedFillGas(param)) {
             userService.updateServiceTimesByUserId(param.getUserId());
             String oldMeterCode = param.getOldMeterCode();
             Integer oldMeterId = meterService.getMeterIdByMeterCode(oldMeterCode);
