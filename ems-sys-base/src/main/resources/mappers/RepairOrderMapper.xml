@@ -227,4 +227,16 @@
         from repair_order
         where user_id = #{userId} and repair_order_status = 2 and usable = 1
     </select>
+    <select id="isDemolitionTable" resultType="boolean">
+       SELECT COUNT(id) FROM repair_order
+       WHERE  repair_result_type=33 AND repair_type =5 AND repair_order_status=1 AND usable = 1 and user_id = #{userId}
+    </select>
+    <update id="updateDemolitionTableStatus">
+       UPDATE
+        repair_order
+        set repair_order_status = 3
+       WHERE
+         repair_result_type = 33 AND repair_type = 5 AND repair_order_status = 1
+        AND usable = 1 and user_id = #{userId}
+    </update>
 </mapper>
