@@ -141,7 +141,7 @@ public class UserChangeServiceImp implements IUserChangeService {
             orders.setUserId(user.getUserId());
             orders.setEmployeeId(Id);
             orders.setOrderGas(amount.negate());
-            orders.setOrderType(4);
+            orders.setOrderType(6);
             orders.setCreateTime(new Date());
             orders.setCreateBy(Id);
             orders.setUpdateBy(Id);

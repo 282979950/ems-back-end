@@ -455,7 +455,7 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     }
 
     private boolean checkCloseAccount(RepairOrderParam param) {
-        return param.getRepairType().equals(5);
+        return param.getRepairType().equals(5) && param.getRepairResultType().intValue()==33;
     }
 
     /**

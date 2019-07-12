@@ -323,7 +323,7 @@
         FROM
           user_orders
         WHERE usable = 1
-        AND account_state NOT IN(1,3) OR account_state IS NULL
+        AND (account_state NOT IN(1,3) OR account_state IS NULL)
        <if test="userId != null" >
           AND user_id = #{userId}
        </if>
@@ -385,7 +385,7 @@
         LEFT JOIN sys_organization org
         ON e.emp_org_id = org.org_id
         WHERE orders.usable = 1
-        AND account_state NOT IN(1,3) OR account_state IS NULL
+        AND (account_state NOT IN(1,3) OR account_state IS NULL)
         <if test="userId != null" >
           AND orders.user_id = #{userId}
         </if>
