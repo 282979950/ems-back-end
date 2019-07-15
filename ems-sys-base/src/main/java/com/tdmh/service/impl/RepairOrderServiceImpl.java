@@ -120,12 +120,6 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 //更新表具绑定关系
                 deleteOldMeter(userId);
                 installNewMeter(userId, newMeterId, param.getCreateBy());
-            } else if (checkCloseAccount(param)) {
-                oldMeter.setMeterScrapTime(new Date());
-                oldMeter.setMeterStatus(3);
-                oldMeter.setUsable(false);
-                meterService.updateMeter(oldMeter);
-                deleteOldMeter(userId);
             } else {
                 oldMeter.setUsable(true);
                 meterService.updateMeter(oldMeter);
@@ -153,6 +147,17 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         } else {
             if (fillGasService.hasUnfinishedFillGasOrder(userId)) {
                 return JsonData.fail("该用户有未处理的补气单不能提交普通维修单");
+            }
+            // 销户单更新表止码
+            if (checkCloseAccount(param)) {
+                String oldMeterCode = param.getOldMeterCode();
+                Integer oldMeterId = meterService.getMeterIdByMeterCode(oldMeterCode);
+                Meter oldMeter = meterService.getMeterByMeterId(oldMeterId);
+                oldMeter.setMeterScrapTime(new Date());
+                oldMeter.setMeterStatus(3);
+                oldMeter.setUsable(false);
+                meterService.updateMeter(oldMeter);
+                deleteOldMeter(userId);
             }
             // 锁定历史订单
 //            repairOrderMapper.lockRepairOrderByUserId(userId);
