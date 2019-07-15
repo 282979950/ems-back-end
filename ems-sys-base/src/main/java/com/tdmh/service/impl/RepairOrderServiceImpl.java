@@ -153,6 +153,7 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 String oldMeterCode = param.getOldMeterCode();
                 Integer oldMeterId = meterService.getMeterIdByMeterCode(oldMeterCode);
                 Meter oldMeter = meterService.getMeterByMeterId(oldMeterId);
+                oldMeter.setMeterStopCode(param.getOldMeterStopCode());
                 oldMeter.setMeterScrapTime(new Date());
                 oldMeter.setMeterStatus(3);
                 oldMeter.setUsable(false);
