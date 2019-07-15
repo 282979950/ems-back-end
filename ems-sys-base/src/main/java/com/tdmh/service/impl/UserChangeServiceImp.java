@@ -65,8 +65,8 @@ public class UserChangeServiceImp implements IUserChangeService {
         BigDecimal PurchasingAirVolume =userChangeMapper.sumHistoryPurchasingAirVolume(userId);
         //根据id获取表址码
         BigDecimal HistoryTableCode= userChangeMapper.sumHistoryTableCode(userId);
-        HistoryTableCode.add(userChange.getTableCode());
-        BigDecimal amount= PurchasingAirVolume.subtract(HistoryTableCode);
+        BigDecimal currentCode = HistoryTableCode.add(userChange.getTableCode());
+        BigDecimal amount= PurchasingAirVolume.subtract(currentCode);
         if(amount.compareTo(BigDecimal.ZERO)<0){
             return JsonData.fail("存在超用请录入维修单结清账务");
         }
