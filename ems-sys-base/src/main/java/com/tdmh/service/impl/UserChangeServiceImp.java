@@ -61,6 +61,15 @@ public class UserChangeServiceImp implements IUserChangeService {
         if(fillGasOrderCount>0){
             return JsonData.fail("该户存在补气/补缴未结算完成请先前往结算");
         }
+        //根据id获取当前所有购气总量
+        BigDecimal PurchasingAirVolume =userChangeMapper.sumHistoryPurchasingAirVolume(userId);
+        //根据id获取表址码
+        BigDecimal HistoryTableCode= userChangeMapper.sumHistoryTableCode(userId);
+        HistoryTableCode.add(userChange.getTableCode());
+        BigDecimal amount= PurchasingAirVolume.subtract(HistoryTableCode);
+        if(amount.compareTo(BigDecimal.ZERO)<0){
+            return JsonData.fail("存在超用请录入维修单结清账务");
+        }
         userChange.setId(RandomUtils.getUUID());
         userChange.setUserId(user.getUserId());
         userChange.setUserOldName(user.getUserName());
@@ -108,7 +117,7 @@ public class UserChangeServiceImp implements IUserChangeService {
         if (fillGasOrderCount > 0) {
             return JsonData.fail("该户存在补气/补缴未结算完成请先前往结算");
         }
-        //查询是否存在报停拆表需要结算的数据（因维修单录入只存在一条待处理的数据该方法返回一条信息若没有记录则提示录入维修单）
+        //查询是否存在报停拆表需要结算的数据（当前最新记录）
         boolean bFlag = repairOrderMapper.isDemolitionTable(user.getUserId());
         if(!bFlag){
             return JsonData.fail("请先前往：维修单录入新增【报停拆表】单");
@@ -164,10 +173,7 @@ public class UserChangeServiceImp implements IUserChangeService {
                 orders.setOrderSupplement(OrderSupplement.negate());
                 orders.setRemarks("用户销户时补缴金额记录");
             }
-            if(bFlag){
-                //修改维修单录入为无需处理状态
-                repairOrderMapper.updateDemolitionTableStatus(user.getUserId());
-            }
+
             int count =  userOrdersMapper.createChangeUserOrder(orders);
 
             //执行销户操作
