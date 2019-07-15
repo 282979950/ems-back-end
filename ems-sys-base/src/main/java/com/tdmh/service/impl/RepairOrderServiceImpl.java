@@ -120,6 +120,12 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 //更新表具绑定关系
                 deleteOldMeter(userId);
                 installNewMeter(userId, newMeterId, param.getCreateBy());
+            } else if (checkCloseAccount(param)) {
+                oldMeter.setMeterScrapTime(new Date());
+                oldMeter.setMeterStatus(3);
+                oldMeter.setUsable(false);
+                meterService.updateMeter(oldMeter);
+                deleteOldMeter(userId);
             } else {
                 oldMeter.setUsable(true);
                 meterService.updateMeter(oldMeter);
