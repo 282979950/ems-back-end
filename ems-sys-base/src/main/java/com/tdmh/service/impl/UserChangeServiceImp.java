@@ -64,8 +64,13 @@ public class UserChangeServiceImp implements IUserChangeService {
         //根据id获取当前所有购气总量
         BigDecimal PurchasingAirVolume =userChangeMapper.sumHistoryPurchasingAirVolume(userId);
         //根据id获取表址码
-        BigDecimal HistoryTableCode= userChangeMapper.sumHistoryTableCode(userId);
-        BigDecimal currentCode = HistoryTableCode.add(userChange.getTableCode());
+        BigDecimal HistoryTableCode= userChangeMapper.userChangeSumHistoryTableCode(userId);
+        BigDecimal currentCode= null;
+        if(HistoryTableCode!= null){
+            currentCode = HistoryTableCode.add(userChange.getTableCode());
+        }else{
+            currentCode = userChange.getTableCode();
+        }
         BigDecimal amount= PurchasingAirVolume.subtract(currentCode);
         if(amount.compareTo(BigDecimal.ZERO)<0){
             return JsonData.fail("存在超用请录入维修单结清账务");
