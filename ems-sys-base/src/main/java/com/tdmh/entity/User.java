@@ -77,6 +77,8 @@ public class User extends BaseEntity {
      */
     private Integer serviceTimes;
 
+    private Boolean freeGasFlag;
+
     /**
      *临时参数，区域名称
      */
@@ -142,7 +144,7 @@ public class User extends BaseEntity {
 
 
     public User(Integer userId, String userName, String userPhone, String userIdcard, String userDeed, Integer userDistId, String userAddress, Integer
-            userType, Integer userGasType, Integer userStatus, Boolean userLocked, Integer serviceTimes, Date
+            userType, Integer userGasType, Integer userStatus, Boolean userLocked, Integer serviceTimes, Boolean freeGasFlag, Date
             createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.userId = userId;
@@ -157,6 +159,7 @@ public class User extends BaseEntity {
         this.userStatus = userStatus;
         this.userLocked = userLocked;
         this.serviceTimes = serviceTimes;
+        this.freeGasFlag = freeGasFlag;
     }
 
     public User() {
