@@ -36,12 +36,12 @@ public class AccountController {
      * 显示已经绑定了表具的未开户的用户信息
      * @return
      */
-    @RequiresPermissions("account:createAccount:visit")
-    @RequestMapping(value = "/listData.do")
-    @ResponseBody
-    public JsonData getAllNotAccountArchives(Integer pageNum, Integer pageSize) {
-        return userService.getAllNotAccountArchive(pageNum, pageSize);
-    }
+//    @RequiresPermissions("account:createAccount:visit")
+//    @RequestMapping(value = "/listData.do")
+//    @ResponseBody
+//    public JsonData getAllNotAccountArchives(Integer pageNum, Integer pageSize) {
+//        return userService.getAllNotAccountArchive(pageNum, pageSize);
+//    }
 
     /**
      * 获取所有表具信息
@@ -115,5 +115,13 @@ public class AccountController {
     @ResponseBody
     public JsonData searchAccountById(@Param("userId") Integer userId) {
         return userService.searchAccountById(userId);
+    }
+
+    @RequiresPermissions("account:createAccount:visit")
+    @RequestMapping(value = "/listData.do")
+    @ResponseBody
+    public JsonData listData(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userStatus, String meterCode,
+                             String cardIdentifier, Integer pageNum, Integer pageSize) {
+        return userService.listData(userId, userDistId, userAddress, userType, userStatus, meterCode, cardIdentifier, pageNum, pageSize);
     }
 }

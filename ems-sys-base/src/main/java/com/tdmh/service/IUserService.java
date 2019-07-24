@@ -245,4 +245,7 @@ public interface IUserService {
      * 查询统计（用户表相关查询）
      */
     JsonData selectUserMeterTypeService(Integer userId);
+
+    JsonData listData(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userStatus, String meterCode, String cardIdentifier,
+                      Integer pageNum, Integer pageSize);
 }

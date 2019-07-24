@@ -546,4 +546,13 @@ public class UserServiceImpl implements IUserService {
     public JsonData selectUserMeterTypeService(Integer userId) {
         return JsonData.successData(userMeterType.selectUserMeterTypeByUserId(userId));
     }
+
+    @Override
+    public JsonData listData(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userStatus, String meterCode,
+                             String cardIdentifier, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserParam> list = userMapper.getAllUsers(userId, userDistId, userAddress, userType, userStatus, meterCode, cardIdentifier);
+        PageInfo<UserParam> info = new PageInfo<>(list);
+        return JsonData.successData(info);
+    }
 }

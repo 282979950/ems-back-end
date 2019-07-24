@@ -92,6 +92,6 @@ public class CreateAccountParam extends BaseEntity {
 
     private Integer orderId;
 
-    private BigDecimal castCost;
+    private BigDecimal cardCost;
 
 }

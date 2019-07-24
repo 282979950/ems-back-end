@@ -82,4 +82,8 @@ public interface UserMapper {
 
     Integer getUserLockStatusById(Integer userId);
     String getUserStatusNameByUserId(Integer userId);
+
+    List<UserParam> getAllUsers(@Param("userId") Integer userId, @Param("userDistId") Integer userDistId, @Param("userAddress") String userAddress,
+                                @Param("userType") Integer userType, @Param("userStatus") Integer userStatus, @Param("meterCode") String meterCode,
+                                @Param("cardIdentifier") String cardIdentifier);
 }
