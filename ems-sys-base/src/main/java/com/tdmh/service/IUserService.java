@@ -2,10 +2,7 @@ package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.User;
-import com.tdmh.param.CreateAccountParam;
-import com.tdmh.param.CreateArchiveParam;
-import com.tdmh.param.InstallMeterParam;
-import com.tdmh.param.LockAccountParam;
+import com.tdmh.param.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -248,4 +245,6 @@ public interface IUserService {
 
     JsonData listData(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userStatus, String meterCode, String cardIdentifier,
                       Integer pageNum, Integer pageSize);
+
+    JsonData edit(UserParam userParam);
 }

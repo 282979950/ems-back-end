@@ -1,7 +1,7 @@
 package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
-import com.tdmh.param.CreateAccountParam;
+import com.tdmh.param.UserParam;
 import com.tdmh.service.IGasPriceService;
 import com.tdmh.service.IMeterService;
 import com.tdmh.service.IUserService;
@@ -60,14 +60,14 @@ public class AccountController {
      * @param param
      * @return
      */
-    @RequiresPermissions("account:createAccount:update")
-    @RequestMapping(value = "/edit.do")
-    @ResponseBody
-    public JsonData createAccount(CreateAccountParam param) {
-        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        param.setUpdateBy(currentEmpId);
-        return userService.createAccount(param);
-    }
+//    @RequiresPermissions("account:createAccount:update")
+//    @RequestMapping(value = "/edit.do")
+//    @ResponseBody
+//    public JsonData createAccount(CreateAccountParam param) {
+//        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+//        param.setUpdateBy(currentEmpId);
+//        return userService.createAccount(param);
+//    }
 
     /**
      * 查询已经绑定了表具的未开户的用户信息
@@ -123,5 +123,14 @@ public class AccountController {
     public JsonData listData(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userStatus, String meterCode,
                              String cardIdentifier, Integer pageNum, Integer pageSize) {
         return userService.listData(userId, userDistId, userAddress, userType, userStatus, meterCode, cardIdentifier, pageNum, pageSize);
+    }
+
+    @RequiresPermissions("account:createAccount:update")
+    @RequestMapping(value = "/edit.do")
+    @ResponseBody
+    public JsonData edit(UserParam userParam) {
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        userParam.setUpdateBy(currentEmpId);
+        return userService.edit(userParam);
     }
 }
