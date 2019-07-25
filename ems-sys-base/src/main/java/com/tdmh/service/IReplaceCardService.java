@@ -22,7 +22,7 @@ public interface IReplaceCardService {
      * @param param
      * @return
      */
-    JsonData supplementCard(PrePaymentParam param, UserOrders userOrders);
+    JsonData supplementCard(PrePaymentParam param, UserOrders userOrders,String name);
 
     /**
      * 查询换卡记录

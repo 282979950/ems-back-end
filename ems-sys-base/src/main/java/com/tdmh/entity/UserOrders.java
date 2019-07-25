@@ -170,6 +170,15 @@ public class UserOrders extends BaseEntity {
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date orderStrikeTime;
+    /**
+     * 赠送气量或优惠券（气量）
+     */
+    private BigDecimal couponGas;
+
+    /**
+     *订单详情
+     */
+    private String orderDetail;
 
     public UserOrders(Integer orderId, Integer userId,String userName,String userPhone,String userIdcard,String userAddress,Integer serviceTimes,String empName, Integer employeeId, BigDecimal orderPayment, BigDecimal orderGas, Integer orderStatus, Date orderCreateTime, Date
             orderCloseTime, String flowNumber,Integer orderType, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tdmh.entity.mapper.CouponMapper">
+    <resultMap id="BaseResultMap" type="com.tdmh.entity.Coupon">
+        <id column="id" property="id"/>
+        <result column="coupon_number" property="couponNumber"/>
+        <result column="coupon_gas" property="couponGas"/>
+        <result column="coupon_status" property="couponStatus"/>
+        <result column="create_name" property="createName"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+
+    </resultMap>
+    <!--几乎所有参数-->
+    <sql id="Base_Column_List">
+        id,coupon_number,coupon_gas,coupon_status,create_name,
+        create_time,create_by,update_time,update_by,usable,remarks
+    </sql>
+    <select id="selectCoupon" parameterType="com.tdmh.entity.Coupon" resultMap="BaseResultMap">
+        SELECT
+          cp.id,cp.coupon_number,cp.coupon_gas,cp.coupon_status,
+          cp.create_name,cp.create_time,cp.create_by,cp.update_time,
+          cp.update_by,cp.usable,cp.remarks,sd1.dict_key AS couponStatusName
+        FROM
+        coupon cp
+        LEFT JOIN sys_dictionary sd1
+          ON cp.coupon_status = sd1.dict_value
+          AND sd1.dict_category = 'coupon_status'
+        WHERE
+        cp.usable = 1 AND sd1.usable = 1
+        <if test="couponNumber!=null and couponNumber!=''">
+            AND locate (#{couponNumber} ,cp.coupon_number) > 0
+        </if>
+        <if test="startDate!=null and startDate!=''">
+            AND DATE_FORMAT(cp.create_time,'%Y-%m-%d') &gt;= #{startDate}
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            AND DATE_FORMAT(cp.create_time,'%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        ORDER BY cp.create_time DESC
+    </select>
+    <insert id="insert" parameterType="com.tdmh.entity.Coupon">
+        insert into coupon ( id, coupon_number,coupon_gas, coupon_status,create_name,
+        create_time, create_by, update_time,update_by, usable, remarks
+      )
+        values ( #{id}, #{couponNumber},#{couponGas}, #{couponStatus}, #{createName},
+          #{createTime}, #{createBy}, #{updateTime}, #{updateBy}, #{usable}, #{remarks}
+          )
+    </insert>
+    <update id="updateCouponById" parameterType="com.tdmh.entity.Coupon">
+        UPDATE coupon
+        SET
+            coupon_number = #{couponNumber},
+            coupon_gas = #{couponGas},
+            <if test="couponStatus!=null and couponStatus!=''">
+                coupon_status = #{couponStatus},
+            </if>
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+       WHERE usable = 1 AND id = #{id}
+    </update>
+    <update id="deleteCouponById">
+        UPDATE coupon
+        SET
+        usable = 0
+        WHERE usable = 1 AND id = #{id}
+    </update>
+    <select id ="getCouponPayment" resultType="decimal">
+        SELECT
+          sum(cp.coupon_gas)
+        FROM
+        coupon cp
+        WHERE
+        cp.usable = 1
+        AND coupon_status = 1
+        AND coupon_number in
+        <foreach item="couponNumber" collection="list" open="(" separator="," close=")">
+            #{couponNumber}
+        </foreach>
+    </select>
+    <select id ="selectCouponByCouponNumber" resultType="int">
+        SELECT
+        count(cp.coupon_number)
+        FROM
+        coupon cp
+        WHERE
+        cp.usable = 1
+        AND cp.coupon_number = #{couponNumber}
+    </select>
+
+</mapper>

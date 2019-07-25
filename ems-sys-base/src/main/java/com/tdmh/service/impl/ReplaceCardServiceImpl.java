@@ -13,6 +13,7 @@ import com.tdmh.param.PrePaymentParam;
 import com.tdmh.param.WriteCardParam;
 import com.tdmh.service.IReplaceCardService;
 import com.tdmh.utils.IdWorker;
+import com.tdmh.utils.RmbConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +59,7 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
 
     @Transactional
     @Override
-    public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders) {
+    public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders,String name) {
         BeanValidator.check(param);
         //充值时查询该用户是否存在未处理的补气补缴单,若有则不允许充值fillGasOrderStatus=0查询未处理
         int countfillGasOrder = fillGasOrderMapper.getFillGasOrderCountByUserId(param.getUserId(),0);
@@ -89,6 +90,14 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         int count1 = userCardMapper.getUserCardByYouSelfIdAndnIcCardIdentifier(param.getUserId(),param.getIccardIdentifier(), param.getNIcCardIdentifier());
         if(count1>0){
             return JsonData.fail("该卡已变为无效卡");
+        }
+        //判断是否使用优惠券补卡充值
+        if(userOrders.getCouponGas()!=null && userOrders.getCouponGas().compareTo(BigDecimal.ZERO)== 1){
+            //使用优惠券充值时若充值气量小于优惠券气量则允许充值
+            int result = userOrders.getOrderGas().compareTo(userOrders.getCouponGas());
+            if(result == -1){
+                return JsonData.fail("使用劵后充值气量不能小于卷面值气量");
+            }
         }
         userOrders.setUserId(param.getUserId());
         userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
@@ -127,6 +136,9 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         wparam.setFlowNumber(userOrders.getFlowNumber());
         int serviceTimes = userMapper.getServiceTimesByUserId(param.getUserId());
         wparam.setServiceTimes(serviceTimes);
+        wparam.setName(name);
+        RmbConvert rmb = new RmbConvert();
+        wparam.setRmbBig(rmb.simpleToBig(userOrders.getOrderPayment().doubleValue()));
         return JsonData.success(wparam,"补卡成功");
     }
 
