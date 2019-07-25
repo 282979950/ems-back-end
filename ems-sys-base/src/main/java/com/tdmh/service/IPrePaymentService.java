@@ -13,7 +13,7 @@ public interface IPrePaymentService {
 
     JsonData getAllOrderInformation();
 
-    JsonData createUserOrder(UserOrders userOrders);
+    JsonData createUserOrder(UserOrders userOrders,String name);
 
     JsonData selectFindListByPre(PrePaymentParam param, Integer pageNum, Integer pageSize);
 

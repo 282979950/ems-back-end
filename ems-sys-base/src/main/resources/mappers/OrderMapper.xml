@@ -3,7 +3,7 @@
 <mapper namespace="com.tdmh.entity.mapper.OrderMapper">
     <select id="searchOrderAndInvoiceList" parameterType="map" resultType="com.tdmh.param.OrderParam">
         SELECT uo.order_id as orderId, uo.order_type AS orderType, uo.order_status as orderStatus, uo.user_id as userId, u.user_name as userName, uc.card_id as iccardId,uc.card_password as iccardPassword, uc.card_identifier as iccardIdentifier,u.service_times as serviceTimes,
-        uo.order_gas as orderGas,uo.order_payment as orderPayment,uo.flow_number as flowNumber,
+        uo.order_gas as orderGas,uo.order_payment as orderPayment,uo.flow_number as flowNumber,uo.order_detail as orderDetail,uo.coupon_gas as couponGas,
         e.emp_name as orderCreateEmpName,uo.create_time as orderCreateTime, sd.dict_key as invoiceStatusName,
         i.invoice_code as invoiceCode, i.invoice_number as invoiceNumber,
         e1.emp_name as invoicePrintEmpName, i.invoice_print_time as invoicePrintTime,

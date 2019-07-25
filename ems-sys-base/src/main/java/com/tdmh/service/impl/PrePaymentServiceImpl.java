@@ -12,6 +12,7 @@ import com.tdmh.param.PrePaymentParam;
 import com.tdmh.param.WriteCardParam;
 import com.tdmh.service.IPrePaymentService;
 import com.tdmh.utils.IdWorker;
+import com.tdmh.utils.RmbConvert;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
 
     @Transactional
     @Override
-    public JsonData createUserOrder(UserOrders userOrders) {
+    public JsonData createUserOrder(UserOrders userOrders,String name) {
         BeanValidator.check(userOrders);
         //充值时查询该用户是否存在未处理的补气补缴单,若有则不允许充值fillGasOrderStatus=0查询未处理
         int count = fillGasOrderMapper.getFillGasOrderCountByUserId(userOrders.getUserId(),0);
@@ -67,9 +68,20 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         if( userOrders.getOrderGas().compareTo(maxOrderGas) == 1){
             return JsonData.fail("充值气量最大支持900");
         }
+
         userOrders.setUsable(true);
         userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
-        userOrders.setOrderType(2); //2为普通充值类型
+        //判断是否使用优惠券充值
+        if(userOrders.getCouponGas()!=null && userOrders.getCouponGas().compareTo(BigDecimal.ZERO)== 1){
+            userOrders.setOrderType(7); //气劵充值
+            //使用优惠券充值时若充值气量小于优惠券气量则允许充值
+            int result = userOrders.getOrderGas().compareTo(userOrders.getCouponGas());
+            if(result == -1){
+                return JsonData.fail("使用劵后充值气量不能小于卷面值气量");
+            }
+        }else{
+            userOrders.setOrderType(2); //2为普通充值类型
+        }
         userOrders.setUpdateTime(new Date());
         userOrders.setOrderStatus(1);
         int resultCount = userOrdersMapper.insert(userOrders);
@@ -85,6 +97,9 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         param.setFlowNumber(userOrders.getFlowNumber());
         int serviceTimes = userMapper.getServiceTimesByUserId(userOrders.getUserId());
         param.setServiceTimes(serviceTimes);
+        param.setName(name);
+        RmbConvert rmb = new RmbConvert();
+        param.setRmbBig(rmb.simpleToBig(userOrders.getOrderPayment().doubleValue()));
         return JsonData.success(param, "充值订单成功");
     }
 

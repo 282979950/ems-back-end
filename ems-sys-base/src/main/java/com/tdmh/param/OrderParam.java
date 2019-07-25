@@ -113,5 +113,15 @@ public class OrderParam extends BaseEntity {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date invoiceCancelTime;
 
+    /**
+     * 赠送气量或优惠券（气量）
+     */
+    private BigDecimal couponGas;
+
+    /**
+     *订单详情
+     */
+    private String orderDetail;
+
 
 }

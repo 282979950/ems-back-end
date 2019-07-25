@@ -18,4 +18,7 @@ public class WriteCardParam {
     private Integer serviceTimes;
     private String flowNumber;
     private Integer orderId;
+    //额外参数，方便打印发票信息
+    private String rmbBig;
+    private String name;
 }

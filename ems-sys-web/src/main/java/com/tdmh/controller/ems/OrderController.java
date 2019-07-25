@@ -2,12 +2,15 @@ package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.service.IOrderService;
+import com.tdmh.utils.RmbConvert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.math.BigDecimal;
 
 /**
  * @author Administrator on 2018/10/20.
@@ -52,6 +55,16 @@ public class OrderController {
     @ResponseBody
     public JsonData updateOrderStatus(@Param("orderId") Integer orderId , @Param("orderStatus") Integer orderStatus){
         return orderService.updateOrderStatus(orderId , orderStatus);
+    }
+
+    /**
+     * 获取人民币大写
+     */
+    @RequestMapping("/getRmbBig.do")
+    @ResponseBody
+    public JsonData getRmbBig(BigDecimal orderGas){
+        RmbConvert rmb = new RmbConvert();
+        return JsonData.successData(rmb.simpleToBig(orderGas.doubleValue()));
     }
 
 }

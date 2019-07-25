@@ -45,10 +45,11 @@ public class PrePaymentController {
     @BeUnLock
     public JsonData createUserOrder(UserOrders userOrders) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        String name = ShiroUtils.getPrincipal().getName();
         userOrders.setEmployeeId(currentEmpId);
         userOrders.setCreateBy(currentEmpId);
         userOrders.setUpdateBy(currentEmpId);
-        return prePaymentService.createUserOrder(userOrders);
+        return prePaymentService.createUserOrder(userOrders,name);
     }
 
     //依据条件查询对应数据

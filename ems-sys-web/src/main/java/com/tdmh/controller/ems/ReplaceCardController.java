@@ -50,12 +50,13 @@ public class ReplaceCardController {
     @BeUnLock
     public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        String name = ShiroUtils.getPrincipal().getName();
         param.setCreateBy(currentEmpId);
         param.setUpdateBy(currentEmpId);
         userOrders.setEmployeeId(currentEmpId);
         userOrders.setCreateBy(currentEmpId);
         userOrders.setUpdateBy(currentEmpId);
-        return replaceCardService.supplementCard(param,userOrders);
+        return replaceCardService.supplementCard(param,userOrders,name);
     }
 
     /**
