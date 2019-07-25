@@ -813,7 +813,7 @@
         <if test="cardIdentifier != null and cardIdentifier != ''">
             AND uc.card_identifier LIKE CONCAT('%', #{cardIdentifier}, '%')
         </if>
-        order by u.user_id
+        order by u.user_id DESC
     </select>
     <update id="edit" parameterType="com.tdmh.param.UserParam">
         update user
