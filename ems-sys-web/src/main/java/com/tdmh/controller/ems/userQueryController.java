@@ -130,4 +130,9 @@ public class userQueryController {
     public JsonData selectUserMeterTypeController(Integer userId){
         return userService.selectUserMeterTypeService(userId);
     }
+    @RequestMapping("/ExportUserQuery.do")
+    @ResponseBody
+    public JsonData ExportUserQueryController(User user){
+        return userService.ExportUserQueryService(user);
+    }
 }

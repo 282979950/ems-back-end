@@ -561,4 +561,10 @@ public class UserServiceImpl implements IUserService {
     public JsonData edit(UserParam userParam) {
         return JsonData.successData(userMapper.edit(userParam));
     }
+
+    @Override
+    public JsonData ExportUserQueryService(User user) {
+        List<ExportUserQuery> list = userMapper.ExportUser(user);
+        return JsonData.successData(list);
+    }
 }
