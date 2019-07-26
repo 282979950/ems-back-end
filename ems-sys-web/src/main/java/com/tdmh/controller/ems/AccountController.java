@@ -1,6 +1,7 @@
 package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
+import com.tdmh.param.CreateAccountParam;
 import com.tdmh.param.UserParam;
 import com.tdmh.service.IGasPriceService;
 import com.tdmh.service.IMeterService;
@@ -60,14 +61,14 @@ public class AccountController {
      * @param param
      * @return
      */
-//    @RequiresPermissions("account:createAccount:update")
-//    @RequestMapping(value = "/edit.do")
-//    @ResponseBody
-//    public JsonData createAccount(CreateAccountParam param) {
-//        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-//        param.setUpdateBy(currentEmpId);
-//        return userService.createAccount(param);
-//    }
+    @RequiresPermissions("account:createAccount:update")
+    @RequestMapping(value = "/createAccount.do")
+    @ResponseBody
+    public JsonData createAccount(CreateAccountParam param) {
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        param.setUpdateBy(currentEmpId);
+        return userService.createAccount(param);
+    }
 
     /**
      * 查询已经绑定了表具的未开户的用户信息
