@@ -247,4 +247,6 @@ public interface IUserService {
                       Integer pageNum, Integer pageSize);
 
     JsonData edit(UserParam userParam);
+
+    JsonData ExportUserQueryService(User user);
 }

@@ -88,4 +88,6 @@ public interface UserMapper {
                                 @Param("cardIdentifier") String cardIdentifier);
 
     int edit(UserParam userParam);
+
+    List<ExportUserQuery> ExportUser(User user);
 }
