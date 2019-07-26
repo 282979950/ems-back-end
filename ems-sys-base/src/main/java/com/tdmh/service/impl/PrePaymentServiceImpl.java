@@ -13,6 +13,7 @@ import com.tdmh.param.WriteCardParam;
 import com.tdmh.service.IPrePaymentService;
 import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RmbConvert;
+import com.tdmh.utils.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +49,9 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
 
     @Autowired
     private FillGasOrderMapper fillGasOrderMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Override
     public JsonData getAllOrderInformation() {
@@ -78,6 +83,11 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
             int result = userOrders.getOrderGas().compareTo(userOrders.getCouponGas());
             if(result == -1){
                 return JsonData.fail("使用劵后充值气量不能小于卷面值气量");
+            }
+            if(StringUtils.isNotBlank(userOrders.getCouponNumber())){
+                //优惠券回收
+                List<String> list = Arrays.asList(userOrders.getCouponNumber().split(","));
+                couponMapper.deleteCouponByCouponNumber(list);
             }
         }else{
             userOrders.setOrderType(2); //2为普通充值类型

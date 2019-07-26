@@ -180,6 +180,11 @@ public class UserOrders extends BaseEntity {
      */
     private String orderDetail;
 
+    /**
+     * 优惠券编号，同时使用多张时逗号隔开
+     */
+    private String couponNumber;
+
     public UserOrders(Integer orderId, Integer userId,String userName,String userPhone,String userIdcard,String userAddress,Integer serviceTimes,String empName, Integer employeeId, BigDecimal orderPayment, BigDecimal orderGas, Integer orderStatus, Date orderCreateTime, Date
             orderCloseTime, String flowNumber,Integer orderType, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);

@@ -14,11 +14,13 @@ import com.tdmh.param.WriteCardParam;
 import com.tdmh.service.IReplaceCardService;
 import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RmbConvert;
+import com.tdmh.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,6 +42,8 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
     private UserOrdersMapper userOrdersMapper;
     @Autowired
     private FillGasOrderMapper fillGasOrderMapper;
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Override
     public JsonData getAllReplaceCardInformation(Integer pageNum, Integer pageSize) {
@@ -97,6 +101,11 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
             int result = userOrders.getOrderGas().compareTo(userOrders.getCouponGas());
             if(result == -1){
                 return JsonData.fail("使用劵后充值气量不能小于卷面值气量");
+            }
+            if(StringUtils.isNotBlank(userOrders.getCouponNumber())){
+                //优惠券回收
+                List<String> list = Arrays.asList(userOrders.getCouponNumber().split(","));
+                couponMapper.deleteCouponByCouponNumber(list);
             }
         }
         userOrders.setUserId(param.getUserId());

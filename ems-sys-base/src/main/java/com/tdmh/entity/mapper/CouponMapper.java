@@ -16,4 +16,6 @@ public interface CouponMapper {
     Integer deleteCouponById(Integer id);
     BigDecimal getCouponPayment(List<String> couponNumbers);
     Integer selectCouponByCouponNumber(String couponNumber);
+    //回收优惠券
+    Integer deleteCouponByCouponNumber(List<String> couponNumbers);
 }

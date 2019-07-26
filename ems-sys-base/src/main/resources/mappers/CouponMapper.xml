@@ -33,6 +33,9 @@
         <if test="couponNumber!=null and couponNumber!=''">
             AND locate (#{couponNumber} ,cp.coupon_number) > 0
         </if>
+        <if test="couponStatus!=null and couponStatus!=''">
+            AND cp.coupon_status = #{couponStatus}
+        </if>
         <if test="startDate!=null and startDate!=''">
             AND DATE_FORMAT(cp.create_time,'%Y-%m-%d') &gt;= #{startDate}
         </if>
@@ -89,5 +92,18 @@
         cp.usable = 1
         AND cp.coupon_number = #{couponNumber}
     </select>
+    <update id ="deleteCouponByCouponNumber">
+        UPDATE
+        coupon cp
+        SET
+        coupon_status = 2
+        WHERE
+        cp.usable = 1
+        AND coupon_status = 1
+        AND coupon_number in
+        <foreach item="couponNumber" collection="list" open="(" separator="," close=")">
+            #{couponNumber}
+        </foreach>
+    </update>
 
 </mapper>

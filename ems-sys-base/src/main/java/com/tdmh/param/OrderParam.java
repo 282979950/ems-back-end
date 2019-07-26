@@ -123,5 +123,10 @@ public class OrderParam extends BaseEntity {
      */
     private String orderDetail;
 
+    /**
+     * 优惠券编号，同时使用多张时逗号隔开
+     */
+    private String couponNumber;
+
 
 }
