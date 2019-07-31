@@ -3,7 +3,6 @@ package com.tdmh.param;
 import com.tdmh.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -26,22 +25,22 @@ public class CreateAccountParam extends BaseEntity {
     /**
      * 用户名称
      */
-    @NotNull(message = "用户名称不能为空")
-    @Length(max = 20, message = "用户名称不能超过20字")
+//    @NotNull(message = "用户名称不能为空")
+//    @Length(max = 20, message = "用户名称不能超过20字")
     private String userName;
 
     /**
      * 用户手机号码
      */
-    @NotNull(message = "用户手机号码不能为空")
-    @Length(max = 20, message = "用户手机号码不能超过20字")
+//    @NotNull(message = "用户手机号码不能为空")
+//    @Length(max = 20, message = "用户手机号码不能超过20字")
     private String userPhone;
 
     /**
      * 用户身份证号
      */
-    @NotNull(message = "用户身份证不能为空")
-    @Length(max = 20, message = "用户身份证不能超过20字")
+//    @NotNull(message = "用户身份证不能为空")
+//    @Length(max = 20, message = "用户身份证不能超过20字")
     private String userIdcard;
 
     /**
@@ -57,7 +56,7 @@ public class CreateAccountParam extends BaseEntity {
     /**
      * IC卡识别号
      */
-    @NotNull(message = "IC卡识别号不能为空")
+//    @NotNull(message = "IC卡识别号不能为空")
     private String iccardIdentifier;
 
     /**
@@ -73,7 +72,7 @@ public class CreateAccountParam extends BaseEntity {
     /**
      * 支付金额
      */
-    @NotNull(message = "用户支付金额不能为空")
+//    @NotNull(message = "用户支付金额不能为空")
     private BigDecimal orderPayment;
 
     /**

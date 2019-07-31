@@ -249,4 +249,6 @@ public interface IUserService {
     JsonData edit(UserParam userParam);
 
     JsonData ExportUserQueryService(User user);
+
+    JsonData bindCard(CreateAccountParam param);
 }

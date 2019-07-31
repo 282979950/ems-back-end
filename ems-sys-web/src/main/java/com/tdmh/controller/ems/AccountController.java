@@ -71,6 +71,21 @@ public class AccountController {
     }
 
     /**
+     * 用户发卡
+     *
+     * @param param
+     * @return
+     */
+    @RequiresPermissions("account:createAccount:update")
+    @RequestMapping(value = "/bindCard.do")
+    @ResponseBody
+    public JsonData bindCard(CreateAccountParam param) {
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        param.setUpdateBy(currentEmpId);
+        return userService.bindCard(param);
+    }
+
+    /**
      * 查询已经绑定了表具的未开户的用户信息
      *
      * @return

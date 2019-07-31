@@ -89,5 +89,9 @@ public interface UserMapper {
 
     int edit(UserParam userParam);
 
+    UserParam getUserByUserId(@Param("userId") Integer userId);
+
     List<ExportUserQuery> ExportUser(User user);
+
+    int bindCard(CreateAccountParam param);
 }

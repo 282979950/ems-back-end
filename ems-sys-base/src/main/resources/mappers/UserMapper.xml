@@ -832,6 +832,18 @@
         update_by = #{updateBy}
         where user_id = #{userId}
     </update>
+    <update id="bindCard">
+        update user
+        set
+        user_status = #{userStatus},
+        user_locked = #{userLocked,jdbcType=BIT},
+        service_times = #{serviceTimes},
+        update_time = NOW(),
+        update_by = #{updateBy,jdbcType=INTEGER},
+        usable = #{usable,jdbcType=BIT},
+        remarks = #{remarks,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
     <select id="ExportUser" resultMap="BaseResultMap" parameterType="com.tdmh.param.ExportUserQuery">
         SELECT
         <include refid="Base_Column_List"/>
@@ -848,5 +860,22 @@
             AND user_type = #{userType}
         </if>
         ORDER BY create_time
+    </select>
+    <select id="getUserByUserId" resultMap="BaseResultMap" parameterType="int">
+        SELECT
+        u.user_id, u.user_name, u.user_phone, u.user_idcard, u.user_deed, u.user_dist_id, dist.dist_name as user_dist_name, u.user_address,
+        u.user_type, sd1.dict_key as user_type_name, u.user_gas_type, sd2.dict_key as user_gas_type_name, u.user_status, sd3.dict_key as user_status_name,
+        u.user_locked,
+        m.meter_id, m.meter_code, uc.user_card_id, uc.card_id, uc.card_identifier,
+        u.create_time, u.create_by, u.update_time, u.update_by, u.usable, u.remarks
+        FROM user u
+        left join user_meters um on u.user_id = um.user_id and um.usable = 1
+        left join meter m on um.meter_id = m.meter_id and m.usable = 1
+        left join user_card uc on uc.user_id = u.user_id and uc.usable = 1
+        left join sys_district dist on u.user_dist_id = dist.dist_id and dist.usable = 1
+        LEFT JOIN sys_dictionary sd1 on u.user_type = sd1.dict_value and sd1.dict_category = 'user_type' and sd1.usable = 1
+        LEFT JOIN sys_dictionary sd2 on u.user_gas_type = sd2.dict_value and sd2.dict_category = 'user_gas_type' and sd2.usable = 1
+        LEFT JOIN sys_dictionary sd3 on u.user_status = sd3.dict_value and sd3.dict_category = 'user_status' and sd3.usable = 1
+        where u.usable = 1 and u.user_id = #{userId}
     </select>
 </mapper>

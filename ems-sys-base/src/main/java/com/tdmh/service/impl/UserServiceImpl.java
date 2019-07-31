@@ -219,22 +219,7 @@ public class UserServiceImpl implements IUserService {
     @Transactional
     public JsonData createAccount(CreateAccountParam param) {
         BeanValidator.check(param);
-        int count = userCardMapper.getUserCardByUserIdAndnIcCardIdentifier(null,param.getIccardIdentifier());
-        if(count>0){
-            return JsonData.fail("该卡已绑定其他用户");
-        }
-
-        //支持最大充气量
-        BigDecimal maxOrderGas = new BigDecimal("900");
-        if( param.getOrderGas().compareTo(maxOrderGas) == 1){
-            return JsonData.fail("充值气量最大支持900");
-        }
-        Integer iccardId = param.getUserId()+10000000;
-        param.setIccardId(iccardId);
-        // TODO: 2018/8/9 从接口中读取IC卡识别号
-        param.setIccardPassword(RandomUtils.generateHexString(6));
         //开户时将用户解锁
-        param.setUserLocked(false);
         if (param.getUserDeed() == null) {
             param.setUserDeed("");
         }
@@ -244,6 +229,34 @@ public class UserServiceImpl implements IUserService {
         int resultCount = userMapper.createAccount(param);
         if (resultCount == 0) {
             return JsonData.fail("用户开户失败");
+        }
+        return JsonData.successMsg("用户开户成功");
+    }
+
+
+    @Override
+    @Transactional
+    public JsonData bindCard(CreateAccountParam param) {
+        BeanValidator.check(param);
+        int count = userCardMapper.getUserCardByUserIdAndnIcCardIdentifier(null,param.getIccardIdentifier());
+        if(count>0){
+            return JsonData.fail("该卡已绑定其他用户");
+        }
+        // 支持最大充气量
+        BigDecimal maxOrderGas = new BigDecimal("900");
+        if(param.getOrderGas().compareTo(maxOrderGas) > 0){
+            return JsonData.fail("充值气量最大支持900");
+        }
+        Integer iccardId = param.getUserId()+10000000;
+        param.setIccardId(iccardId);
+        param.setIccardPassword(RandomUtils.generateHexString(6));
+        //开户时将用户解锁
+        param.setUserLocked(false);
+        param.setUserStatus(5);
+        param.setUsable(true);
+        int resultCount = userMapper.bindCard(param);
+        if (resultCount == 0) {
+            return JsonData.fail("用户卡片关联失败");
         }
         UserOrders userOrders = new UserOrders();
         userOrders.setUserId(param.getUserId());
@@ -258,7 +271,6 @@ public class UserServiceImpl implements IUserService {
         userOrders.setUpdateBy(param.getUpdateBy());
         userOrders.setOrderStatus(1);
         userOrders.setUsable(true);
-        // TODO: 2018/8/10 完善订单流程
         int resultCount2 = userOrdersMapper.insert(userOrders);
         if (resultCount2 == 0) {
             return JsonData.fail("初始订单生成失败");
@@ -283,13 +295,13 @@ public class UserServiceImpl implements IUserService {
             resultCount1 = userCardMapper.update(userCard);
         }
         if (resultCount1 == 0) {
-            return JsonData.fail("用户初始化卡失败");
+            return JsonData.fail("用户发卡失败");
         }
         param.setOrderId(userOrders.getOrderId());
         param.setFlowNumber(userOrders.getFlowNumber());
-        return JsonData.success(param,"用户开户成功");
+        param.setServiceTimes(0);
+        return JsonData.success(param,"用户发卡成功");
     }
-
 
     /**
      * 获取用户总数量
@@ -567,4 +579,5 @@ public class UserServiceImpl implements IUserService {
         List<ExportUserQuery> list = userMapper.ExportUser(user);
         return JsonData.successData(list);
     }
+
 }
