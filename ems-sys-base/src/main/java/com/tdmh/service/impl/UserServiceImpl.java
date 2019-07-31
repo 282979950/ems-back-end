@@ -219,12 +219,19 @@ public class UserServiceImpl implements IUserService {
     @Transactional
     public JsonData createAccount(CreateAccountParam param) {
         BeanValidator.check(param);
-        //开户时将用户解锁
+        // 更新表止码
+        if(!param.getMeterStopCode().equals(BigDecimal.ZERO)) {
+            Meter meter = meterService.getMeterByMeterId(meterService.getMeterIdByUserId(param.getUserId()));
+            meter.setMeterInitialStopCode(param.getMeterStopCode());
+            meter.setMeterStopCode(param.getMeterStopCode());
+            meterService.updateMeter(meter);
+        }
         if (param.getUserDeed() == null) {
             param.setUserDeed("");
         }
         param.setServiceTimes(0);
         param.setUserStatus(3);
+        param.setUserLocked(true);
         param.setUsable(true);
         int resultCount = userMapper.createAccount(param);
         if (resultCount == 0) {

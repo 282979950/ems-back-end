@@ -5,6 +5,7 @@
         <constructor>
             <idArg column="meter_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="meter_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="meter_initial_stop_code" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
             <arg column="meter_stop_code" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
             <arg column="meter_type_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="meter_direction" jdbcType="INTEGER" javaType="java.lang.Integer"/>
@@ -25,7 +26,7 @@
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
-        meter_id, meter_code, meter_stop_code, meter_type_id, meter_direction, meter_prod_date,
+        meter_id, meter_code, meter_initial_stop_code, meter_stop_code, meter_type_id, meter_direction, meter_prod_date,
         meter_entry_date, meter_install_time, meter_scrap_time, meter_validityperiod, meter_status,
         meter_comm_key, meter_comm_num, create_time, create_by, update_time, update_by, usable,
         remarks
@@ -178,6 +179,9 @@
         <set>
             <if test="meterCode != null">
                 meter_code = #{meterCode,jdbcType=VARCHAR},
+            </if>
+            <if test="meterInitialStopCode != null">
+                meter_initial_stop_code = #{meterInitialStopCode,jdbcType=DECIMAL},
             </if>
             <if test="meterStopCode != null">
                 meter_stop_code = #{meterStopCode,jdbcType=DECIMAL},
@@ -397,7 +401,7 @@
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select
-        m.meter_id, m.meter_code, m.meter_stop_code, m.meter_type_id, mt.meter_category, mt.meter_type, m.meter_direction, m.meter_prod_date,
+        m.meter_id, m.meter_code, m.meter_initial_stop_code, m.meter_stop_code, m.meter_type_id, mt.meter_category, mt.meter_type, m.meter_direction, m.meter_prod_date,
         m.meter_entry_date, m.meter_install_time, m.meter_scrap_time, m.meter_validityperiod, m.meter_status,
         m.meter_comm_key, m.meter_comm_num, m.create_time, m.create_by, m.update_time, m.update_by, m.usable,
         m.remarks

@@ -27,6 +27,11 @@ public class Meter extends BaseEntity {
     private String meterCode;
 
     /**
+     * 初始表止码
+     */
+    private BigDecimal meterInitialStopCode;
+
+    /**
      * 表具止码
      */
     private BigDecimal meterStopCode;
@@ -80,13 +85,15 @@ public class Meter extends BaseEntity {
      * 表具通讯号码
      */
     private String meterCommNum;
-//    Integer,String,BigDecimal,Integer,Boolean,Date,Date,Date,Date,Integer,Integer,String,String,Date,Integer,Date,Integer,Boolean,String
-    public Meter(Integer meterId, String meterCode, BigDecimal meterStopCode, Integer meterTypeId, Integer meterDirection, Date meterProdDate, Date
-            meterEntryDate, Date meterInstallTime, Date meterScrapTime, Integer meterValidityperiod, Integer meterStatus, String meterCommKey, String
-            meterCommNum, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+
+    public Meter(Integer meterId, String meterCode, BigDecimal meterInitialStopCode, BigDecimal meterStopCode, Integer meterTypeId, Integer meterDirection,
+                 Date meterProdDate, Date meterEntryDate, Date meterInstallTime, Date meterScrapTime, Integer meterValidityperiod, Integer meterStatus,
+                 String meterCommKey, String meterCommNum, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable,
+                 String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.meterId = meterId;
         this.meterCode = meterCode;
+        this.meterInitialStopCode = meterInitialStopCode;
         this.meterStopCode = meterStopCode;
         this.meterTypeId = meterTypeId;
         this.meterDirection = meterDirection;

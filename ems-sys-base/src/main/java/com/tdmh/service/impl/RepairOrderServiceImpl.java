@@ -113,6 +113,7 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 // 更新新表止码
                 Integer newMeterId = meterService.getMeterIdByMeterCode(newMeterCode);
                 Meter newMeter = meterService.getMeterByMeterId(newMeterId);
+                newMeter.setMeterInitialStopCode(param.getNewMeterStopCode());
                 newMeter.setMeterStopCode(param.getNewMeterStopCode());
                 newMeter.setMeterInstallTime(new Date());
                 newMeter.setMeterStatus(2);

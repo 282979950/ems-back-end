@@ -93,4 +93,6 @@ public class CreateAccountParam extends BaseEntity {
 
     private BigDecimal cardCost;
 
+    private BigDecimal meterStopCode;
+
 }
