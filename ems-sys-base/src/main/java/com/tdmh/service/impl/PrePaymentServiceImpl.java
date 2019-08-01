@@ -70,28 +70,27 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         }
         //支持最大充气量
         BigDecimal maxOrderGas = new BigDecimal("900");
-        if( userOrders.getOrderGas().compareTo(maxOrderGas) == 1){
+        if(userOrders.getOrderGas().compareTo(maxOrderGas) > 0){
             return JsonData.fail("充值气量最大支持900");
         }
 
         userOrders.setUsable(true);
-        userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
+        userOrders.setFlowNumber(IdWorker.getId().nextId() + "");
         //判断是否使用优惠券充值
-        if(userOrders.getCouponGas()!=null && userOrders.getCouponGas().compareTo(BigDecimal.ZERO)== 1){
-            userOrders.setOrderType(7); //气劵充值
+        if (userOrders.getCouponGas() != null && userOrders.getCouponGas().compareTo(BigDecimal.ZERO) > 0) {
             //使用优惠券充值时若充值气量小于优惠券气量则允许充值
             int result = userOrders.getOrderGas().compareTo(userOrders.getCouponGas());
-            if(result == -1){
+            if (result < 0) {
                 return JsonData.fail("使用劵后充值气量不能小于卷面值气量");
             }
-            if(StringUtils.isNotBlank(userOrders.getCouponNumber())){
+            if (StringUtils.isNotBlank(userOrders.getCouponNumber())) {
                 //优惠券回收
                 List<String> list = Arrays.asList(userOrders.getCouponNumber().split(","));
                 couponMapper.deleteCouponByCouponNumber(list);
             }
-        }else{
-            userOrders.setOrderType(2); //2为普通充值类型
         }
+        userOrders.setOrderType(2); //2为普通充值类型
+
         userOrders.setUpdateTime(new Date());
         userOrders.setOrderStatus(1);
         int resultCount = userOrdersMapper.insert(userOrders);

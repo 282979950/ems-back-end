@@ -837,7 +837,6 @@
         set
         user_status = #{userStatus},
         user_locked = #{userLocked,jdbcType=BIT},
-        service_times = #{serviceTimes},
         update_time = NOW(),
         update_by = #{updateBy,jdbcType=INTEGER},
         usable = #{usable,jdbcType=BIT},
