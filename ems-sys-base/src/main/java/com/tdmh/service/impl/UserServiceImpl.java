@@ -359,7 +359,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonData getAllAccountArchive(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<LockAccountParam> accounts = userMapper.searchAccountArchive(null,null,null,3);
+        List<LockAccountParam> accounts = userMapper.searchAccountArchive(null,null,null,5);
         PageInfo<LockAccountParam> page = new PageInfo<>(accounts);
         return JsonData.success(page, "查询成功");
 
@@ -368,7 +368,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonData searchAllAccountArchive(Integer userId,String userName,Integer iccardId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<LockAccountParam> accounts = userMapper.searchAccountArchive(userId, userName, iccardId , 3);
+        List<LockAccountParam> accounts = userMapper.searchAccountArchive(userId, userName, iccardId , 5);
         PageInfo<LockAccountParam> page = new PageInfo<>(accounts);
         return JsonData.success(page, "查询成功");
     }
@@ -446,7 +446,7 @@ public class UserServiceImpl implements IUserService {
     public JsonData userChangeService(User user ,Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum, pageSize);
         //查询已经开户的相关数据
-        user.setUserStatus(3);
+        user.setUserStatus(5);
         List<User>  u =userMapper.userChangeList(user);
         PageInfo<User> page = new PageInfo<>(u);
         return JsonData.success(page,"查询成功");
