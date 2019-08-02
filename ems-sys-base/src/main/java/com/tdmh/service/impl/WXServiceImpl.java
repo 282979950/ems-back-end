@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -144,6 +145,11 @@ public class WXServiceImpl implements IWXService {
     public JsonData recharge(String wxUserId, Integer userId, BigDecimal gas, String ipAddress) {
         // 查询当前用户的订单列表，如果有未完成的订单则需要支付或取消
         try {
+            //限定充值次数.每天限定充值一次，查询当前是否存在：2普通订单，3补卡订单，5微信订单
+            int resultOrdersCount = userOrdersMapper.queryCurrentDataByDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            if(resultOrdersCount > 0){
+                return JsonData.fail("每天只支持充值一次");
+            }
             Map<String, String> data = new HashMap<>();
             data.put("body", "武汉蓝焰天然气充值-充值气量:" + gas + "方");
             data.put("fee_type", "CNY");

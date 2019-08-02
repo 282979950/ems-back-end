@@ -73,7 +73,11 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         if(userOrders.getOrderGas().compareTo(maxOrderGas) > 0){
             return JsonData.fail("充值气量最大支持900");
         }
-
+        //限定充值次数.每天限定充值一次，查询当前是否存在：2普通订单，3补卡订单，5微信订单
+        int resultOrdersCount = userOrdersMapper.queryCurrentDataByDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        if(resultOrdersCount > 0){
+            return JsonData.fail("每天只支持充值一次");
+        }
         userOrders.setUsable(true);
         userOrders.setFlowNumber(IdWorker.getId().nextId() + "");
         //判断是否使用优惠券充值

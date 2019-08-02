@@ -50,7 +50,7 @@ public class PreStrikeController {
     public JsonData editPreStrikeController(User user){
         String  currentEmpName = ShiroUtils.getPrincipal().getLoginName();
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return user== null? JsonData.fail("未获取到该条数据相关信息，请检查数据或联系管理员"): preStrikeService.editUserOrdersService(user,currentEmpName,currentEmpId);
+        return  preStrikeService.editUserOrdersService(user,currentEmpName,currentEmpId);
     }
     /**
      * 预冲账数据查询(头部筛选)

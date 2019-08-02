@@ -402,4 +402,13 @@
         DATE_FORMAT(orders.create_time ,'%Y-%m-%d')
         ORDER BY DATE_FORMAT(orders.create_time ,'%Y-%m-%d') DESC
     </select>
+  <select id="queryCurrentDataByDate" resultType="int">
+    SELECT
+      COUNT(0)
+    FROM
+      user_orders
+    WHERE usable = 1
+      AND order_type IN ('2', '3', '5')
+      AND DATE_FORMAT(create_time ,'%Y-%m-%d')= #{startDate}
+  </select>
 </mapper>

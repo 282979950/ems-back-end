@@ -49,4 +49,6 @@ public interface UserOrdersMapper {
     Date getCreateTimeByOrderId(@Param("orderId") Integer orderId);
     Date getNowCreateTimeByOrderId(@Param("userId") Integer userId);
     List<UserOrders> selectReportBusinessDataQuery(UserOrders record);
+    //每天限定充值一次，查询当前是否存在：2普通订单，3补卡订单，5微信订单
+    int queryCurrentDataByDate(String createTime);
 }

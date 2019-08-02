@@ -602,7 +602,7 @@
         update user SET usable=0 where user_id = #{userId,jdbcType=INTEGER}
 
     </update>
-    <!--查询充值类型为	普通订单和超用补缴订单数据-->
+    <!--查询当天充值类型为	普通订单数据-->
     <select id="selectUserByOrderType" resultType="com.tdmh.entity.User" parameterType="com.tdmh.entity.User">
         SELECT
         u.user_id as userId,
@@ -644,6 +644,7 @@
         <if test="employeeId != null">
             AND orders.employee_id LIKE CONCAT('%', #{employeeId,jdbcType=VARCHAR}, '%')
         </if>
+        AND TO_DAYS(orders.create_time) = TO_DAYS(NOW())
         ORDER BY orderCreateTime DESC
     </select>
     <select id="searchAccountQueryList" parameterType="map" resultType="com.tdmh.param.AccountQueryParam">
