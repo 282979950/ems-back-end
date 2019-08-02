@@ -284,10 +284,10 @@
     <insert id="addArchive" parameterType="com.tdmh.param.CreateArchiveParam">
         insert into user (user_dist_id, user_address, user_type,
         user_gas_type, user_locked, create_time, create_by,
-        update_time, update_by, remarks)
+        update_time, update_by, remarks, free_gas_flag)
         values (#{userDistId,jdbcType=INTEGER}, #{userAddress,jdbcType=VARCHAR},
         #{userType,jdbcType=INTEGER}, #{userGasType,jdbcType=INTEGER}, #{userLocked,jdbcType=BIT}, NOW(), #{createBy,jdbcType=INTEGER},
-        NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR})
+        NOW(), #{updateBy,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, (#{userType} = 1))
     </insert>
     <update id="editArchive">
         update user
