@@ -115,10 +115,10 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public JsonData ReportBusinessDataQueryService(UserOrders orders,Integer pageNum, Integer pageSize) {
+    public JsonData ReportBusinessDataQueryService(OrderParam orders,Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<UserOrders> list= userOrdersMapper.selectReportBusinessDataQuery(orders);
-        PageInfo<UserOrders> page = new PageInfo<>(list);
+        List<OrderParam> list= orderMapper.selectReportBusinessDataQuery(orders);
+        PageInfo<OrderParam> page = new PageInfo<>(list);
         return JsonData.success(page,"查询成功");
     }
 

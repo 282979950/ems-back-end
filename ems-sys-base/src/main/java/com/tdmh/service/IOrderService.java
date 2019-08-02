@@ -2,6 +2,7 @@ package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserOrders;
+import com.tdmh.param.OrderParam;
 
 /**
  * @author Administrator on 2018/10/20.
@@ -20,5 +21,5 @@ public interface IOrderService {
 
     void exportBusinessDataQueryListService(UserOrders orders);
 
-    JsonData ReportBusinessDataQueryService(UserOrders orders,Integer pageNum, Integer pageSize);
+    JsonData ReportBusinessDataQueryService(OrderParam orders, Integer pageNum, Integer pageSize);
 }

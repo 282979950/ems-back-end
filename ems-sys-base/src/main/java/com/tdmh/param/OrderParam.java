@@ -127,6 +127,25 @@ public class OrderParam extends BaseEntity {
      * 优惠券编号，同时使用多张时逗号隔开
      */
     private String couponNumber;
-
+    /**
+     * 充值次数
+     */
+    private String icCard;
+    /**
+     * 操作人
+     */
+    private String empName;
+    /**
+     * 机构id
+     */
+    private Integer empOrgId;
+    /**
+     * 起始日期
+     */
+    private String startDate;
+    /**
+     * 截止日期
+     */
+    private String endDate;
 
 }
