@@ -251,4 +251,6 @@ public interface IUserService {
     JsonData ExportUserQueryService(User user);
 
     JsonData bindCard(CreateAccountParam param);
+
+    JsonData checkFreeGasFlag(Integer userId);
 }

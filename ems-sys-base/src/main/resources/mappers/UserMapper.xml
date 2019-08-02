@@ -844,6 +844,18 @@
         remarks = #{remarks,jdbcType=VARCHAR}
         where user_id = #{userId,jdbcType=INTEGER}
     </update>
+    <update id="updateAllFreeGasFlag">
+        update user
+        set
+        free_gas_flag = 1
+        where usable = 1 and user_type = 1
+    </update>
+    <update id="updateFreeGasFlagByUserId" parameterType="map">
+        update user
+        set
+        free_gas_flag = #{flag}
+        where usable = 1 and user_id = #{userId}
+    </update>
     <select id="ExportUser" resultMap="BaseResultMap" parameterType="com.tdmh.param.ExportUserQuery">
         SELECT
         <include refid="Base_Column_List"/>
@@ -877,5 +889,11 @@
         LEFT JOIN sys_dictionary sd2 on u.user_gas_type = sd2.dict_value and sd2.dict_category = 'user_gas_type' and sd2.usable = 1
         LEFT JOIN sys_dictionary sd3 on u.user_status = sd3.dict_value and sd3.dict_category = 'user_status' and sd3.usable = 1
         where u.usable = 1 and u.user_id = #{userId}
+    </select>
+    <select id="checkFreeGasFlag" resultType="java.lang.Boolean" parameterType="int">
+        select
+        free_gas_flag
+        from user
+        where usable = 1 and user_id = #{userId}
     </select>
 </mapper>

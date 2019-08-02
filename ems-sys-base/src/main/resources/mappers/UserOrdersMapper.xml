@@ -43,19 +43,19 @@
     where order_id = #{orderId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.tdmh.entity.UserOrders" >
-<selectKey keyProperty="orderId" order="AFTER" resultType="int">
-    SELECT LAST_INSERT_ID()
-</selectKey>
+    <selectKey keyProperty="orderId" order="AFTER" resultType="int">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into user_orders (user_id, employee_id,
       order_payment, order_gas, order_status, order_create_time,
       order_close_time,flow_number, order_type, create_time, create_by,
       update_time, update_by, usable,coupon_gas,coupon_number,order_detail,
-      remarks)
+      remarks, free_gas)
     values (#{userId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, #{orderPayment,jdbcType=DECIMAL},
       #{orderGas,jdbcType=DECIMAL}, #{orderStatus,jdbcType=INTEGER}, #{orderCreateTime,jdbcType=TIMESTAMP},
       #{orderCloseTime,jdbcType=TIMESTAMP}, #{flowNumber,jdbcType=VARCHAR}, #{orderType,jdbcType=INTEGER}, NOW(), #{createBy,jdbcType=INTEGER},
       #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{usable,jdbcType=BIT},#{couponGas},#{couponNumber},#{orderDetail},
-      #{remarks,jdbcType=VARCHAR})
+      #{remarks,jdbcType=VARCHAR}, #{freeGas})
   </insert>
   <insert id="insertSelective" parameterType="com.tdmh.entity.UserOrders" >
     insert into user_orders

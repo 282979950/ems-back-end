@@ -185,17 +185,21 @@ public class UserOrders extends BaseEntity {
      */
     private String couponNumber;
 
-    public UserOrders(Integer orderId, Integer userId,String userName,String userPhone,String userIdcard,String userAddress,Integer serviceTimes,String empName, Integer employeeId, BigDecimal orderPayment, BigDecimal orderGas, Integer orderStatus, Date orderCreateTime, Date
-            orderCloseTime, String flowNumber,Integer orderType, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, String remarks) {
+    private BigDecimal freeGas;
+
+    public UserOrders(Integer orderId, Integer userId, String userName, String userPhone, String userIdcard, String userAddress, Integer serviceTimes,
+                      String empName, Integer employeeId, BigDecimal orderPayment, BigDecimal orderGas, Integer orderStatus, Date orderCreateTime,
+                      Date orderCloseTime, String flowNumber, Integer orderType, Date createTime, Integer createBy, Date updateTime, Integer updateBy,
+                      Boolean usable, String remarks) {
         super(createTime, createBy, updateTime, updateBy, usable, remarks);
         this.orderId = orderId;
         this.userId = userId;
-        this.userName=userName;
-        this.userPhone=userPhone;
+        this.userName = userName;
+        this.userPhone = userPhone;
         this.userIdcard = userIdcard;
         this.userAddress = userAddress;
         this.serviceTimes = serviceTimes;
-        this.empName=empName;
+        this.empName = empName;
         this.employeeId = employeeId;
         this.orderPayment = orderPayment;
         this.orderGas = orderGas;

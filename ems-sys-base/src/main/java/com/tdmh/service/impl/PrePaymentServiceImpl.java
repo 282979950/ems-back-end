@@ -74,27 +74,29 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
             return JsonData.fail("充值气量最大支持900");
         }
         //限定充值次数.每天限定充值一次，查询当前是否存在：2普通订单，3补卡订单，5微信订单
-        int resultOrdersCount = userOrdersMapper.queryCurrentDataByDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-        if(resultOrdersCount > 0){
-            return JsonData.fail("每天只支持充值一次");
-        }
+        // todo 调试时先撤销对充值次数的限制
+//        int resultOrdersCount = userOrdersMapper.queryCurrentDataByDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+//        if(resultOrdersCount > 0){
+//            return JsonData.fail("每天只支持充值一次");
+//        }
         userOrders.setUsable(true);
         userOrders.setFlowNumber(IdWorker.getId().nextId() + "");
         //判断是否使用优惠券充值
         if (userOrders.getCouponGas() != null && userOrders.getCouponGas().compareTo(BigDecimal.ZERO) > 0) {
-            //使用优惠券充值时若充值气量小于优惠券气量则允许充值
-            int result = userOrders.getOrderGas().compareTo(userOrders.getCouponGas());
-            if (result < 0) {
-                return JsonData.fail("使用劵后充值气量不能小于卷面值气量");
-            }
             if (StringUtils.isNotBlank(userOrders.getCouponNumber())) {
                 //优惠券回收
                 List<String> list = Arrays.asList(userOrders.getCouponNumber().split(","));
                 couponMapper.deleteCouponByCouponNumber(list);
             }
         }
+        BigDecimal freeGas = userOrders.getFreeGas();
+        if (freeGas == null || freeGas.equals(BigDecimal.ZERO)) {
+            userOrders.setFreeGas(BigDecimal.ZERO);
+        } else {
+            userMapper.updateFreeGasFlagByUserId(userOrders.getUserId(), false);
+            userOrders.setFreeGas(freeGas);
+        }
         userOrders.setOrderType(2); //2为普通充值类型
-
         userOrders.setUpdateTime(new Date());
         userOrders.setOrderStatus(1);
         int resultCount = userOrdersMapper.insert(userOrders);

@@ -3,7 +3,6 @@ package com.tdmh.controller.system;
 import com.tdmh.common.JsonData;
 import com.tdmh.param.GasPriceParam;
 import com.tdmh.service.IGasPriceService;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +40,7 @@ public class SysGasPriceController {
 
     @RequestMapping(value = "/calAmount.do")
     @ResponseBody
-    public JsonData calAmount(@Param("userId") Integer userId, @Param("orderGas") BigDecimal orderGas) {
+    public JsonData calAmount(Integer userId, BigDecimal orderGas) {
         return gasPriceService.calAmount(userId,orderGas);
     }
 }

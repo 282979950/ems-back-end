@@ -272,6 +272,7 @@ public class WXServiceImpl implements IWXService {
         order.setUpdateBy(1000000000);
         order.setOrderStatus(3);
         order.setUsable(true);
+        order.setFreeGas(BigDecimal.ZERO);
         int resultCount = userOrdersMapper.insert(order);
         if (resultCount == 0) {
             throw new RuntimeException("生成订单失败");

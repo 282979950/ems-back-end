@@ -198,6 +198,7 @@ public class FillGasServiceImpl implements IFillGasService {
         userOrders.setCreateTime(new Date());
         userOrders.setUpdateTime(new Date());
         userOrders.setOrderStatus(2);
+        userOrders.setFreeGas(BigDecimal.ZERO);
         userOrders.setCreateBy(empId);
         userOrders.setUpdateBy(empId);
         userOrdersMapper.insert(userOrders);

@@ -94,4 +94,10 @@ public interface UserMapper {
     List<ExportUserQuery> ExportUser(User user);
 
     int bindCard(CreateAccountParam param);
+
+    void updateAllFreeGasFlag();
+
+    boolean checkFreeGasFlag(@Param("userId") Integer userId);
+
+    void updateFreeGasFlagByUserId(@Param("userId") Integer userId, @Param("flag") Boolean flag);
 }

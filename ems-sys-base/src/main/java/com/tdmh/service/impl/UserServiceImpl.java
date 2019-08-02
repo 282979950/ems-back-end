@@ -14,7 +14,9 @@ import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RandomUtils;
 import com.tdmh.utils.StringUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,7 @@ import java.util.List;
  */
 @Service("iUserService")
 @Transactional(readOnly = true)
+@Log4j2
 public class UserServiceImpl implements IUserService {
 
     @Autowired
@@ -278,6 +281,7 @@ public class UserServiceImpl implements IUserService {
         userOrders.setUpdateBy(param.getUpdateBy());
         userOrders.setOrderStatus(1);
         userOrders.setUsable(true);
+        userOrders.setFreeGas(BigDecimal.ZERO);
         int resultCount2 = userOrdersMapper.insert(userOrders);
         if (resultCount2 == 0) {
             return JsonData.fail("初始订单生成失败");
@@ -308,6 +312,11 @@ public class UserServiceImpl implements IUserService {
         param.setFlowNumber(userOrders.getFlowNumber());
         param.setServiceTimes(0);
         return JsonData.success(param,"用户发卡成功");
+    }
+
+    @Override
+    public JsonData checkFreeGasFlag(Integer userId) {
+        return JsonData.successData(userMapper.checkFreeGasFlag(userId));
     }
 
     /**
@@ -587,4 +596,14 @@ public class UserServiceImpl implements IUserService {
         return JsonData.successData(list);
     }
 
+    /**
+     * 定时任务每月更新低保送气标记
+     */
+    @Scheduled(cron = "0 0/10 * * * ?")
+    @Transactional
+    public void updateAllFreeGasFlag() {
+        log.info("**************更新低保送气标记开始**************");
+        userMapper.updateAllFreeGasFlag();
+        log.info("**************更新低保送气标记完毕**************");
+    }
 }

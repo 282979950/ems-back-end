@@ -149,4 +149,10 @@ public class AccountController {
         userParam.setUpdateBy(currentEmpId);
         return userService.edit(userParam);
     }
+
+    @RequestMapping(value = "/checkFreeGasFlag.do")
+    @ResponseBody
+    public JsonData checkFreeGasFlag(Integer userId) {
+        return userService.checkFreeGasFlag(userId);
+    }
 }
