@@ -31,7 +31,7 @@
     <select id="sumHistoryTableCode" resultType="java.math.BigDecimal" parameterType="Integer">
 
         SELECT
-        SUM(m.meter_stop_code) AS histirycode
+        SUM(m.meter_stop_code) - SUM(m.meter_initial_stop_code) AS histirycode
         FROM
         user_meters um LEFT JOIN meter m ON um.meter_id = m.meter_id
         WHERE um.user_id=#{userId}
@@ -40,7 +40,7 @@
     <select id="userChangeSumHistoryTableCode" resultType="java.math.BigDecimal" parameterType="Integer">
 
         SELECT
-        SUM(m.meter_stop_code) AS histirycode
+        SUM(m.meter_stop_code) - SUM(m.meter_initial_stop_code) AS histirycode
         FROM
         user_meters um LEFT JOIN meter m ON um.meter_id = m.meter_id AND m.usable = 0
         WHERE um.user_id=#{userId}

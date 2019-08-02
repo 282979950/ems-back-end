@@ -77,7 +77,7 @@
     </select>
     <select id="getSumMeterStopCodeByUserId" resultType="java.math.BigDecimal">
         SELECT
-        SUM(m.meter_stop_code)
+        SUM(m.meter_stop_code) - SUM(m.meter_initial_stop_code)
         from
         user_meters um
         LEFT JOIN meter m on um.meter_id = m.meter_id
@@ -173,7 +173,7 @@
     </select>
     <select id="getHistoryMeterStopCodeByUserId" resultType="java.math.BigDecimal">
         SELECT
-        SUM(m.meter_stop_code)
+        SUM(m.meter_stop_code) - SUM(m.meter_initial_stop_code)
         from
         user_meters um
         LEFT JOIN meter m on um.meter_id = m.meter_id and m.usable = 0
