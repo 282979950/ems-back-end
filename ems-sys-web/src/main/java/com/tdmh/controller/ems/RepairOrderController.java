@@ -7,6 +7,7 @@ import com.tdmh.param.BindNewCardParam;
 import com.tdmh.param.RepairOrderParam;
 import com.tdmh.service.IRepairOrderService;
 import com.tdmh.util.ShiroUtils;
+import com.tdmh.utils.IdWorker;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class RepairOrderController {
     @ResponseBody
     @BeUnLock
     public JsonData createRepairOrder(RepairOrderParam param) {
+        param.setRepairOrderId(String.valueOf(IdWorker.getId().nextId()));
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         param.setUpdateBy(currentEmpId);
         param.setCreateBy(currentEmpId);

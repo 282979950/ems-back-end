@@ -23,4 +23,6 @@ public interface OrderMapper {
     int updateOrderStatus(@Param("orderId") Integer orderId, @Param("orderStatus") Integer orderStatus);
 
     int hasAuthorityToInvoice(@Param("orderId") Integer orderId, @Param("userId") Integer userId);
+
+    List<OrderParam> selectReportBusinessDataQuery(OrderParam record);
 }
