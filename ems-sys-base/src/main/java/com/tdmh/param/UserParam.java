@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -155,4 +156,14 @@ public class UserParam {
      */
     @Length(max = 255, message = "备注长度不能超过255个字")
     private String remarks;
+
+    /**
+     * 购气次数
+     */
+    private Integer totalOrderTimes;
+
+    /**
+     * 购气总量
+     */
+    private BigDecimal totalOrderGas;
 }

@@ -712,29 +712,125 @@
             AND u.user_address like CONCAT('%',#{userAddress},'%')
         </if>
     </select>
-    <select id="userListByUserQuery" resultMap="BaseResultMap">
+    <select id="userListByUserQuery" resultType="com.tdmh.param.UserParam">
         SELECT
-        <include refid="Base_Column_List"/>
-        FROM `user`
-        WHERE usable = 1 ORDER BY create_time
+          u.user_id AS userId,
+          u.user_name AS userName,
+          u.user_phone AS userPhone,
+          u.user_idcard AS userIdcard,
+          u.user_deed AS userDeed,
+          u.user_dist_id AS userDistId,
+          u.user_address AS userAddress,
+          u.user_type AS userType,
+          u.user_gas_type AS userGasType,
+          u.user_status AS userStatus,
+          u.user_locked AS userLocked,
+          u.service_times AS serviceTimes,
+          u.free_gas_flag AS freeGasFlag,
+          u.create_time AS createTime,
+          u.create_by AS createBy,
+          u.update_time AS updateTime,
+          u.update_by AS updateBy,
+          u.usable,
+          u.remarks,
+          uo.totalOrderTimes,
+          uo.totalOrderGas
+        FROM
+          `user` u
+          LEFT JOIN (SELECT
+              user_id,
+              card_identifier,
+              usable
+            FROM
+              user_card
+            WHERE usable = 1) uc
+            ON u.user_id = uc.user_id
+          LEFT JOIN
+            (SELECT
+              user_id,
+              COUNT(order_id) AS totalOrderTimes,
+              SUM(order_gas) AS totalOrderGas,
+              SUM(order_payment) AS totalOrderPayment
+            FROM
+              user_orders
+            WHERE order_status NOT IN (4)
+            GROUP BY user_id) uo
+            ON u.user_id = uo.user_id
+          LEFT JOIN user_meters um
+            ON u.user_id = um.user_id
+          LEFT JOIN meter m
+            ON um.meter_id = m.meter_id
+        WHERE u.usable = 1
+        GROUP BY u.user_id
+        ORDER BY u.create_time
 
     </select>
-    <select id="userQuerySearch" resultMap="BaseResultMap" parameterType="com.tdmh.entity.User">
+    <select id="userQuerySearch" resultType="com.tdmh.param.UserParam" parameterType="com.tdmh.param.UserParam">
         SELECT
-        <include refid="Base_Column_List"/>
-        FROM `user`
-        WHERE usable = 1
+          u.user_id AS userId,
+          u.user_name AS userName,
+          u.user_phone AS userPhone,
+          u.user_idcard AS userIdcard,
+          u.user_deed AS userDeed,
+          u.user_dist_id AS userDistId,
+          u.user_address AS userAddress,
+          u.user_type AS userType,
+          u.user_gas_type AS userGasType,
+          u.user_status AS userStatus,
+          u.user_locked AS userLocked,
+          u.service_times AS serviceTimes,
+          u.free_gas_flag AS freeGasFlag,
+          u.create_time AS createTime,
+          u.create_by AS createBy,
+          u.update_time AS updateTime,
+          u.update_by AS updateBy,
+          u.usable,
+          u.remarks,
+          uo.totalOrderTimes,
+          uo.totalOrderGas
+        FROM
+          `user` u
+          LEFT JOIN (SELECT
+              user_id,
+              card_identifier,
+              usable
+            FROM
+              user_card
+            WHERE usable = 1) uc
+            ON u.user_id = uc.user_id
+          LEFT JOIN
+            (SELECT
+              user_id,
+              COUNT(order_id) AS totalOrderTimes,
+              SUM(order_gas) AS totalOrderGas,
+              SUM(order_payment) AS totalOrderPayment
+            FROM
+              user_orders
+            WHERE order_status NOT IN (4)
+            GROUP BY user_id) uo
+            ON u.user_id = uo.user_id
+          LEFT JOIN user_meters um
+            ON u.user_id = um.user_id
+          LEFT JOIN meter m
+            ON um.meter_id = m.meter_id
+        WHERE u.usable = 1
         <if test="userId != null">
-            AND user_id = #{userId}
+            AND u.user_id = #{userId}
         </if>
         <if test="userName != null and userName!=''">
-
-            AND LOCATE (#{userName} ,user_name) > 0
+            AND LOCATE (#{userName} ,u.user_name) > 0
         </if>
         <if test="userType != null">
-            AND user_type = #{userType}
+            AND u.user_type = #{userType}
         </if>
-        ORDER BY create_time
+        <if test="cardIdentifier != null and cardIdentifier!=''">
+            AND uc.card_identifier = #{cardIdentifier}
+        </if>
+        <if test="meterCode != null and meterCode!=''">
+            AND LOCATE (#{meterCode} ,m.meter_code) > 0
+        </if>
+        GROUP BY u.user_id
+        ORDER BY u.create_time
     </select>
     <select id="getUserLockStatusById" parameterType="int" resultType="integer">
         select is_lock as isLock from user_lock where user_id = #{userId} order by create_time desc LIMIT 1

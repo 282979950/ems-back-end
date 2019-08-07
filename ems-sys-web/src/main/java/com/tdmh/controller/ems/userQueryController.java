@@ -2,6 +2,7 @@ package com.tdmh.controller.ems;
 
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.User;
+import com.tdmh.param.UserParam;
 import com.tdmh.service.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +75,7 @@ public class userQueryController {
     @RequiresPermissions("queryStats:userQuery:retrieve")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData userQuerySearchListController(User user, Integer pageNum, Integer pageSize){
+    public JsonData userQuerySearchListController(UserParam user, Integer pageNum, Integer pageSize){
         return userService.userQuerySearchService(user, pageNum, pageSize);
     }
     /**
@@ -114,14 +115,14 @@ public class userQueryController {
     @RequiresPermissions("queryStats:userQuery:export")
     @RequestMapping("/export.do")
     @ResponseBody
-    public JsonData exportUserQueryList(User user){
+    public JsonData exportUserQueryList(UserParam user){
         return userService.exportUserQuerySearchService(user);
     }
 
     @RequiresPermissions("queryStats:userQuery:export")
     @RequestMapping("/exportWithPageInfo.do")
     @ResponseBody
-    public JsonData exportUserQueryWithPageInfo(User user, Integer pageNum, Integer pageSize){
+    public JsonData exportUserQueryWithPageInfo(UserParam user, Integer pageNum, Integer pageSize){
         return userService.exportUserQueryWithPageInfo(user, pageNum, pageSize);
     }
     @RequiresPermissions("queryStats:userQuery:userMeterType")

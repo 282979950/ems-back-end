@@ -213,7 +213,7 @@ public interface IUserService {
     /**
      * 查询统计（筛选查询）
      */
-    JsonData userQuerySearchService(User user, Integer pageNum, Integer pageSize);
+    JsonData userQuerySearchService(UserParam user, Integer pageNum, Integer pageSize);
     /**
      * 查询统计（用户卡相关查询）
      */
@@ -223,7 +223,7 @@ public interface IUserService {
 
     JsonData getBindNewCardParamByUserId(Integer userId);
 
-    JsonData exportUserQuerySearchService(User user);
+    JsonData exportUserQuerySearchService(UserParam user);
 
     JsonData exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress);
 
@@ -233,7 +233,7 @@ public interface IUserService {
 
     JsonData exportAccountQueryWithPageInfo(String startDate, String endDate, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize);
 
-    JsonData exportUserQueryWithPageInfo(User user, Integer pageNum, Integer pageSize);
+    JsonData exportUserQueryWithPageInfo(UserParam user, Integer pageNum, Integer pageSize);
     /**
      * 发起新增时根据用户号查看该户此时状态
      */

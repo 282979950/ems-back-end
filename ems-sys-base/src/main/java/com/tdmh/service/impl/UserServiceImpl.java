@@ -490,16 +490,16 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonData userQueryListService(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<User> list =userMapper.userListByUserQuery();
-        PageInfo<User> info = new PageInfo<>(list);
+        List<UserParam> list =userMapper.userListByUserQuery();
+        PageInfo<UserParam> info = new PageInfo<>(list);
         return JsonData.successData(info);
     }
 
     @Override
-    public JsonData userQuerySearchService(User user, Integer pageNum, Integer pageSize) {
+    public JsonData userQuerySearchService(UserParam user, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<User> list = userMapper.userQuerySearch(user);
-        PageInfo<User> info = new PageInfo<>(list);
+        List<UserParam> list = userMapper.userQuerySearch(user);
+        PageInfo<UserParam> info = new PageInfo<>(list);
         return JsonData.success(info, "查询成功");
     }
 
@@ -520,8 +520,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData exportUserQuerySearchService(User user) {
-        List<User> list = userMapper.userQuerySearch(user);
+    public JsonData exportUserQuerySearchService(UserParam user) {
+        List<UserParam> list = userMapper.userQuerySearch(user);
         return list.size() == 0 ? JsonData.fail("未查询到相关数据") : JsonData.successData(list);
     }
 
@@ -558,10 +558,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData exportUserQueryWithPageInfo(User user, Integer pageNum, Integer pageSize) {
+    public JsonData exportUserQueryWithPageInfo(UserParam user, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<User> list = userMapper.userQuerySearch(user);
-        PageInfo<User> info = new PageInfo<>(list);
+        List<UserParam> list = userMapper.userQuerySearch(user);
+        PageInfo<UserParam> info = new PageInfo<>(list);
         return JsonData.successData(info);
     }
 
