@@ -602,7 +602,7 @@
         update user SET usable=0 where user_id = #{userId,jdbcType=INTEGER}
 
     </update>
-    <!--查询当天充值类型为	普通订单数据-->
+    <!--查询当天充值类型为	普通订单数据 默认没有赠送低保户气量的信息-->
     <select id="selectUserByOrderType" resultType="com.tdmh.entity.User" parameterType="com.tdmh.entity.User">
         SELECT
         u.user_id as userId,
@@ -634,7 +634,7 @@
         sd3.usable = 1
         LEFT JOIN sys_dictionary sd4 ON orders.account_state = sd4.dict_value AND sd4.dict_category = 'account_state'
         AND sd4.usable = 1
-        WHERE orders.order_type IN ( '2')
+        WHERE orders.order_type IN ( '2') AND orders.free_gas ='0.0'
         <if test="userName != null and userName != ''">
             AND u.user_name LIKE CONCAT('%', #{userName,jdbcType=VARCHAR}, '%')
         </if>
