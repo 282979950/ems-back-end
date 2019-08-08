@@ -166,4 +166,33 @@ public class UserParam {
      * 购气总量
      */
     private BigDecimal totalOrderGas;
+
+    public UserParam(Integer userId, String userName, String userPhone, String userIdcard, String userDeed, Integer userDistId, String userDistName, String userAddress, Integer userType, String userTypeName, Integer userGasType, String userGasTypeName, Integer userStatus, String userStatusName, Boolean userLocked, Integer meterId, String meterCode, Integer userCardId, Integer cardId, String cardIdentifier, Date createTime, Integer createBy, Date updateTime, Integer updateBy, Boolean usable, @Length(max = 255, message = "备注长度不能超过255个字") String remarks) {
+        this.userId = userId;
+        this.userName = userName;
+        this.userPhone = userPhone;
+        this.userIdcard = userIdcard;
+        this.userDeed = userDeed;
+        this.userDistId = userDistId;
+        this.userDistName = userDistName;
+        this.userAddress = userAddress;
+        this.userType = userType;
+        this.userTypeName = userTypeName;
+        this.userGasType = userGasType;
+        this.userGasTypeName = userGasTypeName;
+        this.userStatus = userStatus;
+        this.userStatusName = userStatusName;
+        this.userLocked = userLocked;
+        this.meterId = meterId;
+        this.meterCode = meterCode;
+        this.userCardId = userCardId;
+        this.cardId = cardId;
+        this.cardIdentifier = cardIdentifier;
+        this.createTime = createTime;
+        this.createBy = createBy;
+        this.updateTime = updateTime;
+        this.updateBy = updateBy;
+        this.usable = usable;
+        this.remarks = remarks;
+    }
 }
