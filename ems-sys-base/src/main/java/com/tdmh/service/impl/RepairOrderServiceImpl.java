@@ -54,9 +54,21 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     private IGasPriceService gasPriceService;
 
     @Override
-    public JsonData listData(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<RepairOrderParam> orderParams = repairOrderMapper.listData();
+    public JsonData listData(Integer pageNum, Integer pageSize, String isAdmin, Integer userType, Integer currentEmpId) {
+        List<RepairOrderParam> orderParams = null;
+        Integer createBy = null;
+        /*
+         *判断是否为admin或者用户类型为管理员，不是查询个人产生的记录
+         */
+        if(StringUtils.isNotBlank(isAdmin) && "admin".equals(isAdmin) ||userType.intValue()== 2){
+            PageHelper.startPage(pageNum, pageSize);
+            orderParams = repairOrderMapper.listData(createBy);
+        }else{
+            //若不是管理员则查询个人产生的数据
+            createBy = currentEmpId;
+            PageHelper.startPage(pageNum, pageSize);
+            orderParams = repairOrderMapper.listData(createBy);
+        }
         PageInfo<RepairOrderParam> info = new PageInfo<>(orderParams);
         return JsonData.successData(info);
     }
@@ -317,9 +329,21 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
     }
 
     @Override
-    public JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<RepairOrderParam> orderParams = repairOrderMapper.searchRepairOrder(repairOrderId, userId, repairType, empName);
+    public JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName, Integer pageNum, Integer pageSize, Integer currentEmpId, String isAdmin, Integer userType) {
+        List<RepairOrderParam> orderParams = null;
+        Integer createBy = null;
+        /*
+         *判断是否为admin或者用户类型为管理员，不是查询个人产生的记录
+         */
+        if(StringUtils.isNotBlank(isAdmin) && "admin".equals(isAdmin) ||userType.intValue()== 2){
+            PageHelper.startPage(pageNum, pageSize);
+            orderParams = repairOrderMapper.searchQueryRepairOrder(repairOrderId, userId, repairType, empName, createBy);
+        }else{
+            //若不是管理员则查询个人产生的数据
+            createBy = currentEmpId;
+            PageHelper.startPage(pageNum, pageSize);
+            orderParams = repairOrderMapper.searchQueryRepairOrder(repairOrderId, userId, repairType, empName, createBy);
+        }
         PageInfo<RepairOrderParam> info = new PageInfo<>(orderParams);
         return JsonData.success(info, "查询成功");
     }

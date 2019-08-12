@@ -19,7 +19,7 @@ public interface FillGasOrderMapper {
 
     int editFillGasOrder(FillGasOrderParam param);
 
-    List<FillGasOrderParam> listData();
+    List<FillGasOrderParam> listData(@Param("createBy") Integer createBy);
 
     BigDecimal getSumOrderGasByUserId(Integer id);
 
@@ -35,7 +35,7 @@ public interface FillGasOrderMapper {
     List<FillGasOrderParam>selectFillGasOrderQuery(Integer userId);
 
     List<FillGasOrderParam> searchFillGasOrder(@Param("repairOrderId") String repairOrderId, @Param("userId") Integer userId,
-                                               @Param("fillGasOrderType") Integer fillGasOrderType);
+                                               @Param("fillGasOrderType") Integer fillGasOrderType, @Param("createBy") Integer createBy);
 
     BigDecimal getHistoryMeterStopCodeByUserId(@Param("userId") Integer userId);
 

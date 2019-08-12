@@ -4,8 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tdmh.common.JsonData;
 import com.tdmh.entity.UserOrders;
+import com.tdmh.entity.mapper.OperatorDataQueryMapper;
 import com.tdmh.entity.mapper.OrderMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
+import com.tdmh.param.OperatorDataQuery;
 import com.tdmh.param.OrderParam;
 import com.tdmh.service.IOrderService;
 import com.tdmh.utils.DateUtils;
@@ -14,11 +16,14 @@ import com.tdmh.utils.excel.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Administrator on 2018/10/20.
@@ -30,6 +35,8 @@ public class OrderServiceImpl implements IOrderService {
     private OrderMapper orderMapper;
     @Autowired
     private UserOrdersMapper userOrdersMapper;
+    @Autowired
+    private OperatorDataQueryMapper operatorDataQueryMapper;
 
     @Override
     public JsonData searchOrderAndInvoiceList(String userName,String iccardId, String iccardIdentifier, String invoiceCode, String invoiceNumber, Integer pageNum, Integer pageSize, String startDate, String endDate) {
@@ -122,4 +129,39 @@ public class OrderServiceImpl implements IOrderService {
         return JsonData.success(page,"查询成功");
     }
 
+    /*
+     *查询操作员日常充值记录
+     */
+    @Override
+    public JsonData OperatorDataQueryService(OperatorDataQuery dataQuery, Integer pageNum, Integer pageSize) {
+        List<OperatorDataQuery> list= operatorDataQueryMapper.getOperatorDataQuery(dataQuery);
+        //定义参数
+        BigDecimal countBaseOrderGas = new BigDecimal("0.00");
+        BigDecimal countLaunchOrderGas = new BigDecimal("0.00");
+        BigDecimal countReplacementOrderGas = new BigDecimal("0.00");
+        BigDecimal countCardCost = new BigDecimal("0.00");
+        //获取总计
+         for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getBaseOrderGas()!= null){
+                countBaseOrderGas = countBaseOrderGas.add(list.get(i).getBaseOrderGas());
+            }
+            if(list.get(i).getLaunchOrderGas()!= null){
+                countLaunchOrderGas = countLaunchOrderGas.add(list.get(i).getLaunchOrderGas());
+            }
+            if(list.get(i).getReplacementOrderGas()!= null){
+                countReplacementOrderGas = countReplacementOrderGas.add(list.get(i).getReplacementOrderGas());
+            }
+            if( list.get(i).getCardCost()!= null){
+                countCardCost = countCardCost.add(list.get(i).getCardCost());
+            }
+        }
+        Map<String, Object> map = new HashMap<String ,Object>();
+        map.put("list",list);
+        map.put("countBaseOrderGas",countBaseOrderGas);
+        map.put("countLaunchOrderGas",countLaunchOrderGas);
+        map.put("countReplacementOrderGas",countReplacementOrderGas);
+        map.put("countCardCost",countCardCost);
+        map.put("rowNumber",list.size());
+        return JsonData.success(map,"查询成功");
+    }
 }

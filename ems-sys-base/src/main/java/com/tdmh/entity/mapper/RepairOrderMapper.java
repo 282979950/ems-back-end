@@ -25,7 +25,12 @@ public interface RepairOrderMapper {
                                              @Param("repairType") Integer repairType,
                                              @Param("empName") String empName);
 
-    List<RepairOrderParam> listData();
+    List<RepairOrderParam> searchQueryRepairOrder(@Param("repairOrderId") String repairOrderId, @Param("userId") Integer userId,
+                                             @Param("repairType") Integer repairType,
+                                             @Param("empName") String empName,
+                                             @Param("createBy") Integer createBy);
+
+    List<RepairOrderParam> listData(@Param("createBy") Integer createBy);
 
     RepairOrderParam getRepairOrderById(Integer id);
 

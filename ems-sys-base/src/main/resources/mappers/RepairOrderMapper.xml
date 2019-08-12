@@ -78,6 +78,9 @@
     </sql>
     <select id="listData" resultMap="RepairOrderParam">
         <include refid="Base_Sql"></include>
+        <if test="createBy != null">
+            AND ro.create_by = #{createBy}
+        </if>
         order by ro.repair_order_status, ro.id desc
     </select>
     <select id="getRepairOrderById" resultMap="RepairOrderParam" parameterType="int">
@@ -151,6 +154,25 @@
         </if>
         <if test="empName != null and empName != ''">
             AND e.emp_name LIKE CONCAT('%', #{empName}, '%')
+        </if>
+        order by ro.repair_order_status, ro.id desc
+    </select>
+    <select id="searchQueryRepairOrder" resultMap="RepairOrderParam" parameterType="map">
+        <include refid="Base_Sql"></include>
+        <if test="repairOrderId != null and repairOrderId != ''">
+            AND ro.repair_order_id LIKE CONCAT('%', #{repairOrderId}, '%')
+        </if>
+        <if test="userId != null and userId != ''">
+            AND ro.user_id LIKE CONCAT('%', #{userId}, '%')
+        </if>
+        <if test="repairType != null">
+            AND ro.repair_type = #{repairType}
+        </if>
+        <if test="empName != null and empName != ''">
+            AND e.emp_name LIKE CONCAT('%', #{empName}, '%')
+        </if>
+        <if test="createBy != null">
+            AND ro.create_by = #{createBy}
         </if>
         order by ro.repair_order_status, ro.id desc
     </select>

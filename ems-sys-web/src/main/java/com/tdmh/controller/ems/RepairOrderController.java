@@ -34,7 +34,10 @@ public class RepairOrderController {
     @RequestMapping(value = "listData.do")
     @ResponseBody
     public JsonData listData(Integer pageNum, Integer pageSize) {
-        return repairOrderService.listData(pageNum, pageSize);
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        String isAdmin =ShiroUtils.getPrincipal().getLoginName();
+        Integer userType = ShiroUtils.getPrincipal().getUserType();
+        return repairOrderService.listData(pageNum, pageSize, isAdmin, userType, currentEmpId);
     }
 
     /**
@@ -85,7 +88,10 @@ public class RepairOrderController {
     @RequestMapping(value = "search.do")
     @ResponseBody
     public JsonData searchRepairOrder(String repairOrderId, Integer userId, Integer repairType, String empName, Integer pageNum, Integer pageSize) {
-        return repairOrderService.searchRepairOrder(repairOrderId, userId, repairType, empName, pageNum, pageSize);
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        String isAdmin =ShiroUtils.getPrincipal().getLoginName();
+        Integer userType = ShiroUtils.getPrincipal().getUserType();
+        return repairOrderService.searchRepairOrder(repairOrderId, userId, repairType, empName, pageNum, pageSize, currentEmpId, isAdmin, userType);
     }
 
     /**

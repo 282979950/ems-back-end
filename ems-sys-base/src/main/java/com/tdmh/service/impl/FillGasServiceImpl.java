@@ -12,6 +12,7 @@ import com.tdmh.param.FillGasOrderParam;
 import com.tdmh.service.IFillGasService;
 import com.tdmh.service.IRepairOrderService;
 import com.tdmh.utils.IdWorker;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +42,21 @@ public class FillGasServiceImpl implements IFillGasService {
     private UserOrdersMapper userOrdersMapper;
 
     @Override
-    public JsonData listData(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<FillGasOrderParam> fillGasOrders = fillGasOrderMapper.listData();
+    public JsonData listData(Integer pageNum, Integer pageSize, Integer currentEmpId, String isAdmin, Integer userType) {
+        List<FillGasOrderParam> fillGasOrders = null;
+        Integer createBy = null;
+        /*
+         *判断是否为admin或者用户类型为管理员，不是查询个人产生的记录
+         */
+        if(StringUtils.isNotBlank(isAdmin) && "admin".equals(isAdmin) ||userType.intValue()== 2){
+            PageHelper.startPage(pageNum, pageSize);
+            fillGasOrders = fillGasOrderMapper.listData(createBy);
+        }else{
+            //若不是管理员则查询个人产生的数据
+            createBy = currentEmpId;
+            PageHelper.startPage(pageNum, pageSize);
+            fillGasOrders = fillGasOrderMapper.listData(createBy);
+        }
         PageInfo<FillGasOrderParam> info = new PageInfo<>(fillGasOrders);
         return JsonData.successData(info);
     }
@@ -94,9 +107,20 @@ public class FillGasServiceImpl implements IFillGasService {
     }
 
     @Override
-    public JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<FillGasOrderParam> fillGasOrders = fillGasOrderMapper.searchFillGasOrder(repairOrderId, userId, fillGasOrderType);
+    public JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType, Integer pageNum, Integer pageSize, Integer currentEmpId, String isAdmin, Integer userType) {
+        List<FillGasOrderParam> fillGasOrders = null;
+        Integer createBy = null;
+        /*
+         *判断是否为admin或者用户类型为管理员，不是查询个人产生的记录
+         */
+        if(StringUtils.isNotBlank(isAdmin) && "admin".equals(isAdmin) ||userType.intValue()== 2){
+            PageHelper.startPage(pageNum, pageSize);
+            fillGasOrders = fillGasOrderMapper.searchFillGasOrder(repairOrderId, userId, fillGasOrderType, createBy);
+        }else{
+            createBy = currentEmpId;
+            PageHelper.startPage(pageNum, pageSize);
+            fillGasOrders = fillGasOrderMapper.searchFillGasOrder(repairOrderId, userId, fillGasOrderType, createBy);
+        }
         PageInfo<FillGasOrderParam> info = new PageInfo<>(fillGasOrders);
         return JsonData.success(info, "查询成功");
     }

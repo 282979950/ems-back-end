@@ -66,6 +66,9 @@
         LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
         LEFT JOIN sys_dictionary sd2 on fgo.fill_gas_order_type = sd2.dict_value and sd2.dict_category = 'fill_gas_order_type' and sd2.usable = 1
         where fgo.usable = 1
+        <if test="createBy != null">
+            AND fgo.create_by = #{createBy}
+        </if>
         order by fgo.fill_gas_order_status, fgo.id desc
     </select>
     <select id="getSumOrderGasByUserId" resultType="java.math.BigDecimal" parameterType="int">
@@ -137,6 +140,9 @@
         </if>
         <if test="fillGasOrderType != null">
             AND fgo.fill_gas_order_type = #{fillGasOrderType}
+        </if>
+        <if test="createBy != null">
+            AND fgo.create_by = #{createBy}
         </if>
         order by fgo.fill_gas_order_status, fgo.id desc
     </select>
