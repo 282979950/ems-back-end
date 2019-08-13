@@ -538,6 +538,8 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                         fillGasOrder.setRepairOrderId(repairOrderId);
                         fillGasOrder.setGasCount(sumOrderGas);
                         fillGasOrder.setStopCodeCount(sumMeterStopCode);
+                        fillGasOrder.setCreateBy(param.getCreateBy());
+                        fillGasOrder.setUpdateBy(param.getUpdateBy());
                         BigDecimal overusedGas = sumMeterStopCode.subtract(sumOrderGas);
                         BigDecimal gasInYear = gasPriceService.findHasUsedGasInYear(userId);
                         User user = userService.getUserById(userId);
