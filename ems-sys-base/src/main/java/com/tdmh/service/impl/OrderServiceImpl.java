@@ -140,6 +140,7 @@ public class OrderServiceImpl implements IOrderService {
         BigDecimal countLaunchOrderGas = new BigDecimal("0.00");
         BigDecimal countReplacementOrderGas = new BigDecimal("0.00");
         BigDecimal countCardCost = new BigDecimal("0.00");
+        int countReplacementCard = 0;
         //获取总计
          for(int i = 0; i < list.size(); i++){
             if(list.get(i).getBaseOrderGas()!= null){
@@ -153,6 +154,7 @@ public class OrderServiceImpl implements IOrderService {
             }
             if( list.get(i).getCardCost()!= null){
                 countCardCost = countCardCost.add(list.get(i).getCardCost());
+                countReplacementCard ++;
             }
         }
         Map<String, Object> map = new HashMap<String ,Object>();
@@ -161,6 +163,7 @@ public class OrderServiceImpl implements IOrderService {
         map.put("countLaunchOrderGas",countLaunchOrderGas);
         map.put("countReplacementOrderGas",countReplacementOrderGas);
         map.put("countCardCost",countCardCost);
+        map.put("countReplacementCard",countReplacementCard);
         map.put("rowNumber",list.size());
         return JsonData.success(map,"查询成功");
     }

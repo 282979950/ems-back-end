@@ -91,4 +91,8 @@ public class OperatorDataQuery {
      *截止时间
      */
     private String endDate;
+    /**
+     *操作
+     */
+    private String operation;
 }
