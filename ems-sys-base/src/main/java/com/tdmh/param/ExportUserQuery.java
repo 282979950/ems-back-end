@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -54,4 +55,14 @@ public class ExportUserQuery {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ExcelField(title="创建时间", type=1, align=2, sort=6)
     private Date createTime;
+
+    /**
+     * 购气次数
+     */
+    private Integer totalOrderTimes;
+
+    /**
+     * 购气总量
+     */
+    private BigDecimal totalOrderGas;
 }

@@ -693,6 +693,10 @@
         startBuyDay, MAX(create_time) AS endBuyDay
         FROM user_orders WHERE account_state NOT IN(1,3) OR account_state IS NULL GROUP BY user_id
         ) uo ON u.user_id = uo.user_id
+        LEFT JOIN user_meters usermeters
+        ON u.user_id = usermeters.user_id
+        LEFT JOIN meter me
+        ON usermeters.meter_id = me.meter_id
         WHERE u.usable = 1
         <if test="monthAveGas!=null">
             AND ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) <![CDATA[ <= ]]>
@@ -710,6 +714,10 @@
         </if>
         <if test="userAddress!=null and userAddress!=''">
             AND u.user_address like CONCAT('%',#{userAddress},'%')
+        </if>
+        <if test="meterCode != null and meterCode!=''">
+
+            AND LOCATE (#{meterCode} ,me.meter_code) > 0
         </if>
     </select>
     <select id="userListByUserQuery" resultType="com.tdmh.param.UserParam">
@@ -952,22 +960,36 @@
         free_gas_flag = #{flag}
         where usable = 1 and user_id = #{userId}
     </update>
-    <select id="ExportUser" resultMap="BaseResultMap" parameterType="com.tdmh.param.ExportUserQuery">
+    <select id="ExportUser" resultType="com.tdmh.param.ExportUserQuery" parameterType="com.tdmh.param.ExportUserQuery">
         SELECT
-        <include refid="Base_Column_List"/>
-        FROM `user`
-        WHERE usable = 1
+        u.user_id as userId, u.user_name as userName, u.user_phone as userPhone, u.user_idcard as userIdcard, u.user_deed as userDeed, u.user_dist_id as userDistId, u.user_address as userAddress,
+        u.user_type as userType, u.user_gas_type as userGasType, u.user_status as userStatus, u.user_locked as userLocked, u.service_times as serviceTimes, u.free_gas_flag as freeGasFlag,
+        u.create_time as createTime, u.create_by as createBy, u.update_time as updateTime, u.update_by as updateBy, u.usable, u.remarks,uo.totalOrderTimes as totalOrderTimes,
+        uo.totalOrderGas as totalOrderGas
+        FROM `user` u
+        LEFT JOIN
+        (SELECT
+        user_id,
+        COUNT(order_id) AS totalOrderTimes,
+        SUM(order_gas) AS totalOrderGas,
+        SUM(order_payment) AS totalOrderPayment
+        FROM
+        user_orders
+        WHERE order_status NOT IN (4)
+        GROUP BY user_id) uo
+        ON u.user_id = uo.user_id
+        WHERE u.usable = 1
         <if test="userId != null">
-            AND user_id = #{userId}
+            AND u.user_id = #{userId}
         </if>
         <if test="userName != null and userName!=''">
 
-            AND LOCATE (#{userName} ,user_name) > 0
+            AND LOCATE (#{userName} ,u.user_name) > 0
         </if>
         <if test="userType != null">
-            AND user_type = #{userType}
+            AND u.user_type = #{userType}
         </if>
-        ORDER BY create_time
+        ORDER BY u.create_time
     </select>
     <select id="getUserByUserId" resultMap="BaseResultMap" parameterType="int">
         SELECT

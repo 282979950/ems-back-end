@@ -472,10 +472,10 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress,
-                                           Integer pageNum, Integer pageSize) {
+                                           String meterCode,Integer pageNum, Integer pageSize) {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
         PageHelper.startPage(pageNum, pageSize);
-        List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
+        List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress, meterCode);
         PageInfo<AbnormalUser> info = new PageInfo<>(list);
         return JsonData.success(info,"查询成功");
     }
@@ -526,9 +526,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress) {
+    public JsonData exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress, String meterCode) {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
-        List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
+        List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress, meterCode);
         return list.size() == 0 ? JsonData.fail("未查询到相关数据") : JsonData.successData(list);
     }
 
@@ -539,10 +539,10 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public JsonData exportAbnormalUserWithPageInfo(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId,
-                                                   String userAddress, Integer pageNum, Integer pageSize) {
+                                                   String userAddress, String meterCode, Integer pageNum, Integer pageSize) {
         String distIds= sysDistrictMapper.getDistrictChildList(userDistId);
         PageHelper.startPage(pageNum, pageSize);
-        List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress);
+        List<AbnormalUser> list = userMapper.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, distIds, userAddress, meterCode);
         PageInfo<AbnormalUser> info = new PageInfo<>(list);
         return JsonData.successData(info);
     }

@@ -95,4 +95,8 @@ public class AbnormalUser {
      */
     @ExcelField(title="月均购气金额", type=1, align=2, sort=14)
     private BigDecimal monthAvePayment;
+    /**
+     * 表具编号
+     */
+    private String meterCode;
 }
