@@ -51,4 +51,6 @@ public interface RepairOrderMapper {
     boolean isDemolitionTable(@Param("userId")Integer userId);
 
     int updateDemolitionTableStatus(@Param("userId")Integer userId);
+    //查询是否存在拆表工单，排除repairOrderStatus 已撤销的
+    int dismantleCount(@Param("userId") Integer userId, @Param("repairOrderStatus") Integer repairOrderStatus, @Param("repairType") Integer repairType, @Param("repairResultType") Integer repairResultType);
 }

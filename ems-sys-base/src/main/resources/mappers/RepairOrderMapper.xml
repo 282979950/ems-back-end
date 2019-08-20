@@ -273,4 +273,15 @@
          repair_result_type = 33 AND repair_type = 5 AND repair_order_status = 1
         AND usable = 1 and user_id = #{userId}
     </update>
+    <select id="dismantleCount" resultType="integer">
+        SELECT
+          COUNT(0)
+        FROM
+          repair_order
+        WHERE usable = 1
+          AND user_id = #{userId}
+          AND repair_type = #{repairType}
+          AND repair_result_type = #{repairResultType}
+          AND repair_order_status != #{repairOrderStatus}
+    </select>
 </mapper>

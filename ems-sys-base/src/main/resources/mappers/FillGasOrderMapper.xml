@@ -62,7 +62,7 @@
         from
         fill_gas_order fgo
         LEFT JOIN `user` u on fgo.user_id = u.user_id and u.usable = 1
-        LEFT JOIN user_card uc ON u.user_id = uc.user_id AND uc.usable = 1
+        LEFT JOIN user_card uc ON u.user_id = uc.user_id AND (uc.usable = 1 OR card_status =2)
         LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
         LEFT JOIN sys_dictionary sd2 on fgo.fill_gas_order_type = sd2.dict_value and sd2.dict_category = 'fill_gas_order_type' and sd2.usable = 1
         where fgo.usable = 1
@@ -128,7 +128,7 @@
         from
         fill_gas_order fgo
         LEFT JOIN `user` u on fgo.user_id = u.user_id and u.usable = 1
-        LEFT JOIN user_card uc ON u.user_id = uc.user_id AND uc.usable = 1
+        LEFT JOIN user_card uc ON u.user_id = uc.user_id AND (uc.usable = 1 OR card_status =2)
         LEFT JOIN sys_dictionary sd on fgo.fill_gas_order_status = sd.dict_value and sd.dict_category = 'fill_gas_order_status' and sd.usable = 1
         LEFT JOIN sys_dictionary sd2 on fgo.fill_gas_order_type = sd2.dict_value and sd2.dict_category = 'fill_gas_order_type' and sd2.usable = 1
         where fgo.usable = 1

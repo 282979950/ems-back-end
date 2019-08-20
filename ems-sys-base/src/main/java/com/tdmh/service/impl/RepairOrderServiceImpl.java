@@ -109,6 +109,10 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         //若是报停拆表处理结果必须为拆表，否则提示
         if(param.getRepairType().equals(5) && !param.getRepairResultType().equals(33)){
             return JsonData.fail("请选择处理结果【拆表】");
+        }else if(param.getRepairType().equals(5) && param.getRepairResultType().equals(33)){
+            if(dismantleCount(param.getUserId(),5, param.getRepairType(),param.getRepairResultType())){
+                return JsonData.fail("该户存在拆表单无法新建");
+            }
         }
         if (checkNeedFillGas(param)) {
             userService.updateServiceTimesByUserId(param.getUserId());
@@ -169,9 +173,9 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 oldMeter.setMeterStopCode(param.getOldMeterStopCode());
                 oldMeter.setMeterScrapTime(new Date());
                 oldMeter.setMeterStatus(3);
-                oldMeter.setUsable(false);
+                //oldMeter.setUsable(false);处理用户创建拆表单后撤销无法重新再创建问题
                 meterService.updateMeter(oldMeter);
-                deleteOldMeter(userId);
+                //deleteOldMeter(userId);
             }
             // 锁定历史订单
 //            repairOrderMapper.lockRepairOrderByUserId(userId);
@@ -563,5 +567,10 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                     return 0;
             }
         }
+    }
+
+    public boolean dismantleCount(Integer userId, Integer repairOrderStatus, Integer repairType, Integer repairResultType) {
+        int dismantleCount = repairOrderMapper.dismantleCount(userId, repairOrderStatus, repairType, repairResultType);
+        return dismantleCount > 0 ? true : false;
     }
 }
