@@ -12,6 +12,7 @@ import com.tdmh.param.FillGasOrderParam;
 import com.tdmh.service.IFillGasService;
 import com.tdmh.service.IRepairOrderService;
 import com.tdmh.utils.IdWorker;
+import com.tdmh.utils.RmbConvert;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author litairan on 2018/10/17.
@@ -73,7 +76,7 @@ public class FillGasServiceImpl implements IFillGasService {
 
     @Override
     @Transactional
-    public JsonData editFillGasOrder(FillGasOrderParam param) {
+    public JsonData editFillGasOrder(FillGasOrderParam param, String name) {
         BeanValidator.check(param);
         param.setFillGasOrderStatus(1);
         Integer fillGasOrderType = param.getFillGasOrderType();
@@ -97,7 +100,15 @@ public class FillGasServiceImpl implements IFillGasService {
             repairOrderService.updateRepairOrderStatus(param.getRepairOrderId(), 4);
             // 生成一笔补缴充值
             createOveruseOrder(param.getFillMoney(), param.getStopCodeCount().subtract(param.getGasCount()), param.getUserId(), param.getUpdateBy());
-            return JsonData.successMsg("超用补缴单已处理");
+            //return JsonData.successMsg("超用补缴单已处理");
+            //方便打印发票
+            RmbConvert rmb = new RmbConvert();
+            String rmbBig = rmb.simpleToBig(param.getFillMoney().doubleValue());
+            Map<String, Object> map = new HashMap<>();
+            map.put("data", param);
+            map.put("rmbBig", rmbBig);
+            map.put("name", name);
+            return JsonData.success(map,"超用补缴单已处理");
         } else if (fillGasOrderType.equals(3)) {
             // TODO: 2018/10/20
             return JsonData.successMsg("销户单已处理");

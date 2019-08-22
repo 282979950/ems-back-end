@@ -37,8 +37,9 @@ public class FillGasController {
     @BeUnLock
     public JsonData editFillGasOrder(FillGasOrderParam param) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        String name = ShiroUtils.getPrincipal().getName();
         param.setUpdateBy(currentEmpId);
-        return fillGasService.editFillGasOrder(param);
+        return fillGasService.editFillGasOrder(param, name);
     }
 
     /**

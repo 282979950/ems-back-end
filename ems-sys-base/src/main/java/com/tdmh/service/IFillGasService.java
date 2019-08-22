@@ -16,7 +16,7 @@ public interface IFillGasService {
 
     int createFillGasOrder(FillGasOrderParam param);
 
-    JsonData editFillGasOrder(FillGasOrderParam param);
+    JsonData editFillGasOrder(FillGasOrderParam param, String name);
 
     JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType, Integer pageNum, Integer pageSize, Integer currentEmpId, String isAdmin, Integer userType);
 
