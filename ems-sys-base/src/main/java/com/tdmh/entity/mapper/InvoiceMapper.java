@@ -26,4 +26,8 @@ public interface InvoiceMapper {
     int printInvoice(@Param("orderId") Integer orderId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber, @Param(
             "currentEmpId") Integer currentEmpId);
     int cancelInvoice(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber, @Param("currentEmpId") Integer currentEmpId);
+
+    void transfer(@Param("empId") Integer empId, @Param("currentEmpId") Integer currentEmpId);
+
+    List<Invoice> getUnusedInvoiceByEmpId(@Param("currentEmpId") Integer currentEmpId);
 }

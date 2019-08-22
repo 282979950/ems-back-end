@@ -55,17 +55,33 @@ public class InvoiceController {
     @RequiresPermissions("invoice:assign:add")
     @RequestMapping("/assign/add.do")
     @ResponseBody
-    public JsonData addInvoice(@Param("invoiceCode") String invoiceCode, @Param("sInvoiceNumber") Integer sInvoiceNumber,@Param("eInvoiceNumber") Integer eInvoiceNumber){
+    public JsonData addInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer orgId){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return invoiceService.addInvoice(invoiceCode,sInvoiceNumber,eInvoiceNumber,currentEmpId);
+        return invoiceService.addInvoice(invoiceCode,sInvoiceNumber,eInvoiceNumber, orgId, currentEmpId);
     }
 
     @RequiresPermissions("invoice:assign:assignment")
     @RequestMapping("/assign/assignment.do")
     @ResponseBody
-    public JsonData assignInvoice(@Param("invoiceCode") String invoiceCode, @Param("sInvoiceNumber") Integer sInvoiceNumber,@Param("eInvoiceNumber") Integer eInvoiceNumber,@Param("empId") Integer empId){
+    public JsonData assignInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer empId){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         return invoiceService.assignInvoice(invoiceCode,sInvoiceNumber,eInvoiceNumber,empId,currentEmpId);
+    }
+
+    @RequiresPermissions("invoice:assign:assignment")
+    @RequestMapping("/assign/transfer.do")
+    @ResponseBody
+    public JsonData transfer(Integer empId){
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return invoiceService.transfer(empId,currentEmpId);
+    }
+
+    @RequiresPermissions("invoice:assign:assignment")
+    @RequestMapping("/assign/getInvoiceInfo.do")
+    @ResponseBody
+    public JsonData getInvoiceInfo(){
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return invoiceService.getInvoiceInfo(currentEmpId);
     }
 
     /**
