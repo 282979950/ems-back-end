@@ -9,13 +9,9 @@
         e1.emp_name as invoicePrintEmpName, i.invoice_print_time as invoicePrintTime,
         e2.emp_name as invoiceCancelEmpName, i.invoice_cancel_time as invoiceCancelTime
         FROM user_orders uo
-        JOIN `user` u ON uo.user_id = u.user_id
-        join user_card uc on u.user_id = uc.user_id and uc.usable = 1
-        LEFT JOIN ( SELECT a.* FROM invoice a ,(SELECT order_id, max(invoice_print_time) AS invoice_print_time FROM invoice WHERE order_id IS NOT null GROUP BY order_id) b
-        WHERE a.order_id = b.order_id AND a.invoice_print_time = b.invoice_print_time
-        UNION ALL
-        SELECT * FROM invoice WHERE order_id IS NULL
-        ) i ON uo.order_id = i.order_id
+        left JOIN `user` u ON uo.user_id = u.user_id
+        left join user_card uc on u.user_id = uc.user_id and uc.usable = 1
+        LEFT JOIN invoice i ON uo.order_id = i.order_id and i.invoice_status != 4
         left join employee e on uo.create_by = e.emp_id
         left join sys_dictionary sd on i.invoice_status = sd.dict_value and sd.dict_category = 'invoice_status'
         LEFT JOIN employee e1 ON i.invoice_print_emp = e1.emp_id
@@ -97,5 +93,10 @@
         GROUP BY
         DATE_FORMAT(orders.create_time ,'%Y-%m-%d')
         ORDER BY DATE_FORMAT(orders.create_time ,'%Y-%m-%d') DESC
+    </select>
+    <select id="checkNewInvoicePrint" resultType="boolean" parameterType="int">
+        SELECT
+        count(1)
+        from invoice where order_id = #{orderId} and invoice_status = 4
     </select>
 </mapper>

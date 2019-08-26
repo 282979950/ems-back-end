@@ -25,4 +25,6 @@ public interface OrderMapper {
     int hasAuthorityToInvoice(@Param("orderId") Integer orderId, @Param("userId") Integer userId);
 
     List<OrderParam> selectReportBusinessDataQuery(OrderParam record);
+
+    boolean checkNewInvoicePrint(@Param("orderId") Integer orderId);
 }

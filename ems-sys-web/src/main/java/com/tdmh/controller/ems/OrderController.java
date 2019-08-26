@@ -67,4 +67,10 @@ public class OrderController {
         return JsonData.successData(rmb.simpleToBig(orderGas.doubleValue()));
     }
 
+    @RequestMapping("/checkNewInvoicePrint.do")
+    @ResponseBody
+    public JsonData checkNewInvoicePrint(Integer orderId){
+        return orderService.checkNewInvoicePrint(orderId);
+    }
+
 }

@@ -167,4 +167,13 @@ public class OrderServiceImpl implements IOrderService {
         map.put("rowNumber",list.size());
         return JsonData.success(map,"查询成功");
     }
+
+    @Override
+    public JsonData checkNewInvoicePrint(Integer orderId) {
+        if (orderMapper.checkNewInvoicePrint(orderId)) {
+            return JsonData.success(false, "该订单已使用过两张发票，不能再使用新票补打");
+        } else {
+            return JsonData.successData(true);
+        }
+    }
 }
