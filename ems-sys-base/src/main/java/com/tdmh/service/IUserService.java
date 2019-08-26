@@ -250,7 +250,7 @@ public interface IUserService {
 
     JsonData ExportUserQueryService(User user);
 
-    JsonData bindCard(CreateAccountParam param);
+    JsonData bindCard(CreateAccountParam param, String userType);
 
     JsonData checkFreeGasFlag(Integer userId);
 }

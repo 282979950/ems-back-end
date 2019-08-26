@@ -107,10 +107,10 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
             return JsonData.fail("已销户的【"+userId+"】无法录入维修单");
         }
         //若是报停拆表处理结果必须为拆表，否则提示
-        if(param.getRepairType().equals(5) && !param.getRepairResultType().equals(33)){
+        if (param.getRepairType().equals(5) && !param.getRepairResultType().equals(33)) {
             return JsonData.fail("请选择处理结果【拆表】");
-        }else if(param.getRepairType().equals(5) && param.getRepairResultType().equals(33)){
-            if(dismantleCount(param.getUserId(),5, param.getRepairType(),param.getRepairResultType())){
+        } else {
+            if (dismantleCount(param.getUserId(), 5, 5, 33)) {
                 return JsonData.fail("该户存在拆表单无法新建");
             }
         }

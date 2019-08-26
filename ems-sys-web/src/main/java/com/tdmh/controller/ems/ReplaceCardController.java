@@ -48,7 +48,7 @@ public class ReplaceCardController {
     @RequestMapping(value = "edit.do")
     @ResponseBody
     @BeUnLock
-    public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders) {
+    public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders, String userType) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         String name = ShiroUtils.getPrincipal().getName();
         param.setCreateBy(currentEmpId);
@@ -56,7 +56,7 @@ public class ReplaceCardController {
         userOrders.setEmployeeId(currentEmpId);
         userOrders.setCreateBy(currentEmpId);
         userOrders.setUpdateBy(currentEmpId);
-        return replaceCardService.supplementCard(param,userOrders,name);
+        return replaceCardService.supplementCard(param,userOrders,name,userType);
     }
 
     /**

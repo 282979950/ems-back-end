@@ -146,7 +146,7 @@ public class WXServiceImpl implements IWXService {
         // 查询当前用户的订单列表，如果有未完成的订单则需要支付或取消
         try {
             //限定充值次数.每天限定充值一次，查询当前是否存在：2普通订单，3补卡订单，5微信订单
-            int resultOrdersCount = userOrdersMapper.queryCurrentDataByDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            int resultOrdersCount = userOrdersMapper.queryCurrentDataByDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()), userId);
             if(resultOrdersCount > 0){
                 return JsonData.fail("每天只支持充值一次");
             }

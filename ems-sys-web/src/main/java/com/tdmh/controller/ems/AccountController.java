@@ -79,10 +79,10 @@ public class AccountController {
     @RequiresPermissions("account:createAccount:update")
     @RequestMapping(value = "/bindCard.do")
     @ResponseBody
-    public JsonData bindCard(CreateAccountParam param) {
+    public JsonData bindCard(CreateAccountParam param, String userType) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         param.setUpdateBy(currentEmpId);
-        return userService.bindCard(param);
+        return userService.bindCard(param, userType);
     }
 
     /**

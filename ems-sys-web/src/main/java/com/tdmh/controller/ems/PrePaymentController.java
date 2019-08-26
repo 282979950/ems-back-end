@@ -43,13 +43,13 @@ public class PrePaymentController {
     @RequestMapping(value = "edit.do")
     @ResponseBody
     @BeUnLock
-    public JsonData createUserOrder(UserOrders userOrders) {
+    public JsonData createUserOrder(UserOrders userOrders, String userType) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         String name = ShiroUtils.getPrincipal().getName();
         userOrders.setEmployeeId(currentEmpId);
         userOrders.setCreateBy(currentEmpId);
         userOrders.setUpdateBy(currentEmpId);
-        return prePaymentService.createUserOrder(userOrders,name);
+        return prePaymentService.createUserOrder(userOrders,name,userType);
     }
 
     //依据条件查询对应数据

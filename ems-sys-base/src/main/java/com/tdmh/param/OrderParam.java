@@ -148,4 +148,6 @@ public class OrderParam extends BaseEntity {
      */
     private String endDate;
 
+    private BigDecimal freeGas;
+
 }

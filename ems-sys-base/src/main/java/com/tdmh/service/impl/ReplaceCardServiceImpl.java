@@ -12,6 +12,7 @@ import com.tdmh.param.CreateAccountParam;
 import com.tdmh.param.PrePaymentParam;
 import com.tdmh.param.WriteCardParam;
 import com.tdmh.service.IReplaceCardService;
+import com.tdmh.util.OrderGasUtil;
 import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RmbConvert;
 import com.tdmh.utils.StringUtils;
@@ -63,7 +64,7 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
 
     @Transactional
     @Override
-    public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders,String name) {
+    public JsonData supplementCard(PrePaymentParam param, UserOrders userOrders,String name, String userType) {
         BeanValidator.check(param);
         //充值时查询该用户是否存在未处理的补气补缴单,若有则不允许充值fillGasOrderStatus=0查询未处理
         int countfillGasOrder = fillGasOrderMapper.getFillGasOrderCountByUserId(param.getUserId(),0);
@@ -71,7 +72,7 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
             return JsonData.fail("该户存在未处理的补气补缴单请无法充值");
         }
         //限定充值次数.每天限定充值一次，查询当前是否存在：2普通订单，3补卡订单，5微信订单
-//        int resultOrdersCount = userOrdersMapper.queryCurrentDataByDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+//        int resultOrdersCount = userOrdersMapper.queryCurrentDataByDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()), param.getUserId());
 //        if(resultOrdersCount > 0){
 //            return JsonData.fail("每天只支持充值一次");
 //        }
@@ -81,9 +82,13 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
             return JsonData.fail("操作有误！充值金额需大于零");
         }
         //支持最大充气量
-        BigDecimal maxOrderGas = new BigDecimal("900");
-        if( userOrders.getOrderGas().compareTo(maxOrderGas) == 1){
-            return JsonData.fail("充值气量最大支持900");
+        switch (OrderGasUtil.MaxOrderGas(userType, userOrders.getOrderGas())){
+            case 1:
+                return JsonData.fail("未获取到数据请重试！");
+            case 2:
+                return JsonData.fail("商用最大支持9999");
+            case 3:
+                return JsonData.fail("民用最大支持999");
         }
         UserCard oldUserCard = userCardMapper.getUserCardByUserIdAndCardId(param.getUserId(),param.getIccardId());
         if(oldUserCard == null){

@@ -10,6 +10,7 @@ import com.tdmh.entity.mapper.*;
 import com.tdmh.param.*;
 import com.tdmh.service.IMeterService;
 import com.tdmh.service.IUserService;
+import com.tdmh.util.OrderGasUtil;
 import com.tdmh.utils.DateUtils;
 import com.tdmh.utils.IdWorker;
 import com.tdmh.utils.RandomUtils;
@@ -246,16 +247,20 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional
-    public JsonData bindCard(CreateAccountParam param) {
+    public JsonData bindCard(CreateAccountParam param , String userType) {
         BeanValidator.check(param);
         int count = userCardMapper.getUserCardByUserIdAndnIcCardIdentifier(null,param.getIccardIdentifier());
         if(count>0){
             return JsonData.fail("该卡已绑定其他用户");
         }
-        // 支持最大充气量
-        BigDecimal maxOrderGas = new BigDecimal("900");
-        if(param.getOrderGas().compareTo(maxOrderGas) > 0){
-            return JsonData.fail("充值气量最大支持900");
+        //支持最大充气量
+        switch (OrderGasUtil.MaxOrderGas(userType, param.getOrderGas())) {
+            case 1:
+                return JsonData.fail("未获取到数据请重试！");
+            case 2:
+                return JsonData.fail("商用最大支持9999");
+            case 3:
+                return JsonData.fail("民用最大支持999");
         }
         Integer iccardId = param.getUserId()+10000000;
         param.setIccardId(iccardId);
