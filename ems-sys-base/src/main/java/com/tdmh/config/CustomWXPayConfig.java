@@ -13,26 +13,31 @@ public class CustomWXPayConfig implements WXPayConfig {
     /**
      * 小程序ID
      */
-    public static final String APP_ID = "wxcb4b102a910ebcab";// TD
+//    public static final String APP_ID = "wxcb4b102a910ebcab";// TD
 //    public static final String APP_ID = "wx3f09eb2829930acb";// LY
+    public static final String APP_ID = "wx13a9f2048c5220b9";// SM
 
     /**
      * 小程序秘钥
      */
-    public static final String APP_SECRET = "0daa322b212d11b684d4ad2afffea9b7";//TD
+//    public static final String APP_SECRET = "0daa322b212d11b684d4ad2afffea9b7";//TD
 //    public static final String APP_SECRET = "e8c74540c7beef1e30b83500afef4cea";//LY
+    public static final String APP_SECRET = "99ed0e2c787104f345df3b982dbb42b8";//SM
 
     /**
      * 商户ID
      */
 //    public static final String MCH_ID = "1517235401";//TD
-    public static final String MCH_ID = "1431092502";//LY
+//    public static final String MCH_ID = "1431092502";//LY
+    public static final String MCH_ID = "1490762782";//SM
 
     /**
      * 商户秘钥
      */
 //    public static final String KEY = "3458DF824AFF46C98282F063770DF620";//TD
-    public static final String KEY = "2BC3F298B931A74CC8C0C25CE3A39694";//LY
+//    public static final String KEY = "2BC3F298B931A74CC8C0C25CE3A39694";//LY
+    public static final String KEY = "786acnAnipoyqY751bn7786ghe98rqa2";//SM
+
 
     public static final String GRANT_TYPE = "authorization_code";
 
