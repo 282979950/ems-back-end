@@ -8,7 +8,7 @@ import com.tdmh.common.JsonData;
 public interface IInvoiceService {
     JsonData getAllAssignInvoiceList(Integer currentEmpId,Integer pageNum,Integer pageSize);
 
-    JsonData addInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer currentEmpId);
+    JsonData addInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer orgId, Integer currentEmpId);
 
     JsonData assignInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer empId, Integer currentEmpId);
 
@@ -25,4 +25,8 @@ public interface IInvoiceService {
     JsonData cancelInvoice(Integer orderId, Integer userId, String invoiceCode, String invoiceNumber, Integer currentEmpId);
 
     JsonData cancelNotPrintInvoice(String invoiceCode, String invoiceNumber, Integer currentEmpId);
+
+    JsonData transfer(Integer empId, Integer currentEmpId);
+
+    JsonData getInvoiceInfo(Integer currentEmpId);
 }

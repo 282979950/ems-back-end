@@ -36,6 +36,9 @@ public class Invoice extends BaseEntity{
 
     private String invoiceStatusName;
 
+    private Integer orgId;
+
+    private String orgName;
     /**
      * 发票生成时间
      */

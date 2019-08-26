@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,7 +97,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Override
     @Transactional
-    public JsonData addInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer currentEmpId) {
+    public JsonData addInvoice(String invoiceCode, Integer sInvoiceNumber, Integer eInvoiceNumber, Integer orgId, Integer currentEmpId) {
         if(invoiceCode == null || invoiceCode == ""){
             return JsonData.fail("发票代码不能为空");
         }
@@ -117,6 +116,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
             invoice.setInvoiceCode(invoiceCode);
             invoice.setInvoiceNumber(String.format("%08d",i));
             invoice.setInvoiceStatus(1);//已生成未分配操作员
+            invoice.setOrgId(orgId);
             invoice.setCreateBy(currentEmpId);
             invoice.setUpdateBy(currentEmpId);
             invoice.setUsable(true);
@@ -312,6 +312,18 @@ public class InvoiceServiceImpl implements IInvoiceService {
             return JsonData.fail("作废发票失败");
         }
         return JsonData.successMsg("作废发票成功");
+    }
+
+    @Override
+    public JsonData transfer(Integer empId, Integer currentEmpId) {
+        invoiceMapper.transfer(empId, currentEmpId);
+        return JsonData.successMsg("移交发票成功");
+    }
+
+    @Override
+    public JsonData getInvoiceInfo(Integer currentEmpId) {
+        List<Invoice> list = invoiceMapper.getUnusedInvoiceByEmpId(currentEmpId);
+        return JsonData.successData(list);
     }
 
 

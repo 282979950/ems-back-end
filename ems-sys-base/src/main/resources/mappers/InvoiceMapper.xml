@@ -28,10 +28,11 @@
     </sql>
     <select id="getAllAssignInvoiceList" parameterType="map" resultType="com.tdmh.entity.Invoice">
         select i.invoice_id AS invoiceId, i.invoice_code as invoiceCode,i.invoice_number as invoiceNumber,
-        sd.dict_key as invoiceStatusName, e.emp_name as createByName, i.invoice_generate_time as invoiceGenerateTime
+        sd.dict_key as invoiceStatusName, i.org_id as orgId, org.org_name as orgName, e.emp_name as createByName, i.invoice_generate_time as invoiceGenerateTime
         from invoice i
-        join sys_dictionary sd on i.invoice_status = sd.dict_value
-        join employee e on i.create_by = e.emp_id
+        left join sys_dictionary sd on i.invoice_status = sd.dict_value
+        left join employee e on i.create_by = e.emp_id
+        left join sys_organization org on org.org_id = i.org_id
         where sd.dict_category = 'invoice_status' and i.invoice_status = 1
         <if test="invoiceCode!=null and invoiceCode!=''">
             and i.invoice_code like CONCAT('%', #{invoiceCode}, '%')
@@ -54,6 +55,9 @@
             </if>
             <if test="invoiceStatus != null">
                 invoice_status,
+            </if>
+            <if test="invoiceStatus != null">
+                org_id,
             </if>
             <if test="invoiceGenerateTime != null">
                 invoice_generate_time,
@@ -99,6 +103,9 @@
             <if test="invoiceStatus != null">
                 #{invoiceStatus,jdbcType=INTEGER},
             </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=INTEGER},
+            </if>
             <if test="invoiceGenerateTime != null">
                 #{invoiceGenerateTime,jdbcType=TIMESTAMP},
             </if>
@@ -135,10 +142,10 @@
         </trim>
     </insert>
     <insert id="insertBatch" parameterType="java.util.List">
-        INSERT INTO invoice (invoice_code,invoice_number,invoice_status,invoice_generate_time,create_by,create_time,update_by,update_time,usable)
+        INSERT INTO invoice (invoice_code,invoice_number,invoice_status,org_id,invoice_generate_time,create_by,create_time,update_by,update_time,usable)
         VALUES
         <foreach collection="invoiceList" item="item" index="index" separator="," >
-            (#{item.invoiceCode},#{item.invoiceNumber},#{item.invoiceStatus},NOW(),#{item.createBy},NOW(),#{item.updateBy},NOW(),#{item.usable})
+            (#{item.invoiceCode},#{item.invoiceNumber},#{item.invoiceStatus},#{item.orgId},NOW(),#{item.createBy},NOW(),#{item.updateBy},NOW(),#{item.usable})
         </foreach>
     </insert>
     <select id="findInvoiceByCodeAndNumber" resultType="com.tdmh.entity.Invoice">
@@ -186,12 +193,27 @@
         <if test="currentEmpId!=null">
             and (i.create_by = #{currentEmpId} or i.emp_id = #{currentEmpId})
         </if>
+        order by i.invoice_id
     </select>
     <select id="findCurrentInvoice" parameterType="int" resultType="com.tdmh.entity.Invoice">
          SELECT invoice_code as invoiceCode,invoice_number as invoiceNumber FROM invoice WHERE order_id = #{orderId} and usable = 1 order by invoice_id desc limit 1
     </select>
     <select id="findInvoice" parameterType="int" resultType="com.tdmh.entity.Invoice">
           SELECT invoice_code as invoiceCode,invoice_number as invoiceNumber FROM invoice WHERE emp_id = #{currentEmpId} AND invoice_status = 2 LIMIT 1
+    </select>
+    <select id="getUnusedInvoiceByEmpId" resultType="com.tdmh.entity.Invoice" parameterType="int">
+        select i.invoice_id AS invoiceId, i.invoice_code as invoiceCode,i.invoice_number as invoiceNumber,
+        sd.dict_key as invoiceStatusName, emp.emp_name as empName, i.invoice_assign_time as invoiceAssignTime,
+        i.invoice_print_time as invoicePrintTime,e.emp_name as invoiceCancelEmpName, i.invoice_cancel_time as invoiceCancelTime
+        from invoice i
+        join sys_dictionary sd on i.invoice_status = sd.dict_value
+        left join employee emp on i.emp_id = emp.emp_id
+        left join employee e on i.invoice_cancel_emp = e.emp_id
+        where sd.dict_category = 'invoice_status' and i.invoice_status = 2
+        <if test="currentEmpId != null">
+            and i.emp_id = #{currentEmpId}
+        </if>
+        order by i.invoice_id
     </select>
     <update id="printInvoice" parameterType="map">
         update invoice set order_id = #{orderId} ,invoice_print_emp = #{currentEmpId},invoice_print_time = NOW(), invoice_status = 3
@@ -200,5 +222,11 @@
     <update id="cancelInvoice" parameterType="map">
         update invoice set invoice_cancel_emp = #{currentEmpId},invoice_cancel_time = NOW(), invoice_status = 4
         where invoice_code = #{invoiceCode} and invoice_number = #{invoiceNumber}
+    </update>
+    <update id="transfer" parameterType="map">
+        update invoice
+        set
+        emp_id = #{empId}
+        where emp_id = #{currentEmpId} and invoice_status = 2
     </update>
 </mapper>
