@@ -46,7 +46,7 @@ public class CustomWXPayConfig implements WXPayConfig {
      */
     public static final String WX_JSON2SESSION_URL = "https://api.weixin.qq.com/sns/jscode2session";
 
-    public static final String NOTIFY_URL = "https://www.wuhanlanyan.cn/ems/wx/getOrderNotify";
+    public static final String NOTIFY_URL = "https://www.whtdmh.com:8084/ems/wx/getOrderNotify";
 
     public static final String TRADE_TYPE = "JSAPI";
 
