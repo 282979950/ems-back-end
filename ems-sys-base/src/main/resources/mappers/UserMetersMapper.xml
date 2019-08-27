@@ -157,10 +157,12 @@
     <update id="updateMeter" parameterType="com.tdmh.entity.UserMeters">
         update user_meters
         set
+        user_id = #{userId,jdbcType=INTEGER},
         meter_id = #{meterId,jdbcType=INTEGER},
         update_time = NOW(),
-        update_by = #{updateBy,jdbcType=INTEGER}
-        where user_id = #{userId,jdbcType=INTEGER} and usable = 1
+        update_by = #{updateBy,jdbcType=INTEGER},
+        usable = #{usable}
+        where id = #{id}
     </update>
     <select id="getUserMeterById" parameterType="integer" resultMap="BaseResultMap">
         select

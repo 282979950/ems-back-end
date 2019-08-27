@@ -289,7 +289,7 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
                 String oldMeterCode = param.getOldMeterCode();
                 String newMeterCode = param.getNewMeterCode();
                 // 还原表具关联关系
-                restoreMeter(param.getUserId(), oldMeterCode, newMeterCode);
+                restoreMeter(param.getUserId(), oldMeterCode, newMeterCode, param.getUpdateBy());
                 // 撤销补气单
                 fillGasService.cancelFillGasByUserId(param.getUserId());
                 // 撤销维修单
@@ -313,7 +313,7 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         repairOrderMapper.updateRepairOrderStatus(repairOrderId, i);
     }
 
-    private void restoreMeter(Integer userId,String oldMeterCode, String newMeterCode) {
+    private void restoreMeter(Integer userId,String oldMeterCode, String newMeterCode, Integer updateBy) {
         // 将旧表设置为可用
         Meter oldMeter = meterService.getMeterByMeterId(meterService.getMeterIdByMeterCode(oldMeterCode));
         oldMeter.setUsable(true);
@@ -328,8 +328,9 @@ public class RepairOrderServiceImpl implements IRepairOrderService {
         UserMeters oldUserMeter = userMetersMapper.getUserMeterByUserIdAndMeterId(userId, oldMeter.getMeterId());
         oldUserMeter.setUsable(true);
         oldUserMeter.setUpdateTime(new Date());
+        oldUserMeter.setUpdateBy(updateBy);
+        userMetersMapper.deleteUserMeterByUserIdAndMeterId(userId, newMeter.getMeterId());
         userMetersMapper.updateMeter(oldUserMeter);
-        userMetersMapper.deleteUserMeterByUserIdAndMeterId(userId, oldMeter.getMeterId());
     }
 
     @Override
