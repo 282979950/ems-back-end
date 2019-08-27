@@ -83,12 +83,10 @@ public class CouponController {
     /**
      * 根据购气劵号码查询对应气量的面值
      */
-    @RequiresPermissions("recharge:coupon:retrieve")
     @RequestMapping(value = "/getCouponPayment.do")
     @ResponseBody
     public JsonData getCouponPaymentController(String couponNumbers){
         List<String> list = Arrays.asList(couponNumbers.split(","));
         return  couponService.getCouponPaymentService(list);
-        //return null;
     }
 }
