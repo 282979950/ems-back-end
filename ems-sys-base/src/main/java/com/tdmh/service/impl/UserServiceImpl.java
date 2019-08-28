@@ -300,7 +300,6 @@ public class UserServiceImpl implements IUserService {
         userCard.setCardPassword(param.getIccardPassword());
         userCard.setCardInitialization(true);
         userCard.setOrderId(userOrders.getOrderId());
-        userCard.setCardCost(new BigDecimal(0));
         userCard.setUsable(true);
         userCard.setCreateBy(param.getUpdateBy());
         userCard.setUpdateBy(param.getUpdateBy());
