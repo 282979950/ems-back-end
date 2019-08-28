@@ -48,7 +48,7 @@ public class LoginController {
     /**
      * 进入主页
      */
-    @RequestMapping(value = "currentUser", method = RequestMethod.GET)
+    @RequestMapping(value = "currentUser", method = RequestMethod.POST)
     @ResponseBody
     public Principal index() {
         return ShiroUtils.getPrincipal();
