@@ -100,4 +100,11 @@ public interface UserMapper {
     boolean checkFreeGasFlag(@Param("userId") Integer userId);
 
     void updateFreeGasFlagByUserId(@Param("userId") Integer userId, @Param("flag") Boolean flag);
+
+    /**
+     * 微信充值时添加验证，只允许民用户在手机上正常充值
+     * @param userId
+     * @return
+     */
+    int userVerify(@Param("userId") Integer userId);
 }

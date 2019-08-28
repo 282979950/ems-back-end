@@ -1014,4 +1014,13 @@
         from user
         where usable = 1 and user_id = #{userId}
     </select>
+    <select id="userVerify" resultType="java.lang.Integer">
+        SELECT
+          COUNT(0)
+        FROM
+          `user`
+        WHERE usable = 1
+          AND user_id = #{userId}
+          AND user_type IN ('9', '10', '11')
+    </select>
 </mapper>

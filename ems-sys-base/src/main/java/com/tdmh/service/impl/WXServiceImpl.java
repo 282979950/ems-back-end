@@ -8,6 +8,7 @@ import com.github.wxpay.sdk.WXPayUtil;
 import com.tdmh.common.JsonData;
 import com.tdmh.config.CustomWXPayConfig;
 import com.tdmh.entity.UserOrders;
+import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
 import com.tdmh.entity.mapper.WXMapper;
 import com.tdmh.param.ApplyRepairParam;
@@ -59,6 +60,9 @@ public class WXServiceImpl implements IWXService {
 
     @Autowired
     private IApplyRepairService applyRepairService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     private WXPay wxPay;
 
@@ -149,6 +153,10 @@ public class WXServiceImpl implements IWXService {
             int resultOrdersCount = userOrdersMapper.queryCurrentDataByDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()), userId);
             if(resultOrdersCount > 0){
                 return JsonData.fail("每天只支持充值一次");
+            }
+            int resultCount = userMapper.userVerify(userId);
+            if(resultCount>0){
+                return JsonData.fail("只允许民用户在手机充值");
             }
             Map<String, String> data = new HashMap<>();
             data.put("body", "武汉蓝焰天然气充值-充值气量:" + gas + "方");
