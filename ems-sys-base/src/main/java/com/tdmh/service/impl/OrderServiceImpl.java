@@ -170,7 +170,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public JsonData checkNewInvoicePrint(Integer orderId) {
-        if (orderMapper.checkNewInvoicePrint(orderId)) {
+        if (orderMapper.checkNewInvoicePrint(orderId) > 1) {
             return JsonData.success(false, "该订单已使用过两张发票，不能再使用新票补打");
         } else {
             return JsonData.successData(true);

@@ -26,5 +26,5 @@ public interface OrderMapper {
 
     List<OrderParam> selectReportBusinessDataQuery(OrderParam record);
 
-    boolean checkNewInvoicePrint(@Param("orderId") Integer orderId);
+    int checkNewInvoicePrint(@Param("orderId") Integer orderId);
 }
