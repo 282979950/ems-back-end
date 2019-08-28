@@ -2,21 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tdmh.entity.mapper.OrderMapper">
     <select id="searchOrderAndInvoiceList" parameterType="map" resultType="com.tdmh.param.OrderParam">
-        SELECT uo.order_id as orderId, uo.order_type AS orderType, uo.order_status as orderStatus, uo.user_id as userId, u.user_name as userName, uc.card_id as iccardId,uc.card_password as iccardPassword, uc.card_identifier as iccardIdentifier,u.service_times as serviceTimes,
-        uo.order_gas as orderGas,uo.order_payment as orderPayment,uo.flow_number as flowNumber,uo.order_detail as orderDetail,uo.coupon_gas as couponGas,uo.coupon_number as couponNumber,
-        e.emp_name as orderCreateEmpName,uo.create_time as orderCreateTime, sd.dict_key as invoiceStatusName, uo.free_gas as freeGas,
-        i.invoice_code as invoiceCode, i.invoice_number as invoiceNumber,
-        e1.emp_name as invoicePrintEmpName, i.invoice_print_time as invoicePrintTime,
-        e2.emp_name as invoiceCancelEmpName, i.invoice_cancel_time as invoiceCancelTime
-        FROM user_orders uo
-        left JOIN `user` u ON uo.user_id = u.user_id
-        left join user_card uc on u.user_id = uc.user_id and uc.usable = 1
-        LEFT JOIN invoice i ON uo.order_id = i.order_id and i.invoice_status != 4
-        left join employee e on uo.create_by = e.emp_id
-        left join sys_dictionary sd on i.invoice_status = sd.dict_value and sd.dict_category = 'invoice_status'
+        SELECT
+        uo.order_id AS orderId,
+        uo.order_type AS orderType,
+        uo.order_status AS orderStatus,
+        uo.user_id AS userId,
+        u.user_name AS userName,
+        uc.card_id AS iccardId,
+        uc.card_password AS iccardPassword,
+        uc.card_identifier AS iccardIdentifier,
+        u.service_times AS serviceTimes,
+        uo.order_gas AS orderGas,
+        uo.order_payment AS orderPayment,
+        uo.flow_number AS flowNumber,
+        uo.order_detail AS orderDetail,
+        uo.coupon_gas AS couponGas,
+        uo.coupon_number AS couponNumber,
+        e.emp_name AS orderCreateEmpName,
+        uo.create_time AS orderCreateTime,
+        sd.dict_key AS invoiceStatusName,
+        uo.free_gas AS freeGas,
+        i.invoice_code AS invoiceCode,
+        i.invoice_number AS invoiceNumber,
+        e1.emp_name AS invoicePrintEmpName,
+        i.invoice_print_time AS invoicePrintTime,
+        e2.emp_name AS invoiceCancelEmpName,
+        i.invoice_cancel_time AS invoiceCancelTime
+        FROM
+        user_orders uo
+        LEFT JOIN `user` u ON uo.user_id = u.user_id
+        LEFT JOIN user_card uc ON u.user_id = uc.user_id
+        AND uc.usable = 1
+        LEFT JOIN (
+        SELECT
+        invoice_id,
+        invoice_code,
+        invoice_number,
+        invoice_status,
+        order_id,
+        invoice_print_emp,
+        invoice_print_time,
+        invoice_cancel_emp,
+        invoice_cancel_time
+        FROM
+        invoice temp
+        RIGHT JOIN ( SELECT MAX( invoice_id ) AS invoice_id2 FROM invoice WHERE order_id IS NOT NULL GROUP BY order_id ) temp2 ON temp.invoice_id = temp2.invoice_id2
+        ) i ON uo.order_id = i.order_id
+        LEFT JOIN employee e ON uo.create_by = e.emp_id
+        LEFT JOIN sys_dictionary sd ON i.invoice_status = sd.dict_value
+        AND sd.dict_category = 'invoice_status'
         LEFT JOIN employee e1 ON i.invoice_print_emp = e1.emp_id
-        left join employee e2 on i.invoice_cancel_emp = e2.emp_id
-        where uo.usable = 1 and <![CDATA[ uo.order_status <> 4 ]]>
+        LEFT JOIN employee e2 ON i.invoice_cancel_emp = e2.emp_id
+        WHERE
+        uo.usable = 1 and <![CDATA[ uo.order_status <> 4 ]]>
         <if test="userName!=null and userName!=''">
             and u.user_name like CONCAT('%', #{userName}, '%')
         </if>
