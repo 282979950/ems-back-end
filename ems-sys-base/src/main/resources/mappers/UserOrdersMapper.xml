@@ -375,6 +375,7 @@
       AND order_type IN ('2', '3', '5')
       AND (account_state IS NULL OR  account_state != 3)
       AND DATE_FORMAT(create_time ,'%Y-%m-%d')= #{createTime}
+      AND order_status = 1
     <if test="userId != null" >
       AND user_id = #{userId}
     </if>
