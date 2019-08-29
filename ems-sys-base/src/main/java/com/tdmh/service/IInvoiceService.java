@@ -2,6 +2,8 @@ package com.tdmh.service;
 
 import com.tdmh.common.JsonData;
 
+import java.math.BigDecimal;
+
 /**
  * @author Liuxia on 2018/10/18.
  */
@@ -20,7 +22,7 @@ public interface IInvoiceService {
 
     JsonData findInvoice(Integer orderId, Integer userId, Integer currentEmpId, Integer printType);
 
-    JsonData printInvoice(Integer orderId, String invoiceCode, String invoiceNumber, Integer currentEmpId);
+    JsonData printInvoice(Integer orderId, String invoiceCode, String invoiceNumber, Integer currentEmpId, String name, BigDecimal orderPayment);
 
     JsonData cancelInvoice(Integer orderId, Integer userId, String invoiceCode, String invoiceNumber, Integer currentEmpId);
 

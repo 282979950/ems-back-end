@@ -14,11 +14,15 @@ import com.tdmh.param.EmployeeParam;
 import com.tdmh.param.InvoiceParam;
 import com.tdmh.param.SysRoleParam;
 import com.tdmh.service.IInvoiceService;
+import com.tdmh.utils.RmbConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Liuxia on 2018/10/18.
@@ -277,10 +281,15 @@ public class InvoiceServiceImpl implements IInvoiceService {
     }
 
     @Override
-    public JsonData printInvoice(Integer orderId, String invoiceCode, String invoiceNumber, Integer currentEmpId) {
+    public JsonData printInvoice(Integer orderId, String invoiceCode, String invoiceNumber, Integer currentEmpId, String name, BigDecimal orderPayment) {
         int count = invoiceMapper.printInvoice(orderId, invoiceCode, invoiceNumber, currentEmpId);
+        //获取充值金额大写
+        RmbConvert rmb = new RmbConvert();
+        Map<String,Object> map = new HashMap<>();
+        map.put("name", name);
+        map.put("rmbBig", rmb.simpleToBig(orderPayment.doubleValue()));
         if(count>0){
-            return JsonData.successMsg("打印成功");
+            return JsonData.success(map,"打印成功");
         }
         return JsonData.fail("打印失败");
     }

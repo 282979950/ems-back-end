@@ -99,7 +99,7 @@ public class FillGasServiceImpl implements IFillGasService {
             fillGasOrderMapper.editFillGasOrder(param);
             repairOrderService.updateRepairOrderStatus(param.getRepairOrderId(), 4);
             // 生成一笔补缴充值
-            createOveruseOrder(param.getFillMoney(), param.getStopCodeCount().subtract(param.getGasCount()), param.getUserId(), param.getUpdateBy());
+            Integer orderId = createOveruseOrder(param.getFillMoney(), param.getStopCodeCount().subtract(param.getGasCount()), param.getUserId(), param.getUpdateBy());
             //return JsonData.successMsg("超用补缴单已处理");
             //方便打印发票
             RmbConvert rmb = new RmbConvert();
@@ -108,6 +108,7 @@ public class FillGasServiceImpl implements IFillGasService {
             map.put("data", param);
             map.put("rmbBig", rmbBig);
             map.put("name", name);
+            map.put("orderId", orderId);
             return JsonData.success(map,"超用补缴单已处理");
         } else if (fillGasOrderType.equals(3)) {
             // TODO: 2018/10/20
@@ -220,7 +221,7 @@ public class FillGasServiceImpl implements IFillGasService {
         return  list.size()==0?JsonData.successMsg("未查询到相关数据"):JsonData.success(list,"查询成功!");
     }
 
-    private void createOveruseOrder(BigDecimal payment, BigDecimal gas, Integer userId, Integer empId) {
+    private Integer createOveruseOrder(BigDecimal payment, BigDecimal gas, Integer userId, Integer empId) {
         UserOrders userOrders = new UserOrders();
         userOrders.setUserId(userId);
         userOrders.setEmployeeId(empId);
@@ -237,6 +238,7 @@ public class FillGasServiceImpl implements IFillGasService {
         userOrders.setCreateBy(empId);
         userOrders.setUpdateBy(empId);
         userOrdersMapper.insert(userOrders);
+        return userOrders.getOrderId();
     }
 
     @Override

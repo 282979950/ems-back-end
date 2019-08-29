@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
+
 /**
  * @author Liuxia on 2018/10/18.
  */
@@ -132,9 +134,10 @@ public class InvoiceController {
     @RequiresPermissions(value = {"recharge:order:print","recharge:order:old","recharge:order:new"},logical = Logical.OR)
     @RequestMapping("/print.do")
     @ResponseBody
-    public JsonData printInvoice(@Param("orderId") Integer orderId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
+    public JsonData printInvoice(@Param("orderId") Integer orderId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber, BigDecimal orderPayment){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
-        return invoiceService.printInvoice(orderId, invoiceCode, invoiceNumber, currentEmpId);
+        String name = ShiroUtils.getPrincipal().getName();
+        return invoiceService.printInvoice(orderId, invoiceCode, invoiceNumber, currentEmpId, name, orderPayment);
     }
 
 
