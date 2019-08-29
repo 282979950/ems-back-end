@@ -205,12 +205,15 @@
              SELECT
                   reor.user_id AS userId,
                   reor.repair_order_id AS repairOrderId,
+                  reor.repair_order_status AS repairOrderStatus,
                   sd.dict_key AS repairTypeName,
                   sd2.dict_key AS gasEquipmentTypeName,
                   reor.old_meter_id AS oldMeterId,
+                  m1.meter_code AS oldMeterCode,
                   reor.old_meter_stop_code AS oldMeterStopCode,
                   reor.old_safety_code AS oldSafetyCode,
                   reor.new_meter_id AS newMeterId,
+                  m2.meter_code AS newMeterCode,
                   reor.new_meter_stop_code AS newMeterStopCode,
                   reor.new_safety_code AS newSafetyCode,
                   sd3.dict_key AS repairFaultTypeName,
@@ -218,6 +221,10 @@
                   reor.create_time AS createTime
             FROM
                  repair_order reor
+              LEFT JOIN meter m1
+                on reor.old_meter_id = m1.meter_id
+              LEFT JOIN meter m2
+                on reor.new_meter_id = m2.meter_id
               LEFT JOIN sys_dictionary sd
                 ON reor.repair_type = sd.dict_value
                 AND sd.dict_category = 'repair_type'
