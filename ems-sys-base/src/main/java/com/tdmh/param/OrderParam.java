@@ -150,4 +150,6 @@ public class OrderParam extends BaseEntity {
 
     private BigDecimal freeGas;
 
+    private BigDecimal cardCost;
+
 }

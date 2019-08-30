@@ -22,7 +22,7 @@ public interface IInvoiceService {
 
     JsonData findInvoice(Integer orderId, Integer userId, Integer currentEmpId, Integer printType);
 
-    JsonData printInvoice(Integer orderId, String invoiceCode, String invoiceNumber, Integer currentEmpId, String name, BigDecimal orderPayment);
+    JsonData printInvoice(Integer orderId, String invoiceCode, String invoiceNumber, Integer currentEmpId, String name, BigDecimal orderPayment, BigDecimal cardCost);
 
     JsonData cancelInvoice(Integer orderId, Integer userId, String invoiceCode, String invoiceNumber, Integer currentEmpId);
 

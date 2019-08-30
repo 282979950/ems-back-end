@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,10 +74,10 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
             return JsonData.fail("该户存在未处理的补气补缴单请无法充值");
         }
         //限定充值次数.每天限定充值一次，查询当前是否存在：2普通订单，3补卡订单，5微信订单
-//        int resultOrdersCount = userOrdersMapper.queryCurrentDataByDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()), param.getUserId());
-//        if(resultOrdersCount > 0){
-//            return JsonData.fail("每天只支持充值一次");
-//        }
+        int resultOrdersCount = userOrdersMapper.queryCurrentDataByDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()), param.getUserId());
+        if(resultOrdersCount > 0){
+            return JsonData.fail("每天只支持充值一次");
+        }
         int tempOrderGas = userOrders.getOrderGas().compareTo(BigDecimal.ZERO);
         //若充值气量小于0或者等于零则提示充值气量
         if(tempOrderGas == -1 || tempOrderGas == 0){
@@ -164,7 +166,7 @@ public class ReplaceCardServiceImpl implements IReplaceCardService {
         wparam.setServiceTimes(serviceTimes);
         wparam.setName(name);
         RmbConvert rmb = new RmbConvert();
-        wparam.setRmbBig(rmb.simpleToBig(userOrders.getOrderPayment().doubleValue()));
+        wparam.setRmbBig(rmb.simpleToBig((userOrders.getOrderPayment().add(param.getCardCost())).doubleValue()));
         return JsonData.success(wparam,"补卡成功");
     }
 

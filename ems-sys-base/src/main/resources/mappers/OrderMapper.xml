@@ -9,6 +9,7 @@
         uo.user_id AS userId,
         u.user_name AS userName,
         uc.card_id AS iccardId,
+        temp_card.card_cost AS cardCost,
         uc.card_password AS iccardPassword,
         uc.card_identifier AS iccardIdentifier,
         u.service_times AS serviceTimes,
@@ -33,6 +34,10 @@
         LEFT JOIN `user` u ON uo.user_id = u.user_id
         LEFT JOIN user_card uc ON u.user_id = uc.user_id
         AND uc.usable = 1
+        LEFT JOIN(
+        SELECT user_card.order_id,user_card.card_cost  FROM user_card
+        )temp_card
+        ON uo.order_id = temp_card.order_id
         LEFT JOIN (
         SELECT
         invoice_id,

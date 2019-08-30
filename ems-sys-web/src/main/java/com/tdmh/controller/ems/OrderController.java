@@ -62,9 +62,15 @@ public class OrderController {
      */
     @RequestMapping("/getRmbBig.do")
     @ResponseBody
-    public JsonData getRmbBig(BigDecimal orderGas){
+    public JsonData getRmbBig(BigDecimal orderPayment, BigDecimal cardCost){
         RmbConvert rmb = new RmbConvert();
-        return JsonData.successData(rmb.simpleToBig(orderGas.doubleValue()));
+        String rmbBig;
+        if(cardCost == null){
+            rmbBig = rmb.simpleToBig(orderPayment.doubleValue());
+        }else{
+            rmbBig = rmb.simpleToBig((orderPayment.add(cardCost)).doubleValue());
+        }
+        return JsonData.successData(rmbBig);
     }
 
     @RequestMapping("/checkNewInvoicePrint.do")

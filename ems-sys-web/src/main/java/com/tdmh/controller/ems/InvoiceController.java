@@ -134,10 +134,10 @@ public class InvoiceController {
     @RequiresPermissions(value = {"recharge:order:print","recharge:order:old","recharge:order:new"},logical = Logical.OR)
     @RequestMapping("/print.do")
     @ResponseBody
-    public JsonData printInvoice(@Param("orderId") Integer orderId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber, BigDecimal orderPayment){
+    public JsonData printInvoice(@Param("orderId") Integer orderId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber, BigDecimal orderPayment, BigDecimal cardCost){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         String name = ShiroUtils.getPrincipal().getName();
-        return invoiceService.printInvoice(orderId, invoiceCode, invoiceNumber, currentEmpId, name, orderPayment);
+        return invoiceService.printInvoice(orderId, invoiceCode, invoiceNumber, currentEmpId, name, orderPayment, cardCost);
     }
 
 

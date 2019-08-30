@@ -281,13 +281,17 @@ public class InvoiceServiceImpl implements IInvoiceService {
     }
 
     @Override
-    public JsonData printInvoice(Integer orderId, String invoiceCode, String invoiceNumber, Integer currentEmpId, String name, BigDecimal orderPayment) {
+    public JsonData printInvoice(Integer orderId, String invoiceCode, String invoiceNumber, Integer currentEmpId, String name, BigDecimal orderPayment, BigDecimal cardCost) {
         int count = invoiceMapper.printInvoice(orderId, invoiceCode, invoiceNumber, currentEmpId);
         //获取充值金额大写
         RmbConvert rmb = new RmbConvert();
         Map<String,Object> map = new HashMap<>();
         map.put("name", name);
-        map.put("rmbBig", rmb.simpleToBig(orderPayment.doubleValue()));
+        if(cardCost == null){
+            map.put("rmbBig", rmb.simpleToBig(orderPayment.doubleValue()));
+        }else{
+            map.put("rmbBig", rmb.simpleToBig((orderPayment.add(cardCost)).doubleValue()));
+        }
         if(count>0){
             return JsonData.success(map,"打印成功");
         }
