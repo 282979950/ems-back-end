@@ -128,4 +128,8 @@ public interface IWXService {
      * @return
      */
     JsonData getRepairManTrack(String applyRepairFlowNumber);
+
+    JsonData loadGas(String userId);
+
+    JsonData loadGasCallBack(String flowNumber);
 }

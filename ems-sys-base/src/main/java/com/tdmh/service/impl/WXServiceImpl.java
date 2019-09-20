@@ -17,6 +17,7 @@ import com.tdmh.param.WXUserInfoParam;
 import com.tdmh.param.WXUserParam;
 import com.tdmh.service.IApplyRepairService;
 import com.tdmh.service.IGasPriceService;
+import com.tdmh.service.IOrderService;
 import com.tdmh.service.IWXService;
 import com.tdmh.utils.HttpRequestUtil;
 import com.tdmh.utils.IdWorker;
@@ -63,6 +64,9 @@ public class WXServiceImpl implements IWXService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private IOrderService orderService;
 
     private WXPay wxPay;
 
@@ -340,5 +344,15 @@ public class WXServiceImpl implements IWXService {
     @Override
     public JsonData getRepairManTrack(String applyRepairFlowNumber) {
         return applyRepairService.getRepairManTrack(applyRepairFlowNumber);
+    }
+
+    @Override
+    public JsonData loadGas(String icCardId) {
+        return orderService.loadGas(icCardId);
+    }
+
+    @Override
+    public JsonData loadGasCallBack(String flowNumber) {
+        return orderService.loadGasCallBack(flowNumber);
     }
 }

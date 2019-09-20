@@ -27,4 +27,8 @@ public interface OrderMapper {
     List<OrderParam> selectReportBusinessDataQuery(OrderParam record);
 
     int checkNewInvoicePrint(@Param("orderId") Integer orderId);
+
+    OrderParam loadGas(@Param("icCardId") String icCardId );
+
+    int updateOrderStatusByFlowNumber(@Param("flowNumber") String flowNumber, @Param("orderStatus") Integer orderStatus);
 }

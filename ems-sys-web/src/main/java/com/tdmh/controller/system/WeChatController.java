@@ -182,4 +182,21 @@ public class WeChatController {
     public JsonData getRepairManTrack(@Param("applyRepairFlowNumber") String applyRepairFlowNumber) {
         return wxService.getRepairManTrack(applyRepairFlowNumber);
     }
+
+    /**
+     * 微信充值提气接口
+     * @param icCardId
+     * @return
+     */
+    @RequestMapping("/loadGas")
+    @ResponseBody
+    public JsonData loadGas(String icCardId) {
+        return wxService.loadGas(icCardId);
+    }
+
+    @RequestMapping("/loadGasCallBack")
+    @ResponseBody
+    public JsonData loadGasCallBack(String flowNumber) {
+        return wxService.loadGasCallBack(flowNumber);
+    }
 }

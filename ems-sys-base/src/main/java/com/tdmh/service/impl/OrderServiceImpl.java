@@ -176,4 +176,24 @@ public class OrderServiceImpl implements IOrderService {
             return JsonData.successData(true);
         }
     }
+    @Override
+    public JsonData loadGas(String icCardId) {
+        OrderParam order = orderMapper.loadGas(icCardId);
+        if (order == null) {
+            return JsonData.fail("气量查询失败");
+        } else {
+            return JsonData.success(order,"气量查询成功");
+        }
+
+    }
+
+    @Override
+    public JsonData loadGasCallBack(String flowNumber) {
+        int result = orderMapper.updateOrderStatusByFlowNumber(flowNumber, 2);
+        if (result == 0) {
+            return JsonData.fail("提气上报失败");
+        }
+        return JsonData.successMsg("提气上报成功");
+    }
+
 }

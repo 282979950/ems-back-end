@@ -91,6 +91,9 @@
     <update id="updateOrderStatus" parameterType="map">
         update user_orders set order_status = #{orderStatus} where order_id = #{orderId}
     </update>
+    <update id="updateOrderStatusByFlowNumber" parameterType="map">
+        update user_orders set order_status = #{orderStatus} where flow_number = #{flowNumber}
+    </update>
     <select id="hasAuthorityToInvoice" parameterType="map" resultType="int">
          SELECT count(order_id) FROM user_orders
          WHERE order_id = #{orderId} AND create_time = (SELECT create_time
@@ -142,4 +145,27 @@
         count(1)
         from invoice where order_id = #{orderId}
     </select>
+    <select id="loadGas" resultType="com.tdmh.param.OrderParam">
+        SELECT uo.order_id as orderId, uo.order_type AS orderType, uo.order_status as orderStatus, uo.user_id as userId, u.user_name as userName, uc.card_id as iccardId,uc.card_password as iccardPassword, uc.card_identifier as iccardIdentifier,u.service_times as serviceTimes,
+        uo.order_gas as orderGas,uo.order_payment as orderPayment,uo.flow_number as flowNumber,
+        e.emp_name as orderCreateEmpName,uo.create_time as orderCreateTime, sd.dict_key as invoiceStatusName,
+        i.invoice_code as invoiceCode, i.invoice_number as invoiceNumber,
+        e1.emp_name as invoicePrintEmpName, i.invoice_print_time as invoicePrintTime,
+        e2.emp_name as invoiceCancelEmpName, i.invoice_cancel_time as invoiceCancelTime
+        FROM user_orders uo
+        JOIN `user` u ON uo.user_id = u.user_id
+        join user_card uc on u.user_id = uc.user_id and uc.usable = 1
+        LEFT JOIN ( SELECT a.* FROM invoice a ,(SELECT order_id, max(invoice_print_time) AS invoice_print_time FROM invoice WHERE order_id IS NOT null GROUP BY order_id) b
+        WHERE a.order_id = b.order_id AND a.invoice_print_time = b.invoice_print_time
+        UNION ALL
+        SELECT * FROM invoice WHERE order_id IS NULL
+        ) i ON uo.order_id = i.order_id
+        left join employee e on uo.create_by = e.emp_id
+        left join sys_dictionary sd on i.invoice_status = sd.dict_value and sd.dict_category = 'invoice_status'
+        LEFT JOIN employee e1 ON i.invoice_print_emp = e1.emp_id
+        left join employee e2 on i.invoice_cancel_emp = e2.emp_id
+        where uo.usable = 1 and uo.order_status = 1 and uc.card_id = #{icCardId}
+        order by uo.create_time limit 1
+    </select>
+
 </mapper>
