@@ -100,7 +100,9 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
             userMapper.updateFreeGasFlagByUserId(userOrders.getUserId(), false);
             userOrders.setFreeGas(freeGas);
         }
-        userOrders.setOrderType(2); //2为普通充值类型
+        if(userOrders.getOrderType() == null){
+            userOrders.setOrderType(2); //2为普通充值类型
+        }
         userOrders.setUpdateTime(new Date());
         userOrders.setOrderStatus(1);
         int resultCount = userOrdersMapper.insert(userOrders);
