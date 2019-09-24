@@ -81,6 +81,7 @@ public class FillGasServiceImpl implements IFillGasService {
         param.setFillGasOrderStatus(1);
         Integer fillGasOrderType = param.getFillGasOrderType();
         if (fillGasOrderType.equals(1)) {
+            Map<String, Object> map = new HashMap<>();
             param.setFillMoney(BigDecimal.ZERO);
             param.setNeedFillMoney(BigDecimal.ZERO);
             param.setLeftMoney(BigDecimal.ZERO);
@@ -90,10 +91,12 @@ public class FillGasServiceImpl implements IFillGasService {
             if (leftGas.compareTo(BigDecimal.ZERO) > 0) {
                 createNewFillGasOrder(param);
                 repairOrderService.updateRepairOrderStatus(param.getRepairOrderId(), 2);
-                return JsonData.successMsg("该补气单已处理，有新补气单生成用于下次补气");
+                map.put("loginName",name);
+                return JsonData.success(map,"该补气单已处理，有新补气单生成用于下次补气");
             } else {
                 repairOrderService.updateRepairOrderStatus(param.getRepairOrderId(), 4);
-                return JsonData.successMsg("补气单处理完成");
+                map.put("loginName",name);
+                return JsonData.success(map,"补气单处理完成");
             }
         } else if (fillGasOrderType.equals(2)) {
             fillGasOrderMapper.editFillGasOrder(param);

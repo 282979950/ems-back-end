@@ -50,7 +50,7 @@ public class PrePaymentController {
         userOrders.setCreateBy(currentEmpId);
         userOrders.setUpdateBy(currentEmpId);
         return prePaymentService.createUserOrder(userOrders,name,userType);
-    }
+}
 
     //依据条件查询对应数据
     @RequiresPermissions("recharge:pre:retrieve")
@@ -66,5 +66,18 @@ public class PrePaymentController {
     @ResponseBody
     public JsonData verifyCard(PrePaymentParam param){
         return prePaymentService.verifyCard(param);
+    }
+
+    //加购调用
+    @RequestMapping(value = "/addGas.do")
+    @ResponseBody
+    public JsonData AddGasController(UserOrders userOrders, String userType){
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        String name = ShiroUtils.getPrincipal().getName();
+        userOrders.setEmployeeId(currentEmpId);
+        userOrders.setCreateBy(currentEmpId);
+        userOrders.setUpdateBy(currentEmpId);
+        userOrders.setOrderType(7);
+        return prePaymentService.createUserOrder(userOrders,name,userType);
     }
 }
