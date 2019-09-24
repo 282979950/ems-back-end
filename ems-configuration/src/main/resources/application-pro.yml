@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://212.64.100.15:3306/ems?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/ems?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
     username: root
-    password: 123456
+    password: sm2017
     driver-class-name : com.mysql.jdbc.Driver
 lyims:
   serverIp: 192.168.0.142

@@ -27,7 +27,6 @@ public interface IOrderService {
     JsonData OperatorDataQueryService(OperatorDataQuery dataQuery, Integer pageNum, Integer pageSize);
 
     JsonData checkNewInvoicePrint(Integer orderId);
-    JsonData ReportBusinessDataQueryService(UserOrders orders,Integer pageNum, Integer pageSize);
 
     JsonData loadGas(String icCardId);
 

@@ -603,7 +603,8 @@ public class UserServiceImpl implements IUserService {
     /**
      * 定时任务每月更新低保送气标记
      */
-    @Scheduled(cron = "0 0/10 * * * ?")
+//    @Scheduled(cron = "0 0/10 * * * ?")
+    @Scheduled(cron = "0 0 0 1 * ?")
     @Transactional
     public void updateAllFreeGasFlag() {
         log.info("**************更新低保送气标记开始**************");

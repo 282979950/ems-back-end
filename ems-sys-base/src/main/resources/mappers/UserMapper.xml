@@ -900,8 +900,11 @@
         LEFT JOIN sys_dictionary sd2 on u.user_gas_type = sd2.dict_value and sd2.dict_category = 'user_gas_type' and sd2.usable = 1
         LEFT JOIN sys_dictionary sd3 on u.user_status = sd3.dict_value and sd3.dict_category = 'user_status' and sd3.usable = 1
         where u.usable = 1
+        <!--<if test="userId != null and userId != ''">-->
+            <!--AND u.user_id LIKE CONCAT('%', #{userId}, '%')-->
+        <!--</if>-->
         <if test="userId != null and userId != ''">
-            AND u.user_id LIKE CONCAT('%', #{userId}, '%')
+            AND u.user_id = #{userId}
         </if>
         <if test="userDistId != null and userDistId != ''">
             AND u.user_dist_id = #{userDistId}

@@ -163,7 +163,7 @@
             AND ro.repair_order_id LIKE CONCAT('%', #{repairOrderId}, '%')
         </if>
         <if test="userId != null and userId != ''">
-            AND ro.user_id LIKE CONCAT('%', #{userId}, '%')
+            AND ro.user_id = #{userId}
         </if>
         <if test="repairType != null">
             AND ro.repair_type = #{repairType}

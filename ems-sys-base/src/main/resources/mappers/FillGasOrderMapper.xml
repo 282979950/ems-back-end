@@ -136,7 +136,7 @@
             AND fgo.repair_order_id LIKE CONCAT('%', #{repairOrderId}, '%')
         </if>
         <if test="userId != null and userId != ''">
-            AND fgo.user_id LIKE CONCAT('%', #{userId}, '%')
+            AND fgo.user_id = #{userId}
         </if>
         <if test="fillGasOrderType != null">
             AND fgo.fill_gas_order_type = #{fillGasOrderType}
