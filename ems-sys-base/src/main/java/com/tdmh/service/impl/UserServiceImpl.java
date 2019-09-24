@@ -75,7 +75,7 @@ public class UserServiceImpl implements IUserService {
         if (resultCount == 0) {
             return JsonData.fail("建档失败");
         }
-        return JsonData.successMsg("建档成功");
+        return JsonData.success(param.getUserId(),"建档成功");
     }
 
     @Override
