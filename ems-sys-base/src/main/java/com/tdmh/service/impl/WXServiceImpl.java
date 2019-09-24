@@ -167,8 +167,8 @@ public class WXServiceImpl implements IWXService {
             data.put("fee_type", "CNY");
             BigDecimal payment = getOrderPayment(userId, gas);
             System.out.println(payment);
-//            data.put("total_fee", String.valueOf(payment.longValue() * 100));
-            data.put("total_fee", "1");
+            data.put("total_fee", String.valueOf(payment.longValue() * 100));
+//            data.put("total_fee", "1");
             data.put("spbill_create_ip", ipAddress);
             data.put("notify_url", CustomWXPayConfig.NOTIFY_URL);
             data.put("trade_type", CustomWXPayConfig.TRADE_TYPE);
