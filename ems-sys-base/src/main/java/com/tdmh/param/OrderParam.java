@@ -147,6 +147,10 @@ public class OrderParam extends BaseEntity {
      * 截止日期
      */
     private String endDate;
+    /**
+     * 用户地址
+     */
+    private String userAddress;
 
     private BigDecimal freeGas;
 

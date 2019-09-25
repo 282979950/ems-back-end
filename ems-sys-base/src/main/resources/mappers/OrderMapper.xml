@@ -8,6 +8,7 @@
         uo.order_status AS orderStatus,
         uo.user_id AS userId,
         u.user_name AS userName,
+        u.user_address as userAddress,
         uc.card_id AS iccardId,
         temp_card.card_cost AS cardCost,
         uc.card_password AS iccardPassword,
