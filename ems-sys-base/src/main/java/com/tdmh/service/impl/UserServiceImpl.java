@@ -262,7 +262,7 @@ public class UserServiceImpl implements IUserService {
             case 3:
                 return JsonData.fail("民用最大支持999");
         }
-        Integer iccardId = param.getUserId()+10000000;
+        Integer iccardId = param.getUserId();
         param.setIccardId(iccardId);
         param.setIccardPassword(RandomUtils.generateHexString(6));
         //开户时将用户解锁

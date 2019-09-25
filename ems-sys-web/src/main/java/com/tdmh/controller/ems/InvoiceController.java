@@ -78,7 +78,6 @@ public class InvoiceController {
         return invoiceService.transfer(empId,currentEmpId);
     }
 
-    @RequiresPermissions("invoice:assign:assignment")
     @RequestMapping("/assign/getInvoiceInfo.do")
     @ResponseBody
     public JsonData getInvoiceInfo(){

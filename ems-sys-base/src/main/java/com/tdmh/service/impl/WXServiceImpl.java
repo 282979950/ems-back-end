@@ -167,7 +167,7 @@ public class WXServiceImpl implements IWXService {
             data.put("fee_type", "CNY");
             BigDecimal payment = getOrderPayment(userId, gas);
             System.out.println(payment);
-            data.put("total_fee", String.valueOf(payment.multiply(new BigDecimal(100))));
+            data.put("total_fee", payment.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
 //            data.put("total_fee", "1");
             data.put("spbill_create_ip", ipAddress);
             data.put("notify_url", CustomWXPayConfig.NOTIFY_URL);
@@ -196,6 +196,10 @@ public class WXServiceImpl implements IWXService {
         }
     }
 
+    public static void main(String[] args) {
+        BigDecimal payment = new BigDecimal(39.20);
+        System.out.println(payment.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+    }
     @Override
     @Transactional
     public void getOrderNotify(HttpServletRequest request, HttpServletResponse response) {

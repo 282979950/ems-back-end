@@ -86,7 +86,7 @@ public class SysDistrictController {
     /**
      * 获取区域树的数据
      */
-    @RequiresPermissions("sys:dist:retrieve")
+//    @RequiresPermissions("sys:dist:retrieve")
     @RequestMapping("loadTreeData.do")
     @ResponseBody
     public JsonData loadTreeData() {

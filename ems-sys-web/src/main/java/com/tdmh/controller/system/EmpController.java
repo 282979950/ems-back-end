@@ -35,7 +35,6 @@ public class EmpController {
     /**
      * 获取员工相关信息，下拉使用
      */
-    @RequiresPermissions("sys:emp:visit")
     @RequestMapping(value = "listDataByEmp.do")
     @ResponseBody
     public JsonData listDataByEmp() {

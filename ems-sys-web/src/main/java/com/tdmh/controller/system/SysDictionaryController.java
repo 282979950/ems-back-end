@@ -156,7 +156,6 @@ public class SysDictionaryController {
     }
 
     //根据字典类型查看对应数据字典信息
-    @RequiresPermissions("sys:dic:retrieve")
     @RequestMapping(value = {"/dictByType.do"})
     @ResponseBody
     public JsonData selectDictByType(String category) {
@@ -175,6 +174,7 @@ public class SysDictionaryController {
 
         return JsonData.fail("未获取到数据");
     }
+
     //依据条件查询对应数据
     @RequiresPermissions("sys:dic:retrieve")
     @RequestMapping(value = "/search.do")
