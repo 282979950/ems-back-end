@@ -158,10 +158,10 @@ public class WXServiceImpl implements IWXService {
             if(resultOrdersCount > 0){
                 return JsonData.fail("每天只支持充值一次");
             }
-            int resultCount = userMapper.userVerify(userId);
-            if(resultCount>0){
-                return JsonData.fail("只允许民用户在手机充值");
-            }
+//            int resultCount = userMapper.userVerify(userId);
+//            if(resultCount>0){
+//                return JsonData.fail("只允许民用户在手机充值");
+//            }
             Map<String, String> data = new HashMap<>();
             data.put("body", "武汉蓝焰天然气充值-充值气量:" + gas + "方");
             data.put("fee_type", "CNY");
