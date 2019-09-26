@@ -144,6 +144,9 @@
         <if test="createBy != null">
             AND fgo.create_by = #{createBy}
         </if>
+        <if test="userName != null and userName != ''">
+            AND u.user_name = #{userName}
+        </if>
         order by fgo.fill_gas_order_status, fgo.id desc
     </select>
     <select id="selectFillGasOrderQuery" resultType="com.tdmh.param.FillGasOrderParam" parameterType="java.lang.Integer">

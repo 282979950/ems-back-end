@@ -47,11 +47,11 @@ public class FillGasController {
      */
     @RequestMapping(value = "search.do")
     @ResponseBody
-    public JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType, Integer pageNum, Integer pageSize) {
+    public JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType, String userName, Integer pageNum, Integer pageSize) {
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         String isAdmin =ShiroUtils.getPrincipal().getLoginName();
         Integer userType = ShiroUtils.getPrincipal().getUserType();
-        return fillGasService.searchFillGasOrder(repairOrderId, userId ,fillGasOrderType, pageNum, pageSize, currentEmpId, isAdmin, userType);
+        return fillGasService.searchFillGasOrder(repairOrderId, userId ,fillGasOrderType, pageNum, pageSize, currentEmpId, isAdmin, userType, userName);
     }
 
     @RequestMapping(value = "getFlowNum.do")
