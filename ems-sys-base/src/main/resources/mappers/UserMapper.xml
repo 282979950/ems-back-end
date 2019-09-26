@@ -799,8 +799,22 @@
           uo.totalOrderTimes,
           uo.totalOrderGas
         FROM
-          `user` u
-          LEFT JOIN (SELECT
+          (SELECT
+            user_id,
+            COUNT(order_id) AS totalOrderTimes,
+            SUM(order_gas) AS totalOrderGas,
+            SUM(order_payment) AS totalOrderPayment
+          FROM
+            user_orders
+          WHERE order_status NOT IN (4)
+        <if test = "userId != null" >
+            AND user_id = #{userId}
+        </if>
+        GROUP BY user_id) AS uo
+          LEFT JOIN `user` u
+            ON uo.user_id = u.user_id
+          LEFT JOIN
+            (SELECT
               user_id,
               card_identifier,
               usable
@@ -808,36 +822,22 @@
               user_card
             WHERE usable = 1) uc
             ON u.user_id = uc.user_id
-          LEFT JOIN
-            (SELECT
-              user_id,
-              COUNT(order_id) AS totalOrderTimes,
-              SUM(order_gas) AS totalOrderGas,
-              SUM(order_payment) AS totalOrderPayment
-            FROM
-              user_orders
-            WHERE order_status NOT IN (4)
-            GROUP BY user_id) uo
-            ON u.user_id = uo.user_id
           LEFT JOIN user_meters um
             ON u.user_id = um.user_id
           LEFT JOIN meter m
             ON um.meter_id = m.meter_id
         WHERE u.usable = 1
-        <if test="userId != null">
-            AND u.user_id = #{userId}
+        <if test = "userName != null and userName!=''" >
+            AND LOCATE(#{userName} ,u.user_name) > 0
         </if>
-        <if test="userName != null and userName!=''">
-            AND LOCATE (#{userName} ,u.user_name) > 0
-        </if>
-        <if test="userType != null">
+        <if test = "userType != null" >
             AND u.user_type = #{userType}
         </if>
-        <if test="cardIdentifier != null and cardIdentifier!=''">
+        <if test = "cardIdentifier != null and cardIdentifier!=''" >
             AND uc.card_identifier = #{cardIdentifier}
         </if>
-        <if test="meterCode != null and meterCode!=''">
-            AND LOCATE (#{meterCode} ,m.meter_code) > 0
+        <if test = "meterCode != null and meterCode!=''" >
+            AND LOCATE(#{meterCode} ,m.meter_code) > 0
         </if>
         GROUP BY u.user_id
         ORDER BY u.create_time

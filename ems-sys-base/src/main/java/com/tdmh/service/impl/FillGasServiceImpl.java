@@ -122,7 +122,7 @@ public class FillGasServiceImpl implements IFillGasService {
     }
 
     @Override
-    public JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType, Integer pageNum, Integer pageSize, Integer currentEmpId, String isAdmin, Integer userType) {
+    public JsonData searchFillGasOrder(String repairOrderId, Integer userId, Integer fillGasOrderType, Integer pageNum, Integer pageSize, Integer currentEmpId, String isAdmin, Integer userType, String userName) {
         List<FillGasOrderParam> fillGasOrders = null;
         Integer createBy = null;
         /*
@@ -130,11 +130,11 @@ public class FillGasServiceImpl implements IFillGasService {
          */
         if(StringUtils.isNotBlank(isAdmin) && "admin".equals(isAdmin) ||userType.intValue()== 2){
             PageHelper.startPage(pageNum, pageSize);
-            fillGasOrders = fillGasOrderMapper.searchFillGasOrder(repairOrderId, userId, fillGasOrderType, createBy);
+            fillGasOrders = fillGasOrderMapper.searchFillGasOrder(repairOrderId, userId, fillGasOrderType, createBy, userName);
         }else{
             createBy = currentEmpId;
             PageHelper.startPage(pageNum, pageSize);
-            fillGasOrders = fillGasOrderMapper.searchFillGasOrder(repairOrderId, userId, fillGasOrderType, createBy);
+            fillGasOrders = fillGasOrderMapper.searchFillGasOrder(repairOrderId, userId, fillGasOrderType, createBy, userName);
         }
         PageInfo<FillGasOrderParam> info = new PageInfo<>(fillGasOrders);
         return JsonData.success(info, "查询成功");
