@@ -80,4 +80,10 @@ public class PrePaymentController {
         userOrders.setOrderType(7);
         return prePaymentService.createUserOrder(userOrders,name,userType);
     }
+
+    @RequestMapping(value = "/syncCard.do")
+    @ResponseBody
+    public JsonData syncCard(Integer iccardId, String iccardIdentifier){
+        return prePaymentService.syncCard(iccardId,iccardIdentifier);
+    }
 }

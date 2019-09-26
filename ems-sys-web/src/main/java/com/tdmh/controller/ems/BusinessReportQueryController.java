@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 
 /**
@@ -24,19 +25,19 @@ public class BusinessReportQueryController {
     @Resource
     private IOrderService orderService;
 
-    @RequiresPermissions("querystats:businessReportQuery:visit")
-    @RequestMapping(value = "/listData.do")
-    @ResponseBody
-    public JsonData ReportBusinessDataQueryList(OrderParam orders, Integer pageNum, Integer pageSize){
-        return orderService.ReportBusinessDataQueryService(orders,pageNum,pageSize);
-    }
+//    @RequiresPermissions("querystats:businessReportQuery:visit")
+//    @RequestMapping(value = "/listData.do")
+//    @ResponseBody
+//    public JsonData ReportBusinessDataQueryList(OrderParam orders, Integer pageNum, Integer pageSize){
+//        return orderService.ReportBusinessDataQueryService(orders,pageNum,pageSize);
+//    }
     /**
      * 按条件查询
      */
     @RequiresPermissions("querystats:businessReportQuery:visit")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData ReportBusinessDataQuerySearchList(OrderParam orders,Integer pageNum, Integer pageSize){
-        return orderService.ReportBusinessDataQueryService(orders,pageNum,pageSize);
+    public JsonData ReportBusinessDataQuerySearchList(String empName, String startDate, String endDate, Integer pageNum, Integer pageSize){
+        return orderService.ReportBusinessDataQueryService(empName, startDate, endDate, pageNum, pageSize);
     }
 }

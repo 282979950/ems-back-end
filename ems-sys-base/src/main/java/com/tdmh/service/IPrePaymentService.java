@@ -21,4 +21,5 @@ public interface IPrePaymentService {
     JsonData selectFindListArdQueryService(PrePaymentParam param);
     void selectFindListExportArdQueryService(PrePaymentParam param, HttpServletResponse response);
 
+    JsonData syncCard(Integer iccardId, String iccardIdentifier);
 }

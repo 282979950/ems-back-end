@@ -55,4 +55,8 @@ public interface UserCardMapper {
     UserCard getUserCardByCardIdentifier(@Param("cardIdentifier") String cardIdentifier);
     //查询是否存在用户销户记录
     int countAccountCancellation(@Param("userId") Integer userId);
+
+    int syncCard(@Param("iccardId") Integer iccardId, @Param("iccardIdentifier") String iccardIdentifier);
+
+    int checkCardUsable(Integer iccardId);
 }

@@ -132,6 +132,17 @@ SELECT card_password FROM user_card  WHERE usable=1 AND card_identifier = #{card
 
       UPDATE user_card SET card_status=#{cardStatus},usable=0    WHERE user_id=#{userId}  AND usable=1
 </update>
+    <update id="syncCard" parameterType="map">
+        UPDATE user_card
+        set
+        card_identifier = #{iccardIdentifier}
+        where
+        card_id = #{iccardId} and card_identifier = #{iccardId} and usable = 1
+    </update>
+    <update id="checkCardUsable">
+        SELECT COUNT(1) FROM user_card
+        WHERE card_id = #{iccardId} and card_identifier = #{iccardId} and usable = 1
+    </update>
     <select id="selectUserCardByUserId" resultType="com.tdmh.entity.UserCard">
       SELECT
           user_card_id as userCardId ,

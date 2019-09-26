@@ -5,6 +5,8 @@ import com.tdmh.entity.UserOrders;
 import com.tdmh.param.OperatorDataQuery;
 import com.tdmh.param.OrderParam;
 
+import java.util.Date;
+
 /**
  * @author Administrator on 2018/10/20.
  */
@@ -22,7 +24,7 @@ public interface IOrderService {
 
     void exportBusinessDataQueryListService(UserOrders orders);
 
-    JsonData ReportBusinessDataQueryService(OrderParam orders, Integer pageNum, Integer pageSize);
+    JsonData ReportBusinessDataQueryService(String empName, String startDate, String endDate, Integer pageNum, Integer pageSize);
 
     JsonData OperatorDataQueryService(OperatorDataQuery dataQuery, Integer pageNum, Integer pageSize);
 

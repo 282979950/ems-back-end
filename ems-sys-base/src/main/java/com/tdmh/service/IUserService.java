@@ -243,7 +243,7 @@ public interface IUserService {
      */
     JsonData selectUserMeterTypeService(Integer userId);
 
-    JsonData listData(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userStatus, String meterCode, String cardIdentifier,
+    JsonData listData(Integer userId, String userName, Integer userDistId, String userAddress, Integer userType, Integer userStatus, String meterCode, String cardIdentifier,
                       Integer pageNum, Integer pageSize);
 
     JsonData edit(UserParam userParam);

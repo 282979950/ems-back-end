@@ -7,6 +7,7 @@ import com.tdmh.entity.UserOrders;
 import com.tdmh.entity.mapper.OperatorDataQueryMapper;
 import com.tdmh.entity.mapper.OrderMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
+import com.tdmh.param.BusinessReportParam;
 import com.tdmh.param.OperatorDataQuery;
 import com.tdmh.param.OrderParam;
 import com.tdmh.service.IOrderService;
@@ -122,10 +123,10 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public JsonData ReportBusinessDataQueryService(OrderParam orders,Integer pageNum, Integer pageSize) {
+    public JsonData ReportBusinessDataQueryService(String empName, String startDate, String endDate, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<OrderParam> list= orderMapper.selectReportBusinessDataQuery(orders);
-        PageInfo<OrderParam> page = new PageInfo<>(list);
+        List<BusinessReportParam> list= orderMapper.selectReportBusinessDataQuery(empName, startDate, endDate);
+        PageInfo<BusinessReportParam> page = new PageInfo<>(list);
         return JsonData.success(page,"查询成功");
     }
 

@@ -136,9 +136,9 @@ public class AccountController {
     @RequiresPermissions("account:createAccount:visit")
     @RequestMapping(value = "/listData.do")
     @ResponseBody
-    public JsonData listData(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userStatus, String meterCode,
+    public JsonData listData(Integer userId, String userName,Integer userDistId, String userAddress, Integer userType, Integer userStatus, String meterCode,
                              String cardIdentifier, Integer pageNum, Integer pageSize) {
-        return userService.listData(userId, userDistId, userAddress, userType, userStatus, meterCode, cardIdentifier, pageNum, pageSize);
+        return userService.listData(userId, userName, userDistId, userAddress, userType, userStatus, meterCode, cardIdentifier, pageNum, pageSize);
     }
 
     @RequiresPermissions("account:createAccount:update")

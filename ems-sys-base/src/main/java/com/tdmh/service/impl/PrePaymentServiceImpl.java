@@ -286,6 +286,19 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     }
 
     @Override
+    public JsonData syncCard(Integer iccardId, String iccardIdentifier) {
+        int count = userCardMapper.checkCardUsable(iccardId);
+        if (count == 0) {
+            return JsonData.fail("卡片已被作废");
+        }
+        int result = userCardMapper.syncCard(iccardId,iccardIdentifier);
+        if (result == 0) {
+            return JsonData.fail("用户卡片信息无需同步");
+        }
+        return JsonData.successMsg("用户卡片信息同步成功");
+    }
+
+    @Override
     public JsonData verifyCard(PrePaymentParam param) {
         int result = userCardMapper.getCardByCardMessage(null,param.getIccardId(),param.getIccardIdentifier());
         if(result == 0){

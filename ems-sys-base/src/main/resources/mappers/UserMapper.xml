@@ -574,10 +574,9 @@
         sd2.usable = 1
         LEFT JOIN sys_dictionary sd3 ON u.user_status = sd3.dict_value AND sd3.dict_category = 'user_status' AND
         sd3.usable = 1
-
         WHERE u.usable = 1  AND card.usable = 1  AND card.card_status = 1
-        <if test="userStatus != null and userStatus != ''">
-            AND u.user_status = #{userStatus}
+        <if test="userId != null and userId != ''">
+            AND u.userId = #{userId}
         </if>
         <if test="userName != null and userName != ''">
             AND u.user_name = #{userName}
@@ -905,6 +904,9 @@
         where u.usable = 1
         <if test="userId != null and userId != ''">
             AND u.user_id = #{userId}
+        </if>
+        <if test="userName != null and userName != ''">
+            AND u.user_name = #{userName}
         </if>
         <if test="userDistId != null and userDistId != ''">
             AND u.user_dist_id = #{userDistId}

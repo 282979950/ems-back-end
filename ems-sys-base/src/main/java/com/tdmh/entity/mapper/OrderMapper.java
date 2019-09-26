@@ -1,11 +1,13 @@
 package com.tdmh.entity.mapper;
 
+import com.tdmh.param.BusinessReportParam;
 import com.tdmh.param.InvoiceParam;
 import com.tdmh.param.OrderParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ public interface OrderMapper {
 
     int hasAuthorityToInvoice(@Param("orderId") Integer orderId, @Param("userId") Integer userId);
 
-    List<OrderParam> selectReportBusinessDataQuery(OrderParam record);
+    List<BusinessReportParam> selectReportBusinessDataQuery(@Param("empName") String empName, @Param("startDate")String startDate,@Param("endDate") String endDate);
 
     int checkNewInvoicePrint(@Param("orderId") Integer orderId);
 

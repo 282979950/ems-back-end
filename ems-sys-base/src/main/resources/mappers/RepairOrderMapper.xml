@@ -199,7 +199,7 @@
         left join meter m on um.meter_id = m.meter_id and m.usable = 1
         left join meter_type mt on m.meter_type_id = mt.meter_type_id and mt.usable = 1
         left join sys_dictionary sd on m.meter_direction = sd.dict_value and sd.dict_category = 'meter_direction' and sd.usable = 1
-        where u.user_id = #{userId}
+        where u.user_id = #{userId} and u.usable = 1
     </select>
     <select id="selectRepairOrderByuserQuery" parameterType="java.lang.Integer" resultType="com.tdmh.param.RepairOrderParam">
              SELECT

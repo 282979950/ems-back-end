@@ -580,10 +580,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData listData(Integer userId, Integer userDistId, String userAddress, Integer userType, Integer userStatus, String meterCode,
+    public JsonData listData(Integer userId, String userName, Integer userDistId, String userAddress, Integer userType, Integer userStatus, String meterCode,
                              String cardIdentifier, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<UserParam> list = userMapper.queryUser(userId, userDistId, userAddress, userType, userStatus, meterCode, cardIdentifier);
+        List<UserParam> list = userMapper.queryUser(userId, userName,userDistId, userAddress, userType, userStatus, meterCode, cardIdentifier);
         PageInfo<UserParam> info = new PageInfo<>(list);
         return JsonData.successData(info);
     }

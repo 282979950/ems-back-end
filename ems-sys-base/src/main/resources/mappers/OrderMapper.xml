@@ -81,45 +81,28 @@
          FROM user_orders WHERE  user_id = #{userId}
          ORDER BY create_time DESC LIMIT 1)
     </select>
-    <select id="selectReportBusinessDataQuery" resultType="com.tdmh.param.OrderParam">
+    <select id="selectReportBusinessDataQuery" resultType="com.tdmh.param.BusinessReportParam" parameterType="map">
         SELECT
-        MAX(DATE_FORMAT(orders.create_time ,'%Y-%m-%d')) AS createTime,
-        SUM(
-        CASE
-        WHEN orders.user_id IS NOT NULL
-        THEN 1
-        ELSE 0
-        END
-        ) AS icCard,
-        SUM(orders.order_gas) AS orderGas,
-        SUM(orders.order_payment) AS orderPayment,
-        any_value(e.`emp_name`) AS empName
+        DATE_FORMAT(uo.create_time, "%Y-%m-%d") as orderDate,
+        count(0) as orderTimes,
+        sum(uo.order_gas) as orderGas,
+        sum(uo.order_payment) as orderPayment
         FROM
-        user_orders orders
-        LEFT JOIN employee e
-        ON orders.employee_id = e.emp_id
-        LEFT JOIN sys_organization org
-        ON e.emp_org_id = org.org_id
-        WHERE orders.usable = 1
-        AND (account_state NOT IN(1,3) OR account_state IS NULL)
-        <if test="userId != null" >
-            AND orders.user_id = #{userId}
-        </if>
-        <if test="empOrgId != null" >
-            AND org.org_id= #{empOrgId}
-        </if>
+        user_orders uo
+        LEFT JOIN employee e ON uo.employee_id = e.emp_id
+        WHERE
+        1 = 1
         <if test="empName!=null and empName!=''">
-            AND LOCATE (#{empName} ,e.`emp_name`) > 0
+            AND e.emp_name = #{empName}
         </if>
         <if test="startDate!=null and startDate!=''">
-            AND DATE_FORMAT(orders.create_time,'%Y-%m-%d') &gt;= #{startDate}
+            AND DATE_FORMAT(uo.create_time,'%Y-%m-%d') &gt;= #{startDate}
         </if>
         <if test="endDate!=null and endDate!=''">
-            AND DATE_FORMAT(orders.create_time,'%Y-%m-%d') &lt;= #{endDate}
+            AND DATE_FORMAT(uo.create_time,'%Y-%m-%d') &lt;= #{endDate}
         </if>
         GROUP BY
-        DATE_FORMAT(orders.create_time ,'%Y-%m-%d')
-        ORDER BY DATE_FORMAT(orders.create_time ,'%Y-%m-%d') DESC
+        orderDate
     </select>
     <select id="checkNewInvoicePrint" resultType="int" parameterType="int">
         SELECT
