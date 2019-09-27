@@ -23,8 +23,8 @@ public class OrderGasUtil {
         }
         //支持最大充气量
         BigDecimal maxOrderGas = null;
-        //商用最大支持9999，民用最大支持充气量999（学校工业用户，工业用户，金湘源）
-        if (userType.equals("9") || userType.equals("10") || userType.equals("11")) {
+        //商用最大支持9999，民用最大支持充气量999（工商业用户，学校工业用户，工业用户，金湘源）
+        if (userType.equals("7") || userType.equals("9") || userType.equals("10") || userType.equals("11")) {
             maxOrderGas = new BigDecimal("9999");
             if (orderGas.compareTo(maxOrderGas) > 0) {
                 return 2;

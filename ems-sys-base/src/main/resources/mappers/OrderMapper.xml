@@ -35,7 +35,7 @@
         LEFT JOIN `user` u ON uo.user_id = u.user_id and <![CDATA[ uo.order_status <> 4 ]]> and uo.usable = 1
         LEFT JOIN user_card uc ON u.user_id = uc.user_id AND uc.usable = 1
         LEFT JOIN invoice i ON uo.order_id = i.order_id and i.invoice_status = 3
-        LEFT JOIN employee e ON uo.create_by = e.emp_id
+        LEFT JOIN employee e ON uo.employee_id = e.emp_id
         LEFT JOIN sys_dictionary sd ON i.invoice_status = sd.dict_value AND sd.dict_category = 'invoice_status'
         LEFT JOIN employee e1 ON i.invoice_print_emp = e1.emp_id
         LEFT JOIN employee e2 ON i.invoice_cancel_emp = e2.emp_id
@@ -91,7 +91,7 @@
         user_orders uo
         LEFT JOIN employee e ON uo.employee_id = e.emp_id
         WHERE
-        1 = 1
+        uo.order_status in (1,2)
         <if test="empName!=null and empName!=''">
             AND e.emp_name = #{empName}
         </if>

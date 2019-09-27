@@ -636,7 +636,7 @@
         sd3.usable = 1
         LEFT JOIN sys_dictionary sd4 ON orders.account_state = sd4.dict_value AND sd4.dict_category = 'account_state'
         AND sd4.usable = 1
-        WHERE orders.order_type IN ( '2') AND orders.free_gas ='0.0'
+        WHERE orders.order_type IN (2,5) AND orders.free_gas ='0.0'
         <if test="userName != null and userName != ''">
             AND u.user_name LIKE CONCAT('%', #{userName,jdbcType=VARCHAR}, '%')
         </if>
@@ -718,7 +718,6 @@
             AND u.user_address like CONCAT('%',#{userAddress},'%')
         </if>
         <if test="meterCode != null and meterCode!=''">
-
             AND LOCATE (#{meterCode} ,me.meter_code) > 0
         </if>
     </select>
@@ -806,7 +805,7 @@
             SUM(order_payment) AS totalOrderPayment
           FROM
             user_orders
-          WHERE order_status NOT IN (4)
+          WHERE order_status IN (1,2)
         <if test = "userId != null" >
             AND user_id = #{userId}
         </if>
