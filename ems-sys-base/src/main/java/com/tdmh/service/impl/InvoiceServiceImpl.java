@@ -339,5 +339,13 @@ public class InvoiceServiceImpl implements IInvoiceService {
         return JsonData.successData(list);
     }
 
+    @Override
+    public JsonData deleteInvoice(Integer invoiceId, Integer currentEmpId) {
+        if(invoiceId.intValue() == 0){
+            return JsonData.fail("获取数据失败请刷新重试");
+        }
+        return invoiceMapper.updateInvoiceById(invoiceId)>0?JsonData.successMsg("操作成功"):JsonData.fail("操作失败");
+    }
+
 
 }

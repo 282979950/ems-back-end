@@ -30,4 +30,6 @@ public interface InvoiceMapper {
     void transfer(@Param("empId") Integer empId, @Param("currentEmpId") Integer currentEmpId);
 
     List<Invoice> getUnusedInvoiceByEmpId(@Param("currentEmpId") Integer currentEmpId);
+
+    int updateInvoiceById(Integer invoiceId);
 }

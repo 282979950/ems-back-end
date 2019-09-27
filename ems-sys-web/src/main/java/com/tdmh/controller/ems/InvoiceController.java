@@ -147,12 +147,23 @@ public class InvoiceController {
      * @param invoiceNumber
      * @return
      */
-    @RequiresPermissions("recharge:order:cancel")
+    @RequiresPermissions("invoice:assign:delete")
     @RequestMapping("order/cancel.do")
     @ResponseBody
     public JsonData cancelInvoice(@Param("orderId") Integer orderId,@Param("userId") Integer userId, @Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
         return invoiceService.cancelInvoice(orderId, userId, invoiceCode, invoiceNumber, currentEmpId);
+    }
+
+    /**
+     * 未分配发票销毁
+     */
+    @RequiresPermissions("invoice:assign:delete")
+    @RequestMapping("/assign/deleteInvoiceInfo.do")
+    @ResponseBody
+    public JsonData deleteInvoiceInfo(Integer invoiceId){
+        Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        return invoiceService.deleteInvoice(invoiceId, currentEmpId);
     }
 
     /**

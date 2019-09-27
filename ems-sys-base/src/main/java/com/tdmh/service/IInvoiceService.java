@@ -31,4 +31,6 @@ public interface IInvoiceService {
     JsonData transfer(Integer empId, Integer currentEmpId);
 
     JsonData getInvoiceInfo(Integer currentEmpId);
+
+    JsonData deleteInvoice(Integer invoiceId, Integer currentEmpId);
 }

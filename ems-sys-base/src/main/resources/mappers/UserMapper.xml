@@ -661,7 +661,7 @@
         LEFT JOIN sys_dictionary sd2 ON u.user_gas_type = sd2.dict_value AND sd2.dict_category = 'user_gas_type' AND
         sd2.usable = 1
         LEFT JOIN employee e on u.open_by = e.emp_id
-        where u.usable = 1 and u.user_status = 3
+        where u.usable = 1 and (u.user_status = 3 or u.user_status = 5)
         <if test="startDate!=null">
             AND u.open_time &gt;= #{startDate}
         </if>

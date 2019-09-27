@@ -34,6 +34,7 @@
         left join employee e on i.create_by = e.emp_id
         left join sys_organization org on org.org_id = i.org_id
         where sd.dict_category = 'invoice_status' and i.invoice_status = 1
+        and i.usable = 1
         <if test="invoiceCode!=null and invoiceCode!=''">
             and i.invoice_code like CONCAT('%', #{invoiceCode}, '%')
         </if>
@@ -228,5 +229,11 @@
         set
         emp_id = #{empId}
         where emp_id = #{currentEmpId} and invoice_status = 2
+    </update>
+    <update id="updateInvoiceById">
+        update invoice
+        set
+        usable = 0
+        where invoice_id= #{invoiceId}
     </update>
 </mapper>
