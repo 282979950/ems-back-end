@@ -503,8 +503,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonData userQuerySearchService(UserParam user, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<UserParam> list = userMapper.userQuerySearch(user);
-        PageInfo<UserParam> info = new PageInfo<>(list);
+        List<UserInfoParam> list = userMapper.userQuerySearch(user);
+        PageInfo<UserInfoParam> info = new PageInfo<>(list);
         return JsonData.success(info, "查询成功");
     }
 
@@ -526,7 +526,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public JsonData exportUserQuerySearchService(UserParam user) {
-        List<UserParam> list = userMapper.userQuerySearch(user);
+        List<UserInfoParam> list = userMapper.userQuerySearch(user);
         return list.size() == 0 ? JsonData.fail("未查询到相关数据") : JsonData.successData(list);
     }
 
@@ -565,8 +565,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonData exportUserQueryWithPageInfo(UserParam user, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<UserParam> list = userMapper.userQuerySearch(user);
-        PageInfo<UserParam> info = new PageInfo<>(list);
+        List<UserInfoParam> list = userMapper.userQuerySearch(user);
+        PageInfo<UserInfoParam> info = new PageInfo<>(list);
         return JsonData.successData(info);
     }
 

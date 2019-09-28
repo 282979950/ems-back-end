@@ -78,7 +78,7 @@ public interface UserMapper {
     List<AbnormalUser> searchAbnormalUserList(@Param("notBuyDayCount") Integer notBuyDayCount, @Param("monthAveGas") BigDecimal monthAveGas, @Param(
             "monthAvePayment") BigDecimal monthAvePayment, @Param("distIds") String distIds, @Param("userAddress") String userAddress, @Param("meterCode") String meterCode);
     List<UserParam> userListByUserQuery();
-    List<UserParam> userQuerySearch(UserParam user);
+    List<UserInfoParam> userQuerySearch(UserParam user);
 
     Integer getUserLockStatusById(Integer userId);
     String getUserStatusNameByUserId(Integer userId);

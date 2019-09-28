@@ -774,63 +774,76 @@
         ORDER BY u.create_time
 
     </select>
-    <select id="userQuerySearch" resultType="com.tdmh.param.UserParam" parameterType="com.tdmh.param.UserParam">
+    <select id="userQuerySearch" resultType="com.tdmh.param.UserInfoParam" parameterType="com.tdmh.param.UserParam">
         SELECT
-          u.user_id AS userId,
-          u.user_name AS userName,
-          u.user_phone AS userPhone,
-          u.user_idcard AS userIdcard,
-          u.user_deed AS userDeed,
-          u.user_dist_id AS userDistId,
-          u.user_address AS userAddress,
-          u.user_type AS userType,
-          u.user_gas_type AS userGasType,
-          u.user_status AS userStatus,
-          u.user_locked AS userLocked,
-          u.service_times AS serviceTimes,
-          u.free_gas_flag AS freeGasFlag,
-          u.create_time AS createTime,
-          u.create_by AS createBy,
-          u.update_time AS updateTime,
-          u.update_by AS updateBy,
-          u.usable,
-          u.remarks,
-          COUNT(uo.order_id) AS totalOrderTimes,
-          SUM(uo.order_gas) AS totalOrderGas,
-          SUM(uo.order_payment) AS totalOrderPayment
+        T.user_id AS userId,
+        T.user_name AS userName,
+        T.user_phone AS userPhone,
+        T.user_idcard AS userIdcard,
+        T.user_deed AS userDeed,
+        T.user_dist_id AS userDistId,
+        T.user_address AS userAddress,
+        T.user_type AS userType,
+        T.user_gas_type AS userGasType,
+        T.user_status AS userStatus,
+        T.user_locked AS userLocked,
+        T.service_times AS serviceTimes,
+        T.free_gas_flag AS freeGasFlag,
+        T.create_time AS createTime,
+        T.create_by AS createBy,
+        T.update_time AS updateTime,
+        T.update_by AS updateBy,
+        T.usable,
+        T.remarks,
+        T.meter_code as meterCode,
+        T.totalOrderTimes,
+        T.totalOrderGas,
+        T.totalStopCode,
+        (
+        T.totalOrderGas - T.totalStopCode + T.totalInitialStopCode
+        ) AS currentTotalOrderGas
         FROM
-          user_orders uo
-          LEFT JOIN `user` u
-            ON uo.user_id = u.user_id
-          LEFT JOIN user_card uc
-            ON u.user_id = uc.user_id
-            AND uc.usable = 1
-          LEFT JOIN user_meters um
-            ON u.user_id = um.user_id
-          LEFT JOIN meter m
-            ON um.meter_id = m.meter_id
-        WHERE u.usable = 1
-          AND (
-            uo.order_status = 2
-            OR uo.order_status = 1
-          )
-        <if test = "userId != null" >
-            AND u.user_id = #{userId}
+        (
+        SELECT
+        C.*,
+        SUM(CASE WHEN A.usable=0 THEN A.meter_stop_code ELSE 0 END) AS totalStopCode,
+        SUM(CASE WHEN A.usable=0 THEN A.meter_initial_stop_code ELSE 0 END) as totalInitialStopCode
+        FROM
+        meter A
+        LEFT JOIN user_meters B ON A.meter_id = B.meter_id
+        RIGHT JOIN (
+        SELECT
+        u.*,
+        COUNT(*) AS totalOrderTimes,
+        SUM(uo.order_gas) AS totalOrderGas,
+        m.meter_code
+        FROM
+        user_orders uo
+        LEFT JOIN `user` u ON uo.user_id = u.user_id
+        LEFT JOIN user_meters um ON u.user_id = um.user_id
+        RIGHT JOIN meter m ON um.meter_id = m.meter_id
+        AND m.usable = 1
+        WHERE
+        uo.order_status IN (1, 2)
+        AND u.usable = 1
+        <if test = "userId != null and userId!=''" >
+            AND uo.user_id = #{userId}
         </if>
         <if test = "userName != null and userName!=''" >
-            AND LOCATE(#{userName} ,u.user_name) > 0
+            AND u.user_name = #{userName}
         </if>
-        <if test = "userType != null" >
+        <if test = "userType != null and userType!=''"  >
             AND u.user_type = #{userType}
         </if>
-        <if test = "cardIdentifier != null and cardIdentifier!=''" >
-            AND uc.card_identifier = #{cardIdentifier}
-        </if>
         <if test = "meterCode != null and meterCode!=''" >
-            AND LOCATE(#{meterCode} ,m.meter_code) > 0
+            AND m.meter_code = #{meterCode}
         </if>
-        GROUP BY u.user_id
-        ORDER BY u.create_time
+        GROUP BY
+        uo.user_id
+        ) C ON B.user_id = C.user_id
+        GROUP BY
+        C.user_id
+        ) T
     </select>
     <select id="getUserLockStatusById" parameterType="int" resultType="integer">
         select is_lock as isLock from user_lock where user_id = #{userId} order by create_time desc LIMIT 1
