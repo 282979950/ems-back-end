@@ -55,6 +55,10 @@ public class AbnormalUser {
     private String userAddress;
 
     /**
+     * 当前表购气总量
+     */
+    private BigDecimal currentTotalOrderGas;
+    /**
      * 购气总量
      */
     @ExcelField(title="购气总量", type=1, align=2, sort=8)

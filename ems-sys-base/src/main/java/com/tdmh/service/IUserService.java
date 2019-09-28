@@ -202,7 +202,7 @@ public interface IUserService {
      * 查询异常用户
      * @return
      */
-    JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress,
+    JsonData searchAbnormalUserList(Integer userId, Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress,
                                     String meterCode,Integer pageNum, Integer pageSize);
 
     JsonData exportAccountQueryList(String startDate, String endDate, Integer userDistId, String userAddress);
@@ -225,11 +225,11 @@ public interface IUserService {
 
     JsonData exportUserQuerySearchService(UserParam user);
 
-    JsonData exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress, String meterCode);
+    JsonData exportAbnormalUserList(Integer userId, Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress, String meterCode);
 
     Integer getUserLockStatusById(Integer userId);
 
-    JsonData exportAbnormalUserWithPageInfo(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress, String meterCode, Integer pageNum, Integer pageSize);
+    JsonData exportAbnormalUserWithPageInfo(Integer userId, Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress, String meterCode, Integer pageNum, Integer pageSize);
 
     JsonData exportAccountQueryWithPageInfo(String startDate, String endDate, Integer userDistId, String userAddress, Integer pageNum, Integer pageSize);
 

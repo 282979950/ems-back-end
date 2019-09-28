@@ -676,49 +676,90 @@
         </if>
         ORDER BY u.open_time DESC
     </select>
-
     <select id="searchAbnormalUserList" parameterType="map" resultType="com.tdmh.param.AbnormalUser">
-        SELECT u.user_id AS userId, u.user_name AS userName, uc.card_id AS iccardId, uc.card_identifier AS
-        iccardIdentifier, u.user_phone AS userPhone,
-        sd.dist_name as userDistName,
-        u.user_address AS userAddress, uo.totalOrderGas, uo.totalOrderPayment, uo.startBuyDay, uo.endBuyDay,
-        datediff(now(),uo.endBuyDay) AS notBuyDayCount,
-        ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) AS monthAveGas,
-        ROUND(totalOrderPayment
-        /(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) AS monthAvePayment
-        FROM `user` u
-        JOIN user_card uc ON u.user_id = uc.user_id AND uc.usable = 1
-        LEFT JOIN sys_district sd on u.user_dist_id = sd.dist_id AND sd.usable = 1
-        JOIN
+        SELECT
+        T.user_id AS userId,
+        T.user_name AS userName,
+        T.user_address AS userAddress,
+        T.user_phone AS userPhone,
+        T.meter_code as meterCode,
+        T.totalOrderGas,
         (
-        SELECT user_id, SUM(order_gas) AS totalOrderGas, SUM(order_payment) AS totalOrderPayment, MIN(create_time) AS
-        startBuyDay, MAX(create_time) AS endBuyDay
-        FROM user_orders WHERE account_state NOT IN(1,3) OR account_state IS NULL GROUP BY user_id
-        ) uo ON u.user_id = uo.user_id
-        LEFT JOIN user_meters usermeters
-        ON u.user_id = usermeters.user_id
-        LEFT JOIN meter me
-        ON usermeters.meter_id = me.meter_id
-        WHERE u.usable = 1
-        <if test="monthAveGas!=null">
-            AND ROUND(totalOrderGas/(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),1) <![CDATA[ <= ]]>
-            #{monthAveGas}
-        </if>
-        <if test="monthAvePayment!=null">
-            AND ROUND(totalOrderPayment /(TIMESTAMPDIFF(MONTH,uo.startBuyDay,uo.endBuyDay)+1),2) <![CDATA[ <= ]]>
-            #{monthAvePayment}
-        </if>
-        <if test="notBuyDayCount">
-            AND datediff(now(),uo.endBuyDay) <![CDATA[ >= ]]> #{notBuyDayCount}
+        T.totalOrderGas - T.totalStopCode + T.totalInitialStopCode
+        ) AS currentTotalOrderGas,
+        T.startBuyDay,
+        T.endBuyDay,
+        TIMESTAMPDIFF(DAY, T.endBuyDay, NOW()) AS notBuyDayCount,
+        T.monthAveGas
+        FROM
+        (
+        SELECT
+        C.user_id,
+        C.user_name,
+        C.user_address,
+        C.user_phone,
+        C.totalOrderGas,
+        SUM(CASE WHEN A.usable=0 THEN A.meter_stop_code ELSE 0 END) AS totalStopCode,
+        SUM(CASE WHEN A.usable=0 THEN A.meter_initial_stop_code ELSE 0 END) as totalInitialStopCode,
+        C.endBuyDay,
+        C.startBuyDay,
+        C.meter_code,
+        ROUND(
+        C.totalOrderGas / (
+        TIMESTAMPDIFF(
+        MONTH,
+        C.startBuyDay,
+        C.endBuyDay
+        ) + 1
+        ),
+        1
+        ) AS monthAveGas
+        FROM
+        meter A
+        LEFT JOIN user_meters B ON A.meter_id = B.meter_id
+        RIGHT JOIN (
+        SELECT
+        uo.user_id,
+        u.user_name,
+        u.user_address,
+        u.user_phone,
+        SUM(uo.order_gas) AS totalOrderGas,
+        MAX(uo.create_time) AS endBuyDay,
+        MIN(uo.create_time) AS startBuyDay,
+        m.meter_code
+        FROM
+        user_orders uo
+        LEFT JOIN `user` u ON uo.user_id = u.user_id
+        LEFT JOIN user_meters um ON u.user_id = um.user_id
+        RIGHT JOIN meter m ON um.meter_id = m.meter_id
+        AND m.usable = 1
+        WHERE
+        uo.order_status IN (1, 2)
+        AND u.usable = 1
+        <if test="userId!=null and userId!=''">
+            AND uo.user_id = #{userId}
         </if>
         <if test="distIds!=null and distIds!=''">
-            AND u.user_dist_id IN (${distIds})
+            AND u.user_dist_id = #{distIds}
         </if>
         <if test="userAddress!=null and userAddress!=''">
             AND u.user_address like CONCAT('%',#{userAddress},'%')
         </if>
         <if test="meterCode != null and meterCode!=''">
-            AND LOCATE (#{meterCode} ,me.meter_code) > 0
+            AND m.meter_code = #{meterCode}
+        </if>
+        GROUP BY
+        uo.user_id
+        ) C ON B.user_id = C.user_id
+        GROUP BY
+        C.user_id
+        ) T  WHERE
+        1 = 1
+        <if test="monthAveGas!=null and monthAveGas!=''">
+            AND #{monthAveGas} >= T.monthAveGas
+        </if>
+        <if test="notBuyDayCount!=null and notBuyDayCount!=''">
+            and TIMESTAMPDIFF(DAY,T.endBuyDay,NOW()) >= #{notBuyDayCount}
         </if>
     </select>
     <select id="userListByUserQuery" resultType="com.tdmh.param.UserParam">

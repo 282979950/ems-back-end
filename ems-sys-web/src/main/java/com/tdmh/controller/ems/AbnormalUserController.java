@@ -35,23 +35,23 @@ public class AbnormalUserController {
     @RequiresPermissions("queryStats:exceptionQuery:retrieve")
     @RequestMapping("/search.do")
     @ResponseBody
-    public JsonData searchAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress,
+    public JsonData searchAbnormalUserList(Integer userId,Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress,
                                            String meterCode,Integer pageNum, Integer pageSize) {
-        return userService.searchAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress, meterCode,pageNum, pageSize);
+        return userService.searchAbnormalUserList(userId, notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress, meterCode,pageNum, pageSize);
     }
 
     @RequiresPermissions("queryStats:exceptionQuery:export")
     @RequestMapping("/export.do")
     @ResponseBody
-    public JsonData exportAbnormalUserList(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress, String meterCode) {
-        return userService.exportAbnormalUserList(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress, meterCode);
+    public JsonData exportAbnormalUserList(Integer userId, Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId, String userAddress, String meterCode) {
+        return userService.exportAbnormalUserList(userId, notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress, meterCode);
     }
 
     @RequiresPermissions("queryStats:exceptionQuery:export")
     @RequestMapping("/exportWithPageInfo.do")
     @ResponseBody
-    public JsonData exportAbnormalUserWithPageInfo(Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId,
+    public JsonData exportAbnormalUserWithPageInfo(Integer userId, Integer notBuyDayCount, BigDecimal monthAveGas, BigDecimal monthAvePayment, Integer userDistId,
                                            String userAddress, String meterCode, Integer pageNum, Integer pageSize) {
-        return userService.exportAbnormalUserWithPageInfo(notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress, meterCode, pageNum, pageSize);
+        return userService.exportAbnormalUserWithPageInfo(userId, notBuyDayCount, monthAveGas, monthAvePayment, userDistId, userAddress, meterCode, pageNum, pageSize);
     }
 }
