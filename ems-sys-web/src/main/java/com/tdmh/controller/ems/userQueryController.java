@@ -133,7 +133,7 @@ public class userQueryController {
     }
     @RequestMapping("/ExportUserQuery.do")
     @ResponseBody
-    public JsonData ExportUserQueryController(User user){
+    public JsonData ExportUserQueryController(UserParam user){
         return userService.ExportUserQueryService(user);
     }
 }

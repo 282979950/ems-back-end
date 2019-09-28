@@ -596,8 +596,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonData ExportUserQueryService(User user) {
-        List<ExportUserQuery> list = userMapper.ExportUser(user);
+    public JsonData ExportUserQueryService(UserParam user) {
+        List<UserInfoParam> list = userMapper.ExportUser(user);
         return JsonData.successData(list);
     }
 

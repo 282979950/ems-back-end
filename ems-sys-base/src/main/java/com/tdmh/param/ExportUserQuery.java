@@ -65,4 +65,6 @@ public class ExportUserQuery {
      * 购气总量
      */
     private BigDecimal totalOrderGas;
+
+    private BigDecimal currentTotalOrderGas;
 }

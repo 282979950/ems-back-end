@@ -91,7 +91,7 @@ public interface UserMapper {
 
     UserParam getUserByUserId(@Param("userId") Integer userId);
 
-    List<ExportUserQuery> ExportUser(User user);
+    List<UserInfoParam> ExportUser(UserParam user);
 
     int bindCard(CreateAccountParam param);
 

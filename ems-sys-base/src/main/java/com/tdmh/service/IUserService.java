@@ -248,7 +248,7 @@ public interface IUserService {
 
     JsonData edit(UserParam userParam);
 
-    JsonData ExportUserQueryService(User user);
+    JsonData ExportUserQueryService(UserParam user);
 
     JsonData bindCard(CreateAccountParam param, String userType);
 
