@@ -167,12 +167,12 @@ public class InvoiceController {
     }
 
     /**
-     * 注销未打印的发票
+     * 发票查询--票号销毁
      * @param invoiceCode
      * @param invoiceNumber
      * @return
      */
-    @RequiresPermissions("invoice:query:cancel")
+    @RequiresPermissions("invoice:assign:delete")
     @RequestMapping("printCancel/cancel.do")
     @ResponseBody
     public JsonData cancelNotPrintInvoice(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber){

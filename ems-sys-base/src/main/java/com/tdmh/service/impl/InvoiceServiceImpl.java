@@ -320,11 +320,11 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Override
     public JsonData cancelNotPrintInvoice(String invoiceCode, String invoiceNumber, Integer currentEmpId) {
-        int count = invoiceMapper.cancelInvoice(invoiceCode, invoiceNumber, currentEmpId); //撤销之前的
+        int count = invoiceMapper.cancelInvoiceByInvoiceCode(invoiceCode, invoiceNumber, currentEmpId); //撤销之前的
         if(count == 0){
-            return JsonData.fail("作废发票失败");
+            return JsonData.fail("发票销毁失败");
         }
-        return JsonData.successMsg("作废发票成功");
+        return JsonData.successMsg("发票销毁成功");
     }
 
     @Override

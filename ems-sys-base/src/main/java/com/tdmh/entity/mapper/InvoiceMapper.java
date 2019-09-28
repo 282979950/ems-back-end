@@ -32,4 +32,6 @@ public interface InvoiceMapper {
     List<Invoice> getUnusedInvoiceByEmpId(@Param("currentEmpId") Integer currentEmpId);
 
     int updateInvoiceById(Integer invoiceId);
+
+    int cancelInvoiceByInvoiceCode(@Param("invoiceCode") String invoiceCode, @Param("invoiceNumber") String invoiceNumber, @Param("currentEmpId") Integer currentEmpId);
 }

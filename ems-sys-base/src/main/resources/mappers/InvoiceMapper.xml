@@ -181,7 +181,7 @@
         join sys_dictionary sd on i.invoice_status = sd.dict_value
         left join employee emp on i.emp_id = emp.emp_id
         left join employee e on i.invoice_cancel_emp = e.emp_id
-        where sd.dict_category = 'invoice_status' and <![CDATA[ i.invoice_status <> 1 ]]>
+        where sd.dict_category = 'invoice_status'
         <if test="invoiceCode!=null and invoiceCode!=''">
             and i.invoice_code like CONCAT('%', #{invoiceCode}, '%')
         </if>
@@ -222,6 +222,10 @@
     </update>
     <update id="cancelInvoice" parameterType="map">
         update invoice set invoice_cancel_emp = #{currentEmpId},invoice_cancel_time = NOW(), invoice_status = 4
+        where invoice_code = #{invoiceCode} and invoice_number = #{invoiceNumber}
+    </update>
+    <update id="cancelInvoiceByInvoiceCode" parameterType="map">
+        update invoice set invoice_cancel_emp = #{currentEmpId},invoice_cancel_time = NOW(), invoice_status = 5
         where invoice_code = #{invoiceCode} and invoice_number = #{invoiceNumber}
     </update>
     <update id="transfer" parameterType="map">
