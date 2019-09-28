@@ -37,7 +37,7 @@ public class BusinessReportQueryController {
     @RequiresPermissions("querystats:businessReportQuery:visit")
     @RequestMapping(value = "/search.do")
     @ResponseBody
-    public JsonData ReportBusinessDataQuerySearchList(String empName, String startDate, String endDate, Integer pageNum, Integer pageSize){
-        return orderService.ReportBusinessDataQueryService(empName, startDate, endDate, pageNum, pageSize);
+    public JsonData ReportBusinessDataQuerySearchList(Integer orgId, Integer empId, String startDate, String endDate, Integer pageNum, Integer pageSize){
+        return orderService.ReportBusinessDataQueryService(orgId, empId, startDate, endDate, pageNum, pageSize);
     }
 }

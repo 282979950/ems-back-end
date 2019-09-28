@@ -26,7 +26,7 @@ public interface OrderMapper {
 
     int hasAuthorityToInvoice(@Param("orderId") Integer orderId, @Param("userId") Integer userId);
 
-    List<BusinessReportParam> selectReportBusinessDataQuery(@Param("empName") String empName, @Param("startDate")String startDate,@Param("endDate") String endDate);
+    List<BusinessReportParam> selectReportBusinessDataQuery(@Param("orgId") Integer orgId, @Param("empId") Integer empId, @Param("startDate")String startDate,@Param("endDate") String endDate);
 
     int checkNewInvoicePrint(@Param("orderId") Integer orderId);
 

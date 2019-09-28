@@ -90,10 +90,14 @@
         FROM
         user_orders uo
         LEFT JOIN employee e ON uo.employee_id = e.emp_id
+        LEFT JOIN invoice i ON uo.order_id = i.order_id
         WHERE
-        uo.order_status in (1,2)
-        <if test="empName!=null and empName!=''">
-            AND e.emp_name = #{empName}
+        uo.order_status in (1,2)  AND <![CDATA[ e.emp_name <> 'admin' ]]>
+        <if test="orgId!=null and orgId!=''">
+            AND IFNULL(i.org_id, 1) = #{orgId} AND <![CDATA[ uo.order_type <> 5 ]]>
+        </if>
+        <if test="empId != null and empId != ''">
+            AND e.emp_id = #{empId}
         </if>
         <if test="startDate!=null and startDate!=''">
             AND DATE_FORMAT(uo.create_time,'%Y-%m-%d') &gt;= #{startDate}

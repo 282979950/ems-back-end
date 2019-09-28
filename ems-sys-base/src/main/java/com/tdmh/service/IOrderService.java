@@ -24,7 +24,7 @@ public interface IOrderService {
 
     void exportBusinessDataQueryListService(UserOrders orders);
 
-    JsonData ReportBusinessDataQueryService(String empName, String startDate, String endDate, Integer pageNum, Integer pageSize);
+    JsonData ReportBusinessDataQueryService(Integer orgId, Integer empId, String startDate, String endDate, Integer pageNum, Integer pageSize);
 
     JsonData OperatorDataQueryService(OperatorDataQuery dataQuery, Integer pageNum, Integer pageSize);
 

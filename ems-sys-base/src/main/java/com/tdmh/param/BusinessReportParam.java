@@ -18,6 +18,7 @@ public class BusinessReportParam {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date orderDate;
+    private String empName;
     private Integer orderTimes;
     private Integer orderGas;
     private BigDecimal orderPayment;
