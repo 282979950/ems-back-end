@@ -7,6 +7,7 @@ import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.tdmh.common.JsonData;
 import com.tdmh.config.CustomWXPayConfig;
+import com.tdmh.entity.User;
 import com.tdmh.entity.UserOrders;
 import com.tdmh.entity.mapper.UserMapper;
 import com.tdmh.entity.mapper.UserOrdersMapper;
@@ -19,6 +20,7 @@ import com.tdmh.service.IApplyRepairService;
 import com.tdmh.service.IGasPriceService;
 import com.tdmh.service.IOrderService;
 import com.tdmh.service.IWXService;
+import com.tdmh.util.OrderGasUtil;
 import com.tdmh.utils.HttpRequestUtil;
 import com.tdmh.utils.IdWorker;
 import lombok.extern.log4j.Log4j2;
@@ -158,10 +160,19 @@ public class WXServiceImpl implements IWXService {
             if(resultOrdersCount > 0){
                 return JsonData.fail("每天只支持充值一次");
             }
-//            int resultCount = userMapper.userVerify(userId);
-//            if(resultCount>0){
-//                return JsonData.fail("只允许民用户在手机充值");
-//            }
+            User user = userMapper.getUserById(userId);
+            if (user.getUserLocked()) {
+                return JsonData.fail("用户已经被锁定不能进行充值");
+            }
+            String userType = user.getUserType().toString();
+            switch (OrderGasUtil.MaxOrderGas(userType, gas)) {
+                case 1:
+                    return JsonData.fail("未获取到数据请重试！");
+                case 2:
+                    return JsonData.fail("商用最大支持9999");
+                case 3:
+                    return JsonData.fail("民用最大支持999");
+            }
             Map<String, String> data = new HashMap<>();
             data.put("body", "武汉蓝焰天然气充值-充值气量:" + gas + "方");
             data.put("fee_type", "CNY");

@@ -30,7 +30,7 @@
         WHERE
         1 = 1
         <if test="param != null and param.userName != null and param.userName != ''">
-            and u.user_name like CONCAT('%', #{param.userName}, '%')
+            and u.user_name = #{param.userName}
         </if>
         <if test="param != null and param.iccardId != null and param.iccardId != ''">
             and uc.card_id = #{param.iccardId}
