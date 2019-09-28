@@ -84,6 +84,10 @@ public class CreateAccountParam extends BaseEntity {
      * 用户状态
      */
     private Integer userStatus;
+    /**
+     *订单详情
+     */
+    private String orderDetail;
 
     private Integer serviceTimes;
 

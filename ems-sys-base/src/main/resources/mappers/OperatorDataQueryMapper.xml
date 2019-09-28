@@ -15,66 +15,75 @@
     </resultMap>
     <select id="getOperatorDataQuery" resultMap="BaseResultMap" parameterType="com.tdmh.param.OperatorDataQuery" >
         SELECT
-          emp.emp_id,
-          emp.emp_name,
-          uo.create_time,
-          uo.order_id,
-          u.user_name,
-          u.user_phone,
-          u.user_idcard,
-          u.user_address,
-          u.user_id,
-          baseinformation.order_payment AS baseOrderPayment,
-          baseinformation.order_gas AS baseOrderGas,
-          launch.order_payment AS launchOrderPayment,
-          launch.order_gas AS launchOrderGas,
-          replacement.order_payment AS replacementOrderPayment,
-          replacement.order_gas AS replacementOrderGas,
-          uc.`card_cost`
+        emp.emp_id,
+        emp.emp_name,
+        uo.create_time,
+        uo.order_id,
+        u.user_name,
+        u.user_phone,
+        u.user_idcard,
+        u.user_address,
+        u.user_id,
+        (
+        CASE
+        WHEN (
+        account_state NOT IN (1, 3)
+        OR account_state IS NULL
+        )
+        THEN uo.order_payment
+        ELSE NULL
+        END
+        ) AS baseOrderPayment,
+        (
+        CASE
+        WHEN (
+        account_state NOT IN (1, 3)
+        OR account_state IS NULL
+        )
+        THEN uo.order_gas
+        ELSE NULL
+        END
+        ) AS baseOrderGas,
+        (
+        CASE
+        WHEN (account_state IN (1))
+        THEN uo.order_payment
+        ELSE NULL
+        END
+        ) AS launchOrderPayment,
+        (
+        CASE
+        WHEN (account_state IN (1))
+        THEN uo.order_gas
+        ELSE NULL
+        END
+        ) AS launchOrderGas,
+        (
+        CASE
+        WHEN (order_type = 3)
+        THEN uo.order_payment
+        ELSE NULL
+        END
+        ) AS replacementOrderPayment,
+        (
+        CASE
+        WHEN (order_type = 3)
+        THEN uo.order_gas
+        ELSE NULL
+        END
+        ) AS replacementOrderGas,
+        uc.`card_cost`
         FROM
-          user_orders uo
-          LEFT JOIN
-            (SELECT
-              order_id,
-              order_payment,
-              order_gas
-            FROM
-              user_orders
-            WHERE usable = 1
-              AND (
-                account_state NOT IN (1, 3)
-                OR account_state IS NULL
-              )) AS baseinformation
-            ON uo.order_id = baseinformation.order_id
-          LEFT JOIN
-            (SELECT
-              order_id,
-              order_payment,
-              order_gas
-            FROM
-              user_orders
-            WHERE usable = 1
-              AND account_state IN (1)) AS launch
-            ON uo.order_id = launch.order_id
-          LEFT JOIN
-            (SELECT
-              order_id,
-              order_payment,
-              order_gas
-            FROM
-              user_orders
-            WHERE usable = 1
-              AND order_type = 3) AS replacement
-            ON uo.order_id = replacement.order_id
-          LEFT JOIN employee emp
-            ON uo.employee_id = emp.emp_id
-          LEFT JOIN `user` u
-            ON uo.user_id = u.user_id
-          LEFT JOIN user_card uc
-            ON uo.order_id = uc.order_id
+        user_orders uo
+        LEFT JOIN employee emp
+        ON uo.employee_id = emp.emp_id
+        LEFT JOIN `user` u
+        ON uo.user_id = u.user_id
+        LEFT JOIN user_card uc
+        ON uo.order_id = uc.order_id
         WHERE emp.usable = 1
-          AND uo.usable = 1
-          AND u.usable = 1
+        AND uo.usable = 1
+        AND u.usable = 1
         <if test="startDate!=null and startDate!=''">
             AND DATE_FORMAT(uo.create_time,'%Y-%m-%d') &gt;= #{startDate}
         </if>

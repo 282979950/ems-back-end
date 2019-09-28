@@ -278,6 +278,7 @@ public class UserServiceImpl implements IUserService {
         userOrders.setEmployeeId(param.getUpdateBy());
         BigDecimal gas = param.getOrderGas();
         userOrders.setOrderGas(gas);
+        userOrders.setOrderDetail(param.getOrderDetail());
         BigDecimal payment = param.getOrderPayment();
         userOrders.setOrderPayment(payment);
         userOrders.setFlowNumber(IdWorker.getId().nextId()+"");
