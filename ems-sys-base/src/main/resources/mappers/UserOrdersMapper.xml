@@ -251,7 +251,39 @@
              #{orderType},NOW(),#{createBy,jdbcType=INTEGER},NOW(),#{updateBy,jdbcType=INTEGER},#{usable},#{orderSupplement},#{remarks}
       )
   </insert>
-  <select id="countUserOrdersByTimeEmployeeId" resultType="java.lang.Integer" parameterType="com.tdmh.entity.UserOrders">
+    <insert id="createMessageMeterPaymentOrder">
+      INSERT INTO user_orders (
+          user_id,
+          employee_id,
+          order_payment,
+          order_status,
+          order_create_time,
+          flow_number,
+          order_type,
+          create_time,
+          create_by,
+          update_time,
+          update_by,
+          usable,
+          remarks
+      )
+      VALUES (
+          #{userId,jdbcType=INTEGER},
+          #{employeeId,jdbcType=INTEGER},
+          #{orderPayment,jdbcType=DECIMAL},
+          #{orderStatus,jdbcType=INTEGER},
+          NOW(),
+          #{flowNumber,jdbcType=VARCHAR},
+          #{orderType,jdbcType=INTEGER},
+          NOW(),
+          #{createBy,jdbcType=INTEGER},
+          NOW(),
+          #{updateBy,jdbcType=INTEGER},
+          #{usable,jdbcType=BIT},
+          #{remarks,jdbcType=VARCHAR}
+      )
+    </insert>
+    <select id="countUserOrdersByTimeEmployeeId" resultType="java.lang.Integer" parameterType="com.tdmh.entity.UserOrders">
        SELECT   COUNT(order_id)  FROM  user_orders  WHERE order_id = #{orderId}  AND create_time =
         (SELECT  create_time    FROM    user_orders         WHERE employee_id = #{employeeId}   AND
           DATE_FORMAT(create_time,'%Y-%m-%d')= #{resltTime}    ORDER BY create_time DESC     LIMIT 1)

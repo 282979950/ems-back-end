@@ -50,4 +50,6 @@ public interface UserOrdersMapper {
     Date getNowCreateTimeByOrderId(@Param("userId") Integer userId);
     //每天限定充值一次，查询当前是否存在：2普通订单，3补卡订单，5微信订单,(已冲账的可以再次发起新的充值)
     int queryCurrentDataByDate(@Param("createTime")String createTime, @Param("userId") Integer userId);
+
+    int createMessageMeterPaymentOrder(UserOrders userOrders);
 }

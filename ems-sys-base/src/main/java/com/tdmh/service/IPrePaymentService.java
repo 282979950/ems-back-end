@@ -5,6 +5,7 @@ import com.tdmh.entity.UserOrders;
 import com.tdmh.param.PrePaymentParam;
 
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 
 /**
  * @author Lucia on 2018/10/12.
@@ -22,4 +23,6 @@ public interface IPrePaymentService {
     void selectFindListExportArdQueryService(PrePaymentParam param, HttpServletResponse response);
 
     JsonData syncCard(Integer iccardId, String iccardIdentifier);
+
+    JsonData messageMeterPayment(UserOrders userOrders);
 }

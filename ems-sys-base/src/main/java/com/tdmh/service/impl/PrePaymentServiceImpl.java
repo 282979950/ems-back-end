@@ -299,6 +299,19 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     }
 
     @Override
+    public JsonData messageMeterPayment(UserOrders userOrders) {
+        userOrders.setFlowNumber(String.valueOf(IdWorker.getId().nextId()));
+        userOrders.setOrderStatus(1);
+        userOrders.setUsable(true);
+        userOrders.setOrderType(2);
+        int result = userOrdersMapper.createMessageMeterPaymentOrder(userOrders);
+        if (result == 0) {
+            return JsonData.fail("短信表充值失败");
+        }
+        return JsonData.successMsg("短信表充值成功");
+    }
+
+    @Override
     public JsonData verifyCard(PrePaymentParam param) {
         int result = userCardMapper.getCardByCardMessage(null,param.getIccardId(),param.getIccardIdentifier());
         if(result == 0){
