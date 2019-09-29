@@ -102,5 +102,8 @@
         <if test="operation != null and operation == 'replacementData'">
             AND uo.order_type = 3
         </if>
+        <if test="operation != null and operation == 'cancelRecharge'">
+            AND uo.account_state = 3
+        </if>
     </select>
 </mapper>
