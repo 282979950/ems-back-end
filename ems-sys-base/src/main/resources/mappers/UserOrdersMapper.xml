@@ -251,7 +251,7 @@
              #{orderType},NOW(),#{createBy,jdbcType=INTEGER},NOW(),#{updateBy,jdbcType=INTEGER},#{usable},#{orderSupplement},#{remarks}
       )
   </insert>
-    <insert id="createMessageMeterPaymentOrder">
+    <insert id="createMessageMeterPaymentOrder" useGeneratedKeys="true" keyProperty="orderId">
       INSERT INTO user_orders (
           user_id,
           employee_id,
@@ -390,6 +390,7 @@
       WHERE orders.usable = 1
       and
       orders.user_id=#{userId}
+      ORDER BY orders.create_time DESC
 
   </select>
   <select id="getCreateTimeByOrderId" resultType="java.util.Date">

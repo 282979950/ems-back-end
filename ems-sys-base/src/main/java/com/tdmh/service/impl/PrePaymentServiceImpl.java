@@ -29,6 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Lucia on 2018/10/12.
@@ -299,7 +301,7 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
     }
 
     @Override
-    public JsonData messageMeterPayment(UserOrders userOrders) {
+    public JsonData messageMeterPayment(UserOrders userOrders, String name) {
         userOrders.setFlowNumber(String.valueOf(IdWorker.getId().nextId()));
         userOrders.setOrderStatus(1);
         userOrders.setUsable(true);
@@ -308,7 +310,11 @@ public class PrePaymentServiceImpl implements IPrePaymentService {
         if (result == 0) {
             return JsonData.fail("短信表充值失败");
         }
-        return JsonData.successMsg("短信表充值成功");
+        Map<String,Object> map = new ConcurrentHashMap<>();
+        map.put("rmbBig",new RmbConvert().simpleToBig(userOrders.getOrderPayment().doubleValue()));
+        map.put("name",name);
+        map.put("orderId",userOrders.getOrderId());
+        return JsonData.success(map,"短信表充值成功");
     }
 
     @Override

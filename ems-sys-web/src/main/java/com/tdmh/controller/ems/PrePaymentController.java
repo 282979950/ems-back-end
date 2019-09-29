@@ -12,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.math.BigDecimal;
-
 
 /**
  * @author Lucia on 2018/10/12.
@@ -92,9 +90,10 @@ public class PrePaymentController {
     @ResponseBody
     public JsonData messageMeterPayment(UserOrders userOrders){
         Integer currentEmpId = ShiroUtils.getPrincipal().getId();
+        String name = ShiroUtils.getPrincipal().getName();
         userOrders.setEmployeeId(currentEmpId);
         userOrders.setCreateBy(currentEmpId);
         userOrders.setUpdateBy(currentEmpId);
-        return prePaymentService.messageMeterPayment(userOrders);
+        return prePaymentService.messageMeterPayment(userOrders, name);
     }
 }
